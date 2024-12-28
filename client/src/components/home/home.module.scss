@@ -1,0 +1,18 @@
+.customLink {
+    color: inherit;
+    text-decoration: none;
+    display: block;
+    background-color: inherit;  // Ensure background color matches the card background color
+    border-radius: 0.5rem;  // Match the border-radius of the card
+}
+
+.customLink:hover,
+.customLink:focus,
+.customLink:visited,
+.customLink:active {
+    color: inherit;
+    text-decoration: none;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.25) !important;
+    background-color: inherit;  // Ensure background color remains consistent on hover
+    border-radius: 0.5rem;  // Match the border-radius of the card
+}
