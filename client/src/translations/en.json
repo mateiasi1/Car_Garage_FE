@@ -43,6 +43,13 @@
       "upcomingInspections": "Upcoming inspections",
       "newlyAddedCustomersThisMonth": "New customers this month",
       "reports": "Reports",
-      "textCopiedToClipboard": "Text copied to clipboard"
+      "textCopiedToClipboard": "Text copied to clipboard",
+      "roleTitle": "Role",
+      "addNewInspection": "Add new inspection",
+      "searchClient": "Search client",
+      "recordsPerPage": "Records per page:",
+      "back": "Back",
+      "next": "Next",
+      "pageCounterForTables": "Page {{currentPage}} of {{totalPages}}"
     }
   }
