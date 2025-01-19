@@ -50,6 +50,7 @@
       "recordsPerPage": "Elemente pe pagină:",
       "back": "Înapoi",
       "next": "Înainte",
-      "pageCounterForTables": "Pagina {{currentPage}} din {{totalPages}}"
+      "pageCounterForTables": "Pagina {{currentPage}} din {{totalPages}}",
+      "downloadPDF": "Descarcă PDF"
     }
   }

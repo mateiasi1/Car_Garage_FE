@@ -50,6 +50,7 @@
       "recordsPerPage": "Records per page:",
       "back": "Back",
       "next": "Next",
-      "pageCounterForTables": "Page {{currentPage}} of {{totalPages}}"
+      "pageCounterForTables": "Page {{currentPage}} of {{totalPages}}",
+      "downloadPDF": "Download PDF"
     }
   }

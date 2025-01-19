@@ -1,10 +1,14 @@
-import { FC } from 'react';
+import { FC, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import style from './home.module.scss';
+import { AuthContext } from '../../contexts/authContext';
+import HomeNotAuthenticated from './home-not-authenticated';
 
 const Home: FC = () => {
     const { t } = useTranslation();
+
+    const { isAuthenticated } = useContext(AuthContext);
 
     const cards = [
         { id: 1, title: t('upcomingInspections'), description: t('card1.description'), bgColor: 'bg-red-200', href: '/inspections/upcoming' },
@@ -15,6 +19,8 @@ const Home: FC = () => {
     ];
 
     return (
+        <div>
+            {isAuthenticated ?
         <div className="flex flex-col items-center h-screen p-4">
             <h1 className="text-3xl font-semibold mb-8">{t('dashboard')}</h1>
             <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6 w-full max-w-6xl">
@@ -31,6 +37,8 @@ const Home: FC = () => {
                     </Link>
                 ))}
             </div>
+        </div>
+        : <HomeNotAuthenticated />}
         </div>
     );
 };

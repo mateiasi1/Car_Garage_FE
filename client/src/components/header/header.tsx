@@ -21,7 +21,7 @@ const Header: FC = () => {
     };
 
     return (
-        <nav className="fixed w-full top-0 border-b border-gray-300 h-14 flex items-center justify-between" style={{ background: 'linear-gradient(to right, #4CAF50, #2E7D32)' }}>
+        <nav className="fixed w-full top-0 border-b border-gray-300 h-14 flex items-center justify-between bg-blue-500">
             <div className="container mx-auto flex justify-between items-center">
                 <div className="text-gray-100 text-xl font-bold">
                     {brandName}
