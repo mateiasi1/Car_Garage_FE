@@ -9,6 +9,7 @@ import ReportsPage from "./pages/reports/reportsPage";
 import UpcomingPage from "./pages/inspections/upcoming/upcomingPage";
 import DailyPage from "./pages/inspections/daily/dailyPage";
 import MonthlyPage from "./pages/inspections/monthly/monthlyPage";
+import CustomersListPage from "./pages/customer/customersList";
 
 const AppRouter = () => {
     return (
@@ -25,6 +26,7 @@ const AppRouter = () => {
                     <Route path="inspections/upcoming" element={<UpcomingPage />} />
                     <Route path="inspections/daily" element={<DailyPage />} />
                     <Route path="inspections/monthly" element={<MonthlyPage />} />
+                    <Route path="customer/list" element={<CustomersListPage />} />
                 </Routes>
             </div>
         </Router>

@@ -43,6 +43,13 @@
       "upcomingInspections": "Inspecții viitoare",
       "newlyAddedCustomersThisMonth": "Clienți adăugați în acest lună",
       "reports": "Rapoarte",
-      "textCopiedToClipboard": "Text copiat în clipboard"
+      "textCopiedToClipboard": "Text copiat în clipboard",
+      "roleTitle": "Rol",
+      "addNewInspection": "Adaugă inspecție",
+      "searchClient": "Caută client",
+      "recordsPerPage": "Elemente pe pagină:",
+      "back": "Înapoi",
+      "next": "Înainte",
+      "pageCounterForTables": "Pagina {{currentPage}} din {{totalPages}}"
     }
   }

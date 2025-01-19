@@ -24,31 +24,43 @@ const AddNewUser = () => {
         theme: "light",
     });
 };
-  const [company, setCompany] = useState(null);
-  const [phoneNumber, setPhoneNumber] = useState(null);
-  const [firstName, setFirstName] = useState(null);
-  const [lastName, setLastName] = useState(null);
- const [password, setPassword] = useState(null);
+  const [company, setCompany] = useState<string>('');
+  const [phoneNumber, setPhoneNumber] = useState<string>('');
+  const [firstName, setFirstName] = useState<string>('');
+  const [lastName, setLastName] = useState<string>('');
+ const [password, setPassword] = useState<string>('');
+ const [email, setEmail] = useState<string>('');
+ 
+ const [roleOptions, setRoleOptions] = useState(['Admin', 'Inspector'])
+ const [role, setRole] = useState(roleOptions[0]);
 
-  const handleCompanyChange = (event) => {
+;
+ 
+  const handleCompanyChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setCompany(event.target.value);
   };
 
-  const handlePhoneNumbereChange = (event) => {
+  const handlePhoneNumbereChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPhoneNumber(event.target.value);
   };
-  const handleFirstNameChange = (event) => {
+  const handleEmailChange = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setEmail(event.target.value);
+  };
+  
+  const handleFirstNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setFirstName(event.target.value);
   };
 
-  const handleLastNameChange = (event) => {
+  const handleLastNameChange = (event: React.ChangeEvent<HTMLInputElement>) => {
     setLastName(event.target.value);
   };
 
-  const handleSetPassword = (event) => {
+  const handleSetPassword = (event: React.ChangeEvent<HTMLInputElement>) => {
     setPassword(event.target.value);
   };
-
+  const handleSetRole = (event: React.ChangeEvent<HTMLInputElement>) => {
+    setRole(event.target.value);
+  };
 
   const onAddButtonClick = async () => {
     var newUser = {
@@ -96,10 +108,31 @@ const AddNewUser = () => {
         <label htmlFor="lastName" className="block text-gray-700 text-sm font-bold mb-2">{t('lastName')}</label>
         <input onChange={handleLastNameChange} type="text" id="lastName" name="lastName" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
       </div>
-     
+      <div className="mb-4">
+        <label htmlFor="email" className="block text-gray-700 text-sm font-bold mb-2">{t('emailTitle')}</label>
+        <input onChange={handleEmailChange} type="text" id="email" name="email" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+      </div>
       <div className="mb-4">
         <label htmlFor="password" className="block text-gray-700 text-sm font-bold mb-2">{t('passwordTitle')}</label>
         <input onChange={handleSetPassword} type="text" id="password" name="password" className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline" />
+      </div>
+      <div className="mb-4">
+        <label htmlFor="role" className="block text-gray-700 text-sm font-bold mb-2">
+          {t('roleTitle')}
+        </label>
+        <select
+          id="role"
+          name="role"
+          value={role}
+          className="shadow appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline"
+          disabled
+        >
+          {roleOptions.map((roleOption, index) => (
+            <option key={index} value={roleOption}>
+              {roleOption}
+            </option>
+          ))}
+        </select>
       </div>
       
     </div>
