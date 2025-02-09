@@ -34,9 +34,10 @@ const LeftPanel: FC = () => {
           <h1 className="text-lg font-semibold">{t('controlPanel')}</h1>
         </div>
         <nav className="flex-1 p-4 space-y-2">
-          <Link to="/customer/add-new" className="block py-2 px-4 rounded hover:bg-gray-700">{t('addNewCustomer')}</Link>
+        <Link to="/home" className="block py-2 px-4 rounded hover:bg-gray-700">{t('dashboard')}</Link>
+          <Link to="/customer/list" className="block py-2 px-4 rounded hover:bg-gray-700">{t('addNewCustomer')}</Link>
           <Link to="/users/add-new" className="block py-2 px-4 rounded hover:bg-gray-700">{t('addNewUser')}</Link>
-          <Link to="/home" className="block py-2 px-4 rounded hover:bg-gray-700">{t('dashboard')}</Link>
+
           <Link to="/profile" className="block py-2 px-4 rounded hover:bg-gray-700">{t('profile')}</Link>
           <Link to="/settings" className="block py-2 px-4 rounded hover:bg-gray-700">{t('settings')}</Link>
           <Link to="/reports" className={`block py-2 px-4 rounded `}>{t('reports')}</Link>

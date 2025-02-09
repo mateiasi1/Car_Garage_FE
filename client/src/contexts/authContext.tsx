@@ -1,9 +1,9 @@
-import { createContext, useState, ReactNode } from 'react';
+import { createContext, useState, ReactNode, useEffect } from 'react';
 
 // Define the props type for AuthProvider
 type AuthProviderProps = {
   children?: ReactNode;
-}
+};
 
 // Define the shape of the AuthContext
 interface AuthContextType {
@@ -21,15 +21,28 @@ const AuthContext = createContext<AuthContextType>({
 
 // Create the AuthProvider component
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [isAuthenticated, setIsAuthenticated] = useState(false);
+  const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+  const [token, setToken] = useState<string | null>(null);
+
+  // Load the token from localStorage when the component mounts
+  useEffect(() => {
+    const storedToken = localStorage.getItem('token');
+    if (storedToken) {
+      setIsAuthenticated(true);
+      setToken(storedToken);
+    }
+  }, []);
 
   const login = () => {
-    // Implement your login logic here
+    const simulatedToken = 'simulated-jwt-token-example'; // This would come from the server
+    localStorage.setItem('token', simulatedToken);
+    setToken(simulatedToken);
     setIsAuthenticated(true);
   };
 
   const logout = () => {
-    // Implement your logout logic here
+    localStorage.removeItem('token');
+    setToken(null);
     setIsAuthenticated(false);
   };
 
@@ -38,7 +51,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       {children}
     </AuthContext.Provider>
   );
-}
+};
 
 // Export the AuthContext and AuthProvider
 export { AuthContext, AuthProvider };

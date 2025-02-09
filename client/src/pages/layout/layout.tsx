@@ -14,7 +14,7 @@ const Layout: React.FC<LayoutProps> = ({ children, isPanelDisplayed=true }) => {
         <div>
             <HeaderPage/>
             {isPanelDisplayed && <LeftPanel />}
-            <div className="mt-14 ml-20 min-h-screen">
+            <div className="mt-14 min-h-screen">
                 {children}
             </div>
             <Footer/>
