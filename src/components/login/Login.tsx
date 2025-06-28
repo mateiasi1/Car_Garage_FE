@@ -1,4 +1,4 @@
-import React, { FC, useContext, useState } from 'react';
+import React, { FC, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../../contexts/authContext';
 import { Credentials } from '../../models/Credentials';
@@ -7,13 +7,20 @@ import { showToast } from '../../utils/showToast';
 import logo from '../../assets/logo.png';
 import wallpaper from '../../assets/login_wallpaper.jpg';
 import LanguageSelector from '../header/LanguageSelector';
-
+import { useNavigate } from 'react-router-dom';
 
 const Login: FC = () => {
   const [credentials, setCredentials] = useState<Credentials>({ username: '', password: '' });
   const { t } = useTranslation();
-  const { login } = useContext(AuthContext);
+  const { login, isAuthenticated, isLoading } = useContext(AuthContext);
   const [loginMutation] = useLoginMutation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (!isLoading && isAuthenticated) {
+      navigate('/');
+    }
+  }, [isAuthenticated, navigate, isLoading]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -36,6 +43,7 @@ const Login: FC = () => {
     try {
       const data = await loginMutation(credentials).unwrap();
       login(data);
+      navigate('/');
     } catch (error) {
       showToast(t('loginError'), 'error');
     }

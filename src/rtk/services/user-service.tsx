@@ -1,8 +1,18 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import config from '../../config';
+import { prepareRequestHeaders } from '../../utils/prepareRequestHeaders';
 
 export const userApi = createApi({
-  baseQuery: fetchBaseQuery({ baseUrl: `${import.meta.env.VITE_API_HOST}:${import.meta.env.VITE_API_PORT}` }),
+  reducerPath: 'userApi',
+  baseQuery: fetchBaseQuery({
+    baseUrl: config.baseUrl,
+    prepareHeaders: prepareRequestHeaders,
+    credentials: 'include',
+  }),
   endpoints: (builder) => ({
+    fetchUserProfile: builder.query<User, void>({
+      query: () => config.userProfileUrl,
+    }),
     fetchUserById: builder.query({
       query: (id) => `/users/${id}`,
     }),
@@ -19,4 +29,5 @@ export const userApi = createApi({
   }),
 });
 
-export const { useFetchUserByIdQuery, useFetchAllUsersQuery, useCreateUserMutation } = userApi;
+export const { useFetchUserProfileQuery, useFetchUserByIdQuery, useFetchAllUsersQuery, useCreateUserMutation } =
+  userApi;

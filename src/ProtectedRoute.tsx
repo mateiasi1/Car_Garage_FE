@@ -7,9 +7,13 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element }) => {
-  const { isAuthenticated } = useContext(AuthContext);
+  const { isAuthenticated, isLoading } = useContext(AuthContext);
 
-  // If user is authenticated, render the element, otherwise redirect to login page
+  if (isLoading) {
+    // we can add a loading spinner or something here
+    return null;
+  }
+
   return isAuthenticated ? element : <Navigate to="/login" />;
 };
 

@@ -10,7 +10,8 @@ import ProfilePage from './pages/profile/profilePage';
 import ReportsPage from './pages/reports/reportsPage';
 import SettingsPage from './pages/settings/settingsPage';
 import AddNewUserPage from './pages/user/addNew';
-import ProtectedRoute from './PrivateRoute';
+import ProtectedRoute from './ProtectedRoute';
+import DashboardPage from './pages/dashboard/DashboardPage';
 
 const AppRouter = () => {
   return (
@@ -19,9 +20,10 @@ const AppRouter = () => {
         <Route path="/login" element={<LoginPage />} />
 
         {/* Public Routes */}
-        <Route path="/home" element={<HomePage />} />
+        {/* <Route path="/home" element={<HomePage />} /> */}
 
         {/* Protected Routes */}
+        <Route path="/" element={<ProtectedRoute element={<DashboardPage />} />} />
         <Route path="customer/list" element={<ProtectedRoute element={<CustomersListPage />} />} />
         <Route path="customer/add-new" element={<ProtectedRoute element={<AddNew />} />} />
         <Route path="/users/add-new" element={<ProtectedRoute element={<AddNewUserPage />} />} />

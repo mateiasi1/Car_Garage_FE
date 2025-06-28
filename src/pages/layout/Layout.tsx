@@ -1,7 +1,7 @@
 import React from 'react';
 import Footer from './footer/footer';
 import HeaderPage from './header/headerPage';
-import LeftPanel from '../../components/shared/LeftPanel';
+import LeftPanel from '../../components/shared/Sidebar/Sidebar';
 
 interface LayoutProps {
   children: React.ReactNode;
