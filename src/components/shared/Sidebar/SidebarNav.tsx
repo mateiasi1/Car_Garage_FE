@@ -25,41 +25,42 @@ const SidebarNav: FC<SidebarNavProps> = ({ expanded, navItems, userRoles }) => {
   );
 
   return (
-    <nav className={`flex-1 flex flex-col ${expanded ? 'items-start mt-16 pl-4' : 'items-center mt-16'} w-full`}>
+    <nav className={`flex-1 flex flex-col ${expanded ? 'items-start mt-32' : 'items-center mt-32'} w-full`}>
       {filteredNavItems.map((item) => {
         const isActive = location.pathname === item.to;
-        // Active style for expanded/collapsed
-        const activeBox = isActive ? 'bg-primary-hover rounded-md' : '';
+        const linkActiveBox = expanded && isActive ? 'bg-activeMenu rounded-md' : '';
+        const iconActiveBox = !expanded && isActive ? 'bg-activeMenu rounded-md' : '';
+
         return (
           <Link
             key={item.to}
             to={item.to}
             className={`
-              flex items-center transition-all duration-300
-              ${expanded ? 'gap-3 py-1 w-10/12 px-2 justify-start' : 'justify-center py-2 w-12'}
+              flex items-center
+              ${expanded ? 'gap-3 py-1 w-[92%] px-2 justify-start mx-auto' : 'justify-center py-1 w-12 mx-auto'}
+              ${linkActiveBox}
               mb-3
             `}
             style={{ minWidth: expanded ? '0' : '48px' }}
           >
             <span
               className={`
-                flex items-center justify-center mt-1
-                ${expanded ? `w-10 h-10 ${activeBox}` : `w-8 h-8 ${activeBox}`}
-                transition-all duration-300
+                flex items-center justify-center
+                ${expanded ? 'w-10 h-10' : `w-10 h-10 ${iconActiveBox}`}
               `}
             >
-              <FontAwesomeIcon
-                icon={item.icon}
-                className={`text-lg transition-all duration-300 ${isActive ? 'text-primary' : 'text-white'}`}
-              />
+              <FontAwesomeIcon icon={item.icon} className={`text-xl ${isActive ? 'text-primary' : 'text-white'}`} />
             </span>
-            {expanded && (
-              <span
-                className={`text-base transition-all duration-300 ml-2 ${isActive ? 'text-primary' : 'text-gray-300'}`}
-              >
-                {t(item.labelKey)}
-              </span>
-            )}
+            <div
+              className={`
+                overflow-hidden
+                ${expanded ? 'w-32 opacity-100 ml-2' : 'w-0 opacity-0 ml-0'}
+              `}
+            >
+              {expanded && (
+                <span className={`text-base ${isActive ? 'text-primary' : 'text-gray-300'}`}>{t(item.labelKey)}</span>
+              )}
+            </div>
           </Link>
         );
       })}

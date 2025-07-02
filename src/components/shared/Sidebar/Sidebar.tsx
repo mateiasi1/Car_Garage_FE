@@ -1,5 +1,6 @@
-import { faChartSimple, faClipboardList, faUserShield } from '@fortawesome/free-solid-svg-icons';
+import { faChartSimple, faClipboardList, faGear } from '@fortawesome/free-solid-svg-icons';
 import { FC, useContext, useState } from 'react';
+import { role } from '../../../constants/constants';
 import { AuthContext } from '../../../contexts/authContext';
 import SidebarFooter from './SidebarFooter';
 import SidebarNav from './SidebarNav';
@@ -9,30 +10,30 @@ const navItems = [
   {
     to: '/',
     icon: faChartSimple,
-    labelKey: 'Dashboard',
+    labelKey: 'dashboard',
     roles: [],
   },
   {
-    to: '/inspections/upcoming',
+    to: '/inspections',
     icon: faClipboardList,
-    labelKey: 'Inspections',
-    roles: ['INSPECTOR', 'ADMIN', 'OWNER'],
+    labelKey: 'inspections',
+    roles: [role.inspector, role.admin, role.owner],
   },
   {
     to: '/administration',
-    icon: faUserShield,
-    labelKey: 'Administration',
-    roles: ['ADMIN', 'OWNER'],
+    icon: faGear,
+    labelKey: 'administration',
+    roles: [role.admin, role.owner],
   },
 ];
 
-const LeftPanel: FC = () => {
-  const [expanded, setExpanded] = useState(true);
+const Sidebar: FC = () => {
+  const [expanded, setExpanded] = useState(false);
   const { user, logout } = useContext(AuthContext);
 
   const userRoles = user?.roles?.map((r) => r.name) || [];
 
-  const sidebarWidth = expanded ? 'w-56' : 'w-20';
+  const sidebarWidth = expanded ? 'w-52' : 'w-16';
   const transition = 'transition-all duration-300';
 
   return (
@@ -49,4 +50,4 @@ const LeftPanel: FC = () => {
   );
 };
 
-export default LeftPanel;
+export default Sidebar;

@@ -2,7 +2,7 @@ import { FC, useMemo } from 'react';
 
 interface SidebarUserSectionProps {
   expanded: boolean;
-  user: User | null;
+  user: User | undefined;
 }
 
 const SidebarUserSection: FC<SidebarUserSectionProps> = ({ expanded, user }) => {
@@ -17,8 +17,8 @@ const SidebarUserSection: FC<SidebarUserSectionProps> = ({ expanded, user }) => 
         expanded ? 'items-center gap-3 justify-start' : 'items-center justify-center'
       }`}
     >
-      <div className={`flex w-12 ${expanded ? '' : 'justify-center'}`}>
-        <div className="w-12 h-12 rounded-full bg-gray-200 flex items-center justify-center text-xl font-bold text-primary flex-shrink-0">
+      <div className={`flex w-10 ${expanded ? '' : 'justify-center'}`}>
+        <div className="w-10 h-10 rounded-full bg-gray-200 flex items-center justify-center text-xl font-bold text-primary flex-shrink-0">
           {user ? user.firstName[0] : ''}
         </div>
       </div>

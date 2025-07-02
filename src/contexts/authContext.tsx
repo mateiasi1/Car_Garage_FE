@@ -8,63 +8,49 @@ type AuthProviderProps = {
 
 interface AuthContextType {
   isAuthenticated: boolean;
+  user: User | undefined;
   isLoading: boolean;
-  user: User | null;
   login: (tokens: AuthTokens) => void;
   logout: () => void;
 }
 
 const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
-  isLoading: false,
-  user: null,
+  user: undefined,
+  isLoading: true,
   login: () => {},
   logout: () => {},
 });
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
-  const [shouldFetchProfile, setShouldFetchProfile] = useState<boolean>(!!localStorage.getItem('access_token'));
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
-  const [user, setUser] = useState<User | null>(null);
-  const [hasCheckedAuth, setHasCheckedAuth] = useState<boolean>(false);
+  const [authChecked, setAuthChecked] = useState<boolean>(false);
 
-  const { data, isFetching, isUninitialized } = useFetchUserProfileQuery(undefined, {
-    skip: !shouldFetchProfile,
+  const { data: user } = useFetchUserProfileQuery(undefined, {
+    skip: !isAuthenticated || !authChecked,
   });
 
   useEffect(() => {
-    if (data) {
-      setUser(data);
-      setIsAuthenticated(true);
-      setHasCheckedAuth(true);
-    } else if (!isFetching && !isUninitialized) {
-      setUser(null);
-      setIsAuthenticated(false);
-      setHasCheckedAuth(true);
-    }
-  }, [data, isFetching, isUninitialized]);
-
-  const isLoading = !hasCheckedAuth;
+    setIsAuthenticated(!!localStorage.getItem('access_token'));
+    setAuthChecked(true);
+  }, []);
 
   const login = ({ accessToken, refreshToken }: AuthTokens): void => {
     localStorage.setItem('access_token', accessToken);
     localStorage.setItem('refresh_token', refreshToken);
     setIsAuthenticated(true);
-    setShouldFetchProfile(true);
-    setHasCheckedAuth(false);
   };
 
   const logout = (): void => {
     localStorage.removeItem('access_token');
     localStorage.removeItem('refresh_token');
     setIsAuthenticated(false);
-    setUser(null);
-    setShouldFetchProfile(false);
-    setHasCheckedAuth(true);
   };
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, isLoading, user, login, logout }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, user, isLoading: !authChecked }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 

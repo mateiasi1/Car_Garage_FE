@@ -10,17 +10,17 @@ import LanguageSelector from '../header/LanguageSelector';
 import { useNavigate } from 'react-router-dom';
 
 const Login: FC = () => {
-  const [credentials, setCredentials] = useState<Credentials>({ username: '', password: '' });
   const { t } = useTranslation();
-  const { login, isAuthenticated, isLoading } = useContext(AuthContext);
-  const [loginMutation] = useLoginMutation();
   const navigate = useNavigate();
+  const { login, isAuthenticated } = useContext(AuthContext);
+  const [loginMutation] = useLoginMutation();
+  const [credentials, setCredentials] = useState<Credentials>({ username: '', password: '' });
 
   useEffect(() => {
-    if (!isLoading && isAuthenticated) {
+    if (isAuthenticated) {
       navigate('/');
     }
-  }, [isAuthenticated, navigate, isLoading]);
+  }, [isAuthenticated, navigate]);
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { id, value } = e.target;
@@ -89,11 +89,7 @@ const Login: FC = () => {
           </button>
         </form>
       </div>
-      <div className="hidden md:flex md:w-3/5 items-center justify-center bg-[#7FADF1] relative">
-        {/* Language Selector at top right */}
-        <div className="absolute top-6 right-8">
-          <LanguageSelector />
-        </div>
+      <div className="hidden md:flex md:w-3/5 items-center justify-center bg-[#7FADF1]">
         <img src={wallpaper} alt="Login Wallpaper" className="max-h-[80%] max-w-[80%] object-contain" />
       </div>
     </div>
