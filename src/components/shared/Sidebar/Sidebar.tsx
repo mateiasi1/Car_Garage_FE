@@ -1,10 +1,11 @@
 import { faChartSimple, faClipboardList, faGear } from '@fortawesome/free-solid-svg-icons';
-import { FC, useContext, useState } from 'react';
+import { FC, useContext } from 'react';
 import { role } from '../../../constants/constants';
 import { AuthContext } from '../../../contexts/authContext';
 import SidebarFooter from './SidebarFooter';
 import SidebarNav from './SidebarNav';
 import SidebarUserSection from './SidebarUserSection';
+import { Role } from '../../../models/Role';
 
 const navItems = [
   {
@@ -27,17 +28,24 @@ const navItems = [
   },
 ];
 
-const Sidebar: FC = () => {
-  const [expanded, setExpanded] = useState(false);
+interface SidebarProps {
+  expanded: boolean;
+  setExpanded: (expanded: boolean) => void;
+}
+
+const Sidebar: FC<SidebarProps> = ({ expanded, setExpanded }) => {
   const { user, logout } = useContext(AuthContext);
 
-  const userRoles = user?.roles?.map((r) => r.name) || [];
+  const userRoles = user?.roles?.map((r: Role) => r.name) || [];
 
   const sidebarWidth = expanded ? 'w-52' : 'w-16';
   const transition = 'transition-all duration-300';
 
   return (
-    <div className={`h-screen flex flex-col bg-primary ${sidebarWidth} ${transition} relative`}>
+    <div
+      className={`fixed top-0 left-0 h-screen flex flex-col bg-primary ${sidebarWidth} ${transition} z-20`}
+      style={{ minWidth: expanded ? '13rem' : '4rem' }}
+    >
       <SidebarUserSection expanded={expanded} user={user} />
       <SidebarNav expanded={expanded} navItems={navItems} userRoles={userRoles} />
       <SidebarFooter

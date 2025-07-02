@@ -1,11 +1,11 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
-import Sidebar from './components/shared/Sidebar/Sidebar';
+import AdministrationPage from './pages/administration/AdministrationPage';
 import DashboardPage from './pages/dashboard/DashboardPage';
+import InspectionsPage from './pages/inspections/InspectionsPage';
 import AppLayout from './pages/layout/AppLayout';
+import ProtectedLayout from './pages/layout/ProtectedLayout';
 import LoginPage from './pages/login/LoginPage';
 import ProtectedRoute from './ProtectedRoute';
-import InspectionsPage from './pages/inspections/InspectionsPage';
-import AdministrationPage from './pages/administration/AdministrationPage';
 
 const AppRouter = () => {
   return (
@@ -18,7 +18,7 @@ const AppRouter = () => {
           {/* <Route path="/home" element={<HomePage />} /> */}
 
           {/* Protected Routes */}
-          <Route element={<ProtectedRoute element={<Sidebar />} />}>
+          <Route element={<ProtectedRoute element={<ProtectedLayout />} />}>
             <Route path="/" element={<ProtectedRoute element={<DashboardPage />} />} />
             <Route path="/inspections" element={<ProtectedRoute element={<InspectionsPage />} />} />
             <Route path="/administration" element={<ProtectedRoute element={<AdministrationPage />} />} />

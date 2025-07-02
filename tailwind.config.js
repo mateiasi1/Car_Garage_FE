@@ -4,7 +4,7 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#F2F0EF',
+        background: '#D8D6D4',
         sidebar: '#1B2845',
         card: '#FFFFFF',
         text: '#1A1A1A',

@@ -37,7 +37,7 @@ const SidebarNav: FC<SidebarNavProps> = ({ expanded, navItems, userRoles }) => {
             to={item.to}
             className={`
               flex items-center
-              ${expanded ? 'gap-3 py-1 w-[92%] px-2 justify-start mx-auto' : 'justify-center py-1 w-12 mx-auto'}
+              ${expanded ? 'py-1 w-[92%] px-2 justify-start mx-auto' : 'justify-center py-1 w-12'}
               ${linkActiveBox}
               mb-3
             `}
@@ -54,7 +54,7 @@ const SidebarNav: FC<SidebarNavProps> = ({ expanded, navItems, userRoles }) => {
             <div
               className={`
                 overflow-hidden
-                ${expanded ? 'w-32 opacity-100 ml-2' : 'w-0 opacity-0 ml-0'}
+                ${expanded ? 'w-32 opacity-100 ml-1' : 'w-0 opacity-0 ml-0'}
               `}
             >
               {expanded && (

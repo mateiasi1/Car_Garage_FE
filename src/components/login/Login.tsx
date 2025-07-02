@@ -1,13 +1,12 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
+import wallpaper from '../../assets/login_wallpaper.jpg';
+import logo from '../../assets/logo.png';
 import { AuthContext } from '../../contexts/authContext';
 import { Credentials } from '../../models/Credentials';
 import { useLoginMutation } from '../../rtk/services/auth-service';
 import { showToast } from '../../utils/showToast';
-import logo from '../../assets/logo.png';
-import wallpaper from '../../assets/login_wallpaper.jpg';
-import LanguageSelector from '../header/LanguageSelector';
-import { useNavigate } from 'react-router-dom';
 
 const Login: FC = () => {
   const { t } = useTranslation();
@@ -50,7 +49,7 @@ const Login: FC = () => {
   };
 
   return (
-    <div className="flex h-screen">
+    <div className="flex h-screen w-screen">
       <div className="w-full md:w-2/5 flex items-center justify-center bg-white">
         <form onSubmit={handleSubmit} className="w-full max-w-sm bg-white px-8 pt-8 pb-8">
           <div className="flex items-center justify-center mb-8">
