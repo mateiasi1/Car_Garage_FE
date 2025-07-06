@@ -1,0 +1,43 @@
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import config from '../../config';
+import { InspectionsResponse } from '../../models/InspectionsResponse';
+import { prepareRequestHeaders } from '../../utils/prepareRequestHeaders';
+
+export interface InspectionsFilters {
+  page: number;
+  licensePlate?: string;
+  inspectionType?: string;
+  customerName?: string;
+  inspectorName?: string;
+}
+
+export const inspectionsApi = createApi({
+  reducerPath: 'inspectionsApi',
+  baseQuery: fetchBaseQuery({
+    baseUrl: config.baseUrl,
+    prepareHeaders: prepareRequestHeaders,
+    credentials: 'include',
+  }),
+  endpoints: (builder) => ({
+    fetchInspections: builder.query<InspectionsResponse, InspectionsFilters | void>({
+      query: (filters) => {
+        const params = new URLSearchParams();
+
+        if (filters) {
+          if (filters.page) params.append('page', filters.page.toString());
+          if (filters.licensePlate) params.append('licensePlate', filters.licensePlate);
+          if (filters.inspectionType) params.append('inspectionType', filters.inspectionType);
+          if (filters.customerName) params.append('customerName', filters.customerName);
+          if (filters.inspectorName) params.append('inspectorName', filters.inspectorName);
+        }
+
+        return {
+          url: `${config.inspectionsUrl}?${params.toString()}`,
+          method: 'GET',
+        };
+      },
+    }),
+  }),
+});
+
+export const { useFetchInspectionsQuery } = inspectionsApi;

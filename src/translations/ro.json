@@ -25,7 +25,7 @@
     "carType": "Tip de mașină",
     "inspectedBy": "Inspectat de",
     "inspectionDate": "Data inspecției",
-    "inspectionType": "Tipul inspecției",
+    "inspectionExpiresAt": "Expiră la",
     "selectInspectionType": "Selectează tipul inspecției",
     "selectCategory": "Selectează categoria",
     "yearlyType": "Anual",
@@ -53,6 +53,9 @@
     "downloadPDF": "Descarcă PDF",
     "dashboard": "Statistici",
     "inspections": "Inspectii",
-    "administration": "Setari"
+    "administration": "Setari",
+    "number": "Nr",
+    "customerName": "Client",
+    "searchInspections": "Caută inspecții"
   }
 }

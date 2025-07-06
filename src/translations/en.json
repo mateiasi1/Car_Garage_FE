@@ -25,7 +25,7 @@
     "carType": "Car type",
     "inspectedBy": "Inspected by",
     "inspectionDate": "Inspection date",
-    "inspectionType": "Inspection type",
+    "inspectionExpiresAt": "Expires at",
     "selectInspectionType": "Select inspection type",
     "selectCategory": "Select category",
     "yearlyType": "Yearly",
@@ -44,7 +44,7 @@
     "reports": "Reports",
     "textCopiedToClipboard": "Text copied to clipboard",
     "roleTitle": "Role",
-    "addNewInspection": "Add new inspection",
+    "addNewInspection": "Add inspection",
     "searchClient": "Search client",
     "recordsPerPage": "Records per page:",
     "back": "Back",
@@ -53,6 +53,9 @@
     "downloadPDF": "Download PDF",
     "dashboard": "Dashboard",
     "inspections": "Inspections",
-    "administration": "Administration"
+    "administration": "Administration",
+    "number": "No",
+    "customerName": "Customer",
+    "searchInspections": "Search inspections"
   }
 }

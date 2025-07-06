@@ -3,7 +3,6 @@ import { Report } from '../../models/Report';
 import Reports from '../reports/reports';
 
 const Dashboard: FC = () => {
-  console.log('Dsahboard here');
   const reports: Report[] = [
     {
       id: 1,
