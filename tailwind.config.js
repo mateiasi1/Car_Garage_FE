@@ -9,6 +9,7 @@ export default {
         card: '#FFFFFF',
         text: '#1A1A1A',
         activeMenu: '#BFDBFE',
+        orange: '#FFA500',
         primary: {
           DEFAULT: '#2E3B61',
           hover: '#3F4D7A',

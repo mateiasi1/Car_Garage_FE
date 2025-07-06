@@ -46,6 +46,7 @@ const InspectionsPage: FC = () => {
               inspections={inspections}
               isLoading={isLoading}
               showScrollbarGutter={showScrollbarGutter}
+              page={filters.page}
             />
           </div>
         </div>

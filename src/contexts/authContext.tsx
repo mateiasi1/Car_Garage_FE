@@ -1,6 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from 'react';
 import { AuthTokens } from '../models/AuthTokens';
 import { useFetchUserProfileQuery } from '../rtk/services/user-service';
+import { User } from '../models/User';
 
 type AuthProviderProps = {
   children?: ReactNode;

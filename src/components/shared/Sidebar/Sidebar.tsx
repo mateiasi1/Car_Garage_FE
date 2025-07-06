@@ -1,30 +1,30 @@
 import { faChartSimple, faClipboardList, faGear } from '@fortawesome/free-solid-svg-icons';
 import { FC, useContext } from 'react';
-import { role } from '../../../constants/constants';
 import { AuthContext } from '../../../contexts/authContext';
+import { Role as RoleModel } from '../../../models/Role';
+import { Role } from '../../../utils/enums/Role';
 import SidebarFooter from './SidebarFooter';
 import SidebarNav from './SidebarNav';
 import SidebarUserSection from './SidebarUserSection';
-import { Role } from '../../../models/Role';
 
 const navItems = [
   {
     to: '/',
     icon: faChartSimple,
     labelKey: 'dashboard',
-    roles: [],
+    roles: [Role.admin, Role.owner],
   },
   {
     to: '/inspections',
     icon: faClipboardList,
     labelKey: 'inspections',
-    roles: [role.inspector, role.admin, role.owner],
+    roles: [Role.inspector, Role.admin, Role.owner],
   },
   {
     to: '/administration',
     icon: faGear,
     labelKey: 'administration',
-    roles: [role.admin, role.owner],
+    roles: [Role.admin, Role.owner],
   },
 ];
 
@@ -36,7 +36,7 @@ interface SidebarProps {
 const Sidebar: FC<SidebarProps> = ({ expanded, setExpanded }) => {
   const { user, logout } = useContext(AuthContext);
 
-  const userRoles = user?.roles?.map((r: Role) => r.name) || [];
+  const userRoles = user?.roles?.map((r: RoleModel) => r.name) || [];
 
   const sidebarWidth = expanded ? 'w-52' : 'w-16';
   const transition = 'transition-all duration-300';
