@@ -1,4 +1,5 @@
 import { FC, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 
 type FormData = {
   licensePlate: string;
@@ -7,10 +8,11 @@ type FormData = {
   lastName: string;
   carCategory: 'A' | 'B' | 'C' | 'D' | 'E';
   inspectionType: 'HALF_YEAR' | 'ONE_YEAR' | 'TWO_YEARS';
-  inspectedAt: string; // ISO date string
+  inspectedAt: string;
 };
 
 const InspectionForm: FC = () => {
+  const { t } = useTranslation();
   const [form, setForm] = useState<FormData>({
     licensePlate: '',
     phoneNumber: '',
@@ -28,144 +30,152 @@ const InspectionForm: FC = () => {
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
+    // TODO: handle submit logic
   };
 
   return (
-    <div className="min-h-screen flex justify-center items-center bg-background">
-      <div className="w-full max-w-lg mx-auto bg-card p-6 rounded-md shadow-md">
-        <form onSubmit={handleSubmit} className="space-y-4">
-          {/* License Plate */}
-          <div>
-            <label htmlFor="licensePlate" className="block font-semibold mb-1">
-              License Plate
-            </label>
-            <input
-              type="text"
-              name="licensePlate"
-              id="licensePlate"
-              value={form.licensePlate}
-              onChange={handleChange}
-              placeholder="DJ-51-ABC"
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-              required
-              pattern="[A-Z]{2}-\d{2}-[A-Z]{3}"
-              title="Format: DJ-51-ABC"
-            />
-          </div>
+    <div className="min-h-screen flex justify-center items-center bg-background px-4">
+      <div className="w-full max-w-5xl bg-card p-8 rounded-md shadow-md">
+        <form onSubmit={handleSubmit} className="space-y-8">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+            <section>
+              <h3 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">{t('carInformation')}</h3>
 
-          {/* Phone Number */}
-          <div>
-            <label htmlFor="phoneNumber" className="block font-semibold mb-1">
-              Phone Number
-            </label>
-            <input
-              type="tel"
-              name="phoneNumber"
-              id="phoneNumber"
-              value={form.phoneNumber}
-              onChange={handleChange}
-              placeholder="+40712345678"
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-              required
-              pattern="\+?\d{7,15}"
-              title="Phone number, e.g. +40712345678"
-            />
-          </div>
+              <div className="mb-4">
+                <label htmlFor="licensePlate" className="block font-semibold mb-1">
+                  {t('licensePlate')}
+                </label>
+                <input
+                  type="text"
+                  name="licensePlate"
+                  id="licensePlate"
+                  value={form.licensePlate}
+                  onChange={handleChange}
+                  placeholder="DJ-51-ABC"
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                  required
+                  pattern="[A-Z]{2}-\d{2}-[A-Z]{3}"
+                  title="Format: DJ-51-ABC"
+                />
+              </div>
 
-          {/* First Name */}
-          <div>
-            <label htmlFor="firstName" className="block font-semibold mb-1">
-              First Name
-            </label>
-            <input
-              type="text"
-              name="firstName"
-              id="firstName"
-              value={form.firstName}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-              required
-            />
-          </div>
+              <div>
+                <label htmlFor="carCategory" className="block font-semibold mb-1">
+                  {t('carCategory')}
+                </label>
+                <select
+                  name="carCategory"
+                  id="carCategory"
+                  value={form.carCategory}
+                  onChange={handleChange}
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                  required
+                >
+                  {['A', 'B', 'C', 'D', 'E'].map((cat) => (
+                    <option key={cat} value={cat}>
+                      {cat}
+                    </option>
+                  ))}
+                </select>
+              </div>
+            </section>
 
-          {/* Last Name */}
-          <div>
-            <label htmlFor="lastName" className="block font-semibold mb-1">
-              Last Name
-            </label>
-            <input
-              type="text"
-              name="lastName"
-              id="lastName"
-              value={form.lastName}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-              required
-            />
-          </div>
+            <section>
+              <h3 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">{t('customerInformation')}</h3>
 
-          {/* Car Category */}
-          <div>
-            <label htmlFor="carCategory" className="block font-semibold mb-1">
-              Car Category
-            </label>
-            <select
-              name="carCategory"
-              id="carCategory"
-              value={form.carCategory}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-              required
-            >
-              {['A', 'B', 'C', 'D', 'E'].map((cat) => (
-                <option key={cat} value={cat}>
-                  {cat}
-                </option>
-              ))}
-            </select>
-          </div>
+              <div className="mb-4">
+                <label htmlFor="firstName" className="block font-semibold mb-1">
+                  {t('firstName')}
+                </label>
+                <input
+                  type="text"
+                  name="firstName"
+                  id="firstName"
+                  value={form.firstName}
+                  onChange={handleChange}
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                  required
+                />
+              </div>
 
-          {/* Inspection Type */}
-          <div>
-            <label htmlFor="inspectionType" className="block font-semibold mb-1">
-              Inspection Type
-            </label>
-            <select
-              name="inspectionType"
-              id="inspectionType"
-              value={form.inspectionType}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-              required
-            >
-              <option value="HALF_YEAR">Half Year</option>
-              <option value="ONE_YEAR">One Year</option>
-              <option value="TWO_YEARS">Two Years</option>
-            </select>
-          </div>
+              <div className="mb-4">
+                <label htmlFor="lastName" className="block font-semibold mb-1">
+                  {t('lastName')}
+                </label>
+                <input
+                  type="text"
+                  name="lastName"
+                  id="lastName"
+                  value={form.lastName}
+                  onChange={handleChange}
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                  required
+                />
+              </div>
 
-          {/* Inspected At */}
-          <div>
-            <label htmlFor="inspectedAt" className="block font-semibold mb-1">
-              Inspection Date
-            </label>
-            <input
-              type="date"
-              name="inspectedAt"
-              id="inspectedAt"
-              value={form.inspectedAt}
-              onChange={handleChange}
-              className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-              required
-              max={new Date().toISOString().split('T')[0]} // Optional: restrict future dates if desired
-            />
+              <div>
+                <label htmlFor="phoneNumber" className="block font-semibold mb-1">
+                  {t('phoneNumber')}
+                </label>
+                <input
+                  type="tel"
+                  name="phoneNumber"
+                  id="phoneNumber"
+                  value={form.phoneNumber}
+                  onChange={handleChange}
+                  placeholder="+40712345678"
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                  required
+                  pattern="\+?\d{7,15}"
+                  title="Phone number, e.g. +40712345678"
+                />
+              </div>
+            </section>
+
+            <section>
+              <h3 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">{t('inspectionInformation')}</h3>
+
+              <div className="mb-4">
+                <label htmlFor="inspectionType" className="block font-semibold mb-1">
+                  {t('inspectionDuration')}
+                </label>
+                <select
+                  name="inspectionType"
+                  id="inspectionType"
+                  value={form.inspectionType}
+                  onChange={handleChange}
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                  required
+                >
+                  <option value="HALF_YEAR">{t('halfYear')}</option>
+                  <option value="ONE_YEAR">{t('yearly')}</option>
+                  <option value="TWO_YEARS">{t('twoYears')}</option>
+                </select>
+              </div>
+
+              <div>
+                <label htmlFor="inspectedAt" className="block font-semibold mb-1">
+                  {t('inspectionDate')}
+                </label>
+                <input
+                  type="date"
+                  name="inspectedAt"
+                  id="inspectedAt"
+                  value={form.inspectedAt}
+                  onChange={handleChange}
+                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+                  required
+                  max={new Date().toISOString().split('T')[0]}
+                />
+              </div>
+            </section>
           </div>
 
           <button
             type="submit"
-            className="w-full py-2 rounded-md bg-primary text-white font-semibold hover:bg-primary-hover transition-colors"
+            className="w-full py-3 rounded-md bg-primary text-white font-semibold hover:bg-primary-hover transition-colors"
           >
-            Submit
+            {t('submit')}
           </button>
         </form>
       </div>

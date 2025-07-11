@@ -22,11 +22,12 @@
     "phoneNumber": "Phone number",
     "firstName": "First name",
     "lastName": "Last name",
-    "carType": "Car type",
+    "carCategory": "Car category",
     "inspectedBy": "Inspected by",
     "inspectionDate": "Inspection date",
     "inspectionExpiresAt": "Expires at",
     "selectInspectionType": "Select inspection type",
+    "inspectionDuration": "Inspection duration",
     "selectCategory": "Select category",
     "yearlyType": "Yearly",
     "transportType": "Every 6 months",
@@ -56,6 +57,13 @@
     "administration": "Administration",
     "number": "No",
     "customerName": "Customer",
-    "searchInspections": "Search inspections"
+    "searchInspections": "Search inspections",
+    "submit": "Submit",
+    "carInformation": "Car information",
+    "customerInformation": "Customer information",
+    "inspectionInformation": "Inspection information",
+    "halfYear": "Every 6 months",
+    "yearly": "Yearly",
+    "twoYears": "Every 2 years"
   }
 }

@@ -91,7 +91,7 @@ const InspectionsTableBody: FC<InspectionsTableBodyProps> = ({
           key={inspection.id}
           className={`grid border-b border-gray-200 last:border-b-0 text-sm hover:cursor-pointer hover:bg-gray-200 ${
             showScrollbarGutter ? 'grid-cols-7' : 'grid-cols-6'
-          }`}
+          } ${idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'}`}
           style={showScrollbarGutter ? { gridTemplateColumns: `repeat(6, minmax(0, 1fr))` } : undefined}
         >
           <div className="py-2 px-4 text-left">{(page - 1) * 25 + (idx + 1)}</div>

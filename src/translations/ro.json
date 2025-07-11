@@ -22,11 +22,12 @@
     "phoneNumber": "Număr de telefon",
     "firstName": "Prenume",
     "lastName": "Nume",
-    "carType": "Tip de mașină",
+    "carCategory": "Categorie",
     "inspectedBy": "Inspectat de",
     "inspectionDate": "Data inspecției",
     "inspectionExpiresAt": "Expiră la",
     "selectInspectionType": "Selectează tipul inspecției",
+    "inspectionDuration": "Durata inspecției",
     "selectCategory": "Selectează categoria",
     "yearlyType": "Anual",
     "transportType": "La 6 luni",
@@ -56,6 +57,13 @@
     "administration": "Setari",
     "number": "Nr",
     "customerName": "Client",
-    "searchInspections": "Caută inspecții"
+    "searchInspections": "Caută inspecții",
+    "submit": "Salvează",
+    "carInformation": "Informații despre mașină",
+    "customerInformation": "Informații despre client",
+    "inspectionInformation": "Informații despre inspecție",
+    "halfYear": "La 6 luni",
+    "yearly": "Anual",
+    "twoYears": "La 2 ani"
   }
 }
