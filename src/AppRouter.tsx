@@ -1,4 +1,5 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import InspectionForm from './components/inspections/InspectionForm';
 import AdministrationPage from './pages/administration/AdministrationPage';
 import DashboardPage from './pages/dashboard/DashboardPage';
 import InspectionsPage from './pages/inspections/InspectionsPage';
@@ -37,6 +38,10 @@ const AppRouter = () => {
               element={
                 <ProtectedRoute element={<AdministrationPage />} roles={[Role.admin, Role.admin, Role.inspector]} />
               }
+            />
+            <Route
+              path="/add-inspection"
+              element={<ProtectedRoute element={<InspectionForm />} roles={[Role.admin, Role.inspector]} />}
             />
           </Route>
           {/* <Route path="customer/list" element={<ProtectedRoute element={<CustomersListPage />} />} />

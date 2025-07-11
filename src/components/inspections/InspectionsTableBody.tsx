@@ -89,7 +89,7 @@ const InspectionsTableBody: FC<InspectionsTableBodyProps> = ({
       {inspections.map((inspection, idx) => (
         <div
           key={inspection.id}
-          className={`grid border-b border-gray-200 last:border-b-0 text-sm ${
+          className={`grid border-b border-gray-200 last:border-b-0 text-sm hover:cursor-pointer hover:bg-gray-200 ${
             showScrollbarGutter ? 'grid-cols-7' : 'grid-cols-6'
           }`}
           style={showScrollbarGutter ? { gridTemplateColumns: `repeat(6, minmax(0, 1fr))` } : undefined}

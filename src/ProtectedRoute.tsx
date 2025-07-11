@@ -16,15 +16,20 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element, roles }) => {
   };
 
   if (isLoading) {
-    // we can add a loading spinner or something here
-    return null;
+    // optional: show spinner instead
+    return <div>Loading...</div>;
+  }
+
+  if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
   }
 
   if (!user || !hasAccess(user.roles)) {
-    return null;
+    // optional: change this to a <Navigate to="/forbidden" /> or something similar
+    return <Navigate to="/login" replace />;
   }
 
-  return isAuthenticated ? element : <Navigate to="/login" />;
+  return element;
 };
 
 export default ProtectedRoute;

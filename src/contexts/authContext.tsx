@@ -1,7 +1,7 @@
 import { createContext, ReactNode, useEffect, useState } from 'react';
 import { AuthTokens } from '../models/AuthTokens';
-import { useFetchUserProfileQuery } from '../rtk/services/user-service';
 import { User } from '../models/User';
+import { useFetchUserProfileQuery } from '../rtk/services/user-service';
 
 type AuthProviderProps = {
   children?: ReactNode;
@@ -27,7 +27,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [authChecked, setAuthChecked] = useState<boolean>(false);
 
-  const { data: user } = useFetchUserProfileQuery(undefined, {
+  const { data: user, error } = useFetchUserProfileQuery(undefined, {
     skip: !isAuthenticated || !authChecked,
   });
 
@@ -35,6 +35,12 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     setIsAuthenticated(!!localStorage.getItem('access_token'));
     setAuthChecked(true);
   }, []);
+
+  useEffect(() => {
+    if (error && typeof error === 'object' && 'status' in error && error.status === 401) {
+      logout();
+    }
+  }, [error]);
 
   const login = ({ accessToken, refreshToken }: AuthTokens): void => {
     localStorage.setItem('access_token', accessToken);
@@ -48,10 +54,10 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     setIsAuthenticated(false);
   };
 
+  const isLoading = !authChecked || (isAuthenticated && !user && !error);
+
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, user, isLoading: !authChecked }}>
-      {children}
-    </AuthContext.Provider>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, user, isLoading }}>{children}</AuthContext.Provider>
   );
 };
 
