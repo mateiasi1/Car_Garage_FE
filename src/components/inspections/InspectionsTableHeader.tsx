@@ -10,9 +10,10 @@ const InspectionsTableHeader: FC<InspectionsTableHeaderProps> = ({ showScrollbar
 
   return (
     <div
-      className={`grid min-w-full border-b border-gray-200 font-semibold text-sm text-gray-700 flex-shrink-0 grid-cols-6 ${
+      className={`grid min-w-full border-b border-gray-200 font-semibold text-sm text-gray-700 flex-shrink-0 ${
         showScrollbarGutter ? 'pr-[16px]' : ''
       }`}
+      style={{ gridTemplateColumns: '150px 2fr 2fr 2fr 2fr 2fr 100px' }}
     >
       <div className="py-2 px-4 text-left">{t('number')}</div>
       <div className="py-2 px-4 text-left">{t('inspectedBy')}</div>
@@ -20,6 +21,7 @@ const InspectionsTableHeader: FC<InspectionsTableHeaderProps> = ({ showScrollbar
       <div className="py-2 px-4 text-left">{t('customerName')}</div>
       <div className="py-2 px-4 text-left">{t('inspectionDate')}</div>
       <div className="py-2 px-4 text-left">{t('inspectionExpiresAt')}</div>
+      <div className="py-2 px-4 text-left">{t('actions')}</div>
     </div>
   );
 };

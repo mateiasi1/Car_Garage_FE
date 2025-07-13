@@ -1,12 +1,14 @@
-import { FC, useContext, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../../contexts/authContext';
-import { useCreateInspectionMutation } from '../../rtk/services/inspections-service';
+import { useAppSelector } from '../../hooks/reduxHooks';
+import { useCreateInspectionMutation, useUpdateInspectionMutation } from '../../rtk/services/inspections-service';
 import { useFetchLicensePlatePatternsQuery } from '../../rtk/services/licensePlatePattern-service';
 import { CarCategories } from '../../utils/enums/CarCategories';
 import { InspectionType } from '../../utils/enums/InspectionTypes';
 import { formatInspectionDate } from '../../utils/formatInspectionDate';
 import { showToast } from '../../utils/showToast';
+import { useNavigate } from 'react-router-dom';
 
 type FormData = {
   licensePlate: string;
@@ -23,7 +25,10 @@ const InspectionForm: FC = () => {
   const { t } = useTranslation();
   const { user } = useContext(AuthContext);
   const { data: patterns = [] } = useFetchLicensePlatePatternsQuery();
+  const navigate = useNavigate();
   const [createInspection] = useCreateInspectionMutation();
+  const [updateInspection] = useUpdateInspectionMutation();
+  const selectedInspection = useAppSelector((state) => state.inspection.selectedInspection);
 
   const [form, setForm] = useState<FormData>({
     licensePlate: '',
@@ -37,6 +42,21 @@ const InspectionForm: FC = () => {
   });
 
   const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
+
+  useEffect(() => {
+    if (selectedInspection) {
+      setForm({
+        licensePlate: selectedInspection.car.licensePlate,
+        phoneNumber: selectedInspection.car.customer.phoneNumber,
+        firstName: selectedInspection.car.customer.firstName,
+        lastName: selectedInspection.car.customer.lastName,
+        carCategory: selectedInspection.car.category,
+        inspectionType: selectedInspection.type,
+        inspectedAt: selectedInspection.inspectedAt.split('T')[0],
+        companyId: '', // todo must figure this out somehow
+      });
+    }
+  }, [selectedInspection]);
 
   const clearError = (field: keyof FormData) => {
     setErrors((prev) => {
@@ -77,7 +97,7 @@ const InspectionForm: FC = () => {
     if (!validate()) return;
 
     try {
-      await createInspection({
+      const payload = {
         licensePlate: form.licensePlate,
         phoneNumber: form.phoneNumber,
         firstName: form.firstName,
@@ -87,8 +107,17 @@ const InspectionForm: FC = () => {
         inspectionType: form.inspectionType,
         inspectedAt: formatInspectionDate(form.inspectedAt),
         companyId: form.companyId,
-      }).unwrap();
+      };
+
+      if (selectedInspection?.id) {
+        // TODO: NEEDS INVESTIGATION, THERE MIGHT BE SOMETHING WRONG WITH BACK-END UPDATE
+        await updateInspection({ id: selectedInspection.id, ...payload }).unwrap();
+      } else {
+        await createInspection(payload).unwrap();
+      }
+
       showToast(t('inspectionCreated'), 'success');
+      navigate('/inspections');
     } catch (err) {
       showToast(t('internalError'), 'error');
     }

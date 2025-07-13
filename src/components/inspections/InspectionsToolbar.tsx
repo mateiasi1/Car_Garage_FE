@@ -1,6 +1,8 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { setSelectedInspection } from '../../slices/inspectionSlice';
 
 type InspectionToolbarProps = {
   search: string;
@@ -10,6 +12,16 @@ type InspectionToolbarProps = {
 const InspectionsToolbar: FC<InspectionToolbarProps> = ({ search, setSearch }) => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const selectedInspection = useAppSelector((state) => state.inspection.selectedInspection);
+  const dispatch = useAppDispatch();
+
+  const handleAddInspection = () => {
+    if (selectedInspection) {
+      dispatch(setSelectedInspection(null));
+    }
+
+    navigate('/add-inspection');
+  };
 
   return (
     <div className="flex items-center mb-6 flex-shrink-0">
@@ -21,7 +33,7 @@ const InspectionsToolbar: FC<InspectionToolbarProps> = ({ search, setSearch }) =
         className="flex-1 border border-gray-300 rounded-md px-4 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
       />
       <button
-        onClick={() => navigate('/add-inspection')}
+        onClick={handleAddInspection}
         className="ml-4 px-6 py-2 rounded-md bg-primary text-white font-semibold hover:bg-primary-hover transition-colors"
       >
         {t('addNewInspection')}

@@ -3,6 +3,7 @@ import { authApi } from './rtk/services/auth-service';
 import { inspectionsApi } from './rtk/services/inspections-service';
 import { userApi } from './rtk/services/user-service';
 import { licensePlatePatternsApi } from './rtk/services/licensePlatePattern-service';
+import inspectionReducer from './slices/inspectionSlice';
 
 export const store = configureStore({
   reducer: {
@@ -10,6 +11,7 @@ export const store = configureStore({
     [userApi.reducerPath]: userApi.reducer,
     [inspectionsApi.reducerPath]: inspectionsApi.reducer,
     [licensePlatePatternsApi.reducerPath]: licensePlatePatternsApi.reducer,
+    inspection: inspectionReducer,
   },
   middleware: (getDefaultMiddleware) =>
     getDefaultMiddleware().concat(

@@ -69,6 +69,9 @@
     "fieldRequired": "This field is required",
     "fieldInvalid": "This field is invalid",
     "inspectionCreated": "Inspection successfully created",
-    "internalError": "Something bad happened. Please contact support"
+    "internalError": "Something bad happened. Please contact support",
+    "actions": "Actions",
+    "confirm": "Confirm",
+    "cancel": "Cancel"
   }
 }

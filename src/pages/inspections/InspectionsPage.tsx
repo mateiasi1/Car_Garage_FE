@@ -30,8 +30,8 @@ const InspectionsPage: FC = () => {
   }, [inspections, isLoading]);
 
   const setPage = (page: number) => {
-    setFilters((prev) => ({ ...prev, page })); 
-  }
+    setFilters((prev) => ({ ...prev, page }));
+  };
 
   return (
     <div className="flex flex-col min-h-screen w-full bg-background p-6">
@@ -42,12 +42,7 @@ const InspectionsPage: FC = () => {
             <InspectionsTableHeader showScrollbarGutter={showScrollbarGutter} />
           </div>
           <div ref={bodyRef} className="flex-1 min-h-0 overflow-y-auto w-full">
-            <InspectionsTableBody
-              inspections={inspections}
-              isLoading={isLoading}
-              showScrollbarGutter={showScrollbarGutter}
-              page={filters.page}
-            />
+            <InspectionsTableBody inspections={inspections} isLoading={isLoading} page={filters.page} />
           </div>
         </div>
         <InspectionsPagination page={filters.page} setPage={setPage} totalPages={totalPages} />
