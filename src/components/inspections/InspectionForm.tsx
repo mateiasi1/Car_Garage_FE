@@ -1,47 +1,118 @@
-import { FC, useState } from 'react';
+import { FC, useContext, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { AuthContext } from '../../contexts/authContext';
+import { useCreateInspectionMutation } from '../../rtk/services/inspections-service';
+import { useFetchLicensePlatePatternsQuery } from '../../rtk/services/licensePlatePattern-service';
+import { CarCategories } from '../../utils/enums/CarCategories';
+import { InspectionType } from '../../utils/enums/InspectionTypes';
+import { formatInspectionDate } from '../../utils/formatInspectionDate';
+import { showToast } from '../../utils/showToast';
 
 type FormData = {
   licensePlate: string;
   phoneNumber: string;
   firstName: string;
   lastName: string;
-  carCategory: 'A' | 'B' | 'C' | 'D' | 'E';
-  inspectionType: 'HALF_YEAR' | 'ONE_YEAR' | 'TWO_YEARS';
+  carCategory: CarCategories;
+  inspectionType: InspectionType;
   inspectedAt: string;
+  companyId: string;
 };
 
 const InspectionForm: FC = () => {
   const { t } = useTranslation();
+  const { user } = useContext(AuthContext);
+  const { data: patterns = [] } = useFetchLicensePlatePatternsQuery();
+  const [createInspection] = useCreateInspectionMutation();
+
   const [form, setForm] = useState<FormData>({
     licensePlate: '',
     phoneNumber: '',
     firstName: '',
     lastName: '',
-    carCategory: 'B',
-    inspectionType: 'TWO_YEARS',
+    carCategory: CarCategories.B,
+    inspectionType: InspectionType.twoYears,
     inspectedAt: new Date().toISOString().split('T')[0],
+    companyId: '',
   });
+
+  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
+
+  const clearError = (field: keyof FormData) => {
+    setErrors((prev) => {
+      const updated = { ...prev };
+      delete updated[field];
+      return updated;
+    });
+  };
+
+  const validate = (): boolean => {
+    const newErrors: Partial<Record<keyof FormData, string>> = {};
+
+    if (!form.licensePlate) {
+      newErrors.licensePlate = 'fieldRequired';
+    } else if (!patterns.some((pattern) => new RegExp(pattern.regexPattern).test(form.licensePlate))) {
+      newErrors.licensePlate = 'fieldInvalid';
+    }
+
+    if (!form.phoneNumber) newErrors.phoneNumber = 'fieldRequired';
+    if (!form.firstName) newErrors.firstName = 'fieldRequired';
+    if (!form.lastName) newErrors.lastName = 'fieldRequired';
+    if (!form.carCategory) newErrors.carCategory = 'fieldRequired';
+    if (!form.inspectionType) newErrors.inspectionType = 'fieldRequired';
+    if (!form.inspectedAt) newErrors.inspectedAt = 'fieldRequired';
+    if (!form.companyId) newErrors.companyId = 'fieldRequired';
+
+    setErrors(newErrors);
+    return Object.keys(newErrors).length === 0;
+  };
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-    // TODO: handle submit logic
+    if (!validate()) return;
+
+    try {
+      await createInspection({
+        licensePlate: form.licensePlate,
+        phoneNumber: form.phoneNumber,
+        firstName: form.firstName,
+        lastName: form.lastName,
+        carCategory: form.carCategory,
+        inspectedBy: user?.id,
+        inspectionType: form.inspectionType,
+        inspectedAt: formatInspectionDate(form.inspectedAt),
+        companyId: form.companyId,
+      }).unwrap();
+      showToast(t('inspectionCreated'), 'success');
+    } catch (err) {
+      showToast(t('internalError'), 'error');
+    }
   };
+
+  const companyOptions =
+    user?.companies.map((company) => ({
+      label: company.name,
+      value: company.id,
+    })) || [];
+
+  const inputBaseClass = 'w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2';
+  const inputClass = (field: keyof FormData) =>
+    `${inputBaseClass} ${errors[field] ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-primary'}`;
 
   return (
     <div className="min-h-screen flex justify-center items-center bg-background px-4">
       <div className="w-full max-w-5xl bg-card p-8 rounded-md shadow-md">
-        <form onSubmit={handleSubmit} className="space-y-8">
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+        <form onSubmit={handleSubmit} className="space-y-6">
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
             <section>
               <h3 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">{t('carInformation')}</h3>
 
-              <div className="mb-4">
+              <div className="mb-4 min-h-[4.5rem]">
                 <label htmlFor="licensePlate" className="block font-semibold mb-1">
                   {t('licensePlate')}
                 </label>
@@ -51,15 +122,14 @@ const InspectionForm: FC = () => {
                   id="licensePlate"
                   value={form.licensePlate}
                   onChange={handleChange}
+                  onFocus={() => clearError('licensePlate')}
                   placeholder="DJ-51-ABC"
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-                  required
-                  pattern="[A-Z]{2}-\d{2}-[A-Z]{3}"
-                  title="Format: DJ-51-ABC"
+                  className={inputClass('licensePlate')}
                 />
+                {errors.licensePlate && <p className="text-red-600 text-sm mt-1">{t(errors.licensePlate)}</p>}
               </div>
 
-              <div>
+              <div className="mb-4 min-h-[4.5rem]">
                 <label htmlFor="carCategory" className="block font-semibold mb-1">
                   {t('carCategory')}
                 </label>
@@ -68,74 +138,46 @@ const InspectionForm: FC = () => {
                   id="carCategory"
                   value={form.carCategory}
                   onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-                  required
+                  onFocus={() => clearError('carCategory')}
+                  className={inputClass('carCategory')}
                 >
-                  {['A', 'B', 'C', 'D', 'E'].map((cat) => (
+                  {[CarCategories.A, CarCategories.B, CarCategories.C, CarCategories.D, CarCategories.E].map((cat) => (
                     <option key={cat} value={cat}>
                       {cat}
                     </option>
                   ))}
                 </select>
+                {errors.carCategory && <p className="text-red-600 text-sm mt-1">{t(errors.carCategory)}</p>}
               </div>
             </section>
 
             <section>
               <h3 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">{t('customerInformation')}</h3>
 
-              <div className="mb-4">
-                <label htmlFor="firstName" className="block font-semibold mb-1">
-                  {t('firstName')}
-                </label>
-                <input
-                  type="text"
-                  name="firstName"
-                  id="firstName"
-                  value={form.firstName}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-                  required
-                />
-              </div>
-
-              <div className="mb-4">
-                <label htmlFor="lastName" className="block font-semibold mb-1">
-                  {t('lastName')}
-                </label>
-                <input
-                  type="text"
-                  name="lastName"
-                  id="lastName"
-                  value={form.lastName}
-                  onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-                  required
-                />
-              </div>
-
-              <div>
-                <label htmlFor="phoneNumber" className="block font-semibold mb-1">
-                  {t('phoneNumber')}
-                </label>
-                <input
-                  type="tel"
-                  name="phoneNumber"
-                  id="phoneNumber"
-                  value={form.phoneNumber}
-                  onChange={handleChange}
-                  placeholder="+40712345678"
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-                  required
-                  pattern="\+?\d{7,15}"
-                  title="Phone number, e.g. +40712345678"
-                />
-              </div>
+              {(['firstName', 'lastName', 'phoneNumber'] as const).map((field) => (
+                <div key={field} className="mb-4 min-h-[4.5rem]">
+                  <label htmlFor={field} className="block font-semibold mb-1">
+                    {t(field)}
+                  </label>
+                  <input
+                    type={field === 'phoneNumber' ? 'tel' : 'text'}
+                    name={field}
+                    id={field}
+                    value={form[field]}
+                    onChange={handleChange}
+                    onFocus={() => clearError(field)}
+                    className={inputClass(field)}
+                    placeholder={field === 'phoneNumber' ? '+40712345678' : ''}
+                  />
+                  {errors[field] && <p className="text-red-600 text-sm mt-1">{t(errors[field])}</p>}
+                </div>
+              ))}
             </section>
 
             <section>
               <h3 className="text-lg font-semibold mb-4 border-b border-gray-300 pb-2">{t('inspectionInformation')}</h3>
 
-              <div className="mb-4">
+              <div className="mb-4 min-h-[4.5rem]">
                 <label htmlFor="inspectionType" className="block font-semibold mb-1">
                   {t('inspectionDuration')}
                 </label>
@@ -144,16 +186,17 @@ const InspectionForm: FC = () => {
                   id="inspectionType"
                   value={form.inspectionType}
                   onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-                  required
+                  onFocus={() => clearError('inspectionType')}
+                  className={inputClass('inspectionType')}
                 >
-                  <option value="HALF_YEAR">{t('halfYear')}</option>
-                  <option value="ONE_YEAR">{t('yearly')}</option>
-                  <option value="TWO_YEARS">{t('twoYears')}</option>
+                  <option value={InspectionType.halfYear}>{t('halfYear')}</option>
+                  <option value={InspectionType.oneYear}>{t('yearly')}</option>
+                  <option value={InspectionType.twoYears}>{t('twoYears')}</option>
                 </select>
+                {errors.inspectionType && <p className="text-red-600 text-sm mt-1">{t(errors.inspectionType)}</p>}
               </div>
 
-              <div>
+              <div className="mb-4 min-h-[4.5rem]">
                 <label htmlFor="inspectedAt" className="block font-semibold mb-1">
                   {t('inspectionDate')}
                 </label>
@@ -163,10 +206,35 @@ const InspectionForm: FC = () => {
                   id="inspectedAt"
                   value={form.inspectedAt}
                   onChange={handleChange}
-                  className="w-full border border-gray-300 rounded-md px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
-                  required
+                  onFocus={() => clearError('inspectedAt')}
+                  className={inputClass('inspectedAt')}
                   max={new Date().toISOString().split('T')[0]}
                 />
+                {errors.inspectedAt && <p className="text-red-600 text-sm mt-1">{t(errors.inspectedAt)}</p>}
+              </div>
+
+              <div className="mb-4 min-h-[4.5rem]">
+                <label htmlFor="companyId" className="block font-semibold mb-1">
+                  {t('company')}
+                </label>
+                <select
+                  name="companyId"
+                  id="companyId"
+                  value={form.companyId}
+                  onChange={handleChange}
+                  onFocus={() => clearError('companyId')}
+                  className={inputClass('companyId')}
+                >
+                  <option value="" disabled hidden>
+                    {t('selectCompany')}
+                  </option>
+                  {companyOptions.map((company) => (
+                    <option key={company.value} value={company.value}>
+                      {company.label}
+                    </option>
+                  ))}
+                </select>
+                {errors.companyId && <p className="text-red-600 text-sm mt-1">{t(errors.companyId)}</p>}
               </div>
             </section>
           </div>

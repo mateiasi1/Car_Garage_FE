@@ -10,5 +10,5 @@ export interface User {
   updatedAt: string;
   deletedAt: string;
   roles: Role[];
-  company: UserCompany;
+  companies: UserCompany[];
 }

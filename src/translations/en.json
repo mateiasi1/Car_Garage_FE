@@ -64,6 +64,11 @@
     "inspectionInformation": "Inspection information",
     "halfYear": "Every 6 months",
     "yearly": "Yearly",
-    "twoYears": "Every 2 years"
+    "twoYears": "Every 2 years",
+    "selectCompany": "Select company",
+    "fieldRequired": "This field is required",
+    "fieldInvalid": "This field is invalid",
+    "inspectionCreated": "Inspection successfully created",
+    "internalError": "Something bad happened. Please contact support"
   }
 }

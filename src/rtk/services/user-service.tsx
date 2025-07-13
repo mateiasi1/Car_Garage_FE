@@ -15,14 +15,14 @@ export const userApi = createApi({
       query: () => config.userProfileUrl,
     }),
     fetchUserById: builder.query({
-      query: (id) => `/users/${id}`,
+      query: (id) => `${config.usersUrl}/${id}`,
     }),
     fetchAllUsers: builder.query({
-      query: () => `/users`,
+      query: () => config.usersUrl,
     }),
     createUser: builder.mutation({
       query: (user) => ({
-        url: '/user',
+        url: config.usersUrl,
         method: 'POST',
         body: user,
       }),

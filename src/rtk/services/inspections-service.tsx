@@ -37,7 +37,14 @@ export const inspectionsApi = createApi({
         };
       },
     }),
+    createInspection: builder.mutation({
+      query: (inspection) => ({
+        url: config.inspectionsUrl,
+        method: 'POST',
+        body: inspection
+      })
+    }),
   }),
 });
 
-export const { useFetchInspectionsQuery } = inspectionsApi;
+export const { useFetchInspectionsQuery, useCreateInspectionMutation } = inspectionsApi;

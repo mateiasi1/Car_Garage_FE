@@ -64,6 +64,11 @@
     "inspectionInformation": "Informații despre inspecție",
     "halfYear": "La 6 luni",
     "yearly": "Anual",
-    "twoYears": "La 2 ani"
+    "twoYears": "La 2 ani",
+    "selectCompany": "Selectează compania",
+    "fieldRequired": "Acest câmp este obligatoriu",
+    "fieldInvalid": "Acest câmp este invalid",
+    "inspectionCreated": "Inspecția a fost salvată cu succes",
+    "internalError": "Ooops, ceva nu a mers cum trebuia, vă rugăm contactați echipa RoadReady"
   }
 }
