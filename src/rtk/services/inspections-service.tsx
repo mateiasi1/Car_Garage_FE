@@ -18,6 +18,7 @@ export const inspectionsApi = createApi({
     prepareHeaders: prepareRequestHeaders,
     credentials: 'include',
   }),
+  tagTypes: ['Inspections'],
   endpoints: (builder) => ({
     fetchInspections: builder.query<InspectionsResponse, InspectionsFilters | void>({
       query: (filters) => {
@@ -36,6 +37,7 @@ export const inspectionsApi = createApi({
           method: 'GET',
         };
       },
+      providesTags: ['Inspections'],
     }),
     createInspection: builder.mutation({
       query: (inspection) => ({
@@ -51,7 +53,20 @@ export const inspectionsApi = createApi({
         body: inspection,
       }),
     }),
+    deleteInspection: builder.mutation<void, string>({
+      query: (id) => ({
+        url: `${config.inspectionsUrl}/${id}`,
+        method: 'DELETE',
+        body: {},
+      }),
+      invalidatesTags: ['Inspections'],
+    }),
   }),
 });
 
-export const { useFetchInspectionsQuery, useCreateInspectionMutation, useUpdateInspectionMutation } = inspectionsApi;
+export const {
+  useFetchInspectionsQuery,
+  useCreateInspectionMutation,
+  useUpdateInspectionMutation,
+  useDeleteInspectionMutation,
+} = inspectionsApi;

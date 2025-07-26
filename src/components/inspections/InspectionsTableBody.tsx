@@ -1,13 +1,15 @@
-import { FC } from 'react';
-import { useTranslation } from 'react-i18next';
-import { Inspection } from '../../models/Inspection';
-import { InspectionType } from '../../utils/enums/InspectionTypes';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faMessage, faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
-import { showToast } from '../../utils/showToast';
-import { setSelectedInspection } from '../../slices/inspectionSlice';
-import { useAppDispatch } from '../../hooks/reduxHooks';
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { FC, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { Inspection } from '../../models/Inspection';
+import { useDeleteInspectionMutation } from '../../rtk/services/inspections-service';
+import { setSelectedInspection } from '../../slices/inspectionSlice';
+import { InspectionType } from '../../utils/enums/InspectionTypes';
+import { showToast } from '../../utils/showToast';
+import ConfirmationModal from '../shared/ConfirmationModal';
 
 type InspectionsTableBodyProps = {
   inspections: Inspection[];
@@ -16,9 +18,12 @@ type InspectionsTableBodyProps = {
 };
 
 const InspectionsTableBody: FC<InspectionsTableBodyProps> = ({ inspections, isLoading, page }) => {
-  const { i18n } = useTranslation();
+  const { i18n, t } = useTranslation();
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
+  const [deleteInspection] = useDeleteInspectionMutation();
+  const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
+  const selectedInspection = useAppSelector((state) => state.inspection.selectedInspection);
 
   const formatDate = (dateStr: string) => {
     if (!dateStr) return '';
@@ -92,8 +97,27 @@ const InspectionsTableBody: FC<InspectionsTableBodyProps> = ({ inspections, isLo
     navigate('/add-inspection');
   };
 
-  const handleDeleteClick = (id: string) => {
-    console.log('Delete', id);
+  const handleDeleteClick = (inspection: Inspection) => {
+    dispatch(setSelectedInspection(inspection));
+    setIsDeleteModalOpen(true);
+  };
+
+  const handleDeleteConfirm = async () => {
+    if (!selectedInspection) return;
+
+    try {
+      await deleteInspection(selectedInspection.id).unwrap();
+      showToast(t('inspectionDeleted'), 'success');
+    } catch (error) {
+      showToast(t('inspectionDeletedError'), 'error');
+    } finally {
+      handleDeleteCancel();
+    }
+  };
+
+  const handleDeleteCancel = () => {
+    setIsDeleteModalOpen(false);
+    setSelectedInspection(null);
   };
 
   if (isLoading) return <div className="py-8 text-center text-gray-400">Loading...</div>;
@@ -135,11 +159,19 @@ const InspectionsTableBody: FC<InspectionsTableBodyProps> = ({ inspections, isLo
             <FontAwesomeIcon
               icon={faTrashCan}
               className="text-red-500 hover:text-red-700 cursor-pointer"
-              onClick={() => handleDeleteClick(inspection.id)}
+              onClick={() => handleDeleteClick(inspection)}
             />
           </div>
         </div>
       ))}
+
+      <ConfirmationModal
+        open={isDeleteModalOpen}
+        title={t('areYouSure')}
+        message={t('areYouSureDeleteInspection')}
+        onConfirm={handleDeleteConfirm}
+        onCancel={handleDeleteCancel}
+      />
     </>
   );
 };

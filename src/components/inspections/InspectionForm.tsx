@@ -53,7 +53,7 @@ const InspectionForm: FC = () => {
         carCategory: selectedInspection.car.category,
         inspectionType: selectedInspection.type,
         inspectedAt: selectedInspection.inspectedAt.split('T')[0],
-        companyId: '', // todo must figure this out somehow
+        companyId: selectedInspection.companyId,
       });
     }
   }, [selectedInspection]);
