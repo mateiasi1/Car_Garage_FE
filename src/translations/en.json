@@ -76,6 +76,11 @@
     "areYouSure": "Are you sure?",
     "areYouSureDeleteInspection": "Are you sure you want to delete this inspection? This action cannot be undone.",
     "inspectionDeleted": "Inspection successfully deleted",
-    "inspectionDeletedError": "An error occurred while deleting the inspection. Please try again later."
+    "inspectionDeletedError": "An error occurred while deleting the inspection. Please try again later.",
+    "availability": "Availability",
+    "inspectionTypes.one_year": "One year",
+    "inspectionTypes.two_years": "Two years",
+    "inspectionTypes.6_months": "Six months",
+    "inspectionTypes.allTypes": "All types"
   }
 }

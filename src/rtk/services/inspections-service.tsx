@@ -5,10 +5,10 @@ import { prepareRequestHeaders } from '../../utils/prepareRequestHeaders';
 
 export interface InspectionsFilters {
   page: number;
-  licensePlate?: string;
-  inspectionType?: string;
-  customerName?: string;
-  inspectorName?: string;
+  licensePlate: string;
+  inspectionType: string;
+  customerName: string;
+  inspectorName: string;
 }
 
 export const inspectionsApi = createApi({
@@ -21,16 +21,13 @@ export const inspectionsApi = createApi({
   tagTypes: ['Inspections'],
   endpoints: (builder) => ({
     fetchInspections: builder.query<InspectionsResponse, InspectionsFilters | void>({
-      query: (filters) => {
+      query: (filters: InspectionsFilters) => {
         const params = new URLSearchParams();
-
-        if (filters) {
-          if (filters.page) params.append('page', filters.page.toString());
-          if (filters.licensePlate) params.append('licensePlate', filters.licensePlate);
-          if (filters.inspectionType) params.append('inspectionType', filters.inspectionType);
-          if (filters.customerName) params.append('customerName', filters.customerName);
-          if (filters.inspectorName) params.append('inspectorName', filters.inspectorName);
-        }
+        params.append('page', filters.page.toString());
+        params.append('licensePlate', filters.licensePlate);
+        params.append('inspectionType', filters.inspectionType);
+        params.append('customerName', filters.customerName);
+        params.append('inspectorName', filters.inspectorName);
 
         return {
           url: `${config.inspectionsUrl}?${params.toString()}`,

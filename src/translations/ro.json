@@ -76,6 +76,11 @@
     "areYouSure": "Sunteți sigur?",
     "areYouSureDeleteInspection": "Această acțiune va șterge inspecția și nu va putea fi anulată. Sunteți sigur că doriți să continuați?",
     "inspectionDeleted": "Inspecția a fost ștearsă cu succes",
-    "inspectionDeletedError": "A apărut o eroare la ștergerea inspecției. Vă rugăm să încercați din nou mai târziu."
+    "inspectionDeletedError": "A apărut o eroare la ștergerea inspecției. Vă rugăm să încercați din nou mai târziu.",
+    "availability": "Valabilitate",
+    "inspectionTypes.one_year": "Un an",
+    "inspectionTypes.two_years": "Doi ani",
+    "inspectionTypes.6_months": "Șase luni",
+    "inspectionTypes.allTypes": "Toate tipurile"
   }
 }
