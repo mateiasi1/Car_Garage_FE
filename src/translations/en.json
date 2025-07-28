@@ -81,6 +81,8 @@
     "inspectionTypes.one_year": "One year",
     "inspectionTypes.two_years": "Two years",
     "inspectionTypes.6_months": "Six months",
-    "inspectionTypes.allTypes": "All types"
+    "inspectionTypes.allTypes": "All types",
+    "noInspectionsFound": "No inspections found",
+    "loading": "Loading..."
   }
 }

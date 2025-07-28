@@ -81,6 +81,8 @@
     "inspectionTypes.one_year": "Un an",
     "inspectionTypes.two_years": "Doi ani",
     "inspectionTypes.6_months": "Șase luni",
-    "inspectionTypes.allTypes": "Toate tipurile"
+    "inspectionTypes.allTypes": "Toate tipurile",
+    "noInspectionsFound": "Nu s-au găsit inspecții",
+    "loading": "Caută..."
   }
 }

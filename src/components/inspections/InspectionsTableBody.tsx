@@ -120,8 +120,8 @@ const InspectionsTableBody: FC<InspectionsTableBodyProps> = ({ inspections, isLo
     setSelectedInspection(null);
   };
 
-  if (isLoading) return <div className="py-8 text-center text-gray-400">Loading...</div>;
-  if (!inspections.length) return <div className="py-8 text-center text-gray-400">No inspections found.</div>;
+  if (isLoading) return <div className="py-8 text-center text-gray-400">{t('loading')}</div>;
+  if (!inspections.length) return <div className="py-8 text-center text-gray-400">{t('noInspectionsFound')}</div>;
 
   return (
     <>
