@@ -42,7 +42,7 @@ const Login: FC = () => {
     try {
       const data = await loginMutation(credentials).unwrap();
       login(data);
-      navigate('/');
+      navigate('/inspections');
     } catch (error) {
       showToast(t('wrongCredentials'), 'error');
     }
