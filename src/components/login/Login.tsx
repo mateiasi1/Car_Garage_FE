@@ -17,7 +17,7 @@ const Login: FC = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/');
+      navigate('/inspections');
     }
   }, [isAuthenticated, navigate]);
 
