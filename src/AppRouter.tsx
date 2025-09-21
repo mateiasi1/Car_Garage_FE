@@ -15,18 +15,13 @@ const AppRouter = () => {
       <Routes>
         <Route element={<AppLayout />}>
           <Route path="/login" element={<LoginPage />} />
-
-          {/* Public Routes */}
-          {/* <Route path="/home" element={<HomePage />} /> */}
-
-          {/* Protected Routes */}
           <Route
             element={<ProtectedRoute element={<ProtectedLayout />} roles={[Role.admin, Role.owner, Role.inspector]} />}
           >
-            <Route
+            {/* <Route
               path="/"
               element={<ProtectedRoute element={<DashboardPage />} roles={[Role.admin, Role.inspector]} />}
-            />
+            /> */}
             <Route
               path="/inspections"
               element={
@@ -44,15 +39,6 @@ const AppRouter = () => {
               element={<ProtectedRoute element={<InspectionForm />} roles={[Role.admin, Role.inspector]} />}
             />
           </Route>
-          {/* <Route path="customer/list" element={<ProtectedRoute element={<CustomersListPage />} />} />
-        <Route path="customer/add-new" element={<ProtectedRoute element={<AddNew />} />} />
-        <Route path="/users/add-new" element={<ProtectedRoute element={<AddNewUserPage />} />} />
-        <Route path="/profile" element={<ProtectedRoute element={<ProfilePage />} />} />
-        <Route path="/settings" element={<ProtectedRoute element={<SettingsPage />} />} />
-        <Route path="/reports" element={<ProtectedRoute element={<ReportsPage />} />} />
-        
-        <Route path="inspections/daily" element={<ProtectedRoute element={<DailyPage />} />} />
-        <Route path="inspections/monthly" element={<ProtectedRoute element={<MonthlyPage />} />} /> */}
         </Route>
       </Routes>
     </Router>

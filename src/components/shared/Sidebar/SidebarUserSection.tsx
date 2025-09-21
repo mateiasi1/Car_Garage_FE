@@ -1,4 +1,6 @@
 import { FC, useMemo } from 'react';
+import { User } from '../../../models/User';
+import { Role } from '../../../models/Role';
 
 interface SidebarUserSectionProps {
   expanded: boolean;
@@ -7,7 +9,7 @@ interface SidebarUserSectionProps {
 
 const SidebarUserSection: FC<SidebarUserSectionProps> = ({ expanded, user }) => {
   const rolesString = useMemo(
-    () => user?.roles?.map((r) => r.name.charAt(0) + r.name.slice(1).toLowerCase()).join(', ') || '',
+    () => user?.roles?.map((r: Role) => r.name.charAt(0) + r.name.slice(1).toLowerCase()).join(', ') || '',
     [user]
   );
 

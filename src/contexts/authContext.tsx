@@ -1,7 +1,8 @@
 import { createContext, ReactNode, useEffect, useState } from 'react';
+import { useDispatch } from 'react-redux';
 import { AuthTokens } from '../models/AuthTokens';
 import { User } from '../models/User';
-import { useFetchUserProfileQuery } from '../rtk/services/user-service';
+import { useFetchUserProfileQuery, userApi } from '../rtk/services/user-service';
 
 type AuthProviderProps = {
   children?: ReactNode;
@@ -24,6 +25,7 @@ const AuthContext = createContext<AuthContextType>({
 });
 
 const AuthProvider = ({ children }: AuthProviderProps) => {
+  const dispatch = useDispatch();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [authChecked, setAuthChecked] = useState<boolean>(false);
 
@@ -45,6 +47,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const login = ({ accessToken, refreshToken }: AuthTokens): void => {
     localStorage.setItem('access_token', accessToken);
     localStorage.setItem('refresh_token', refreshToken);
+    dispatch(userApi.util.invalidateTags(['User']));
     setIsAuthenticated(true);
   };
 

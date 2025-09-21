@@ -2,6 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import config from '../../config';
 import { User } from '../../models/User';
 import { prepareRequestHeaders } from '../../utils/prepareRequestHeaders';
+import ChangePasswordData from '../../dto/changePasswordDTO';
 
 export const userApi = createApi({
   reducerPath: 'userApi',
@@ -10,9 +11,19 @@ export const userApi = createApi({
     prepareHeaders: prepareRequestHeaders,
     credentials: 'include',
   }),
+  tagTypes: ['User'],
   endpoints: (builder) => ({
     fetchUserProfile: builder.query<User, void>({
       query: () => config.userProfileUrl,
+      providesTags: ['User'],
+    }),
+    updateUserProfile: builder.mutation<User, Partial<User>>({
+      query: (userData) => ({
+        url: config.userProfileUrl,
+        method: 'PUT',
+        body: userData,
+      }),
+      invalidatesTags: ['User'],
     }),
     fetchUserById: builder.query({
       query: (id) => `${config.usersUrl}/${id}`,
@@ -27,8 +38,22 @@ export const userApi = createApi({
         body: user,
       }),
     }),
+    changePassword: builder.mutation<void, ChangePasswordData>({
+      query: (passwordData) => ({
+        url: config.changePasswordUrl,
+        method: 'PUT',
+        body: passwordData,
+      }),
+    }),
   }),
 });
 
-export const { useFetchUserProfileQuery, useFetchUserByIdQuery, useFetchAllUsersQuery, useCreateUserMutation } =
-  userApi;
+export const {
+  useFetchUserProfileQuery,
+  useFetchUserByIdQuery,
+  useFetchAllUsersQuery,
+  useCreateUserMutation,
+  useUpdateUserProfileMutation,
+  useChangePasswordMutation,
+  util: { invalidateTags },
+} = userApi;

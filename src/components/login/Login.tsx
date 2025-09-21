@@ -44,7 +44,7 @@ const Login: FC = () => {
       login(data);
       navigate('/');
     } catch (error) {
-      showToast(t('loginError'), 'error');
+      showToast(t('wrongCredentials'), 'error');
     }
   };
 

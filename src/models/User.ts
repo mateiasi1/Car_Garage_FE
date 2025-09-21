@@ -4,6 +4,7 @@ import { UserCompany } from './UserCompany';
 export interface User {
   id: string;
   email: string;
+  username: string;
   firstName: string;
   lastName: string;
   createdAt: string;

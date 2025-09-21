@@ -65,7 +65,7 @@ function MultiSelect<T extends string | number>({
                 type="checkbox"
                 checked={selectedValues.includes(option.value)}
                 onChange={() => toggleValue(option.value)}
-                className="mr-2"
+                className="mr-2 h-4 w-4 rounded border-gray-300 text-primary focus:ring-primary cursor-pointer accent-primary"
               />
               {option.label}
             </label>

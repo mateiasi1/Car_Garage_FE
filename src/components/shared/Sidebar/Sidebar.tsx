@@ -8,12 +8,12 @@ import SidebarNav from './SidebarNav';
 import SidebarUserSection from './SidebarUserSection';
 
 const navItems = [
-  {
-    to: '/',
-    icon: faChartSimple,
-    labelKey: 'dashboard',
-    roles: [Role.admin, Role.owner],
-  },
+  // {
+  //   to: '/',
+  //   icon: faChartSimple,
+  //   labelKey: 'dashboard',
+  //   roles: [Role.admin, Role.owner],
+  // },
   {
     to: '/inspections',
     icon: faClipboardList,
@@ -35,7 +35,6 @@ interface SidebarProps {
 
 const Sidebar: FC<SidebarProps> = ({ expanded, setExpanded }) => {
   const { user, logout } = useContext(AuthContext);
-
   const userRoles = user?.roles?.map((r: RoleModel) => r.name) || [];
 
   const sidebarWidth = expanded ? 'w-52' : 'w-16';

@@ -5,6 +5,7 @@ interface InspectionsTableHeaderProps {
   showScrollbarGutter?: boolean;
 }
 
+// TODO: Must also add last notificatoin date in the table? it might be useful
 const InspectionsTableHeader: FC<InspectionsTableHeaderProps> = ({ showScrollbarGutter = false }) => {
   const { t } = useTranslation();
 
