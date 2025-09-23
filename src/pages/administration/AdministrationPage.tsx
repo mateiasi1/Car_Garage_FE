@@ -6,6 +6,8 @@ import { Role } from '../../utils/enums/Role';
 import { Role as RoleModel } from '../../models/Role';
 import { AuthContext } from '../../contexts/authContext';
 import UserProfile from '../../components/administration/UserProfile';
+import InspectorsList from '../../components/administration/InspectorsList';
+import CustomersList from '../../components/administration/CustomersList';
 
 interface AdministrationSetting extends AdministrationItemProps {
   roles: Role[];
@@ -30,8 +32,8 @@ const AdministrationPage: FC = () => {
       icon: faUsers,
       name: 'inspectors',
       link: '/administration/inspectors',
-      roles: [Role.owner, Role.inspector],
-      component: <div>Inspectors Component</div>,
+      roles: [Role.owner],
+      component: <InspectorsList />,
       onSelect: () => {},
     },
     {
@@ -39,7 +41,7 @@ const AdministrationPage: FC = () => {
       name: 'customers',
       link: '/administration/customers',
       roles: [Role.owner, Role.inspector],
-      component: <div>Customers Component</div>,
+      component: <CustomersList />,
       onSelect: () => {},
     },
     {
@@ -73,7 +75,7 @@ const AdministrationPage: FC = () => {
 
   return (
     <div className="flex flex-col min-h-screen w-full bg-background p-6">
-      <div className="flex gap-6 mt-12 h-[calc(100vh-6rem)]">
+      <div className="flex gap-6 pt-12 h-[calc(100vh-4rem)]">
         <div className="w-1/6 bg-white rounded-xl shadow-md p-6">
           <h2 className="text-2xl font-heading mb-6">{t('administration')}</h2>
           <div className="flex flex-col gap-4">

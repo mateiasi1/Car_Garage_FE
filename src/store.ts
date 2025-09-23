@@ -3,14 +3,18 @@ import { authApi } from './rtk/services/auth-service';
 import { inspectionsApi } from './rtk/services/inspections-service';
 import { userApi } from './rtk/services/user-service';
 import { licensePlatePatternsApi } from './rtk/services/licensePlatePattern-service';
+import { inspectorApi } from './rtk/services/inspector-service';
 import inspectionReducer from './slices/inspectionSlice';
+import { customerApi } from './rtk/services/customer-service';
 
 export const store = configureStore({
   reducer: {
     [authApi.reducerPath]: authApi.reducer,
     [userApi.reducerPath]: userApi.reducer,
     [inspectionsApi.reducerPath]: inspectionsApi.reducer,
+    [customerApi.reducerPath]: customerApi.reducer,
     [licensePlatePatternsApi.reducerPath]: licensePlatePatternsApi.reducer,
+    [inspectorApi.reducerPath]: inspectorApi.reducer,
     inspection: inspectionReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -18,7 +22,9 @@ export const store = configureStore({
       authApi.middleware,
       userApi.middleware,
       inspectionsApi.middleware,
-      licensePlatePatternsApi.middleware
+      customerApi.middleware,
+      licensePlatePatternsApi.middleware,
+      inspectorApi.middleware
     ),
 });
 

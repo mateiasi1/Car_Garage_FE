@@ -113,6 +113,9 @@
     "newPasswordEmpty": "Parola nouă este obligatorie",
     "confirmPasswordEmpty": "Confirmarea parolei este obligatorie",
     "passwordChangeSuccess": "Parola a fost schimbată cu succes",
-    "passwordChangeError": "Schimbarea parolei a eșuat"
+    "passwordChangeError": "Schimbarea parolei a eșuat",
+    "pageNotFound": "Pagina nu a fost găsită",
+    "pageNotFoundDescription": "Pagina pe care o căutați nu există. Veți fi redirecționat către inspecții în 5 secunde.",
+    "backToInspections": "Mergi la Inspecții"
   }
 }

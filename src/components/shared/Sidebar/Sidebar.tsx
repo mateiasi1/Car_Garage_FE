@@ -24,7 +24,7 @@ const navItems = [
     to: '/administration',
     icon: faGear,
     labelKey: 'administration',
-    roles: [Role.admin, Role.owner],
+    roles: [Role.admin, Role.owner, Role.inspector],
   },
 ];
 

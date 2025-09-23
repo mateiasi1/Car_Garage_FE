@@ -6,4 +6,6 @@ export default {
   inspectionsUrl: '/inspection',
   licensePlatePatternsUrl: '/license-plate-patterns',
   changePasswordUrl: '/users/change-password',
+  inspectorsUrl: '/inspectors',
+  customersUrl: '/customers',
 };

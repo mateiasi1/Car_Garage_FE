@@ -2,7 +2,7 @@ import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import config from '../../config';
 import { User } from '../../models/User';
 import { prepareRequestHeaders } from '../../utils/prepareRequestHeaders';
-import ChangePasswordData from '../../dto/changePasswordDTO';
+import ChangePasswordDTO from '../../dto/ChangePasswordDTO';
 
 export const userApi = createApi({
   reducerPath: 'userApi',
@@ -38,7 +38,7 @@ export const userApi = createApi({
         body: user,
       }),
     }),
-    changePassword: builder.mutation<void, ChangePasswordData>({
+    changePassword: builder.mutation<void, ChangePasswordDTO>({
       query: (passwordData) => ({
         url: config.changePasswordUrl,
         method: 'PUT',

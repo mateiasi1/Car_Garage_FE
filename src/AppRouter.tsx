@@ -1,13 +1,14 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import InspectionForm from './components/inspections/InspectionForm';
 import AdministrationPage from './pages/administration/AdministrationPage';
-import DashboardPage from './pages/dashboard/DashboardPage';
+// import DashboardPage from './pages/dashboard/DashboardPage';
 import InspectionsPage from './pages/inspections/InspectionsPage';
 import AppLayout from './pages/layout/AppLayout';
 import ProtectedLayout from './pages/layout/ProtectedLayout';
 import LoginPage from './pages/login/LoginPage';
 import ProtectedRoute from './ProtectedRoute';
 import { Role } from './utils/enums/Role';
+import NotFoundPage from './pages/notfound/NotFoundPage';
 
 const AppRouter = () => {
   return (
@@ -37,6 +38,10 @@ const AppRouter = () => {
             <Route
               path="/add-inspection"
               element={<ProtectedRoute element={<InspectionForm />} roles={[Role.admin, Role.inspector]} />}
+            />
+            <Route
+              path="*"
+              element={<ProtectedRoute element={<NotFoundPage />} roles={[Role.owner, Role.admin, Role.inspector]} />}
             />
           </Route>
         </Route>
