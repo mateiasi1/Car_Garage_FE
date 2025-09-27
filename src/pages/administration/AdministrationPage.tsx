@@ -1,13 +1,14 @@
-import { FC, useContext, useState, useEffect } from 'react';
+import { faBuilding, faIdCard, faPeopleGroup, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { FC, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import AdminCompanies from '../../components/administration/AdminCompanies';
 import { AdministrationItem, AdministrationItemProps } from '../../components/administration/AdministrationItem';
-import { faPeopleGroup, faUsers, faBuilding, faIdCard } from '@fortawesome/free-solid-svg-icons';
-import { Role } from '../../utils/enums/Role';
-import { Role as RoleModel } from '../../models/Role';
-import { AuthContext } from '../../contexts/authContext';
-import UserProfile from '../../components/administration/UserProfile';
-import InspectorsList from '../../components/administration/InspectorsList';
 import CustomersList from '../../components/administration/CustomersList';
+import InspectorsList from '../../components/administration/InspectorsList';
+import UserProfile from '../../components/administration/UserProfile';
+import { AuthContext } from '../../contexts/authContext';
+import { Role as RoleModel } from '../../models/Role';
+import { Role } from '../../utils/enums/Role';
 
 interface AdministrationSetting extends AdministrationItemProps {
   roles: Role[];
@@ -57,7 +58,7 @@ const AdministrationPage: FC = () => {
       name: 'companies',
       link: '/administration/companies',
       roles: [Role.admin],
-      component: <div>Companies Component</div>,
+      component: <AdminCompanies />,
       onSelect: () => {},
     },
   ];

@@ -25,23 +25,21 @@ const AppRouter = () => {
             /> */}
             <Route
               path="/inspections"
-              element={
-                <ProtectedRoute element={<InspectionsPage />} roles={[Role.admin, Role.admin, Role.inspector]} />
-              }
+              element={<ProtectedRoute element={<InspectionsPage />} roles={[Role.owner, Role.inspector]} />}
             />
             <Route
               path="/administration"
               element={
-                <ProtectedRoute element={<AdministrationPage />} roles={[Role.admin, Role.admin, Role.inspector]} />
+                <ProtectedRoute element={<AdministrationPage />} roles={[Role.admin, Role.owner, Role.inspector]} />
               }
             />
             <Route
               path="/add-inspection"
-              element={<ProtectedRoute element={<InspectionForm />} roles={[Role.admin, Role.inspector]} />}
+              element={<ProtectedRoute element={<InspectionForm />} roles={[Role.owner, Role.inspector]} />}
             />
             <Route
               path="*"
-              element={<ProtectedRoute element={<NotFoundPage />} roles={[Role.owner, Role.admin, Role.inspector]} />}
+              element={<ProtectedRoute element={<NotFoundPage />} roles={[Role.admin, Role.owner, Role.inspector]} />}
             />
           </Route>
         </Route>

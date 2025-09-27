@@ -8,4 +8,5 @@ export default {
   changePasswordUrl: '/users/change-password',
   inspectorsUrl: '/inspectors',
   customersUrl: '/customers',
+  adminApiUrl: import.meta.env.VITE_ADMIN_API_URL,
 };

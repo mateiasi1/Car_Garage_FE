@@ -18,7 +18,7 @@ const navItems = [
     to: '/inspections',
     icon: faClipboardList,
     labelKey: 'inspections',
-    roles: [Role.inspector, Role.admin, Role.owner],
+    roles: [Role.inspector, Role.owner],
   },
   {
     to: '/administration',
