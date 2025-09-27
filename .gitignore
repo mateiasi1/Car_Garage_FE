@@ -1,28 +1,42 @@
-# compiled output
-*/dist
-*/dist-ssr
-*/node_modules
-*/build
-*/*.local
+# Node modules
+node_modules/
+**/node_modules/
+
+# Build output
+dist/
+**/dist/
+build/
+**/build/
+dist-ssr/
+**/dist-ssr/
+
+# Local environment files
+.env*
+**/.env*
 
 # Logs
-*/logs
-*/*.log
-*/npm-debug.log*
-*/pnpm-debug.log*
-*/yarn-debug.log*
-*/yarn-error.log*
-*/lerna-debug.log*
+logs/
+**/logs/
+*.log
+**/*.log
+npm-debug.log*
+pnpm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+lerna-debug.log*
 
-# OS
+# OS files
 .DS_Store
 
-# Tests
-*/*/coverage
-*/*/.nyc_output
+# Test coverage
+coverage/
+**/coverage/
+.nyc_output/
+**/.nyc_output/
 
 # IDEs and editors
-/.idea
+.idea/
+.vscode/
 .project
 .classpath
 .c9/
@@ -30,23 +44,17 @@
 .settings/
 *.sublime-workspace
 
-# IDE - VSCode
-.vscode/*
+# VSCode recommended settings (unignore if you want to share)
 !.vscode/settings.json
 !.vscode/tasks.json
 !.vscode/launch.json
 !.vscode/extensions.json
 
-# dotenv environment variable files
-*/.env
-*/.env.development.local
-*/.env.test.local
-*/.env.production.local
-*/.env.local
-
-# temp directory
-.temp
-.tmp
+# Temp directories
+.temp/
+**/.temp/
+.tmp/
+**/.tmp/
 
 # Runtime data
 pids
@@ -54,5 +62,5 @@ pids
 *.seed
 *.pid.lock
 
-# Diagnostic reports (https://nodejs.org/api/report.html)
+# Diagnostic reports
 report.[0-9]*.[0-9]*.[0-9]*.[0-9]*.json

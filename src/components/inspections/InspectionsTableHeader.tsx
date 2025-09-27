@@ -1,0 +1,30 @@
+import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
+
+interface InspectionsTableHeaderProps {
+  showScrollbarGutter?: boolean;
+}
+
+// TODO: Must also add last notificatoin date in the table? it might be useful
+const InspectionsTableHeader: FC<InspectionsTableHeaderProps> = ({ showScrollbarGutter = false }) => {
+  const { t } = useTranslation();
+
+  return (
+    <div
+      className={`grid min-w-full border-b border-gray-200 font-semibold text-sm text-gray-700 flex-shrink-0 ${
+        showScrollbarGutter ? 'pr-[16px]' : ''
+      }`}
+      style={{ gridTemplateColumns: '150px 2fr 2fr 2fr 2fr 2fr 100px' }}
+    >
+      <div className="py-2 px-4 text-left">{t('number')}</div>
+      <div className="py-2 px-4 text-left">{t('inspectedBy')}</div>
+      <div className="py-2 px-4 text-left">{t('licensePlate')}</div>
+      <div className="py-2 px-4 text-left">{t('customerName')}</div>
+      <div className="py-2 px-4 text-left">{t('inspectionDate')}</div>
+      <div className="py-2 px-4 text-left">{t('inspectionExpiresAt')}</div>
+      <div className="py-2 px-4 text-left">{t('actions')}</div>
+    </div>
+  );
+};
+
+export default InspectionsTableHeader;
