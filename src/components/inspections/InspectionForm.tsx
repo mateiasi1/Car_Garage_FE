@@ -1,6 +1,7 @@
 import { FC, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { routes } from '../../constants/routes';
 import { AuthContext } from '../../contexts/authContext';
 import { useAppSelector } from '../../hooks/reduxHooks';
 import { useCreateInspectionMutation, useUpdateInspectionMutation } from '../../rtk/services/inspections-service';
@@ -81,7 +82,6 @@ const InspectionForm: FC = () => {
     if (!form.carCategory) newErrors.carCategory = 'fieldRequired';
     if (!form.inspectionType) newErrors.inspectionType = 'fieldRequired';
     if (!form.inspectedAt) newErrors.inspectedAt = 'fieldRequired';
-    if (!form.companyId) newErrors.companyId = 'fieldRequired';
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
@@ -117,17 +117,11 @@ const InspectionForm: FC = () => {
       }
 
       showToast(t('inspectionCreated'), 'success');
-      navigate('/inspections');
+      navigate(routes.INSPECTIONS);
     } catch (err) {
       showToast(t('internalError'), 'error');
     }
   };
-
-  const companyOptions =
-    user?.companies.map((company) => ({
-      label: company.name,
-      value: company.id,
-    })) || [];
 
   const inputBaseClass = 'w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2';
   const inputClass = (field: keyof FormData) =>
@@ -246,30 +240,6 @@ const InspectionForm: FC = () => {
                     max={new Date().toISOString().split('T')[0]}
                   />
                   {errors.inspectedAt && <p className="text-red-600 text-sm mt-1">{t(errors.inspectedAt)}</p>}
-                </div>
-
-                <div className="mb-4 min-h-[4.5rem]">
-                  <label htmlFor="companyId" className="block font-semibold mb-1">
-                    {t('company')}
-                  </label>
-                  <select
-                    name="companyId"
-                    id="companyId"
-                    value={form.companyId}
-                    onChange={handleChange}
-                    onFocus={() => clearError('companyId')}
-                    className={inputClass('companyId')}
-                  >
-                    <option value="" disabled hidden>
-                      {t('selectCompany')}
-                    </option>
-                    {companyOptions.map((company) => (
-                      <option key={company.value} value={company.value}>
-                        {company.label}
-                      </option>
-                    ))}
-                  </select>
-                  {errors.companyId && <p className="text-red-600 text-sm mt-1">{t(errors.companyId)}</p>}
                 </div>
               </section>
             </div>
