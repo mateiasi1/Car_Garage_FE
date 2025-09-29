@@ -9,6 +9,7 @@ import UserProfile from '../../components/administration/UserProfile';
 import { AuthContext } from '../../contexts/authContext';
 import { Role as RoleModel } from '../../models/Role';
 import { Role } from '../../utils/enums/Role';
+import CompanyDetails from '../../components/administration/CompanyDetails';
 
 interface AdministrationSetting extends AdministrationItemProps {
   roles: Role[];
@@ -50,7 +51,7 @@ const AdministrationPage: FC = () => {
       name: 'companyData',
       link: '/administration/company-data',
       roles: [Role.owner, Role.inspector],
-      component: <div>Company Data Component</div>,
+      component: <CompanyDetails />,
       onSelect: () => {},
     },
     {

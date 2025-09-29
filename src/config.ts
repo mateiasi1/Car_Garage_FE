@@ -9,4 +9,5 @@ export default {
   inspectorsUrl: '/inspectors',
   customersUrl: '/customers',
   adminApiUrl: import.meta.env.VITE_ADMIN_API_URL,
+  companiesUrl: '/company',
 };

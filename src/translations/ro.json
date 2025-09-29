@@ -116,6 +116,13 @@
     "passwordChangeError": "Schimbarea parolei a eșuat",
     "pageNotFound": "Pagina nu a fost găsită",
     "pageNotFoundDescription": "Pagina pe care o căutați nu există. Veți fi redirecționat către inspecții în 5 secunde.",
-    "backToInspections": "Mergi la Inspecții"
+    "backToInspections": "Mergi la Inspecții",
+    "name": "Nume",
+    "country": "Țară",
+    "city": "Oraș",
+    "zipcode": "Cod poștal",
+    "street": "Stradă",
+    "streetNumber": "Număr stradă",
+    "houseNumber": "Număr clădire"
   }
 }

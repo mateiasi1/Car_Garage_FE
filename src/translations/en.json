@@ -116,6 +116,13 @@
     "passwordChangeError": "Failed to change password",
     "pageNotFound": "Page Not Found",
     "pageNotFoundDescription": "The page you're looking for doesn't exist. You'll be redirected to inspections in 5 seconds.",
-    "backToInspections": "Go to Inspections"
+    "backToInspections": "Go to Inspections",
+    "name": "Name",
+    "country": "Country",
+    "city": "City",
+    "zipcode": "Zip Code",
+    "street": "Street",
+    "streetNumber": "Street Number",
+    "houseNumber": "House Number"
   }
 }
