@@ -9,13 +9,14 @@ import LoginPage from './pages/login/LoginPage';
 import ProtectedRoute from './ProtectedRoute';
 import { Role } from './utils/enums/Role';
 import NotFoundPage from './pages/notfound/NotFoundPage';
+import { routes } from './constants/routes';
 
 const AppRouter = () => {
   return (
     <Router>
       <Routes>
         <Route element={<AppLayout />}>
-          <Route path="/login" element={<LoginPage />} />
+          <Route path={routes.LOGIN} element={<LoginPage />} />
           <Route
             element={<ProtectedRoute element={<ProtectedLayout />} roles={[Role.admin, Role.owner, Role.inspector]} />}
           >
@@ -24,21 +25,21 @@ const AppRouter = () => {
               element={<ProtectedRoute element={<DashboardPage />} roles={[Role.admin, Role.inspector]} />}
             /> */}
             <Route
-              path="/inspections"
+              path={routes.INSPECTIONS}
               element={<ProtectedRoute element={<InspectionsPage />} roles={[Role.owner, Role.inspector]} />}
             />
             <Route
-              path="/administration"
+              path={routes.ADMINISTRATION}
               element={
                 <ProtectedRoute element={<AdministrationPage />} roles={[Role.admin, Role.owner, Role.inspector]} />
               }
             />
             <Route
-              path="/add-inspection"
+              path={routes.ADD_INSPECTION}
               element={<ProtectedRoute element={<InspectionForm />} roles={[Role.owner, Role.inspector]} />}
             />
             <Route
-              path="*"
+              path={routes.NOT_FOUND}
               element={<ProtectedRoute element={<NotFoundPage />} roles={[Role.admin, Role.owner, Role.inspector]} />}
             />
           </Route>

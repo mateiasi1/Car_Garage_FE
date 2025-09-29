@@ -1,8 +1,9 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { Routes, useNavigate } from 'react-router-dom';
 import wallpaper from '../../assets/login_wallpaper.jpg';
 import logo from '../../assets/logo.png';
+import { routes } from '../../constants/routes';
 import { AuthContext } from '../../contexts/authContext';
 import { Credentials } from '../../models/Credentials';
 import { useLoginMutation } from '../../rtk/services/auth-service';
@@ -20,7 +21,7 @@ const Login: FC = () => {
 
   useEffect(() => {
     if (isAuthenticated) {
-      navigate('/inspections');
+      navigate(routes.INSPECTIONS);
     }
   }, [isAuthenticated, navigate]);
 
@@ -55,7 +56,7 @@ const Login: FC = () => {
       }
 
       login({ accessToken: data.accessToken!, refreshToken: data.refreshToken! });
-      navigate('/inspections');
+      navigate(routes.INSPECTIONS);
     } catch (error) {
       showToast(t('wrongCredentials'), 'error');
     }
