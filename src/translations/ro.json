@@ -129,13 +129,17 @@
     "editInspector": "Editează inspector",
     "addCustomer": "Adaugă client",
     "editCustomer": "Editează client",
-    "inspectorUpdateSuccess": "Datele inspectorului au fost actualizate cu success",
+    "inspectorUpdateSuccess": "Datele inspectorului au fost actualizate cu succes",
     "inspectorCreateSuccess": "Datele inspectorului au fost salvate cu succes",
     "inspectorUpdateError": "Am întâmpinat o eroare în actualizarea datelor inspectorului",
     "inspectorCreateError": "Am întâmpinat o eroare în salvarea datelor inspectorului",
     "inspectorDeleteError": "Am întâmpinat o eroare în ștergerea datelor inspectorului",
     "inspectorDeleteSuccess": "Datele inspectorului au fost șterse cu succes",
     "delete": "Șterge",
-    "areYouSureDeleteInspector": "Această acțiune va șterge inspectorul și nu va putea fi anulată. Sunteți sigur că doriți să continuați?"
+    "areYouSureDeleteInspector": "Această acțiune va șterge inspectorul și nu va putea fi anulată. Sunteți sigur că doriți să continuați?",
+    "customerUpdateSuccess": "Datele clientului au fost actualizate cu succes",
+    "customerCreateSuccess": "Datele clientului au fost salvate cu succes",
+    "customerDeleteSuccess": "Datele clientului au fost șterse cu succes",
+    "areYouSureDeleteCustomer": "Această acțiune va șterge datele clientului și nu va putea fi anulată. Sunteți sigur că doriți să continuați?"
   }
 }

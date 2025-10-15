@@ -136,6 +136,10 @@
     "inspectorCreateError": "We have encountered an error creating the inspector",
     "inspectorDeleteError": "We have encountered an error deleting the inspector",
     "delete": "Delete",
-    "areYouSureDeleteInspector": "Are you sure you want to delete this inspector? This action cannot be undone."
+    "areYouSureDeleteInspector": "Are you sure you want to delete this inspector? This action cannot be undone.",
+    "customerUpdateSuccess": "Customer updated successfully",
+    "customerCreateSuccess": "Customer created successfully",
+    "customerDeleteSuccess": "Customer deleted successfully",
+    "areYouSureDeleteCustomer": "Are you sure you want to delete this customer? This action cannot be undone."
   }
 }

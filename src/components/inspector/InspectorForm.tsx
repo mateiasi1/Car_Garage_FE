@@ -116,6 +116,7 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
         const payload: UpdateInspectorDTO = { id, username, firstName, lastName, email: form.email || '' };
         await updateInspector(payload).unwrap();
         showToast(t('inspectorUpdateSuccess'), 'success');
+        onCloseDrawer();
       } else {
         const { username, firstName, lastName } = form;
         const payload: CreateInspectorDTO = {
@@ -127,6 +128,7 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
         };
         await createInspector(payload).unwrap();
         showToast(t('inspectorCreateSuccess'), 'success');
+        onCloseDrawer();
       }
     } catch (error) {
       showToast(isEdit ? t('inspectorUpdateError') : t('inspectorCreateError'), 'error');
@@ -172,22 +174,22 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
           </div>
 
           <div>
-            <label className="block font-semibold mb-1">{t('firstName')}</label>
+            <label className="block font-semibold mb-1">{t('lastName')}</label>
             <input
               type="text"
-              name="firstName"
-              value={form.firstName}
+              name="lastName"
+              value={form.lastName}
               onChange={handleChange}
               className={inputBaseClass}
             />
           </div>
 
           <div>
-            <label className="block font-semibold mb-1">{t('lastName')}</label>
+            <label className="block font-semibold mb-1">{t('firstName')}</label>
             <input
               type="text"
-              name="lastName"
-              value={form.lastName}
+              name="firstName"
+              value={form.firstName}
               onChange={handleChange}
               className={inputBaseClass}
             />

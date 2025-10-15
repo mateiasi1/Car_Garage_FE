@@ -4,26 +4,37 @@ import Drawer from '../shared/Drawer';
 import { PersonItemBase } from '../shared/PersonItem';
 import { PersonList } from '../shared/PersonList';
 import { t } from 'i18next';
+import CustomerForm from '../customer/CustomerForm';
+
+interface CustomerListItem extends PersonItemBase {
+  id: string;
+  phoneNumber: string;
+}
 
 const CustomersList: FC = () => {
   const { data: customers, error, isLoading } = useFetchAllCustomersQuery();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<PersonItemBase | null>(null);
+  const [selectedItem, setSelectedItem] = useState<CustomerListItem | null>(null);
 
   if (isLoading) return <p>Loading customers...</p>;
   if (error) return <p>Failed to load customers</p>;
 
-  const handleItemClick = (item: PersonItemBase) => {
+  const handleItemClick = (item: CustomerListItem) => {
     setSelectedItem(item);
     setDrawerOpen(true);
   };
 
-  const items: PersonItemBase[] =
+  const handleCloseDrawer = () => {
+    setDrawerOpen(false);
+    setSelectedItem(null);
+  };
+
+  const items: CustomerListItem[] =
     customers?.map((customer) => ({
       id: customer.id,
       firstName: customer.firstName,
       lastName: customer.lastName,
-      email: null,
+      email: undefined,
       phoneNumber: customer.phoneNumber,
     })) ?? [];
 
@@ -43,10 +54,10 @@ const CustomersList: FC = () => {
 
       <Drawer
         isOpen={drawerOpen}
-        onClose={() => setDrawerOpen(false)}
+        onClose={handleCloseDrawer}
         title={selectedItem ? t('editCustomer') : t('addCustomer')}
       >
-        <p>Drawer form</p>
+        <CustomerForm selectedCustomer={selectedItem} onCloseDrawer={handleCloseDrawer} />
       </Drawer>
     </div>
   );
