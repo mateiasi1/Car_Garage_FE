@@ -7,7 +7,7 @@ export const customerApi = createApi({
   reducerPath: 'customerApi',
   baseQuery: fetchBaseQuery({
     baseUrl: config.baseUrl,
-    prepareHeaders: prepareRequestHeaders,
+    prepareHeaders: (headers, { arg }) => prepareRequestHeaders(headers, arg),
     credentials: 'include',
   }),
   tagTypes: ['Customer'],

@@ -1,4 +1,5 @@
 import { FC } from 'react';
+import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
 
 interface ConfirmationModalProps {
@@ -14,7 +15,7 @@ const ConfirmationModal: FC<ConfirmationModalProps> = ({ open, title, message, o
 
   if (!open) return null;
 
-  return (
+  return createPortal(
     <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
       <div className="bg-white rounded-xl shadow-xl max-w-md w-full mx-4 p-6">
         <h2 className="text-lg font-semibold mb-2">{title}</h2>
@@ -34,7 +35,8 @@ const ConfirmationModal: FC<ConfirmationModalProps> = ({ open, title, message, o
           </button>
         </div>
       </div>
-    </div>
+    </div>,
+    document.body
   );
 };
 

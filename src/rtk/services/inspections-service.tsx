@@ -15,7 +15,7 @@ export const inspectionsApi = createApi({
   reducerPath: 'inspectionsApi',
   baseQuery: fetchBaseQuery({
     baseUrl: config.baseUrl,
-    prepareHeaders: prepareRequestHeaders,
+    prepareHeaders: (headers, { arg }) => prepareRequestHeaders(headers, arg),
     credentials: 'include',
   }),
   tagTypes: ['Inspections'],

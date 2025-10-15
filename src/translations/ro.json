@@ -91,6 +91,7 @@
     "wrongCredentials": "Nume de utilizator sau parolă incorecte",
     "profileInformation": "Informații profil",
     "changePassword": "Schimbă parola",
+    "password": "Parola",
     "currentPassword": "Parola curentă",
     "newPassword": "Parola nouă",
     "confirmPassword": "Confirmă parola nouă",
@@ -123,6 +124,18 @@
     "zipcode": "Cod poștal",
     "street": "Stradă",
     "streetNumber": "Număr stradă",
-    "houseNumber": "Număr clădire"
+    "houseNumber": "Număr clădire",
+    "addInspector": "Adaugă inspector",
+    "editInspector": "Editează inspector",
+    "addCustomer": "Adaugă client",
+    "editCustomer": "Editează client",
+    "inspectorUpdateSuccess": "Datele inspectorului au fost actualizate cu success",
+    "inspectorCreateSuccess": "Datele inspectorului au fost salvate cu succes",
+    "inspectorUpdateError": "Am întâmpinat o eroare în actualizarea datelor inspectorului",
+    "inspectorCreateError": "Am întâmpinat o eroare în salvarea datelor inspectorului",
+    "inspectorDeleteError": "Am întâmpinat o eroare în ștergerea datelor inspectorului",
+    "inspectorDeleteSuccess": "Datele inspectorului au fost șterse cu succes",
+    "delete": "Șterge",
+    "areYouSureDeleteInspector": "Această acțiune va șterge inspectorul și nu va putea fi anulată. Sunteți sigur că doriți să continuați?"
   }
 }

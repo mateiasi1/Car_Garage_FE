@@ -7,7 +7,7 @@ export const licensePlatePatternsApi = createApi({
   reducerPath: 'licensePlatePatternsApi',
   baseQuery: fetchBaseQuery({
     baseUrl: config.baseUrl,
-    prepareHeaders: prepareRequestHeaders,
+    prepareHeaders: (headers, { arg }) => prepareRequestHeaders(headers, arg),
     credentials: 'include',
   }),
   endpoints: (builder) => ({

@@ -7,7 +7,7 @@ export const adminApi = createApi({
   reducerPath: 'adminApi',
   baseQuery: fetchBaseQuery({
     baseUrl: `${config.baseUrl}${config.adminApiUrl}`,
-    prepareHeaders: prepareRequestHeaders,
+    prepareHeaders: (headers, { arg }) => prepareRequestHeaders(headers, arg),
     credentials: 'include',
   }),
   tagTypes: ['Admin'],

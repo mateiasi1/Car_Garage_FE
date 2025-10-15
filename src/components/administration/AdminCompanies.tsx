@@ -1,9 +1,11 @@
 import { FC } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useFetchAdminCompaniesQuery } from '../../rtk/services/admin-service';
 import { UserAvatar } from '../shared/UserAvatar';
 
 const AdminCompanies: FC = () => {
   const { data: companies, error, isLoading } = useFetchAdminCompaniesQuery();
+  const { t } = useTranslation();
 
   if (isLoading) return <p>Loading companies...</p>;
   if (error) {
@@ -17,6 +19,9 @@ const AdminCompanies: FC = () => {
 
   return (
     <div className="flex flex-col h-[calc(100vh-12rem)] pb-4">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-2xl font-heading">{t('companies')}</h2>
+      </div>
       <div className="flex-1 min-h-0 pr-4 overflow-y-auto space-y-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
         {companies?.map((company, index) => (
           <div

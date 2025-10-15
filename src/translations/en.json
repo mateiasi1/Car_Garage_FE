@@ -91,6 +91,7 @@
     "wrongCredentials": "Wrong username or password",
     "profileInformation": "Profile Information",
     "changePassword": "Change Password",
+    "password": "Password",
     "currentPassword": "Current Password",
     "newPassword": "New Password",
     "confirmPassword": "Confirm New Password",
@@ -123,6 +124,18 @@
     "zipcode": "Zip Code",
     "street": "Street",
     "streetNumber": "Street Number",
-    "houseNumber": "House Number"
+    "houseNumber": "House Number",
+    "addInspector": "Add Inspector",
+    "editInspector": "Edit Inspector",
+    "addCustomer": "Add Customer",
+    "editCustomer": "Edit Customer",
+    "inspectorUpdateSuccess": "Inspector saved successfully",
+    "inspectorCreateSuccess": "Inspector created successfully",
+    "inspectorDeleteSuccess": "Inspector deleted successfully",
+    "inspectorUpdateError": "We have encountered an error updating the inspector data",
+    "inspectorCreateError": "We have encountered an error creating the inspector",
+    "inspectorDeleteError": "We have encountered an error deleting the inspector",
+    "delete": "Delete",
+    "areYouSureDeleteInspector": "Are you sure you want to delete this inspector? This action cannot be undone."
   }
 }

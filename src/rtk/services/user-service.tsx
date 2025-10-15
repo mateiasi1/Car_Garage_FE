@@ -8,7 +8,7 @@ export const userApi = createApi({
   reducerPath: 'userApi',
   baseQuery: fetchBaseQuery({
     baseUrl: config.baseUrl,
-    prepareHeaders: prepareRequestHeaders,
+    prepareHeaders: (headers, { arg }) => prepareRequestHeaders(headers, arg),
     credentials: 'include',
   }),
   tagTypes: ['User'],

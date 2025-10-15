@@ -94,8 +94,8 @@ const AdministrationPage: FC = () => {
           </div>
         </div>
 
-        <div className="w-5/6 bg-white rounded-xl shadow-md p-6">
-          <h2 className="text-2xl font-heading mb-6">{t(selectedItem?.name ?? '')}</h2>
+        <div className="w-5/6 bg-white rounded-xl shadow-md p-6 ">
+
           <div className="h-full">{selectedItem?.component}</div>
         </div>
       </div>
