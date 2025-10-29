@@ -3,6 +3,7 @@ import config from '../../config';
 import { Customer } from '../../models/Customer';
 import { prepareRequestHeaders } from '../../utils/prepareRequestHeaders';
 import { CreateCustomerDTO, UpdateCustomerDTO } from '../../interfaces/customer.payload';
+import { UnsubscribeRequest, UnsubscribeResponse } from '../../models/Unsubscribe.ts';
 
 export const customerApi = createApi({
   reducerPath: 'customerApi',
@@ -43,13 +44,21 @@ export const customerApi = createApi({
       }),
       invalidatesTags: ['Customer'],
     }),
+  unsubscribe: builder.mutation<UnsubscribeResponse, UnsubscribeRequest>({
+      query: (data) => ({
+          url: `${config.customersUrl}/unsubscribe`,
+          method: 'POST',
+          body: data,
+      }),
+    }),
   }),
 });
 
 export const {
-  useFetchCustomerByIdQuery,
-  useFetchAllCustomersQuery,
-  useCreateCustomerMutation,
-  useUpdateCustomerMutation,
-  useDeleteCustomerMutation,
+    useFetchCustomerByIdQuery,
+    useFetchAllCustomersQuery,
+    useCreateCustomerMutation,
+    useUpdateCustomerMutation,
+    useDeleteCustomerMutation,
+    useUnsubscribeMutation
 } = customerApi;

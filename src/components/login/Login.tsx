@@ -1,6 +1,6 @@
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Routes, useNavigate } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import wallpaper from '../../assets/login_wallpaper.jpg';
 import logo from '../../assets/logo.png';
 import { routes } from '../../constants/routes';
