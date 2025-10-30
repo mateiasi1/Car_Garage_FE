@@ -10,6 +10,7 @@ import { setSelectedInspection } from '../../slices/inspectionSlice';
 import { InspectionType } from '../../utils/enums/InspectionTypes';
 import { showToast } from '../../utils/showToast';
 import ConfirmationModal from '../shared/ConfirmationModal';
+import { useSendInspectionReminderMutation } from '../../rtk/services/sms-service.tsx';
 
 type InspectionsTableBodyProps = {
   inspections: Inspection[];
@@ -22,6 +23,7 @@ const InspectionsTableBody: FC<InspectionsTableBodyProps> = ({ inspections, isLo
   const dispatch = useAppDispatch();
   const navigate = useNavigate();
   const [deleteInspection] = useDeleteInspectionMutation();
+  const [sendReminder] = useSendInspectionReminderMutation();
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState<boolean>(false);
   const selectedInspection = useAppSelector((state) => state.inspection.selectedInspection);
 
@@ -88,8 +90,17 @@ const InspectionsTableBody: FC<InspectionsTableBodyProps> = ({ inspections, isLo
     return '';
   };
 
-  const handleMessageClick = () => {
-    showToast('Should send SMS when implemented', 'info');
+  const handleMessageClick = async (inspectionId: string): Promise<void> => {
+      try {
+          const response = await sendReminder(inspectionId).unwrap();
+
+          showToast(
+              `SMS reminder sent successfully to ${response.data.customerName}`,
+              'success'
+          );
+      } catch (error) {
+          showToast(t('unknownError'), 'error');
+      }
   };
 
   const handleEditClick = (inspection: Inspection) => {
@@ -149,7 +160,7 @@ const InspectionsTableBody: FC<InspectionsTableBodyProps> = ({ inspections, isLo
             <FontAwesomeIcon
               icon={faMessage}
               className="text-blue-500 hover:text-blue-700 cursor-pointer"
-              onClick={handleMessageClick}
+              onClick={() => handleMessageClick(inspection.id)}
             />
             <FontAwesomeIcon
               icon={faPenToSquare}

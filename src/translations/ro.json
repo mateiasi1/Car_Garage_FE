@@ -140,6 +140,19 @@
     "customerUpdateSuccess": "Datele clientului au fost actualizate cu succes",
     "customerCreateSuccess": "Datele clientului au fost salvate cu succes",
     "customerDeleteSuccess": "Datele clientului au fost șterse cu succes",
-    "areYouSureDeleteCustomer": "Această acțiune va șterge datele clientului și nu va putea fi anulată. Sunteți sigur că doriți să continuați?"
+    "areYouSureDeleteCustomer": "Această acțiune va șterge datele clientului și nu va putea fi anulată. Sunteți sigur că doriți să continuați?",
+    "unsubscribe": {
+      "processing": "Procesăm cererea dvs...",
+      "pleaseWait": "Vă rugăm așteptați în timp ce vă dezabonăm de la notificări SMS",
+      "successTitle": "Dezabonat cu succes",
+      "successMessage": "Ați fost dezabonat cu succes de la notificări SMS.",
+      "successNote": "Nu veți mai primi mementouri despre inspecții prin SMS.",
+      "alreadyUnsubscribedTitle": "Deja dezabonat",
+      "alreadyUnsubscribedMessage": "Sunteți deja dezabonat de la notificări SMS.",
+      "errorTitle": "Oops! Ceva nu a mers bine",
+      "errorNote": "Dacă problema persistă, vă rugăm contactați suportul.",
+      "missingToken": "Link de dezabonare invalid sau lipsă. Vă rugăm folosiți link-ul din SMS.",
+      "genericError": "A apărut o eroare la procesarea cererii. Vă rugăm încercați din nou."
+    }
   }
 }
