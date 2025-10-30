@@ -1,4 +1,4 @@
-import { faBuilding, faIdCard, faPeopleGroup, faUsers } from '@fortawesome/free-solid-svg-icons';
+import { faBuilding, faIdCard, faPeopleGroup, faUsers, faStore } from '@fortawesome/free-solid-svg-icons';
 import { FC, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import AdminCompanies from '../../components/administration/AdminCompanies';
@@ -10,6 +10,7 @@ import { AuthContext } from '../../contexts/authContext';
 import { Role as RoleModel } from '../../models/Role';
 import { Role } from '../../utils/enums/Role';
 import CompanyDetails from '../../components/administration/CompanyDetails';
+import Packages from "../../components/administration/Packages.tsx";
 
 interface AdministrationSetting extends AdministrationItemProps {
   roles: Role[];
@@ -60,6 +61,14 @@ const AdministrationPage: FC = () => {
       link: '/administration/companies',
       roles: [Role.admin],
       component: <AdminCompanies />,
+      onSelect: () => {},
+    },
+    {
+      icon: faStore,
+      name: 'packages.name',
+      link: '/administration/packages',
+      roles: [Role.admin],
+      component: <Packages />,
       onSelect: () => {},
     },
   ];

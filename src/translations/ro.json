@@ -153,6 +153,26 @@
       "errorNote": "Dacă problema persistă, vă rugăm contactați suportul.",
       "missingToken": "Link de dezabonare invalid sau lipsă. Vă rugăm folosiți link-ul din SMS.",
       "genericError": "A apărut o eroare la procesarea cererii. Vă rugăm încercați din nou."
+    },
+    "packages": {
+      "name": "Pachete",
+      "activePackage": "Pachet Activ",
+      "packageName": "Nume Pachet",
+      "totalMessages": "Total Mesaje",
+      "usedMessages": "Mesaje Folosite",
+      "expiryDate": "Data Expirării",
+      "unlimited": "Nelimitat",
+      "notSet": "Nesetat",
+      "viewAllPackages": "Vezi Toate Pachetele",
+      "noActivePackage": "Fără Pachet Activ",
+      "availablePackages": "Pachete Disponibile",
+      "choosePackageDescription": "Alege pachetul perfect pentru nevoile afacerii tale",
+      "activeBadge": "Activ",
+      "unlimitedSMS": "SMS Nelimitate",
+      "smsPerMonth": "SMS/lună",
+      "currentPackage": "Pachet Curent",
+      "selectPackage": "Selectează Pachetul",
+      "purchaseNote": "Pentru a achiziționa un pachet, vă rugăm să contactați suportul sau trimiteți un email la suport@roadready.ro"
     }
   }
 }

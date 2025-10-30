@@ -153,6 +153,26 @@
       "errorNote": "If the problem persists, please contact support.",
       "missingToken": "Invalid or missing unsubscribe link. Please use the link from your SMS.",
       "genericError": "An error occurred while processing your request. Please try again."
+    },
+    "packages": {
+      "name": "Packages",
+      "activePackage": "Active Package",
+      "packageName": "Package Name",
+      "totalMessages": "Total Messages",
+      "usedMessages": "Used Messages",
+      "expiryDate": "Expiry Date",
+      "unlimited": "Unlimited",
+      "notSet": "Not Set",
+      "viewAllPackages": "View All Packages",
+      "noActivePackage": "No Active Package",
+      "availablePackages": "Available Packages",
+      "choosePackageDescription": "Choose the perfect package for your business needs",
+      "activeBadge": "Active",
+      "unlimitedSMS": "Unlimited SMS",
+      "smsPerMonth": "SMS/month",
+      "currentPackage": "Current Package",
+      "selectPackage": "Select Package",
+      "purchaseNote": "To purchase a package, please contact support or send an email to support@roadready.ro"
     }
   }
 }
