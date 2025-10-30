@@ -1,15 +1,10 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
-import config from '../../config';
-import { prepareRequestHeaders } from '../../utils/prepareRequestHeaders';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import { SendInspectionReminderResponse } from '../../models/SmsService.ts';
+import {baseQueryWithReAuth} from "../baseQuery.ts";
 
 export const smsApi = createApi({
     reducerPath: 'smsApi',
-    baseQuery: fetchBaseQuery({
-        baseUrl: config.baseUrl,
-        prepareHeaders: (headers, { arg }) => prepareRequestHeaders(headers, arg),
-        credentials: 'include',
-    }),
+    baseQuery: baseQueryWithReAuth,
     tagTypes: ['SMS'],
     endpoints: (builder) => ({
         sendInspectionReminder: builder.mutation<

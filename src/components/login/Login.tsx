@@ -55,7 +55,7 @@ const Login: FC = () => {
         return;
       }
 
-      login({ accessToken: data.accessToken!, refreshToken: data.refreshToken! });
+      login({ accessToken: data.accessToken! });
       navigate(routes.INSPECTIONS);
     } catch (error) {
       showToast(t('wrongCredentials'), 'error');
