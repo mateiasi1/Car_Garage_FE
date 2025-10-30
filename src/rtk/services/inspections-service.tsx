@@ -1,7 +1,7 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import config from '../../config';
 import { InspectionsResponse } from '../../models/InspectionsResponse';
-import { prepareRequestHeaders } from '../../utils/prepareRequestHeaders';
+import {baseQueryWithReAuth} from "../baseQuery.ts";
 
 export interface InspectionsFilters {
   page: number;
@@ -13,11 +13,7 @@ export interface InspectionsFilters {
 
 export const inspectionsApi = createApi({
   reducerPath: 'inspectionsApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: config.baseUrl,
-    prepareHeaders: (headers, { arg }) => prepareRequestHeaders(headers, arg),
-    credentials: 'include',
-  }),
+  baseQuery: baseQueryWithReAuth,
   tagTypes: ['Inspections'],
   endpoints: (builder) => ({
     fetchInspections: builder.query<InspectionsResponse, InspectionsFilters | void>({

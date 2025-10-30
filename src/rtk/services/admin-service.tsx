@@ -1,15 +1,11 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import config from '../../config';
 import { Company } from '../../models/Company';
-import { prepareRequestHeaders } from '../../utils/prepareRequestHeaders';
+import {createBaseQueryWithReAuth} from "../baseQuery.ts";
 
 export const adminApi = createApi({
   reducerPath: 'adminApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: `${config.baseUrl}${config.adminApiUrl}`,
-    prepareHeaders: (headers, { arg }) => prepareRequestHeaders(headers, arg),
-    credentials: 'include',
-  }),
+  baseQuery: createBaseQueryWithReAuth(`${config.baseUrl}${config.adminApiUrl}`),
   tagTypes: ['Admin'],
   endpoints: (builder) => ({
     fetchAdminCompanies: builder.query<Company[], void>({

@@ -1,17 +1,13 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import config from '../../config';
 import { Customer } from '../../models/Customer';
-import { prepareRequestHeaders } from '../../utils/prepareRequestHeaders';
 import { CreateCustomerDTO, UpdateCustomerDTO } from '../../interfaces/customer.payload';
 import { UnsubscribeRequest, UnsubscribeResponse } from '../../models/Unsubscribe.ts';
+import { baseQueryWithReAuth } from "../baseQuery.ts";
 
 export const customerApi = createApi({
   reducerPath: 'customerApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: config.baseUrl,
-    prepareHeaders: (headers, { arg }) => prepareRequestHeaders(headers, arg),
-    credentials: 'include',
-  }),
+  baseQuery: baseQueryWithReAuth,
   tagTypes: ['Customer'],
   endpoints: (builder) => ({
     fetchCustomerById: builder.query({

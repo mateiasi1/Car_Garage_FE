@@ -1,16 +1,12 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import config from '../../config';
 import { CreateInspectorDTO, UpdateInspectorDTO } from '../../interfaces/inspector.payload';
 import { User } from '../../models/User';
-import { prepareRequestHeaders } from '../../utils/prepareRequestHeaders';
+import { baseQueryWithReAuth } from "../baseQuery.ts";
 
 export const inspectorApi = createApi({
   reducerPath: 'inspectorApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: config.baseUrl,
-    prepareHeaders: (headers, { arg }) => prepareRequestHeaders(headers, arg),
-    credentials: 'include',
-  }),
+  baseQuery: baseQueryWithReAuth,
   tagTypes: ['Inspector'],
   endpoints: (builder) => ({
     fetchInspectors: builder.query<User[], void>({

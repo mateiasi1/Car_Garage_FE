@@ -1,16 +1,12 @@
-import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import { createApi } from '@reduxjs/toolkit/query/react';
 import config from '../../config';
 import { User } from '../../models/User';
-import { prepareRequestHeaders } from '../../utils/prepareRequestHeaders';
 import ChangePasswordDTO from '../../dto/ChangePasswordDTO';
+import {baseQueryWithReAuth} from "../baseQuery.ts";
 
 export const userApi = createApi({
   reducerPath: 'userApi',
-  baseQuery: fetchBaseQuery({
-    baseUrl: config.baseUrl,
-    prepareHeaders: (headers, { arg }) => prepareRequestHeaders(headers, arg),
-    credentials: 'include',
-  }),
+  baseQuery: baseQueryWithReAuth,
   tagTypes: ['User'],
   endpoints: (builder) => ({
     fetchUserProfile: builder.query<User, void>({
