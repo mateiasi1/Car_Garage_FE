@@ -1,6 +1,6 @@
 import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import config from '../../config';
-import { Company } from '../../models/Company';
+import {Company, UpdatePackageRequest, UpdatePackageResponse} from '../../models/Company';
 import { prepareRequestHeaders } from '../../utils/prepareRequestHeaders';
 
 export const companyApi = createApi({
@@ -17,7 +17,14 @@ export const companyApi = createApi({
         method: 'GET',
       }),
     }),
+    updatePackage: builder.mutation<UpdatePackageResponse, UpdatePackageRequest>({
+      query: (body) => ({
+          url: '/company/package',
+          method: 'PUT',
+          body,
+      }),
+    }),
   }),
 });
 
-export const { useFetchCompaniesQuery } = companyApi;
+export const { useFetchCompaniesQuery, useUpdatePackageMutation } = companyApi;

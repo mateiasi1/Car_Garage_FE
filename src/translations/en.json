@@ -172,7 +172,21 @@
       "smsPerMonth": "SMS/month",
       "currentPackage": "Current Package",
       "selectPackage": "Select Package",
-      "purchaseNote": "To purchase a package, please contact support or send an email to support@roadready.ro"
+      "purchaseNote": "To purchase a package, please contact support or send an email to support@example.com",
+      "selectPackageTitle": "Select Package",
+      "choosePackage": "Choose Package",
+      "selectPeriod": "Select Period",
+      "monthly": "Monthly",
+      "yearly": "Yearly (Save 2 months)",
+      "save": "Save",
+      "period": "Period",
+      "1month": "1 month",
+      "12months": "12 months",
+      "totalPrice": "Total Price",
+      "extendInfo": "You are extending your current package",
+      "processing": "Processing...",
+      "updateSuccess": "Package updated successfully!",
+      "updateError": "Failed to update package. Please try again."
     }
   }
 }

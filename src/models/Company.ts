@@ -62,12 +62,14 @@ export interface Company {
 }
 
 export interface UpdatePackageRequest {
-    action: 'upgrade' | 'extend';
-    packageId?: string;
-    period?: 'monthly' | 'yearly';
+    packageId: string;
+    companyId: string;
+    period: 'monthly' | 'yearly';
 }
 
 export interface UpdatePackageResponse {
     message: string;
     subscription: CompanyPackage;
+    price: number;
+    months: number;
 }

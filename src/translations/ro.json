@@ -172,7 +172,21 @@
       "smsPerMonth": "SMS/lună",
       "currentPackage": "Pachet Curent",
       "selectPackage": "Selectează Pachetul",
-      "purchaseNote": "Pentru a achiziționa un pachet, vă rugăm să contactați suportul sau trimiteți un email la suport@roadready.ro"
+      "purchaseNote": "Pentru a achiziționa un pachet, vă rugăm să contactați suportul sau trimiteți un email la suport@example.com",
+      "selectPackageTitle": "Selectează Pachet",
+      "choosePackage": "Alege Pachetul",
+      "selectPeriod": "Selectează Perioada",
+      "monthly": "Lunar",
+      "yearly": "Anual (Economisești 2 luni)",
+      "save": "Economisești",
+      "period": "Perioadă",
+      "1month": "1 lună",
+      "12months": "12 luni",
+      "totalPrice": "Preț Total",
+      "extendInfo": "Extinzi pachetul actual",
+      "processing": "Se procesează...",
+      "updateSuccess": "Pachetul a fost actualizat cu succes!",
+      "updateError": "Eroare la actualizarea pachetului. Te rugăm să încerci din nou."
     }
   }
 }
