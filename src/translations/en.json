@@ -172,7 +172,7 @@
       "smsPerMonth": "SMS/month",
       "currentPackage": "Current Package",
       "selectPackage": "Select Package",
-      "purchaseNote": "To purchase a package, please contact support or send an email to support@example.com",
+      "purchaseNote": "To purchase a package, please contact support or send an email to contact@roadready.ro",
       "selectPackageTitle": "Select Package",
       "choosePackage": "Choose Package",
       "selectPeriod": "Select Period",
@@ -187,6 +187,144 @@
       "processing": "Processing...",
       "updateSuccess": "Package updated successfully!",
       "updateError": "Failed to update package. Please try again."
+    }
+  },
+  "home": {
+    "loginButton": "Login",
+    "hero": {
+      "title": "Manage Your ITP Inspections Efficiently",
+      "subtitle": "Complete management system for ITP stations. Track inspections, manage clients, and never miss an expiration date.",
+      "cta": "Get Started"
+    },
+    "features": {
+      "stations": {
+        "title": "Station Management",
+        "description": "Complete control over your ITP stations. View statistics, manage packages, and monitor performance."
+      },
+      "inspections": {
+        "title": "Inspection Tracking",
+        "description": "Record and manage all technical inspections with detailed client and vehicle information."
+      },
+      "notifications": {
+        "title": "Automatic Notifications",
+        "description": "Clients receive automatic reminders when their inspection is about to expire. Never lose a customer again."
+      }
+    },
+    "contact": {
+      "title": "Want to Collaborate?",
+      "description": "We're always looking for partnerships with ITP stations. Contact us to discuss how we can work together.",
+      "button": "Contact Us"
+    },
+    "footer": {
+      "rights": "All rights reserved.",
+      "terms": "Terms & Conditions",
+      "contact": "Contact"
+    }
+  },
+  "terms": {
+    "title": "Terms and Conditions",
+    "lastUpdated": "Last Updated",
+    "backToHome": "← Back to Home",
+    "agreement": "By using RoadReady, you agree to these Terms and Conditions and acknowledge that you have read and understood our GDPR compliance measures.",
+    "sections": {
+      "intro": {
+        "title": "1. Introduction",
+        "content": {
+          "p1": "Welcome to RoadReady, a management platform for ITP (Periodic Technical Inspection) stations. By accessing or using our service, you agree to be bound by these Terms and Conditions.",
+          "p2": "These terms apply to all users of the platform: administrators, station owners, and inspectors."
+        }
+      },
+      "service": {
+        "title": "2. Service Description",
+        "content": {
+          "p1": "RoadReady is a comprehensive management system designed specifically for ITP stations. Our platform provides:",
+          "features": {
+            "f1": "Station management and performance monitoring",
+            "f2": "Inspector account creation and management",
+            "f3": "Detailed inspection record keeping",
+            "f4": "Client and vehicle data management"
+          }
+        }
+      },
+      "data": {
+        "title": "3. Data Collection and Processing",
+        "content": {
+          "p1": "Our platform collects and processes the following types of data:",
+          "types": {
+            "t1": "User account information (username, email, role)",
+            "t2": "Company information (station name, location, contact details)",
+            "t3": "Client personal data (name, phone number, address)",
+            "t4": "Vehicle information (make, model, license plate, VIN, inspection results)"
+          },
+          "p2": "All data is collected with the explicit consent of users and is processed in accordance with GDPR regulations and Romanian data protection laws."
+        }
+      },
+      "gdpr": {
+        "title": "4. GDPR Compliance",
+        "rights": {
+          "title": "Your Rights Under GDPR",
+          "r1": "Right to Access: Request access to your personal data",
+          "r2": "Right to Rectification: Request correction of inaccurate data",
+          "r3": "Right to Erasure: Request deletion of your data ('right to be forgotten')",
+          "r4": "Right to Restriction: Request limitation of data processing",
+          "r5": "Right to Data Portability: Receive your data in a structured format",
+          "r6": "Right to Object: Object to processing of your personal data"
+        },
+        "legal": {
+          "title": "Legal Basis for Processing",
+          "content": "We process personal data based on: (1) Consent - when you agree to use our services, (2) Contractual necessity - to fulfill our obligations to you, (3) Legal obligation - to comply with Romanian and EU regulations regarding ITP inspections, (4) Legitimate interests - to improve our services and ensure security."
+        },
+        "retention": {
+          "title": "Data Retention",
+          "content": "Personal data is retained for as long as necessary to provide our services and comply with legal obligations. Inspection records are retained according to Romanian legal requirements for ITP documentation. You may request deletion of your data at any time, subject to legal retention requirements."
+        },
+        "security": {
+          "title": "Data Security Measures",
+          "content": "We implement industry-standard security measures including encryption (HTTPS/TLS), secure authentication (bcrypt password hashing), role-based access control, regular security audits, and secure data backup procedures."
+        }
+      },
+      "security": {
+        "title": "5. Data Security",
+        "content": {
+          "p1": "We take data security seriously and implement multiple layers of protection:",
+          "measures": {
+            "m1": "End-to-end HTTPS encryption for all data transmission",
+            "m2": "Secure password storage using industry-standard hashing algorithms",
+            "m3": "Role-based access control to ensure data is only accessible to authorized users",
+            "m4": "Regular security audits and updates to maintain protection against emerging threats"
+          }
+        }
+      },
+      "responsibilities": {
+        "title": "6. User Responsibilities",
+        "content": {
+          "r1": "Maintain the confidentiality of your account credentials",
+          "r2": "Ensure accuracy of data entered into the system",
+          "r3": "Comply with Romanian regulations regarding ITP inspections",
+          "r4": "Obtain proper consent before entering client personal data",
+          "r5": "Report any security concerns or data breaches immediately"
+        }
+      },
+      "liability": {
+        "title": "7. Limitation of Liability",
+        "content": "RoadReady provides the platform 'as is' and cannot be held liable for: data loss due to user error, unauthorized access due to compromised credentials, incorrect data entered by users, or non-compliance with ITP regulations by users. We maintain reasonable measures to protect data but cannot guarantee absolute security."
+      },
+      "changes": {
+        "title": "8. Changes to Terms",
+        "content": "We reserve the right to modify these Terms and Conditions at any time. Users will be notified of significant changes via email or platform notification. Continued use of the platform after changes constitutes acceptance of the new terms."
+      },
+      "contact": {
+        "title": "9. Contact Information",
+        "content": "For questions about these Terms and Conditions, GDPR requests, or any other concerns, please contact us:",
+        "email": "Email",
+        "address": "Address"
+      }
+    }
+  },
+  "login": {
+    "termsInfo": {
+      "prefix": "By using this application, you agree to our",
+      "link": "Terms and Conditions"
     }
   }
 }

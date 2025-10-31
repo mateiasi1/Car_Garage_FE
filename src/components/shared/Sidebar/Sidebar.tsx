@@ -1,4 +1,4 @@
-import { faChartSimple, faClipboardList, faGear } from '@fortawesome/free-solid-svg-icons';
+import { faClipboardList, faGear } from '@fortawesome/free-solid-svg-icons';
 import { FC, useContext } from 'react';
 import { AuthContext } from '../../../contexts/authContext';
 import { Role as RoleModel } from '../../../models/Role';

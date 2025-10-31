@@ -9,7 +9,6 @@
     "recaptchaTitle": "Recaptcha este necesară",
     "services": "Servicii",
     "about": "Despre",
-    "home": "Acasă",
     "contact": "Contact",
     "profile": "Profil",
     "settings": "Setări",
@@ -172,7 +171,7 @@
       "smsPerMonth": "SMS/lună",
       "currentPackage": "Pachet Curent",
       "selectPackage": "Selectează Pachetul",
-      "purchaseNote": "Pentru a achiziționa un pachet, vă rugăm să contactați suportul sau trimiteți un email la suport@example.com",
+      "purchaseNote": "Pentru a achiziționa un pachet, vă rugăm să contactați suportul sau trimiteți un email la contact@roadready.ro",
       "selectPackageTitle": "Selectează Pachet",
       "choosePackage": "Alege Pachetul",
       "selectPeriod": "Selectează Perioada",
@@ -187,6 +186,144 @@
       "processing": "Se procesează...",
       "updateSuccess": "Pachetul a fost actualizat cu succes!",
       "updateError": "Eroare la actualizarea pachetului. Te rugăm să încerci din nou."
+    },
+    "home": {
+      "loginButton": "Autentificare",
+      "hero": {
+        "title": "Gestionează Eficient Inspecțiile ITP",
+        "subtitle": "Sistem complet de management pentru stații ITP. Urmărește inspecții, gestionează clienți și nu rata nicio expirare.",
+        "cta": "Începe Acum"
+      },
+      "features": {
+        "stations": {
+          "title": "Gestionare Stații",
+          "description": "Control complet asupra stațiilor ITP. Vezi statistici, gestionează pachete și monitorizează performanța."
+        },
+        "inspections": {
+          "title": "Urmărire Inspecții",
+          "description": "Înregistrează și gestionează toate inspecțiile tehnice cu informații detaliate despre clienți și vehicule."
+        },
+        "notifications": {
+          "title": "Notificări Automate",
+          "description": "Clienții primesc memento-uri automate când inspectia lor urmează să expire. Nu mai pierzi niciun client."
+        }
+      },
+      "contact": {
+        "title": "Vrei să Colaborăm?",
+        "description": "Suntem mereu în căutare de parteneriate cu stații ITP. Contactează-ne pentru a discuta cum putem lucra împreună.",
+        "button": "Contactează-ne"
+      },
+      "footer": {
+        "rights": "Toate drepturile rezervate.",
+        "terms": "Termeni și Condiții",
+        "contact": "Contact"
+      }
+    },
+    "terms": {
+      "title": "Termeni și Condiții",
+      "lastUpdated": "Ultima actualizare",
+      "backToHome": "← Înapoi la Pagina Principală",
+      "agreement": "Prin utilizarea RoadReady, sunteți de acord cu acești Termeni și Condiții și recunoașteți că ați citit și înțeles măsurile noastre de conformitate GDPR.",
+      "sections": {
+        "intro": {
+          "title": "1. Introducere",
+          "content": {
+            "p1": "Bine ați venit la RoadReady, o platformă de management pentru stații ITP (Inspecție Tehnică Periodică). Prin accesarea sau utilizarea serviciului nostru, sunteți de acord să fiți obligat de acești Termeni și Condiții.",
+            "p2": "Acești termeni se aplică tuturor utilizatorilor platformei: administratori, proprietari de stații și inspectori."
+          }
+        },
+        "service": {
+          "title": "2. Descrierea Serviciului",
+          "content": {
+            "p1": "RoadReady este un sistem complet de management conceput special pentru stațiile ITP. Platforma noastră oferă:",
+            "features": {
+              "f1": "Gestionarea stațiilor și monitorizarea performanței",
+              "f2": "Crearea și gestionarea conturilor de inspector",
+              "f3": "Păstrarea detaliată a înregistrărilor de inspecție",
+              "f4": "Gestionarea datelor despre clienți și vehicule"
+            }
+          }
+        },
+        "data": {
+          "title": "3. Colectarea și Procesarea Datelor",
+          "content": {
+            "p1": "Platforma noastră colectează și procesează următoarele tipuri de date:",
+            "types": {
+              "t1": "Informații cont utilizator (nume utilizator, email, rol)",
+              "t2": "Informații companie (nume stație, locație, date de contact)",
+              "t3": "Date personale client (nume, număr telefon, adresă)",
+              "t4": "Informații vehicul (marcă, model, număr înmatriculare, VIN, rezultate inspecție)"
+            },
+            "p2": "Toate datele sunt colectate cu consimțământul explicit al utilizatorilor și sunt procesate în conformitate cu reglementările GDPR și legile române de protecție a datelor."
+          }
+        },
+        "gdpr": {
+          "title": "4. Conformitate GDPR",
+          "rights": {
+            "title": "Drepturile Dvs. Conform GDPR",
+            "r1": "Dreptul de acces: Solicitați acces la datele dumneavoastră personale",
+            "r2": "Dreptul la rectificare: Solicitați corectarea datelor inexacte",
+            "r3": "Dreptul la ștergere: Solicitați ștergerea datelor ('dreptul de a fi uitat')",
+            "r4": "Dreptul la restricționare: Solicitați limitarea procesării datelor",
+            "r5": "Dreptul la portabilitatea datelor: Primiți datele într-un format structurat",
+            "r6": "Dreptul de opoziție: Opuneți-vă procesării datelor personale"
+          },
+          "legal": {
+            "title": "Baza Legală pentru Procesare",
+            "content": "Procesăm datele personale pe baza: (1) Consimțământului - când sunteți de acord să utilizați serviciile noastre, (2) Necesitate contractuală - pentru a ne îndeplini obligațiile față de dumneavoastră, (3) Obligație legală - pentru a respecta reglementările române și UE privind inspecțiile ITP, (4) Interese legitime - pentru a îmbunătăți serviciile și asigura securitatea."
+          },
+          "retention": {
+            "title": "Păstrarea Datelor",
+            "content": "Datele personale sunt păstrate atât timp cât este necesar pentru furnizarea serviciilor noastre și conformarea cu obligațiile legale. Înregistrările de inspecție sunt păstrate conform cerințelor legale românești pentru documentația ITP. Puteți solicita ștergerea datelor în orice moment, sub rezerva cerințelor legale de păstrare."
+          },
+          "security": {
+            "title": "Măsuri de Securitate a Datelor",
+            "content": "Implementăm măsuri de securitate standard în industrie, incluzând criptare (HTTPS/TLS), autentificare securizată (hashing bcrypt pentru parole), control al accesului bazat pe roluri, audituri regulate de securitate și proceduri securizate de backup."
+          }
+        },
+        "security": {
+          "title": "5. Securitatea Datelor",
+          "content": {
+            "p1": "Luăm securitatea datelor în serios și implementăm multiple niveluri de protecție:",
+            "measures": {
+              "m1": "Criptare HTTPS end-to-end pentru toată transmiterea datelor",
+              "m2": "Stocare securizată a parolelor folosind algoritmi de hashing standard",
+              "m3": "Control al accesului bazat pe roluri pentru a asigura accesul doar utilizatorilor autorizați",
+              "m4": "Audituri regulate de securitate și actualizări pentru menținerea protecției împotriva amenințărilor emergente"
+            }
+          }
+        },
+        "responsibilities": {
+          "title": "6. Responsabilități Utilizatori",
+          "content": {
+            "r1": "Mențineți confidențialitatea credențialelor contului",
+            "r2": "Asigurați acuratețea datelor introduse în sistem",
+            "r3": "Respectați reglementările române privind inspecțiile ITP",
+            "r4": "Obțineți consimțământul adecvat înainte de a introduce date personale ale clienților",
+            "r5": "Raportați imediat orice probleme de securitate sau încălcări de date"
+          }
+        },
+        "liability": {
+          "title": "7. Limitarea Răspunderii",
+          "content": "RoadReady furnizează platforma 'ca atare' și nu poate fi ținută responsabilă pentru: pierderea datelor din cauza erorii utilizatorului, acces neautorizat din cauza credențialelor compromise, date incorecte introduse de utilizatori sau nerespectarea reglementărilor ITP de către utilizatori. Menținem măsuri rezonabile pentru protejarea datelor, dar nu putem garanta securitate absolută."
+        },
+        "changes": {
+          "title": "8. Modificări ale Termenilor",
+          "content": "Ne rezervăm dreptul de a modifica acești Termeni și Condiții în orice moment. Utilizatorii vor fi notificați despre modificările semnificative prin email sau notificare pe platformă. Utilizarea continuă a platformei după modificări constituie acceptarea noilor termeni."
+        },
+        "contact": {
+          "title": "9. Informații de Contact",
+          "content": "Pentru întrebări despre acești Termeni și Condiții, cereri GDPR sau alte preocupări, vă rugăm să ne contactați:",
+          "email": "Email",
+          "address": "Adresă"
+        }
+      }
+    },
+    "login": {
+      "termsInfo": {
+        "prefix": "Prin utilizarea acestei aplicații, sunteți de acord cu",
+        "link": "Termenii și Condițiile"
+      }
     }
   }
 }
