@@ -11,6 +11,8 @@ import { Role } from './utils/enums/Role';
 import NotFoundPage from './pages/notfound/NotFoundPage';
 import { routes } from './constants/routes';
 import Unsubscribe from "./components/unsubscribe/Unsubscribe.tsx";
+import HomePage from "./pages/home/homePage.tsx";
+import TermsPage from "./pages/terms/TermsPage.tsx";
 
 const AppRouter = () => {
     return (
@@ -18,6 +20,8 @@ const AppRouter = () => {
             <Routes>
                 {/* PUBLIC ROUTES  */}
                 <Route path={routes.UNSUBSCRIBE} element={<Unsubscribe />} />
+                <Route path={routes.HOME} element={<HomePage />} />
+                <Route path={routes.TERMS} element={<TermsPage />} />
 
                 {/* AUTHENTICATED ROUTES */}
                 <Route element={<AppLayout />}>

@@ -1,11 +1,8 @@
-import Layout from '../layout/Layout';
-import Home from '../../components/home/home';
+import About from "../../components/home/about.tsx";
 
 const HomePage = () => {
   return (
-    <Layout>
-      <Home />
-    </Layout>
+      <About />
   );
 };
 
