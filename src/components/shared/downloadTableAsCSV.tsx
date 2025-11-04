@@ -1,7 +1,7 @@
 
 
 // Function to convert array of objects to CSV format
-const convertToCSV = (data: any) => {
+const convertToCSV = (data: any[]) => {
     const header = Object.keys(data[0]).join(',') + '\n';
     const csv = data.map(item => Object.values(item).join(',')).join('\n');
     return header + csv;
