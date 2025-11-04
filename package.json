@@ -3,12 +3,12 @@
   "private": true,
   "version": "0.0.0",
   "type": "module",
-  "scripts": {
-    "start:dev": "vite && webpack --env.ENVIRONMENT=development --config webpack.config.dev.js",
-    "build": "tsc && vite build && webpack --env.ENVIRONMENT=production --config webpack.config.build.js",
-    "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
-  },
+ "scripts": {
+  "start:dev": "vite && webpack --env ENVIRONMENT=development --config webpack.config.dev.js",
+  "build": "tsc && vite build && webpack --env ENVIRONMENT=production --config webpack.config.build.js",
+  "lint": "eslint . --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+  "preview": "vite preview"
+},
   "dependencies": {
     "@fortawesome/fontawesome-svg-core": "^6.5.2",
     "@fortawesome/free-solid-svg-icons": "^6.5.2",
