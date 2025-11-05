@@ -1,10 +1,28 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFetchAdminCompaniesQuery } from '../../rtk/services/admin-service';
-import { UserAvatar } from '../shared/UserAvatar';
+import { useFetchPackagesQuery } from '../../rtk/services/package-service'; // <- package service hook
+import CompanyForm from '../company/CompanyForm';
+import Drawer from '../shared/Drawer';
+import { PersonItemBase } from '../shared/PersonItem';
+import { PersonList } from '../shared/PersonList';
+
+interface CompanyListItem extends PersonItemBase {
+  id: string;
+  name: string;
+  phoneNumber: string;
+  country: string;
+  city: string;
+  street: string;
+  streetNumber?: string;
+  houseNumber?: string;
+}
 
 const AdminCompanies: FC = () => {
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [selectedItem, setSelectedItem] = useState<CompanyListItem | null>(null);
   const { data: companies, error, isLoading } = useFetchAdminCompaniesQuery();
+  const { data: packages } = useFetchPackagesQuery(); // fetch packages once here
   const { t } = useTranslation();
 
   if (isLoading) return <p>Loading companies...</p>;
@@ -13,39 +31,48 @@ const AdminCompanies: FC = () => {
     return <p>Failed to load companies</p>;
   }
 
-  const onClick = () => {
-    console.log('clicked a company');
+  const handleClick = (item: CompanyListItem) => {
+    setDrawerOpen(true);
+    setSelectedItem(item);
   };
+
+  const handleCloseDrawer = () => {
+    setDrawerOpen(false);
+    setSelectedItem(null);
+  };
+
+  const items: CompanyListItem[] =
+    companies?.map((company) => ({
+      id: company.id,
+      firstName: company.name,
+      name: company.name,
+      email: company.email,
+      phoneNumber: company.phoneNumber || '',
+      lastName: '',
+      country: company.country,
+      city: company.city,
+      street: company.street,
+      streetNumber: company.streetNumber,
+      houseNumber: company.houseNumber,
+    })) ?? [];
 
   return (
     <div className="flex flex-col h-[calc(100vh-12rem)] pb-4">
       <div className="flex items-center justify-between mb-4">
         <h2 className="text-2xl font-heading">{t('companies')}</h2>
+        <button
+          className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover transition-colors"
+          onClick={() => setDrawerOpen(true)}
+        >
+          {t('addCompany')}
+        </button>
       </div>
-      <div className="flex-1 min-h-0 pr-4 overflow-y-auto space-y-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
-        {companies?.map((company, index) => (
-          <div
-            onClick={onClick}
-            key={company.id}
-            className={`flex items-center gap-4 border-l-4 border-primary p-4 cursor-pointer hover:bg-gray-100/40 transition-colors duration-200
-                  ${!(index === companies.length - 1) ? 'shadow-[0_1px_0_rgba(0,0,0,0.05)]' : ''}`}
-          >
-            <UserAvatar firstName={company.name} />
-            <div className="flex flex-col">
-              <span className="font-heading text-text text-base">{company.name}</span>
-              <span className="text-sm text-gray-500 flex items-center gap-2">
-                {company.country}
-                <span className="inline-block w-1 h-1 rounded-full bg-gray-400" />
-                {company.city}
-                <span className="inline-block w-1 h-1 rounded-full bg-gray-400" />
-                {company.street} {company.streetNumber && <>{company.streetNumber}</>}
-                <span className="inline-block w-1 h-1 rounded-full bg-gray-400" />
-                {company.phoneNumber && <>{`Tel: ${company.phoneNumber}`}</>}
-              </span>
-            </div>
-          </div>
-        ))}
-      </div>
+
+      <PersonList items={items} onItemClick={handleClick} />
+
+      <Drawer isOpen={drawerOpen} onClose={handleCloseDrawer} title={selectedItem ? t('editCompany') : t('addCompany')}>
+        <CompanyForm selectedCompany={selectedItem} onCloseDrawer={handleCloseDrawer} packages={packages} />
+      </Drawer>
     </div>
   );
 };
