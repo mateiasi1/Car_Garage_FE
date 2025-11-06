@@ -1,9 +1,9 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import config from '../../config';
-import { Customer } from '../../models/Customer';
 import { CreateCustomerDTO, UpdateCustomerDTO } from '../../interfaces/customer.payload';
+import { Customer } from '../../models/Customer';
 import { UnsubscribeRequest, UnsubscribeResponse } from '../../models/Unsubscribe.ts';
-import { baseQueryWithReAuth } from "../baseQuery.ts";
+import { baseQueryWithReAuth } from '../baseQuery.ts';
 
 export const customerApi = createApi({
   reducerPath: 'customerApi',
@@ -37,24 +37,25 @@ export const customerApi = createApi({
       query: (customerId) => ({
         url: `${config.customersUrl}/${customerId}`,
         method: 'DELETE',
+        body: {},
       }),
       invalidatesTags: ['Customer'],
     }),
-  unsubscribe: builder.mutation<UnsubscribeResponse, UnsubscribeRequest>({
+    unsubscribe: builder.mutation<UnsubscribeResponse, UnsubscribeRequest>({
       query: (data) => ({
-          url: `${config.customersUrl}/unsubscribe`,
-          method: 'POST',
-          body: data,
+        url: `${config.customersUrl}/unsubscribe`,
+        method: 'POST',
+        body: data,
       }),
     }),
   }),
 });
 
 export const {
-    useFetchCustomerByIdQuery,
-    useFetchAllCustomersQuery,
-    useCreateCustomerMutation,
-    useUpdateCustomerMutation,
-    useDeleteCustomerMutation,
-    useUnsubscribeMutation
+  useFetchCustomerByIdQuery,
+  useFetchAllCustomersQuery,
+  useCreateCustomerMutation,
+  useUpdateCustomerMutation,
+  useDeleteCustomerMutation,
+  useUnsubscribeMutation,
 } = customerApi;

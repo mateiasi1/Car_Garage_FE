@@ -1,12 +1,11 @@
 import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Error } from '../../interfaces/error';
-import { Package } from '../../models/Package';
 import {
   useCreateCompanyMutation,
   useDeleteCompanyMutation,
   useUpdateCompanyMutation,
-} from '../../rtk/services/admin-service';
+} from '../../rtk/services/company-service';
 import { showToast } from '../../utils/showToast';
 import ConfirmationModal from '../shared/ConfirmationModal';
 import { DangerButton } from '../shared/DangerButton';
@@ -15,7 +14,6 @@ import { PrimaryButton } from '../shared/PrimaryButton';
 interface CompanyFormProps {
   selectedCompany: Partial<CompanyFormState> | null;
   onCloseDrawer: () => void;
-  packages?: Package[];
 }
 
 type CompanyFormState = {
@@ -28,9 +26,7 @@ type CompanyFormState = {
   street: string;
   streetNumber?: string;
   houseNumber?: string;
-  zipcode?: string; // New optional field
-  packageId?: string;
-  period?: 'monthly' | 'yearly';
+  zipcode?: string;
 };
 
 const initialState: CompanyFormState = {
@@ -42,16 +38,14 @@ const initialState: CompanyFormState = {
   street: '',
   streetNumber: '',
   houseNumber: '',
-  zipcode: '', // Initialize the new field
-  packageId: '',
-  period: 'monthly',
+  zipcode: '',
 };
 
-const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer, packages }) => {
+const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) => {
   const { t } = useTranslation();
   const [createCompany, { isLoading: isCreating }] = useCreateCompanyMutation();
   const [updateCompany, { isLoading: isUpdating }] = useUpdateCompanyMutation();
-  const [deleteCompany, { isLoading: isDeleting }] = useDeleteCompanyMutation();
+  const [deleteCompany] = useDeleteCompanyMutation();
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -73,16 +67,10 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer, pac
     }
   }, [selectedCompany]);
 
-  useEffect(() => {
-    if (!form.packageId && packages && packages.length > 0) {
-      setForm((prev) => ({ ...prev, packageId: packages![0].id }));
-    }
-  }, [packages]);
-
   const inputBaseClass =
     'w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 border-gray-300 focus:ring-primary';
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
     setForm((prev) => ({ ...prev, [name]: value }));
   };
@@ -121,16 +109,6 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer, pac
 
     if (!form.street?.trim()) {
       showToast(t('streetEmpty'), 'error');
-      return false;
-    }
-
-    if (!form.packageId?.trim()) {
-      showToast(t('packageRequired'), 'error');
-      return false;
-    }
-
-    if (!form.period || (form.period !== 'monthly' && form.period !== 'yearly')) {
-      showToast(t('periodRequired'), 'error');
       return false;
     }
 
@@ -239,27 +217,6 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer, pac
           <div className="col-span-full">
             <label className="block font-semibold mb-1">{t('zipcode')}</label>
             <input type="text" name="zipcode" value={form.zipcode} onChange={handleChange} className={inputBaseClass} />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="block font-semibold mb-1">{t('packages.packageName')}</label>
-            <select name="packageId" value={form.packageId} onChange={handleChange} className={inputBaseClass}>
-              {packages?.map((p) => (
-                <option key={p.id} value={p.id}>
-                  {p.name}
-                </option>
-              ))}
-            </select>
-          </div>
-
-          <div>
-            <label className="block font-semibold mb-1">{t('packages.period')}</label>
-            <select name="period" value={form.period} onChange={handleChange} className={inputBaseClass}>
-              <option value="monthly">{t('packages.monthly')}</option>
-              <option value="yearly">{t('packages.yearly')}</option>
-            </select>
           </div>
         </div>
 

@@ -149,6 +149,7 @@
     "companyName": "Company name",
     "companyUpdateSuccess": "Company data updated successfully",
     "companyCreateSuccess": "Company data saved successfully",
+    "companyDeleteSuccess": "Company data deleted successfully",
     "companyNameEmpty": "Company name is required",
     "companyEmailEmpty": "Company email is required",
     "companyEmailInvalid": "Company email is invalid",

@@ -148,6 +148,7 @@
     "companyName": "Nume companie",
     "companyUpdateSuccess": "Datele companiei au fost actualizate cu succes",
     "companyCreateSuccess": "Datele companiei au fost salvate cu succes",
+    "companyDeleteSuccess": "Datele companiei au fost șterse cu succes",
     "companyNameEmpty": "Numele companiei nu poate fi gol",
     "companyEmailEmpty": "Emailul companiei nu poate fi gol",
     "companyEmailInvalid": "Emailul companiei este invalid",
