@@ -27,7 +27,6 @@ const AdminCompanies: FC = () => {
 
   if (isLoading) return <p>Loading companies...</p>;
   if (error) {
-    console.log(error);
     return <p>Failed to load companies</p>;
   }
 
@@ -71,7 +70,7 @@ const AdminCompanies: FC = () => {
       <PersonList items={items} onItemClick={handleClick} />
 
       <Drawer isOpen={drawerOpen} onClose={handleCloseDrawer} title={selectedItem ? t('editCompany') : t('addCompany')}>
-        <CompanyForm selectedCompany={selectedItem} onCloseDrawer={handleCloseDrawer} packages={packages} />
+        <CompanyForm selectedCompany={selectedItem} onCloseDrawer={handleCloseDrawer} />
       </Drawer>
     </div>
   );

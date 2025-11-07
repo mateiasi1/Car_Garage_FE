@@ -9,31 +9,30 @@ export const adminApi = createApi({
   tagTypes: ['Admin'],
   endpoints: (builder) => ({
     fetchAdminCompanies: builder.query<Company[], void>({
-      query: () => '/companies',
+      query: () => config.companiesUrl,
       providesTags: ['Admin'],
     }),
-    createCompany: builder.mutation<Company, Partial<Company>>({
+    createAdminCompany: builder.mutation<Company, Partial<Company>>({
       query: (company) => ({
-        url: '/company',
+        url: config.companyUrl,
         method: 'POST',
         body: company,
       }),
       invalidatesTags: ['Admin'],
     }),
-    updateCompany: builder.mutation<Company, Partial<Company> & { companyId?: string }>({
+    updateAdminCompany: builder.mutation<Company, Partial<Company> & { companyId: string }>({
       query: (company) => {
-        const id = (company as any).companyId ?? (company as any).id;
         return {
-          url: id ? `/company/${id}` : '/company',
+          url: `${config.companyUrl}/${company.companyId}`,
           method: 'PUT',
           body: company,
         };
       },
       invalidatesTags: ['Admin'],
     }),
-    deleteCompany: builder.mutation<void, string>({
+    deleteAdminCompany: builder.mutation<void, string>({
       query: (id) => ({
-        url: `/company/${id}`,
+        url: `${config.companyUrl}/${id}`,
         method: 'DELETE',
       }),
       invalidatesTags: ['Admin'],
@@ -43,7 +42,7 @@ export const adminApi = createApi({
 
 export const {
   useFetchAdminCompaniesQuery,
-  useCreateCompanyMutation,
-  useUpdateCompanyMutation,
-  useDeleteCompanyMutation,
+  useCreateAdminCompanyMutation,
+  useUpdateAdminCompanyMutation,
+  useDeleteAdminCompanyMutation,
 } = adminApi;

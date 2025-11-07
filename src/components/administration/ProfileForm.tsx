@@ -11,7 +11,6 @@ export const ProfileForm: FC = () => {
   const [updateProfile, { isLoading }] = useUpdateUserProfileMutation();
 
   const [form, setForm] = useState({
-    email: user?.email || '',
     username: user?.username || '',
     firstName: user?.firstName || '',
     lastName: user?.lastName || '',
@@ -31,12 +30,6 @@ export const ProfileForm: FC = () => {
         showToast(t(`${key}Empty`), 'error');
         return false;
       }
-    }
-
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    if (!emailRegex.test(form.email)) {
-      showToast(t('invalidEmail'), 'error');
-      return false;
     }
 
     return true;
@@ -61,12 +54,7 @@ export const ProfileForm: FC = () => {
     <form onSubmit={handleSubmit} className="space-y-6">
       <h2 className="text-xl font-heading border-b pb-2">{t('profileInformation')}</h2>
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-        <div>
-          <label className="block font-semibold mb-1">{t('emailTitle')}</label>
-          <input type="text" name="email" value={form.email} onChange={handleChange} className={inputBaseClass} />
-        </div>
-
-        <div>
+        <div className="col-span-full">
           <label className="block font-semibold mb-1">{t('username')}</label>
           <input type="text" name="username" value={form.username} onChange={handleChange} className={inputBaseClass} />
         </div>

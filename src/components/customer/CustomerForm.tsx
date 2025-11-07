@@ -149,8 +149,15 @@ const CustomerForm: FC<CustomerFormProps> = ({ selectedCustomer, onCloseDrawer }
         </div>
 
         <div className="flex justify-end gap-3">
-          {isEdit && <DangerButton type="button" text={t('delete')} onClick={() => setShowDeleteModal(true)} />}
-          <PrimaryButton type="submit" text={t('submit')} disabled={isCreating || isUpdating} />
+          {isEdit && (
+            <DangerButton type="button" text={t('delete')} onClick={() => setShowDeleteModal(true)} className="w-1/4" />
+          )}
+          <PrimaryButton
+            type="submit"
+            text={t('submit')}
+            disabled={isCreating || isUpdating}
+            className={isEdit ? 'w-3/4' : 'w-full'}
+          />
         </div>
       </form>
 

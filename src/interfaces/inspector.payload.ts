@@ -1,5 +1,4 @@
 export interface CreateInspectorDTO {
-  email: string;
   username: string;
   firstName: string;
   lastName: string;
@@ -8,7 +7,6 @@ export interface CreateInspectorDTO {
 
 export interface UpdateInspectorDTO {
   id: string;
-  email: string;
   username: string;
   firstName: string;
   lastName: string;

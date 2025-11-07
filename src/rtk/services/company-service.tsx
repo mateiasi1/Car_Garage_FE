@@ -24,39 +24,14 @@ export const companyApi = createApi({
   baseQuery: baseQueryWithReAuth,
   tagTypes: ['Companies'],
   endpoints: (builder) => ({
-    fetchCompanies: builder.query<Company[], void>({
+    fetchCompany: builder.query<Company, void>({
       query: () => ({
-        url: config.companiesUrl,
+        url: config.companyUrl,
         method: 'GET',
       }),
       providesTags: ['Companies'],
     }),
-    createCompany: builder.mutation<void, CreateCompanyRequest>({
-      query: (body) => ({
-        url: config.companyUrl,
-        method: 'POST',
-        body,
-      }),
-      invalidatesTags: ['Companies'],
-    }),
-    updateCompany: builder.mutation<void, UpdateCompanyRequest>({
-      query: ({ companyId, ...body }) => ({
-        url: `${config.companyUrl}/${companyId}`,
-        method: 'PUT',
-        body,
-      }),
-      invalidatesTags: ['Companies'],
-    }),
-    deleteCompany: builder.mutation<void, string>({
-      query: (companyId) => ({
-        url: `${config.companyUrl}/${companyId}`,
-        method: 'DELETE',
-        body: {},
-      }),
-      invalidatesTags: ['Companies'],
-    }),
   }),
 });
 
-export const { useFetchCompaniesQuery, useCreateCompanyMutation, useUpdateCompanyMutation, useDeleteCompanyMutation } =
-  companyApi;
+export const { useFetchCompanyQuery } = companyApi;

@@ -21,13 +21,11 @@ type InspectorFormState = {
   id?: string;
   firstName: string;
   lastName: string;
-  email?: string;
   username: string;
   password?: string;
 };
 
 const initialState: InspectorFormState = {
-  email: '',
   username: '',
   password: '',
   firstName: '',
@@ -95,14 +93,6 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
       }
     }
 
-    if (form.email) {
-      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-      if (!emailRegex.test(form.email)) {
-        showToast(t('invalidEmail'), 'error');
-        return false;
-      }
-    }
-
     return true;
   };
 
@@ -113,7 +103,7 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
     try {
       if (isEdit && form.id) {
         const { id, username, firstName, lastName } = form;
-        const payload: UpdateInspectorDTO = { id, username, firstName, lastName, email: form.email || '' };
+        const payload: UpdateInspectorDTO = { id, username, firstName, lastName };
         await updateInspector(payload).unwrap();
         showToast(t('inspectorUpdateSuccess'), 'success');
         onCloseDrawer();
@@ -123,7 +113,6 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
           username,
           firstName,
           lastName,
-          email: form.email || '',
           password: form.password || '',
         };
         await createInspector(payload).unwrap();
@@ -151,18 +140,7 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
     <>
       <form onSubmit={handleSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="block font-semibold mb-1">{t('emailTitle')}</label>
-            <input
-              type="text"
-              name="email"
-              value={form.email || ''}
-              onChange={handleChange}
-              className={inputBaseClass}
-            />
-          </div>
-
-          <div>
+          <div className="col-span-full">
             <label className="block font-semibold mb-1">{t('username')}</label>
             <input
               type="text"
@@ -210,8 +188,15 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
         )}
 
         <div className="flex justify-end gap-3">
-          {isEdit && <DangerButton type="button" text={t('delete')} onClick={() => setShowDeleteModal(true)} />}
-          <PrimaryButton type="submit" text={t('submit')} disabled={isCreating || isUpdating} />
+          {isEdit && (
+            <DangerButton type="button" text={t('delete')} onClick={() => setShowDeleteModal(true)} className="w-1/4" />
+          )}
+          <PrimaryButton
+            type="submit"
+            text={t('submit')}
+            disabled={isCreating || isUpdating}
+            className={isEdit ? 'w-3/4' : 'w-full'}
+          />
         </div>
       </form>
 

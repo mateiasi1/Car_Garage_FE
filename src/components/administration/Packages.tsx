@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import { useFetchCompaniesQuery } from '../../rtk/services/company-service';
+import { useFetchCompanyQuery } from '../../rtk/services/company-service';
 import { useFetchPackagesQuery } from '../../rtk/services/package-service';
 import { useTranslation } from 'react-i18next';
 
 const PackagesPage: FC = () => {
-    const { data: company } = useFetchCompaniesQuery();
+    const { data: company } = useFetchCompanyQuery();
     const { data: packages, error, isLoading } = useFetchPackagesQuery();
     const { t } = useTranslation();
 

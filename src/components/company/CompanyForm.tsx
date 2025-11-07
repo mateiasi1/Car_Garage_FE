@@ -2,10 +2,10 @@ import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Error } from '../../interfaces/error';
 import {
-  useCreateCompanyMutation,
-  useDeleteCompanyMutation,
-  useUpdateCompanyMutation,
-} from '../../rtk/services/company-service';
+  useCreateAdminCompanyMutation,
+  useDeleteAdminCompanyMutation,
+  useUpdateAdminCompanyMutation,
+} from '../../rtk/services/admin-service';
 import { showToast } from '../../utils/showToast';
 import ConfirmationModal from '../shared/ConfirmationModal';
 import { DangerButton } from '../shared/DangerButton';
@@ -43,9 +43,9 @@ const initialState: CompanyFormState = {
 
 const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) => {
   const { t } = useTranslation();
-  const [createCompany, { isLoading: isCreating }] = useCreateCompanyMutation();
-  const [updateCompany, { isLoading: isUpdating }] = useUpdateCompanyMutation();
-  const [deleteCompany] = useDeleteCompanyMutation();
+  const [createCompany, { isLoading: isCreating }] = useCreateAdminCompanyMutation();
+  const [updateCompany, { isLoading: isUpdating }] = useUpdateAdminCompanyMutation();
+  const [deleteCompany] = useDeleteAdminCompanyMutation();
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
@@ -221,8 +221,15 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
         </div>
 
         <div className="flex justify-end gap-3">
-          {isEdit && <DangerButton type="button" text={t('delete')} onClick={() => setShowDeleteModal(true)} />}
-          <PrimaryButton type="submit" text={t('submit')} disabled={isCreating || isUpdating} />
+          {isEdit && (
+            <DangerButton type="button" text={t('delete')} onClick={() => setShowDeleteModal(true)} className="w-1/4" />
+          )}
+          <PrimaryButton
+            type="submit"
+            text={t('submit')}
+            disabled={isCreating || isUpdating}
+            className={isEdit ? 'w-3/4' : 'w-full'}
+          />
         </div>
       </form>
 
