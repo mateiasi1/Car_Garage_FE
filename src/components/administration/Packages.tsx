@@ -1,10 +1,10 @@
 import { FC } from 'react';
-import { useFetchCompanyQuery } from '../../rtk/services/company-service';
 import { useFetchPackagesQuery } from '../../rtk/services/package-service';
 import { useTranslation } from 'react-i18next';
+import {useFetchBranchQuery} from "../../rtk/services/branch-service.tsx";
 
 const PackagesPage: FC = () => {
-    const { data: company } = useFetchCompanyQuery();
+    const { data: branch } = useFetchBranchQuery();
     const { data: packages, error, isLoading } = useFetchPackagesQuery();
     const { t } = useTranslation();
 
@@ -26,7 +26,7 @@ const PackagesPage: FC = () => {
         </div>
     );
 
-    const activePackageId = company?.activePackage?.packageId;
+    const activePackageId = branch?.activePackage?.package?.id;
 
     return (
         <div className="min-h-screen p-6">

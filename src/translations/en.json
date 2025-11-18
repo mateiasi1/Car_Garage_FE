@@ -373,5 +373,42 @@
   "selectBranches": "Select branches",
   "branchesSelected": "branches selected",
   "noBranchesAvailable": "No branches available",
-  "selectAtLeastOneBranch": "Please select at least one branch"
+  "selectAtLeastOneBranch": "Please select at least one branch",
+  "adminCompanies": {
+    "actions": "Actions",
+    "addCompany": "Add company",
+    "branches": "Branches",
+    "branchesForCompany": "Branches for company",
+    "companyName": "Company name",
+    "edit": "Edit",
+    "editCompany": "Edit company",
+    "email": "Email",
+    "failedToLoadCompanies": "Failed to load companies",
+    "loading": "Loading...",
+    "location": "Location",
+    "noDataFound": "No data found",
+    "number": "No.",
+    "phoneNumber": "Phone number",
+    "search": "Search",
+    "searchBy": "Search by",
+    "searchCompanies": "Search companies...",
+    "users": "Users",
+    "usersForCompany": "Users for company",
+    "viewBranches": "View branches",
+    "viewUsers": "View users"
+  },
+  "table": {
+    "actions": "Actions",
+    "loading": "Loading...",
+    "noDataFound": "No data found",
+    "number": "No.",
+    "search": "Search",
+    "searchBy": "Search by"
+  },
+  "companyShortName": "Company short name",
+  "companyShortNameEmpty": "Company short name cannot be empty",
+  "companyShortNameTooLong": "Company short name cannot exceed 15 characters",
+  "companyShortNamePlaceholder": "e.g., ABC, XYZ Ltd",
+  "companyShortNameCannotBeChanged": "Short name cannot be changed after creation",
+  "maxCharacters": "max {{max}} characters"
 }

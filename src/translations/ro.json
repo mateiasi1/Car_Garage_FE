@@ -371,6 +371,43 @@
     "selectBranches": "Selectează sedii",
     "branchesSelected": "sedii selectate",
     "noBranchesAvailable": "Nu există sedii disponibile",
-    "selectAtLeastOneBranch": "Te rog selectează cel puțin un sediu"
+    "selectAtLeastOneBranch": "Te rog selectează cel puțin un sediu",
+    "adminCompanies": {
+      "actions": "Acțiuni",
+      "addCompany": "Adaugă companie",
+      "branches": "Sucursale",
+      "branchesForCompany": "Sucursale pentru compania",
+      "companyName": "Nume companie",
+      "edit": "Editează",
+      "editCompany": "Editează companie",
+      "email": "Email",
+      "failedToLoadCompanies": "Eroare la încărcarea companiilor",
+      "loading": "Se încarcă...",
+      "location": "Locație",
+      "noDataFound": "Nu au fost găsite date",
+      "number": "Nr",
+      "phoneNumber": "Număr de telefon",
+      "search": "Caută",
+      "searchBy": "Caută după",
+      "searchCompanies": "Caută companii...",
+      "users": "Utilizatori",
+      "usersForCompany": "Utilizatori pentru compania",
+      "viewBranches": "Vezi sucursale",
+      "viewUsers": "Vezi utilizatori"
+    },
+    "table": {
+      "actions": "Acțiuni",
+      "loading": "Se încarcă...",
+      "noDataFound": "Nu au fost găsite date",
+      "number": "Nr",
+      "search": "Caută",
+      "searchBy": "Caută după"
+    },
+    "companyShortName": "Nume scurt companie",
+    "companyShortNameEmpty": "Numele scurt al companiei nu poate fi gol",
+    "companyShortNameTooLong": "Numele scurt al companiei nu poate avea mai mult de 15 caractere",
+    "companyShortNamePlaceholder": "ex: ABC, XYZ Ltd",
+    "companyShortNameCannotBeChanged": "Numele scurt nu poate fi modificat după creare",
+    "maxCharacters": "max {{max}} caractere"
   }
 }

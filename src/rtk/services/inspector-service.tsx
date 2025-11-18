@@ -33,6 +33,7 @@ export const inspectorApi = createApi({
             query: (inspectorId) => ({
                 url: `${config.inspectorsUrl}/${inspectorId}`,
                 method: 'DELETE',
+                body: {},
             }),
             invalidatesTags: ['Inspector'],
         }),

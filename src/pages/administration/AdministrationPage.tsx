@@ -1,11 +1,4 @@
-import {
-    faBuilding,
-    faIdCard,
-    faPeopleGroup,
-    faStore,
-    faUsers,
-    faBuildingUser
-} from '@fortawesome/free-solid-svg-icons';
+import {faBuilding, faBuildingUser, faIdCard, faPeopleGroup, faStore, faUsers} from '@fortawesome/free-solid-svg-icons';
 import {FC, useContext, useEffect, useState} from 'react';
 import {useTranslation} from 'react-i18next';
 import AdminCompanies from '../../components/administration/AdminCompanies';
@@ -83,7 +76,7 @@ const AdministrationPage: FC = () => {
       icon: faStore,
       name: 'packages.name',
       link: '/administration/packages',
-      roles: [Role.admin],
+      roles: [Role.admin, Role.owner],
       component: <Packages />,
       onSelect: () => {},
     },

@@ -34,6 +34,7 @@ export const adminApi = createApi({
       query: (id) => ({
         url: `${config.companyUrl}/${id}`,
         method: 'DELETE',
+        body: {},
       }),
       invalidatesTags: ['Admin'],
     }),
