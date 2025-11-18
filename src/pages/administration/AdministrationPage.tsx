@@ -1,16 +1,24 @@
-import { faBuilding, faIdCard, faPeopleGroup, faUsers, faStore } from '@fortawesome/free-solid-svg-icons';
-import { FC, useContext, useEffect, useState } from 'react';
-import { useTranslation } from 'react-i18next';
+import {
+    faBuilding,
+    faIdCard,
+    faPeopleGroup,
+    faStore,
+    faUsers,
+    faBuildingUser
+} from '@fortawesome/free-solid-svg-icons';
+import {FC, useContext, useEffect, useState} from 'react';
+import {useTranslation} from 'react-i18next';
 import AdminCompanies from '../../components/administration/AdminCompanies';
-import { AdministrationItem, AdministrationItemProps } from '../../components/administration/AdministrationItem';
+import {AdministrationItem, AdministrationItemProps} from '../../components/administration/AdministrationItem';
 import CustomersList from '../../components/administration/CustomersList';
 import InspectorsList from '../../components/administration/InspectorsList';
 import UserProfile from '../../components/administration/UserProfile';
-import { AuthContext } from '../../contexts/authContext';
-import { Role as RoleModel } from '../../models/Role';
-import { Role } from '../../utils/enums/Role';
+import {AuthContext} from '../../contexts/authContext';
+import {Role as RoleModel} from '../../models/Role';
+import {Role} from '../../utils/enums/Role';
 import CompanyDetails from '../../components/administration/CompanyDetails';
 import Packages from '../../components/administration/Packages.tsx';
+import BranchDetails from "../../components/administration/BranchDetails.tsx";
 
 interface AdministrationSetting extends AdministrationItemProps {
   roles: Role[];
@@ -51,8 +59,16 @@ const AdministrationPage: FC = () => {
       icon: faBuilding,
       name: 'companyData',
       link: '/administration/company-data',
-      roles: [Role.owner, Role.inspector],
+      roles: [Role.owner],
       component: <CompanyDetails />,
+      onSelect: () => {},
+    },
+    {
+      icon: faBuildingUser,
+      name: 'branchData',
+      link: '/administration/branch-data',
+      roles: [Role.owner, Role.inspector],
+      component: <BranchDetails />,
       onSelect: () => {},
     },
     {

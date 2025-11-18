@@ -1,7 +1,6 @@
 import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFetchAdminCompaniesQuery } from '../../rtk/services/admin-service';
-import { useFetchPackagesQuery } from '../../rtk/services/package-service'; // <- package service hook
 import CompanyForm from '../company/CompanyForm';
 import Drawer from '../shared/Drawer';
 import { PersonItemBase } from '../shared/PersonItem';
@@ -22,7 +21,6 @@ const AdminCompanies: FC = () => {
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedItem, setSelectedItem] = useState<CompanyListItem | null>(null);
   const { data: companies, error, isLoading } = useFetchAdminCompaniesQuery();
-  const { data: packages } = useFetchPackagesQuery(); // fetch packages once here
   const { t } = useTranslation();
 
   if (isLoading) return <p>Loading companies...</p>;

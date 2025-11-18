@@ -5,13 +5,13 @@ import {baseQueryWithReAuth} from "../baseQuery.ts";
 export interface LoginPayload {
     username: string;
     password: string;
-    companyId?: string;
+    branchId?: string;
 }
 
 export interface LoginResponse {
     accessToken?: string;
-    selectCompany?: boolean;
-    companies?: { id: string; name: string }[];
+    selectBranch?: boolean;
+    branches?: { id: string; name: string }[];
 }
 
 export interface RefreshTokenResponse {

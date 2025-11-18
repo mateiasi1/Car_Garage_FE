@@ -1,5 +1,6 @@
 import { Role } from './Role';
 import { UserCompany } from './UserCompany';
+import { UserBranch } from "./UserBranch.ts";
 
 export interface User {
   id: string;
@@ -11,5 +12,7 @@ export interface User {
   updatedAt: string;
   deletedAt: string;
   roles: Role[];
-  companies: UserCompany[];
+  branches: UserBranch[];
+  companies?: UserCompany[];
+  selectedBranchId?: string;
 }

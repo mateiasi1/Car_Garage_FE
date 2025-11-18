@@ -15,8 +15,9 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element, roles }) => {
     return userRoles.some((role) => roles.includes(role.name));
   };
 
+
+
   if (isLoading) {
-    // optional: show spinner instead
     return <div>Loading...</div>;
   }
 
@@ -25,7 +26,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element, roles }) => {
   }
 
   if (!user || !hasAccess(user.roles)) {
-    // optional: change this to a <Navigate to="/forbidden" /> or something similar
     return <Navigate to="/login" replace />;
   }
 

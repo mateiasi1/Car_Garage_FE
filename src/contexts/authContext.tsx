@@ -38,7 +38,6 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         setAuthChecked(true);
 
         if (localStorage.getItem('refresh_token')) {
-            console.log('🧹 Removing old refresh_token from localStorage (now using httpOnly cookie)');
             localStorage.removeItem('refresh_token');
         }
     }, []);

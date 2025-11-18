@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { Package } from "../../models/Company.ts";
 import {baseQueryWithReAuth} from "../baseQuery.ts";
+import { Package } from "../../models/Branch.ts";
 
 export const packagesApi = createApi({
     reducerPath: 'packagesApi',

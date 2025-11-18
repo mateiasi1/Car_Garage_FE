@@ -41,6 +41,20 @@ export const userApi = createApi({
         body: passwordData,
       }),
     }),
+    generateUsername: builder.mutation<{ username: string }, { firstName: string; lastName: string }>({
+      query: ({ firstName, lastName }) => ({
+          url: `${config.usersUrl}/generate-username`,
+          method: 'GET',
+          params: { firstName, lastName },
+      }),
+    }),
+      switchBranch: builder.mutation<{ accessToken: string }, { branchId: string }>({
+          query: (body) => ({
+              url: `${config.usersUrl}/switch-branch`,
+              method: 'POST',
+              body,
+          }),
+      }),
   }),
 });
 
@@ -51,5 +65,7 @@ export const {
   useCreateUserMutation,
   useUpdateUserProfileMutation,
   useChangePasswordMutation,
+  useGenerateUsernameMutation,
+  useSwitchBranchMutation,
   util: { invalidateTags },
 } = userApi;

@@ -11,4 +11,5 @@ export default {
   adminApiUrl: import.meta.env.VITE_ADMIN_API_URL,
   companyUrl: '/company',
   companiesUrl: '/companies',
+  branchUrl: '/branch',
 };
