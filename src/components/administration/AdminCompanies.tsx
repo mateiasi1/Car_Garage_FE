@@ -1,5 +1,6 @@
 import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useNavigate } from 'react-router-dom';
 import { useFetchAdminCompaniesQuery } from '../../rtk/services/admin-service';
 import CompanyForm from '../company/CompanyForm';
 import Drawer from '../shared/Drawer';
@@ -9,10 +10,8 @@ import GenericTable, { TableColumn, TableAction } from '../shared/GenericTable';
 const AdminCompanies: FC = () => {
     const [drawerOpen, setDrawerOpen] = useState(false);
     const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
-    const [usersDrawerOpen, setUsersDrawerOpen] = useState(false);
-    const [branchesDrawerOpen, setBranchesDrawerOpen] = useState(false);
-    const [selectedCompanyForView, setSelectedCompanyForView] = useState<Company | null>(null);
     const [search, setSearch] = useState('');
+    const navigate = useNavigate();
 
     const { data: companies, error, isLoading } = useFetchAdminCompaniesQuery();
     const { t } = useTranslation();
@@ -33,16 +32,13 @@ const AdminCompanies: FC = () => {
     };
 
     const handleViewUsers = (company: Company) => {
-        setSelectedCompanyForView(company);
-        setUsersDrawerOpen(true);
+        navigate(`/administration/company-users?companyId=${company.id}`);
     };
 
     const handleViewBranches = (company: Company) => {
-        setSelectedCompanyForView(company);
-        setBranchesDrawerOpen(true);
+        navigate(`/administration/company-branches?companyId=${company.id}`);
     };
 
-    // Define table columns - mark which are searchable
     const columns: TableColumn<Company>[] = [
         {
             key: 'name',
@@ -72,7 +68,6 @@ const AdminCompanies: FC = () => {
         },
     ];
 
-    // Define ALL actions in Actions column - uniform gray colors
     const actions: TableAction<Company>[] = [
         {
             icon: 'fa-users',
@@ -128,30 +123,6 @@ const AdminCompanies: FC = () => {
                 title={selectedCompany ? t('adminCompanies.editCompany') : t('adminCompanies.addCompany')}
             >
                 <CompanyForm selectedCompany={selectedCompany} onCloseDrawer={handleCloseDrawer} />
-            </Drawer>
-
-            {/* Users Drawer */}
-            <Drawer
-                isOpen={usersDrawerOpen}
-                onClose={() => setUsersDrawerOpen(false)}
-                title={`${t('adminCompanies.users')} - ${selectedCompanyForView?.name}`}
-            >
-                <div className="p-4">
-                    <p>{t('adminCompanies.usersForCompany')}: {selectedCompanyForView?.name}</p>
-                    {/* TODO: Add users list component */}
-                </div>
-            </Drawer>
-
-            {/* Branches Drawer */}
-            <Drawer
-                isOpen={branchesDrawerOpen}
-                onClose={() => setBranchesDrawerOpen(false)}
-                title={`${t('adminCompanies.branches')} - ${selectedCompanyForView?.name}`}
-            >
-                <div className="p-4">
-                    <p>{t('adminCompanies.branchesForCompany')}: {selectedCompanyForView?.name}</p>
-                    {/* TODO: Add branches list component */}
-                </div>
             </Drawer>
         </>
     );
