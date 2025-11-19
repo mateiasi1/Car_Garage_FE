@@ -5,6 +5,7 @@ export interface PersonItemBase {
   lastName: string;
   email?: string | undefined;
   phoneNumber?: string | null;
+  id?: string | number;
 }
 
 export interface PersonItemProps<T extends PersonItemBase> {
