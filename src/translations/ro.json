@@ -4,6 +4,7 @@
     "usernameTitle": "Nume de utilizator",
     "passwordTitle": "Parolă",
     "loginButton": "Autentificare",
+    "registerButton": "Dacă deții o stație ITP autorizată și nu ai încă un cont, dar ai dori să colaborăm, ne poți scrie la contact@bytedracula.ro\n",
     "passwordEmpty": "Câmpul parolă nu poate fi gol",
     "emailTitle": "Email",
     "recaptchaTitle": "Recaptcha este necesară",
@@ -209,6 +210,7 @@
     },
     "home": {
       "loginButton": "Autentificare",
+      "adminButton": "Administrare Companie",
       "hero": {
         "title": "Gestionează Eficient Inspecțiile ITP",
         "subtitle": "Sistem complet de management pentru stații ITP. Urmărește inspecții, gestionează clienți și nu rata nicio expirare.",

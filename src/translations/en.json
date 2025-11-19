@@ -4,6 +4,7 @@
     "usernameTitle": "Username",
     "passwordTitle": "Password",
     "loginButton": "Login",
+    "registerButton": "If you run an authorised ITP station and don’t yet have an account but would like to collaborate with us, feel free to get in touch at contact@bytedracula.ro\n",
     "passwordEmpty": "Password is required",
     "emailTitle": "Email",
     "recaptchaTitle": "Recaptcha is required",
@@ -211,6 +212,7 @@
   },
   "home": {
     "loginButton": "Login",
+    "adminButton": "Administration",
     "hero": {
       "title": "Manage Your ITP Inspections Efficiently",
       "subtitle": "Complete management system for ITP stations. Track inspections, manage clients, and never miss an expiration date.",

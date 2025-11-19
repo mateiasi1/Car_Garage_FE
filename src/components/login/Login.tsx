@@ -78,7 +78,10 @@ const Login: FC = () => {
         <div className="flex h-screen w-screen">
             <div className="w-full md:w-2/5 flex items-center justify-center bg-card">
                 <form onSubmit={handleSubmit} className="w-full max-w-sm bg-card px-8 pt-8 pb-8">
-                    <div className="flex items-center justify-center mb-8">
+                    <div
+                        className="flex items-center justify-center mb-8 cursor-pointer"
+                        onClick={() => navigate(routes.HOME)}
+                    >
                         <img src={logo} alt="RoadReady Logo" className="h-14 w-14 mr-3" />
                         <span className="text-2xl font-bold font-heading text-primary">RoadReady</span>
                     </div>
@@ -151,6 +154,9 @@ const Login: FC = () => {
                         >
                             {t('login.termsInfo.link')}
                         </Link>
+                    </div>
+                    <div className="mt-4 text-center text-sm text-gray-600 font-body">
+                        {t('registerButton')}{' '}
                     </div>
                 </form>
             </div>
