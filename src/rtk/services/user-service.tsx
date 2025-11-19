@@ -41,11 +41,11 @@ export const userApi = createApi({
         body: passwordData,
       }),
     }),
-    generateUsername: builder.mutation<{ username: string }, { firstName: string; lastName: string }>({
-      query: ({ firstName, lastName }) => ({
+    generateUsername: builder.mutation<{ username: string }, { firstName: string; lastName: string, companyId?: string }>({
+      query: ({ firstName, lastName, companyId }) => ({
           url: `${config.usersUrl}/generate-username`,
           method: 'GET',
-          params: { firstName, lastName },
+          params: { firstName, lastName, companyId },
       }),
     }),
       switchBranch: builder.mutation<{ accessToken: string }, { branchId: string }>({

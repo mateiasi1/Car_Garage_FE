@@ -5,6 +5,34 @@ import { createBaseQueryWithReAuth } from '../baseQuery';
 import {Branch} from "../../models/Branch.ts";
 import {CreateBranchRequest, UpdateBranchRequest} from "./branch-service.tsx";
 
+export interface CreateUserDTO {
+    firstName: string;
+    lastName: string;
+    password: string;
+    roles: string[];
+    branchIds?: string[];
+}
+
+export interface UpdateUserDTO {
+    firstName?: string;
+    lastName?: string;
+    branchIds?: string[];
+}
+
+export interface AdminUser {
+    id: string;
+    username: string;
+    firstName: string;
+    lastName: string;
+    roles: string[];
+    branches: {
+        id: string;
+        name: string;
+    }[];
+    createdAt: string;
+    updatedAt: string;
+}
+
 export const adminApi = createApi({
   reducerPath: 'adminApi',
   baseQuery: createBaseQueryWithReAuth(`${config.baseUrl}${config.adminApiUrl}`),
@@ -70,6 +98,40 @@ export const adminApi = createApi({
           }),
           invalidatesTags: ['Admin'],
       }),
+      fetchAdminCompanyUsers: builder.query<AdminUser[], string>({
+          query: (companyId) => ({
+              url: `${config.companiesUrl}/${companyId}/users`,
+              method: 'GET',
+          }),
+          providesTags: ['Admin'],
+      }),
+
+      createAdminUser: builder.mutation<void, { companyId: string; data: CreateUserDTO }>({
+          query: ({ companyId, data }) => ({
+              url: `${config.companiesUrl}/${companyId}/users`,
+              method: 'POST',
+              body: data,
+          }),
+          invalidatesTags: ['Admin'],
+      }),
+
+      updateAdminUser: builder.mutation<void, { companyId: string; userId: string; data: UpdateUserDTO }>({
+          query: ({ companyId, userId, data }) => ({
+              url: `${config.companiesUrl}/${companyId}/users/${userId}`,
+              method: 'PUT',
+              body: data,
+          }),
+          invalidatesTags: ['Admin'],
+      }),
+
+      deleteAdminUser: builder.mutation<void, { companyId: string; userId: string }>({
+          query: ({ companyId, userId }) => ({
+              url: `${config.companiesUrl}/${companyId}/users/${userId}`,
+              method: 'DELETE',
+              body: {},
+          }),
+          invalidatesTags: ['Admin'],
+      }),
   }),
 });
 
@@ -82,4 +144,8 @@ export const {
   useCreateAdminBranchMutation,
   useUpdateAdminBranchMutation,
   useDeleteAdminBranchMutation,
+  useFetchAdminCompanyUsersQuery,
+  useCreateAdminUserMutation,
+  useUpdateAdminUserMutation,
+  useDeleteAdminUserMutation,
 } = adminApi;
