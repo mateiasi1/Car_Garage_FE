@@ -1,16 +1,17 @@
 import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CreateCustomerDTO, UpdateCustomerDTO } from '../../interfaces/customer.payload.ts';
+import { CreateCustomerDTO, UpdateCustomerDTO } from '../../interfaces/customer.payload';
 import {
   useCreateCustomerMutation,
   useUpdateCustomerMutation,
   useDeleteCustomerMutation,
-} from '../../rtk/services/customer-service.tsx';
-import { showToast } from '../../utils/showToast.ts';
-import { PrimaryButton } from '../shared/PrimaryButton.tsx';
-import { DangerButton } from '../shared/DangerButton.tsx';
-import ConfirmationModal from '../shared/ConfirmationModal.tsx';
-import { Error } from '../../interfaces/error.tsx';
+} from '../../rtk/services/customer-service';
+import { showToast } from '../../utils/showToast';
+import { PrimaryButton } from '../shared/PrimaryButton';
+import { DangerButton } from '../shared/DangerButton';
+import ConfirmationModal from '../shared/ConfirmationModal';
+import { Error } from '../../interfaces/error';
+import {PhoneNumberRoInput} from "../PhoneNumberRoInput";
 
 interface CustomerFormProps {
   selectedCustomer: Partial<CustomerFormState> | null;
@@ -138,13 +139,10 @@ const CustomerForm: FC<CustomerFormProps> = ({ selectedCustomer, onCloseDrawer }
           </div>
           <div className="col-span-full">
             <label className="block font-semibold mb-1">{t('phoneNumber')}</label>
-            <input
-              type="text"
-              name="phoneNumber"
-              value={form.phoneNumber}
-              onChange={handleChange}
-              className={inputBaseClass}
-            />
+              <PhoneNumberRoInput
+                  value={form.phoneNumber}
+                  onChange={(val) => setForm((prev) => ({ ...prev, phoneNumber: val }))}
+              />
           </div>
         </div>
 
