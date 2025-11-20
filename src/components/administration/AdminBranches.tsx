@@ -55,7 +55,6 @@ const AdminBranches: FC = () => {
         setDrawerOpen(true);
     };
 
-    // ⭐ Close drawer and refetch data (after add/edit/delete)
     const handleCloseDrawer = () => {
         setDrawerOpen(false);
         setSelectedBranch(null);

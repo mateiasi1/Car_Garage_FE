@@ -18,6 +18,7 @@ export default {
         },
         error: '#B84A67',
         success: '#4B9E75',
+        warning: '#FFC107',
       },
       fontFamily: {
         heading: ['Poppins', 'sans-serif'],
