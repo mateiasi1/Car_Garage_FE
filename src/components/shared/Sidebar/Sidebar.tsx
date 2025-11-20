@@ -6,6 +6,7 @@ import { Role } from '../../../utils/enums/Role';
 import SidebarFooter from './SidebarFooter';
 import SidebarNav from './SidebarNav';
 import SidebarUserSection from './SidebarUserSection';
+import LanguageSelector from "../../header/LanguageSelector.tsx";
 
 const navItems = [
   // {
@@ -46,6 +47,7 @@ const Sidebar: FC<SidebarProps> = ({ expanded, setExpanded }) => {
       style={{ minWidth: expanded ? '13rem' : '4rem' }}
     >
       <SidebarUserSection expanded={expanded} user={user} />
+      <LanguageSelector />
       <SidebarNav expanded={expanded} navItems={navItems} userRoles={userRoles} />
       <SidebarFooter
         expanded={expanded}

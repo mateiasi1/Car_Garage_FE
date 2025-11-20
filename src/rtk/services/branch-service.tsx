@@ -23,12 +23,18 @@ export interface UpdatePackageRequest {
     period: 'monthly' | 'yearly';
 }
 
+export interface BranchSmsUsage {
+    remainingCount: number;
+    totalLimit: number;
+    remainingPercent: number;
+    status: 'ok' | 'low' | 'empty';
+}
+
 export const branchApi = createApi({
     reducerPath: 'branchApi',
     baseQuery: baseQueryWithReAuth,
     tagTypes: ['Branch'],
     endpoints: (builder) => ({
-        // ⭐ Fetch current user's branch (backend folosește branchId din token)
         fetchBranch: builder.query<Branch, void>({
             query: () => ({
                 url: config.branchUrl, // GET /branch
@@ -76,6 +82,13 @@ export const branchApi = createApi({
             }),
             invalidatesTags: ['Branch'],
         }),
+        getBranchSmsUsage: builder.query<BranchSmsUsage, void>({
+            query: () => ({
+                url: `${config.branchUrl}/sms-usage`, // ex: /branches/sms-usage
+                method: 'GET',
+            }),
+            providesTags: ['Branch'],
+        }),
     }),
 });
 
@@ -86,4 +99,5 @@ export const {
     useUpdateBranchMutation,
     useDeleteBranchMutation,
     useUpdateBranchPackageMutation,
+    useGetBranchSmsUsageQuery
 } = branchApi;

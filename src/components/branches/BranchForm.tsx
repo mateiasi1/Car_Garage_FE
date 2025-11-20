@@ -14,7 +14,7 @@ import { PrimaryButton } from '../shared/PrimaryButton';
 
 interface BranchFormProps {
     selectedBranch: Branch | null;
-    companyId: string; // ⭐ Add companyId prop
+    companyId: string;
     onCloseDrawer: () => void;
 }
 
