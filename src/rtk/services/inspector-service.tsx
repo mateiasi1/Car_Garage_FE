@@ -2,7 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import config from '../../config';
 import { CreateInspectorDTO, UpdateInspectorDTO } from '../../interfaces/inspector.payload';
 import { User } from '../../models/User';
-import { baseQueryWithReAuth } from "../baseQuery.ts";
+import { baseQueryWithReAuth } from "../baseQuery";
 
 export const inspectorApi = createApi({
     reducerPath: 'inspectorApi',

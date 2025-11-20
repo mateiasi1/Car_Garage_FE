@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import { SendInspectionReminderResponse } from '../../models/SmsService.ts';
-import {baseQueryWithReAuth} from "../baseQuery.ts";
+import { SendInspectionReminderResponse } from '../../models/SmsService';
+import {baseQueryWithReAuth} from "../baseQuery";
 
 export const smsApi = createApi({
     reducerPath: 'smsApi',

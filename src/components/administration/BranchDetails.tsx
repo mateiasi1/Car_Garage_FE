@@ -8,8 +8,8 @@ import Drawer from '../shared/Drawer';
 import { PrimaryButton } from '../shared/PrimaryButton';
 import { showToast } from '../../utils/showToast';
 import { Branch } from '../../models/Branch';
-import {AuthContext} from "../../contexts/authContext.tsx";
-import {Role} from "../../utils/enums/Role.ts";
+import {AuthContext} from "../../contexts/authContext";
+import {Role} from "../../utils/enums/Role";
 
 const BranchDetails: FC = () => {
     const { t } = useTranslation();

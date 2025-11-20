@@ -2,8 +2,8 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import config from '../../config';
 import { CreateCustomerDTO, UpdateCustomerDTO } from '../../interfaces/customer.payload';
 import { Customer } from '../../models/Customer';
-import { UnsubscribeRequest, UnsubscribeResponse } from '../../models/Unsubscribe.ts';
-import { baseQueryWithReAuth } from '../baseQuery.ts';
+import { UnsubscribeRequest, UnsubscribeResponse } from '../../models/Unsubscribe';
+import { baseQueryWithReAuth } from '../baseQuery';
 
 export const customerApi = createApi({
   reducerPath: 'customerApi',

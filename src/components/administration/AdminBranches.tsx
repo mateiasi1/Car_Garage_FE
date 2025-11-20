@@ -3,10 +3,10 @@ import { useTranslation } from 'react-i18next';
 import Drawer from '../shared/Drawer';
 import { Branch } from '../../models/Branch';
 import GenericTable, { TableColumn, TableAction } from '../shared/GenericTable';
-import BranchForm from "../branches/BranchForm.tsx";
-import PackageSubscribeDialog from "../../dialogs/PackageSubscribeDialog.tsx";
-import {useFetchAdminCompanyBranchesQuery} from "../../rtk/services/admin-service.tsx";
-import {useFetchPackagesQuery} from "../../rtk/services/package-service.tsx";
+import BranchForm from "../branches/BranchForm";
+import PackageSubscribeDialog from "../../dialogs/PackageSubscribeDialog";
+import {useFetchAdminCompanyBranchesQuery} from "../../rtk/services/admin-service";
+import {useFetchPackagesQuery} from "../../rtk/services/package-service";
 import {useNavigate, useSearchParams} from "react-router-dom";
 
 const AdminBranches: FC = () => {

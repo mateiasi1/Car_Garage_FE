@@ -2,9 +2,9 @@ import { FC, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStore } from '@fortawesome/free-solid-svg-icons';
-import { showToast } from "../utils/showToast.ts";
-import {useUpdateBranchPackageMutation} from "../rtk/services/branch-service.tsx";
-import {useFetchPackagesQuery} from "../rtk/services/package-service.tsx";
+import { showToast } from "../utils/showToast";
+import {useUpdateBranchPackageMutation} from "../rtk/services/branch-service";
+import {useFetchPackagesQuery} from "../rtk/services/package-service";
 
 interface PackageDialogProps {
     isOpen: boolean;

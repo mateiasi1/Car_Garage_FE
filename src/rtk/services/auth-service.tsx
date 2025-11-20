@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import config from '../../config';
-import {baseQueryWithReAuth} from "../baseQuery.ts";
+import {baseQueryWithReAuth} from "../baseQuery";
 
 export interface LoginPayload {
     username: string;

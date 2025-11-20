@@ -2,7 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import config from '../../config';
 import { User } from '../../models/User';
 import ChangePasswordDTO from '../../dto/ChangePasswordDTO';
-import {baseQueryWithReAuth} from "../baseQuery.ts";
+import {baseQueryWithReAuth} from "../baseQuery";
 
 export const userApi = createApi({
   reducerPath: 'userApi',

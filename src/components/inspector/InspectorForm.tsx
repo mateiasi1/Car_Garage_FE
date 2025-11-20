@@ -13,9 +13,9 @@ import PasswordInput from '../shared/PasswordInput';
 import { PrimaryButton } from '../shared/PrimaryButton';
 import ConfirmationModal from '../shared/ConfirmationModal';
 import { DangerButton } from '../shared/DangerButton';
-import {Branch} from "../../models/Branch.ts";
-import {UserBranch} from "../../models/UserBranch.ts";
-import DropdownMultiSelect from "../shared/Sidebar/DropdownMultiSelect.tsx";
+import {Branch} from "../../models/Branch";
+import {UserBranch} from "../../models/UserBranch";
+import DropdownMultiSelect from "../shared/Sidebar/DropdownMultiSelect";
 
 interface InspectorFormProps {
     selectedInspector: Partial<InspectorFormState> | null;

@@ -2,7 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import config from '../../config';
 import { Company } from '../../models/Company';
 import { baseQueryWithReAuth } from '../baseQuery';
-import {Branch} from "../../models/Branch.ts";
+import {Branch} from "../../models/Branch";
 
 export interface CreateCompanyRequest {
   name: string;

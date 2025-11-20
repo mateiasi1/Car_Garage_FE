@@ -9,7 +9,7 @@ import { customerApi } from './rtk/services/customer-service';
 import { adminApi } from './rtk/services/admin-service';
 import { companyApi } from './rtk/services/company-service';
 import { packagesApi } from './rtk/services/package-service';
-import {branchApi} from "./rtk/services/branch-service.tsx";
+import {branchApi} from "./rtk/services/branch-service";
 
 export const store = configureStore({
     reducer: {

@@ -2,8 +2,8 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import config from '../../config';
 import { Company } from '../../models/Company';
 import { createBaseQueryWithReAuth } from '../baseQuery';
-import {Branch} from "../../models/Branch.ts";
-import {CreateBranchRequest, UpdateBranchRequest} from "./branch-service.tsx";
+import {Branch} from "../../models/Branch";
+import {CreateBranchRequest, UpdateBranchRequest} from "./branch-service";
 
 export interface CreateUserDTO {
     firstName: string;

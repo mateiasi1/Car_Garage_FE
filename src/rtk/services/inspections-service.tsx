@@ -1,7 +1,7 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import config from '../../config';
 import { InspectionsResponse } from '../../models/InspectionsResponse';
-import {baseQueryWithReAuth} from "../baseQuery.ts";
+import {baseQueryWithReAuth} from "../baseQuery";
 
 export interface InspectionsFilters {
   page: number;

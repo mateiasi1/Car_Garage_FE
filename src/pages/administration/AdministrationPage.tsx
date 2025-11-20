@@ -11,10 +11,10 @@ import {AuthContext} from '../../contexts/authContext';
 import {Role as RoleModel} from '../../models/Role';
 import {Role} from '../../utils/enums/Role';
 import CompanyDetails from '../../components/administration/CompanyDetails';
-import Packages from '../../components/administration/Packages.tsx';
-import BranchDetails from "../../components/administration/BranchDetails.tsx";
-import AdminUsers from "../../components/administration/AdminUsers.tsx";
-import AdminBranches from "../../components/administration/AdminBranches.tsx";
+import Packages from '../../components/administration/Packages';
+import BranchDetails from "../../components/administration/BranchDetails";
+import AdminUsers from "../../components/administration/AdminUsers";
+import AdminBranches from "../../components/administration/AdminBranches";
 
 interface AdministrationSetting extends AdministrationItemProps {
     roles: Role[];

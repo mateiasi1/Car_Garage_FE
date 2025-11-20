@@ -1,8 +1,8 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import {useContext} from "react";
-import {AuthContext} from "../../contexts/authContext.tsx";
-import {routes} from "../../constants/routes.ts";
+import {AuthContext} from "../../contexts/authContext";
+import {routes} from "../../constants/routes";
 import logo from '../../assets/logo.png';
 
 const About = () => {
