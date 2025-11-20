@@ -9,6 +9,8 @@ const About = () => {
     const { t } = useTranslation();
     const { isAuthenticated } = useContext(AuthContext);
 
+    console.log("@@@ isAuthenticated", isAuthenticated);
+
     return (
         <div className="min-h-screen bg-background">
             {/* Header */}
@@ -24,7 +26,7 @@ const About = () => {
                         to={isAuthenticated ? routes.ADMINISTRATION : routes.LOGIN}
                         className="px-6 py-2 bg-primary text-primary-text rounded-lg hover:bg-primary-hover transition-colors font-body"
                     >
-                        {isAuthenticated ? t('home.loginButton') : t('home.adminButton')}
+                        {isAuthenticated ? t('home.adminButton') : t('home.loginButton')}
                     </Link>
                 </div>
             </header>
