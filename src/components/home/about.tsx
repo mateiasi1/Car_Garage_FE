@@ -4,7 +4,7 @@ import { useContext } from 'react';
 import { AuthContext } from '../../contexts/authContext';
 import { routes } from '../../constants/routes';
 import logo from '../../assets/logo.png';
-// import carHome from '../../assets/car_home.png';
+import carHome from '../../assets/car_home.png';
 
 const About = () => {
     const { t } = useTranslation();
@@ -63,17 +63,40 @@ const About = () => {
 
                         <div className="flex items-center justify-center relative">
                             <div className="relative">
+
                                 <div className="absolute inset-0 rounded-3xl bg-primary/30 blur-3xl animate-pulse" />
 
-                                <div className="relative bg-card/90 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/10 flex items-center justify-center">
+                                <div className="flex items-center justify-center">
                                     <img
-                                        src={logo}
-                                        alt="RoadReady Logo"
-                                        className="w-40 h-40 animate-[pulse_2.5s_ease-in-out_infinite]"
+                                        src={carHome}
+                                        alt="F1 pitstop illustration"
+                                        className="
+                                          w-64 sm:w-80
+                                          h-auto
+                                          rounded-[2rem]
+                                          drop-shadow-2xl
+                                          animate-float
+                                          object-cover
+                                        "
                                     />
                                 </div>
                             </div>
                         </div>
+
+
+                        {/*<div className="flex items-center justify-center relative">*/}
+                        {/*    <div className="relative">*/}
+                        {/*        <div className="absolute inset-0 rounded-3xl bg-primary/30 blur-3xl animate-pulse" />*/}
+
+                        {/*        <div className="relative bg-card/90 backdrop-blur-xl rounded-3xl p-8 shadow-2xl border border-white/10 flex items-center justify-center">*/}
+                        {/*            <img*/}
+                        {/*                src={logo}*/}
+                        {/*                alt="RoadReady Logo"*/}
+                        {/*                className="w-40 h-40 animate-[pulse_2.5s_ease-in-out_infinite]"*/}
+                        {/*            />*/}
+                        {/*        </div>*/}
+                        {/*    </div>*/}
+                        {/*</div>*/}
                     </div>
                 </section>
 
