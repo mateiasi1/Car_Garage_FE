@@ -2,7 +2,7 @@ import { createApi } from '@reduxjs/toolkit/query/react';
 import config from '../../config';
 import { User } from '../../models/User';
 import ChangePasswordDTO from '../../dto/ChangePasswordDTO';
-import {baseQueryWithReAuth} from "../baseQuery.ts";
+import {baseQueryWithReAuth} from "../baseQuery";
 
 export const userApi = createApi({
   reducerPath: 'userApi',
@@ -41,6 +41,20 @@ export const userApi = createApi({
         body: passwordData,
       }),
     }),
+    generateUsername: builder.mutation<{ username: string }, { firstName: string; lastName: string, companyId?: string }>({
+      query: ({ firstName, lastName, companyId }) => ({
+          url: `${config.usersUrl}/generate-username`,
+          method: 'GET',
+          params: { firstName, lastName, companyId },
+      }),
+    }),
+      switchBranch: builder.mutation<{ accessToken: string }, { branchId: string }>({
+          query: (body) => ({
+              url: `${config.usersUrl}/switch-branch`,
+              method: 'POST',
+              body,
+          }),
+      }),
   }),
 });
 
@@ -51,5 +65,7 @@ export const {
   useCreateUserMutation,
   useUpdateUserProfileMutation,
   useChangePasswordMutation,
+  useGenerateUsernameMutation,
+  useSwitchBranchMutation,
   util: { invalidateTags },
 } = userApi;

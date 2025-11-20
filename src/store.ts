@@ -9,6 +9,7 @@ import { customerApi } from './rtk/services/customer-service';
 import { adminApi } from './rtk/services/admin-service';
 import { companyApi } from './rtk/services/company-service';
 import { packagesApi } from './rtk/services/package-service';
+import {branchApi} from "./rtk/services/branch-service";
 
 export const store = configureStore({
     reducer: {
@@ -20,6 +21,7 @@ export const store = configureStore({
         [inspectorApi.reducerPath]: inspectorApi.reducer,
         [adminApi.reducerPath]: adminApi.reducer,
         [companyApi.reducerPath]: companyApi.reducer,
+        [branchApi.reducerPath]: branchApi.reducer,
         [packagesApi.reducerPath]: packagesApi.reducer,
         inspection: inspectionReducer,
     },
@@ -33,6 +35,7 @@ export const store = configureStore({
             inspectorApi.middleware,
             adminApi.middleware,
             companyApi.middleware,
+            branchApi.middleware,
             packagesApi.middleware
         ),
 });

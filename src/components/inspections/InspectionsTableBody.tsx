@@ -10,7 +10,7 @@ import { setSelectedInspection } from '../../slices/inspectionSlice';
 import { InspectionType } from '../../utils/enums/InspectionTypes';
 import { showToast } from '../../utils/showToast';
 import ConfirmationModal from '../shared/ConfirmationModal';
-import { useSendInspectionReminderMutation } from '../../rtk/services/sms-service.tsx';
+import { useSendInspectionReminderMutation } from '../../rtk/services/sms-service';
 
 type InspectionsTableBodyProps = {
   inspections: Inspection[];

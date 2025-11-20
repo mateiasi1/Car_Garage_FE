@@ -1,4 +1,4 @@
-import About from "../../components/home/about.tsx";
+import About from "../../components/home/about";
 
 const HomePage = () => {
   return (

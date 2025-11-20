@@ -2,10 +2,11 @@ import { FC } from 'react';
 import { Link, useLocation } from 'react-router-dom';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { useTranslation } from 'react-i18next';
+import {IconProp} from "@fortawesome/fontawesome-svg-core";
 
 interface NavItem {
   to: string;
-  icon: any;
+  icon: IconProp;
   labelKey: string;
   roles?: string[];
 }

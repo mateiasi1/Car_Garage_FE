@@ -1,13 +1,13 @@
 export interface CreateInspectorDTO {
-  username: string;
   firstName: string;
   lastName: string;
   password: string;
+  branchIds: string[];
 }
 
 export interface UpdateInspectorDTO {
   id: string;
-  username: string;
   firstName: string;
   lastName: string;
+  branchIds: string[];
 }

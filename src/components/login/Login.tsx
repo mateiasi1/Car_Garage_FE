@@ -1,3 +1,4 @@
+// src/components/login/Login.tsx
 import React, { FC, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, Link } from 'react-router-dom';
@@ -12,24 +13,27 @@ import { showToast } from '../../utils/showToast';
 const Login: FC = () => {
     const { t } = useTranslation();
     const navigate = useNavigate();
-    const { login, isAuthenticated } = useContext(AuthContext);
+    const { login, isAuthenticated, user } = useContext(AuthContext);
     const [loginMutation] = useLoginMutation();
+
     const [credentials, setCredentials] = useState<Credentials>({ username: '', password: '' });
-    const [selectCompany, setSelectCompany] = useState(false);
-    const [companies, setCompanies] = useState<{ id: string; name: string }[]>([]);
-    const [selectedCompanyId, setSelectedCompanyId] = useState<string>('');
+
+    const [selectBranch, setSelectBranch] = useState(false);
+    const [branches, setBranches] = useState<{ id: string; name: string }[]>([]);
+    const [selectedBranchId, setSelectedBranchId] = useState<string>('');
 
     useEffect(() => {
-        if (isAuthenticated) {
-            navigate(routes.INSPECTIONS);
-        }
-    }, [isAuthenticated, navigate]);
+        if (!isAuthenticated || !user) return;
+
+        const isAdmin = user.roles?.some((r) => r.name === 'ADMIN');
+        navigate(isAdmin ? routes.ADMINISTRATION : routes.INSPECTIONS);
+    }, [isAuthenticated, user, navigate]);
 
     useEffect(() => {
-        if (selectCompany && companies.length > 0 && !selectedCompanyId) {
-            setSelectedCompanyId(companies[0].id);
+        if (selectBranch && branches.length > 0 && !selectedBranchId) {
+            setSelectedBranchId(branches[0].id);
         }
-    }, [selectCompany, companies, selectedCompanyId]);
+    }, [selectBranch, branches, selectedBranchId]);
 
     const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
         const { id, value } = e.target;
@@ -42,21 +46,29 @@ const Login: FC = () => {
         if (!credentials.username || !credentials.password) return;
 
         try {
-            const payload = {
-                ...credentials,
-                companyId: selectedCompanyId || undefined,
-            };
+            const payload =
+                selectBranch && selectedBranchId
+                    ? {
+                        ...credentials,
+                        branchId: selectedBranchId,
+                    }
+                    : {
+                        ...credentials,
+                    };
 
             const data = await loginMutation(payload).unwrap();
 
-            if (data.selectCompany && data.companies) {
-                setSelectCompany(true);
-                setCompanies(data.companies);
+            if (data.selectBranch && data.branches) {
+                setSelectBranch(true);
+                setBranches(data.branches);
                 return;
             }
 
-            login({ accessToken: data.accessToken! });
-            navigate(routes.INSPECTIONS);
+            if (data.accessToken) {
+                login({ accessToken: data.accessToken });
+            } else {
+                showToast(t('wrongCredentials'), 'error');
+            }
         } catch (error) {
             showToast(t('wrongCredentials'), 'error');
         }
@@ -66,12 +78,15 @@ const Login: FC = () => {
         <div className="flex h-screen w-screen">
             <div className="w-full md:w-2/5 flex items-center justify-center bg-card">
                 <form onSubmit={handleSubmit} className="w-full max-w-sm bg-card px-8 pt-8 pb-8">
-                    <div className="flex items-center justify-center mb-8">
+                    <div
+                        className="flex items-center justify-center mb-8 cursor-pointer"
+                        onClick={() => navigate(routes.HOME)}
+                    >
                         <img src={logo} alt="RoadReady Logo" className="h-14 w-14 mr-3" />
                         <span className="text-2xl font-bold font-heading text-primary">RoadReady</span>
                     </div>
 
-                    {!selectCompany ? (
+                    {!selectBranch ? (
                         <>
                             <div className="mb-4">
                                 <label htmlFor="username" className="block text-text text-sm font-bold font-body mb-2">
@@ -101,18 +116,18 @@ const Login: FC = () => {
                     ) : (
                         <>
                             <div className="mb-6">
-                                <label htmlFor="company" className="block text-text text-sm font-bold font-body mb-2">
-                                    {t('selectCompany')}
+                                <label htmlFor="branch" className="block text-text text-sm font-bold font-body mb-2">
+                                    {t('selectBranch')}
                                 </label>
                                 <select
-                                    id="company"
-                                    value={selectedCompanyId}
-                                    onChange={(e) => setSelectedCompanyId(e.target.value)}
+                                    id="branch"
+                                    value={selectedBranchId}
+                                    onChange={(e) => setSelectedBranchId(e.target.value)}
                                     className="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary font-body"
                                 >
-                                    {companies.map((company) => (
-                                        <option key={company.id} value={company.id}>
-                                            {company.name}
+                                    {branches.map((branch) => (
+                                        <option key={branch.id} value={branch.id}>
+                                            {branch.name}
                                         </option>
                                     ))}
                                 </select>
@@ -122,15 +137,14 @@ const Login: FC = () => {
 
                     <button
                         type="submit"
-                        disabled={selectCompany && !selectedCompanyId}
+                        disabled={selectBranch && !selectedBranchId}
                         className={`w-full py-2 px-4 rounded font-bold font-heading text-primary-text bg-primary hover:bg-primary-hover cursor-pointer transition-colors ${
-                            selectCompany && !selectedCompanyId ? 'opacity-50 cursor-not-allowed bg-primary-disabled' : ''
+                            selectBranch && !selectedBranchId ? 'opacity-50 cursor-not-allowed bg-primary-disabled' : ''
                         }`}
                     >
                         {t('loginButton')}
                     </button>
 
-                    {/* Informative Text about Terms */}
                     <div className="mt-4 text-center text-sm text-gray-600 font-body">
                         {t('login.termsInfo.prefix')}{' '}
                         <Link
@@ -140,6 +154,9 @@ const Login: FC = () => {
                         >
                             {t('login.termsInfo.link')}
                         </Link>
+                    </div>
+                    <div className="mt-4 text-center text-sm text-gray-600 font-body">
+                        {t('registerButton')}{' '}
                     </div>
                 </form>
             </div>

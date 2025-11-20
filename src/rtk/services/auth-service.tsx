@@ -1,17 +1,17 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import config from '../../config';
-import {baseQueryWithReAuth} from "../baseQuery.ts";
+import {baseQueryWithReAuth} from "../baseQuery";
 
 export interface LoginPayload {
     username: string;
     password: string;
-    companyId?: string;
+    branchId?: string;
 }
 
 export interface LoginResponse {
     accessToken?: string;
-    selectCompany?: boolean;
-    companies?: { id: string; name: string }[];
+    selectBranch?: boolean;
+    branches?: { id: string; name: string }[];
 }
 
 export interface RefreshTokenResponse {

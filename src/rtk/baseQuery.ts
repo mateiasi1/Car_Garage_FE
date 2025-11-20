@@ -1,7 +1,7 @@
 import type { BaseQueryApi, FetchArgs, FetchBaseQueryError } from '@reduxjs/toolkit/query';
 import { fetchBaseQuery } from '@reduxjs/toolkit/query/react';
 import config from '../config';
-import { AuthTokens } from "../models/AuthTokens.ts";
+import { AuthTokens } from "../models/AuthTokens";
 
 let refreshPromise: Promise<string | null> | null = null;
 

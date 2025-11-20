@@ -1,11 +1,15 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import {useContext} from "react";
-import {AuthContext} from "../../contexts/authContext.tsx";
+import {AuthContext} from "../../contexts/authContext";
+import {routes} from "../../constants/routes";
+import logo from '../../assets/logo.png';
 
 const About = () => {
     const { t } = useTranslation();
     const { isAuthenticated } = useContext(AuthContext);
+
+    console.log("@@@ isAuthenticated", isAuthenticated);
 
     return (
         <div className="min-h-screen bg-background">
@@ -13,15 +17,17 @@ const About = () => {
             <header className="bg-card shadow-sm">
                 <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
                     <div className="flex items-center space-x-2">
-                        <i className="fas fa-car text-3xl text-primary"></i>
-                        <h1 className="text-2xl font-bold font-heading text-text">RoadReady</h1>
+                        <div className="flex items-center justify-center">
+                            <img src={logo} alt="RoadReady Logo" className="h-14 w-14 mr-3" />
+                            <span className="text-2xl font-bold font-heading text-primary">RoadReady</span>
+                        </div>
                     </div>
-                    {!isAuthenticated && (<Link
-                        to="/login"
+                    <Link
+                        to={isAuthenticated ? routes.ADMINISTRATION : routes.LOGIN}
                         className="px-6 py-2 bg-primary text-primary-text rounded-lg hover:bg-primary-hover transition-colors font-body"
                     >
-                        {t('home.loginButton')}
-                    </Link>)}
+                        {isAuthenticated ? t('home.adminButton') : t('home.loginButton')}
+                    </Link>
                 </div>
             </header>
 
@@ -34,12 +40,12 @@ const About = () => {
                     <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8 font-body">
                         {t('home.hero.subtitle')}
                     </p>
-                    {!isAuthenticated && (<Link
-                        to="/login"
+                    <Link
+                        to={isAuthenticated ? routes.ADMINISTRATION : routes.LOGIN}
                         className="inline-block px-8 py-4 bg-primary text-primary-text text-lg font-semibold font-heading rounded-lg hover:bg-primary-hover transition-colors shadow-lg"
                     >
                         {t('home.hero.cta')}
-                    </Link>)}
+                    </Link>
                 </div>
 
                 {/* Features */}

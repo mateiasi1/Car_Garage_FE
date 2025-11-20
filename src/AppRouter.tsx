@@ -10,9 +10,9 @@ import ProtectedRoute from './ProtectedRoute';
 import { Role } from './utils/enums/Role';
 import NotFoundPage from './pages/notfound/NotFoundPage';
 import { routes } from './constants/routes';
-import Unsubscribe from "./components/unsubscribe/Unsubscribe.tsx";
-import HomePage from "./pages/home/homePage.tsx";
-import TermsPage from "./pages/terms/TermsPage.tsx";
+import Unsubscribe from "./components/unsubscribe/Unsubscribe";
+import HomePage from "./pages/home/homePage";
+import TermsPage from "./pages/terms/TermsPage";
 
 const AppRouter = () => {
     return (

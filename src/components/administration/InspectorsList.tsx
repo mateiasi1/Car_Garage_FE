@@ -5,10 +5,12 @@ import { PersonItemBase } from '../shared/PersonItem';
 import { PersonList } from '../shared/PersonList';
 import { useTranslation } from 'react-i18next';
 import InspectorForm from '../inspector/InspectorForm';
+import {UserBranch} from "../../models/UserBranch";
 
 interface InspectorListItem extends PersonItemBase {
   id: string;
   username: string;
+  branches?: UserBranch[];
 }
 
 const InspectorsList: FC = () => {
@@ -38,6 +40,7 @@ const InspectorsList: FC = () => {
       lastName: user.lastName,
       email: user.email ?? null,
       phoneNumber: null,
+      branches: user.branches,
     })) ?? [];
 
   return (

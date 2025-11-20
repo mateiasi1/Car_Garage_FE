@@ -66,7 +66,6 @@ const InspectionsFilters: FC<InspectionsFiltersProps> = ({ filterConfig = DEFAUL
           <select
             value={filterConfig.inspectionType}
             onChange={(e) => {
-              console.log('Selected inspection type:', e.target.value);
               setFilterConfig({
                 ...filterConfig,
                 inspectionType: e.target.value,

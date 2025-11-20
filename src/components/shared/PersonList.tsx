@@ -9,7 +9,7 @@ export const PersonList = <T extends PersonItemBase>({ items, onItemClick }: Per
   return (
     <div className="flex-1 min-h-0 pr-4 overflow-y-auto space-y-2 scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100">
       {items.map((item, idx) => (
-        <PersonItem key={(item as any).id || idx} item={item} isLast={idx === items.length - 1} onClick={onItemClick} />
+        <PersonItem key={item.id ?? idx} item={item} isLast={idx === items.length - 1} onClick={onItemClick} />
       ))}
     </div>
   );

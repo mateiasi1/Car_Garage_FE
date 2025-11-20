@@ -2,20 +2,20 @@ import { FC, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faStore } from '@fortawesome/free-solid-svg-icons';
-import {useFetchPackagesQuery} from "../rtk/services/package-service.ts";
-import {useUpdatePackageMutation} from "../rtk/services/company-service.tsx";
-import { showToast } from "../utils/showToast.ts";
+import { showToast } from "../utils/showToast";
+import {useUpdateBranchPackageMutation} from "../rtk/services/branch-service";
+import {useFetchPackagesQuery} from "../rtk/services/package-service";
 
 interface PackageDialogProps {
     isOpen: boolean;
     onClose: () => void;
     currentPackageId?: string;
-    companyId: string;
+    branchId: string;
 }
 
-const PackageSubscribeDialog: FC<PackageDialogProps> = ({ isOpen, onClose, currentPackageId, companyId }) => {
+const PackageSubscribeDialog: FC<PackageDialogProps> = ({ isOpen, onClose, currentPackageId, branchId }) => {
     const { data: packages } = useFetchPackagesQuery();
-    const [updatePackage, { isLoading }] = useUpdatePackageMutation();
+    const [updatePackage, { isLoading }] = useUpdateBranchPackageMutation();
     const { t } = useTranslation();
 
     const [selectedPackageId, setSelectedPackageId] = useState<string>('');
@@ -43,9 +43,11 @@ const PackageSubscribeDialog: FC<PackageDialogProps> = ({ isOpen, onClose, curre
     const handleSubmit = async () => {
         try {
             await updatePackage({
-                companyId,
-                packageId: selectedPackageId,
-                period,
+                branchId,
+                data: {
+                    packageId: selectedPackageId,
+                    period
+                },
             }).unwrap();
 
             showToast(t('packages.updateSuccess'), 'success');

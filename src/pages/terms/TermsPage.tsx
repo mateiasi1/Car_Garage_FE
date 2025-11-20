@@ -1,4 +1,4 @@
-import Terms from "../../components/terms/terms.tsx";
+import Terms from "../../components/terms/terms";
 
 const TermsPage = () => {
     return <Terms />;
