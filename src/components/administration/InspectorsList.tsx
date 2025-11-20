@@ -4,7 +4,7 @@ import Drawer from '../shared/Drawer';
 import { PersonItemBase } from '../shared/PersonItem';
 import { PersonList } from '../shared/PersonList';
 import { useTranslation } from 'react-i18next';
-import InspectorForm from '../inspector/InspectorForm';
+import InspectorForm from '../forms/InspectorForm.tsx';
 import {UserBranch} from "../../models/UserBranch";
 
 interface InspectorListItem extends PersonItemBase {

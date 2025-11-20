@@ -1,10 +1,9 @@
 import { FC, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faStore } from '@fortawesome/free-solid-svg-icons';
-import { showToast } from "../utils/showToast";
-import {useUpdateBranchPackageMutation} from "../rtk/services/branch-service";
-import {useFetchPackagesQuery} from "../rtk/services/package-service";
+import { showToast } from '../../utils/showToast.ts';
+import { useUpdateBranchPackageMutation } from '../../rtk/services/branch-service.tsx';
+import { useFetchPackagesQuery } from '../../rtk/services/package-service.tsx';
+import Drawer from '../shared/Drawer.tsx';
 
 interface PackageDialogProps {
     isOpen: boolean;
@@ -13,7 +12,12 @@ interface PackageDialogProps {
     branchId: string;
 }
 
-const PackageSubscribeDialog: FC<PackageDialogProps> = ({ isOpen, onClose, currentPackageId, branchId }) => {
+const PackageSubscribeDrawer: FC<PackageDialogProps> = ({
+    isOpen,
+    onClose,
+    currentPackageId,
+    branchId,
+}) => {
     const { data: packages } = useFetchPackagesQuery();
     const [updatePackage, { isLoading }] = useUpdateBranchPackageMutation();
     const { t } = useTranslation();
@@ -32,7 +36,7 @@ const PackageSubscribeDialog: FC<PackageDialogProps> = ({ isOpen, onClose, curre
     // Calculate price when package or period changes
     useEffect(() => {
         if (selectedPackageId && packages) {
-            const selectedPkg = packages.find(p => p.id === selectedPackageId);
+            const selectedPkg = packages.find((p) => p.id === selectedPackageId);
             if (selectedPkg) {
                 const multiplier = period === 'yearly' ? 10 : 1;
                 setCalculatedPrice(selectedPkg.price * multiplier);
@@ -46,7 +50,7 @@ const PackageSubscribeDialog: FC<PackageDialogProps> = ({ isOpen, onClose, curre
                 branchId,
                 data: {
                     packageId: selectedPackageId,
-                    period
+                    period,
                 },
             }).unwrap();
 
@@ -60,22 +64,14 @@ const PackageSubscribeDialog: FC<PackageDialogProps> = ({ isOpen, onClose, curre
 
     if (!isOpen) return null;
 
-    const selectedPackage = packages?.find(p => p.id === selectedPackageId);
+    const selectedPackage = packages?.find((p) => p.id === selectedPackageId);
     const isSamePackage = selectedPackageId === currentPackageId;
 
     return (
-        <div className="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50">
-            <div className="bg-white rounded-lg shadow-xl max-w-2xl w-full mx-4">{/* Changed from max-w-md to max-w-2xl */}
-                {/* Header */}
-                <div className="p-6 border-b">
-                    <div className="flex items-center gap-3">
-                        <FontAwesomeIcon icon={faStore} className="text-primary text-2xl" />
-                        <h2 className="text-2xl font-bold">{t('packages.selectPackageTitle')}</h2>
-                    </div>
-                </div>
-
-                {/* Body */}
-                <div className="p-6 space-y-6">
+        <Drawer isOpen={isOpen} onClose={onClose} title={t('packages.selectPackageTitle')}>
+            <div className="flex flex-col h-full">
+                {/* Content */}
+                <div className="flex-1 space-y-6 overflow-y-auto pr-1">
                     {/* Package Selector */}
                     <div>
                         <label className="block text-sm font-medium text-gray-700 mb-2">
@@ -101,6 +97,7 @@ const PackageSubscribeDialog: FC<PackageDialogProps> = ({ isOpen, onClose, curre
                         </label>
                         <div className="grid grid-cols-2 gap-3">
                             <button
+                                type="button"
                                 onClick={() => setPeriod('monthly')}
                                 className={`p-3 border rounded-lg font-medium transition-all ${
                                     period === 'monthly'
@@ -111,6 +108,7 @@ const PackageSubscribeDialog: FC<PackageDialogProps> = ({ isOpen, onClose, curre
                                 {t('packages.monthly')}
                             </button>
                             <button
+                                type="button"
                                 onClick={() => setPeriod('yearly')}
                                 className={`p-3 border rounded-lg font-medium transition-all ${
                                     period === 'yearly'
@@ -120,7 +118,8 @@ const PackageSubscribeDialog: FC<PackageDialogProps> = ({ isOpen, onClose, curre
                             >
                                 {t('packages.yearly')}
                                 <span className="block text-xs mt-1">
-                  {t('packages.save')} {selectedPackage ? (selectedPackage.price * 2).toFixed(2) : 0} RON
+                  {t('packages.save')}{' '}
+                                    {selectedPackage ? (selectedPackage.price * 2).toFixed(2) : 0} RON
                 </span>
                             </button>
                         </div>
@@ -130,17 +129,30 @@ const PackageSubscribeDialog: FC<PackageDialogProps> = ({ isOpen, onClose, curre
                     {selectedPackage && (
                         <div className="bg-gray-50 p-4 rounded-lg">
                             <h3 className="font-semibold mb-2">{selectedPackage.name}</h3>
-                            <p className="text-sm text-gray-600 mb-3">{selectedPackage.description}</p>
+                            <p className="text-sm text-gray-600 mb-3">
+                                {selectedPackage.description}
+                            </p>
 
                             <div className="flex items-center gap-2 text-sm">
-                                <svg className="w-4 h-4 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                                    <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
+                                <svg
+                                    className="w-4 h-4 text-success"
+                                    fill="none"
+                                    stroke="currentColor"
+                                    viewBox="0 0 24 24"
+                                >
+                                    <path
+                                        strokeLinecap="round"
+                                        strokeLinejoin="round"
+                                        strokeWidth={2}
+                                        d="M5 13l4 4L19 7"
+                                    />
                                 </svg>
                                 <span>
                   {selectedPackage.features.sms.limit === -1
                       ? t('packages.unlimitedSMS')
-                      : `${selectedPackage.features.sms.limit.toLocaleString('ro-RO')} ${t('packages.smsPerMonth')}`
-                  }
+                      : `${selectedPackage.features.sms.limit.toLocaleString(
+                          'ro-RO',
+                      )} ${t('packages.smsPerMonth')}`}
                 </span>
                             </div>
                         </div>
@@ -151,11 +163,15 @@ const PackageSubscribeDialog: FC<PackageDialogProps> = ({ isOpen, onClose, curre
                         <div className="flex justify-between items-center mb-2">
                             <span className="text-gray-600">{t('packages.period')}:</span>
                             <span className="font-medium">
-                {period === 'yearly' ? t('packages.12months') : t('packages.1month')}
+                {period === 'yearly'
+                    ? t('packages.12months')
+                    : t('packages.1month')}
               </span>
                         </div>
                         <div className="flex justify-between items-center">
-                            <span className="text-lg font-semibold">{t('packages.totalPrice')}:</span>
+              <span className="text-lg font-semibold">
+                {t('packages.totalPrice')}:
+              </span>
                             <span className="text-2xl font-bold text-primary">
                 {calculatedPrice.toFixed(2)} RON
               </span>
@@ -173,8 +189,9 @@ const PackageSubscribeDialog: FC<PackageDialogProps> = ({ isOpen, onClose, curre
                 </div>
 
                 {/* Footer */}
-                <div className="p-6 border-t flex gap-3">
+                <div className="pt-4 mt-4 border-t flex gap-3">
                     <button
+                        type="button"
                         onClick={onClose}
                         className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
                         disabled={isLoading}
@@ -182,16 +199,17 @@ const PackageSubscribeDialog: FC<PackageDialogProps> = ({ isOpen, onClose, curre
                         {t('cancel')}
                     </button>
                     <button
+                        type="button"
                         onClick={handleSubmit}
-                        className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-dark transition-colors disabled:opacity-50"
+                        className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors disabled:opacity-50"
                         disabled={isLoading}
                     >
                         {isLoading ? t('packages.processing') : t('confirm')}
                     </button>
                 </div>
             </div>
-        </div>
+        </Drawer>
     );
 };
 
-export default PackageSubscribeDialog;
+export default PackageSubscribeDrawer;

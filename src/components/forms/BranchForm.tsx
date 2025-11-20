@@ -4,13 +4,13 @@ import {
     useCreateAdminBranchMutation,
     useUpdateAdminBranchMutation,
     useDeleteAdminBranchMutation,
-} from '../../rtk/services/admin-service';
-import { Branch } from '../../models/Branch';
-import { Error } from '../../interfaces/error';
-import { showToast } from '../../utils/showToast';
-import ConfirmationModal from '../shared/ConfirmationModal';
-import { DangerButton } from '../shared/DangerButton';
-import { PrimaryButton } from '../shared/PrimaryButton';
+} from '../../rtk/services/admin-service.tsx';
+import { Branch } from '../../models/Branch.ts';
+import { Error } from '../../interfaces/error.tsx';
+import { showToast } from '../../utils/showToast.ts';
+import ConfirmationModal from '../shared/ConfirmationModal.tsx';
+import { DangerButton } from '../shared/DangerButton.tsx';
+import { PrimaryButton } from '../shared/PrimaryButton.tsx';
 
 interface BranchFormProps {
     selectedBranch: Branch | null;

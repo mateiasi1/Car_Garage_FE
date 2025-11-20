@@ -1,7 +1,6 @@
 import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
 import InspectionForm from './components/inspections/InspectionForm';
 import AdministrationPage from './pages/administration/AdministrationPage';
-// import DashboardPage from './pages/dashboard/DashboardPage';
 import InspectionsPage from './pages/inspections/InspectionsPage';
 import AppLayout from './pages/layout/AppLayout';
 import ProtectedLayout from './pages/layout/ProtectedLayout';
@@ -29,10 +28,6 @@ const AppRouter = () => {
                     <Route
                         element={<ProtectedRoute element={<ProtectedLayout />} roles={[Role.admin, Role.owner, Role.inspector]} />}
                     >
-                        {/* <Route
-                          path="/"
-                          element={<ProtectedRoute element={<DashboardPage />} roles={[Role.admin, Role.inspector]} />}
-                        /> */}
                         <Route
                             path={routes.INSPECTIONS}
                             element={<ProtectedRoute element={<InspectionsPage />} roles={[Role.owner, Role.inspector]} />}

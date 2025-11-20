@@ -1,6 +1,6 @@
 import { FC, useMemo } from 'react';
-import { User } from '../../../models/User';
-import { Role } from '../../../models/Role';
+import { User } from '../../models/User.ts';
+import { Role } from '../../models/Role.ts';
 
 interface SidebarUserSectionProps {
   expanded: boolean;

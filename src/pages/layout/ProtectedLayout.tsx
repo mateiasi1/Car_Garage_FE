@@ -1,7 +1,7 @@
 // src/pages/layout/ProtectedLayout.tsx
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import Sidebar from '../../components/shared/Sidebar/Sidebar';
+import Sidebar from '../../components/sidebar/Sidebar';
 import PageMessage from "../../components/shared/PageMessage";
 
 const ProtectedLayout = () => {

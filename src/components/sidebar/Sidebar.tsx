@@ -1,12 +1,12 @@
 import { faClipboardList, faGear } from '@fortawesome/free-solid-svg-icons';
 import { FC, useContext } from 'react';
-import { AuthContext } from '../../../contexts/authContext';
-import { Role as RoleModel } from '../../../models/Role';
-import { Role } from '../../../utils/enums/Role';
-import SidebarFooter from './SidebarFooter';
-import SidebarNav from './SidebarNav';
-import SidebarUserSection from './SidebarUserSection';
-import LanguageSelector from "../../header/LanguageSelector";
+import { AuthContext } from '../../contexts/authContext.tsx';
+import { Role as RoleModel } from '../../models/Role.ts';
+import { Role } from '../../utils/enums/Role.ts';
+import SidebarFooter from './SidebarFooter.tsx';
+import SidebarNav from './SidebarNav.tsx';
+import SidebarUserSection from './SidebarUserSection.tsx';
+import LanguageSelector from "./LanguageSelector.tsx";
 
 const navItems = [
   // {

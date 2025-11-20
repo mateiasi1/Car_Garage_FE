@@ -1,16 +1,16 @@
 import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CreateCustomerDTO, UpdateCustomerDTO } from '../../interfaces/customer.payload';
+import { CreateCustomerDTO, UpdateCustomerDTO } from '../../interfaces/customer.payload.ts';
 import {
   useCreateCustomerMutation,
   useUpdateCustomerMutation,
   useDeleteCustomerMutation,
-} from '../../rtk/services/customer-service';
-import { showToast } from '../../utils/showToast';
-import { PrimaryButton } from '../shared/PrimaryButton';
-import { DangerButton } from '../shared/DangerButton';
-import ConfirmationModal from '../shared/ConfirmationModal';
-import { Error } from '../../interfaces/error';
+} from '../../rtk/services/customer-service.tsx';
+import { showToast } from '../../utils/showToast.ts';
+import { PrimaryButton } from '../shared/PrimaryButton.tsx';
+import { DangerButton } from '../shared/DangerButton.tsx';
+import ConfirmationModal from '../shared/ConfirmationModal.tsx';
+import { Error } from '../../interfaces/error.tsx';
 
 interface CustomerFormProps {
   selectedCustomer: Partial<CustomerFormState> | null;

@@ -1,21 +1,21 @@
 import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { CreateInspectorDTO, UpdateInspectorDTO } from '../../interfaces/inspector.payload';
+import { CreateInspectorDTO, UpdateInspectorDTO } from '../../interfaces/inspector.payload.ts';
 import {
     useCreateInspectorMutation,
     useUpdateInspectorMutation,
     useDeleteInspectorMutation,
-} from '../../rtk/services/inspector-service';
-import { useFetchCompanyBranchesQuery } from '../../rtk/services/company-service';
-import { useGenerateUsernameMutation } from '../../rtk/services/user-service';
-import { showToast } from '../../utils/showToast';
-import PasswordInput from '../shared/PasswordInput';
-import { PrimaryButton } from '../shared/PrimaryButton';
-import ConfirmationModal from '../shared/ConfirmationModal';
-import { DangerButton } from '../shared/DangerButton';
-import {Branch} from "../../models/Branch";
-import {UserBranch} from "../../models/UserBranch";
-import DropdownMultiSelect from "../shared/Sidebar/DropdownMultiSelect";
+} from '../../rtk/services/inspector-service.tsx';
+import { useFetchCompanyBranchesQuery } from '../../rtk/services/company-service.tsx';
+import { useGenerateUsernameMutation } from '../../rtk/services/user-service.tsx';
+import { showToast } from '../../utils/showToast.ts';
+import PasswordInput from '../shared/PasswordInput.tsx';
+import { PrimaryButton } from '../shared/PrimaryButton.tsx';
+import ConfirmationModal from '../shared/ConfirmationModal.tsx';
+import { DangerButton } from '../shared/DangerButton.tsx';
+import {Branch} from "../../models/Branch.ts";
+import {UserBranch} from "../../models/UserBranch.ts";
+import DropdownMultiSelect from "../shared/DropdownMultiSelect.tsx";
 
 interface InspectorFormProps {
     selectedInspector: Partial<InspectorFormState> | null;

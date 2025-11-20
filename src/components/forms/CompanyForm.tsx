@@ -1,15 +1,15 @@
 import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Error } from '../../interfaces/error';
+import { Error } from '../../interfaces/error.tsx';
 import {
     useCreateAdminCompanyMutation,
     useDeleteAdminCompanyMutation,
     useUpdateAdminCompanyMutation,
-} from '../../rtk/services/admin-service';
-import { showToast } from '../../utils/showToast';
-import ConfirmationModal from '../shared/ConfirmationModal';
-import { DangerButton } from '../shared/DangerButton';
-import { PrimaryButton } from '../shared/PrimaryButton';
+} from '../../rtk/services/admin-service.tsx';
+import { showToast } from '../../utils/showToast.ts';
+import ConfirmationModal from '../shared/ConfirmationModal.tsx';
+import { DangerButton } from '../shared/DangerButton.tsx';
+import { PrimaryButton } from '../shared/PrimaryButton.tsx';
 
 interface CompanyFormProps {
     selectedCompany: Partial<CompanyFormState> | null;
