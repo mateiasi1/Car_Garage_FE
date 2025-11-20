@@ -6,7 +6,7 @@ import { Role } from '../../../utils/enums/Role';
 import SidebarFooter from './SidebarFooter';
 import SidebarNav from './SidebarNav';
 import SidebarUserSection from './SidebarUserSection';
-import LanguageSelector from "../../header/LanguageSelector.tsx";
+import LanguageSelector from "../../header/LanguageSelector";
 
 const navItems = [
   // {

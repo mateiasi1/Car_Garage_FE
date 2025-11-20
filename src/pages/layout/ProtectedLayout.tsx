@@ -2,7 +2,7 @@
 import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../../components/shared/Sidebar/Sidebar';
-import PageMessage from "../../components/shared/PageMessage.tsx";
+import PageMessage from "../../components/shared/PageMessage";
 
 const ProtectedLayout = () => {
     const [expanded, setExpanded] = useState(false);
