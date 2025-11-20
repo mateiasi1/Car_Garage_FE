@@ -11,7 +11,7 @@ import { PrimaryButton } from '../shared/PrimaryButton';
 import { DangerButton } from '../shared/DangerButton';
 import ConfirmationModal from '../shared/ConfirmationModal';
 import { Error } from '../../interfaces/error';
-import {PhoneNumberRoInput} from "../PhoneNumberRoInput.tsx";
+import {PhoneNumberRoInput} from "../PhoneNumberRoInput";
 
 interface CustomerFormProps {
   selectedCustomer: Partial<CustomerFormState> | null;
