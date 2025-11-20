@@ -121,8 +121,8 @@ const GenericTable = <T extends { id: string }>({
 
     return (
         <div className="flex flex-col h-[calc(100vh-12rem)] w-full">
-            <div className="w-full bg-white rounded-xl flex flex-col h-full overflow-hidden">
-                {showToolbar && (
+            <div className="w-full bg-white rounded-xl flex flex-col h-full overflow-visible">
+            {showToolbar && (
                     <div className="space-y-4 flex-shrink-0">
                         <div className="flex items-center gap-3 flex-wrap">
                             {showFilters && (

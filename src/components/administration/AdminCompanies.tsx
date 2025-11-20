@@ -2,7 +2,7 @@ import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useFetchAdminCompaniesQuery } from '../../rtk/services/admin-service';
-import CompanyForm from '../forms/CompanyForm.tsx';
+import CompanyForm from '../forms/CompanyForm';
 import Drawer from '../shared/Drawer';
 import { Company } from '../../models/Company';
 import GenericTable, { TableColumn, TableAction } from '../shared/GenericTable';

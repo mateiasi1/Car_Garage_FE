@@ -4,7 +4,7 @@ import { useNavigate, useSearchParams } from 'react-router-dom';
 import {AdminUser, useFetchAdminCompanyUsersQuery} from '../../rtk/services/admin-service';
 import Drawer from '../shared/Drawer';
 import GenericTable, { TableColumn, TableAction } from '../shared/GenericTable';
-import UserForm from "../forms/UserForm.tsx";
+import UserForm from "../forms/UserForm";
 
 const AdminUsers: FC = () => {
     const { t } = useTranslation();

@@ -4,7 +4,7 @@ import Drawer from '../shared/Drawer';
 import { PersonItemBase } from '../shared/PersonItem';
 import { PersonList } from '../shared/PersonList';
 import { t } from 'i18next';
-import CustomerForm from '../forms/CustomerForm.tsx';
+import CustomerForm from '../forms/CustomerForm';
 
 interface CustomerListItem extends PersonItemBase {
   id: string;

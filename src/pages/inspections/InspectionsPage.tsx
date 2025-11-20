@@ -252,7 +252,7 @@ const InspectionsPage: FC = () => {
 
     return (
         <div className="flex flex-col min-h-screen w-full bg-background p-6">
-            <div className="w-full bg-white rounded-xl shadow-md p-4 flex flex-col mt-12 h-[calc(100vh-6rem)]">
+            <div className="w-full bg-white rounded-xl shadow-md p-4 flex flex-col h-[calc(100vh-6rem)]">
                 <GenericTable
                     data={inspections}
                     columns={columns}

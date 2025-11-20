@@ -147,7 +147,7 @@ const AdministrationPage: FC = () => {
 
     return (
         <div className="min-h-screen w-full bg-background">
-            <div className="h-screen flex flex-col lg:flex-row lg:gap-6 lg:p-6 lg:pt-12">
+            <div className="h-screen flex flex-col lg:flex-row lg:gap-6 lg:p-6">
                 <aside className="lg:w-64 xl:w-72 bg-card lg:rounded-xl lg:shadow-md">
                     <div className="p-4 lg:p-6">
                         <h2 className="text-xl lg:text-2xl font-heading font-bold text-text mb-4 lg:mb-6 hidden lg:block">

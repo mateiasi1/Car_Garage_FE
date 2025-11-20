@@ -127,12 +127,12 @@ const InspectionForm: FC = () => {
         `${inputBaseClass} ${errors[field] ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-primary'}`;
 
     return (
-        <div className="flex flex-col min-h-screen w-full bg-background px-3 py-4 sm:p-6">
-            <div className="w-full bg-white rounded-xl shadow-md px-3 py-4 sm:p-6 mt-4 sm:mt-12 flex-1 flex flex-col max-w-6xl mx-auto">
+        <div className="flex flex-col min-h-screen w-full bg-background px-3 py-2 sm:px-6">
+            <div className="w-full bg-white rounded-xl shadow-md px-3 py-2 sm:px-6 mt-4 flex-1 flex flex-col max-w-6xl mx-auto">
                 <h2 className="text-xl sm:text-2xl font-heading text-center mb-4 sm:mb-8">
                     {t('addNewInspection')}
                 </h2>
-                <div className="flex-1 flex items-stretch sm:items-center overflow-y-auto">
+                <div className="flex-1 flex items-stretch sm:items-center overflow-visible sm:overflow-y-auto">
                     <form
                         onSubmit={handleSubmit}
                         className="space-y-6 w-full max-w-7xl mx-auto pb-6"

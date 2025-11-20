@@ -5,16 +5,16 @@ import {
     useUpdateAdminUserMutation,
     useDeleteAdminUserMutation,
     AdminUser,
-} from '../../rtk/services/admin-service.tsx';
-import { useFetchAdminCompanyBranchesQuery } from '../../rtk/services/admin-service.tsx';
-import { useGenerateUsernameMutation } from '../../rtk/services/user-service.tsx';
-import { Error } from '../../interfaces/error.tsx';
-import { showToast } from '../../utils/showToast.ts';
-import ConfirmationModal from '../shared/ConfirmationModal.tsx';
-import { DangerButton } from '../shared/DangerButton.tsx';
-import { PrimaryButton } from '../shared/PrimaryButton.tsx';
-import DropdownMultiSelect from '../shared/DropdownMultiSelect.tsx';
-import { Branch } from '../../models/Branch.ts';
+} from '../../rtk/services/admin-service';
+import { useFetchAdminCompanyBranchesQuery } from '../../rtk/services/admin-service';
+import { useGenerateUsernameMutation } from '../../rtk/services/user-service';
+import { Error } from '../../interfaces/error';
+import { showToast } from '../../utils/showToast';
+import ConfirmationModal from '../shared/ConfirmationModal';
+import { DangerButton } from '../shared/DangerButton';
+import { PrimaryButton } from '../shared/PrimaryButton';
+import DropdownMultiSelect from '../shared/DropdownMultiSelect';
+import { Branch } from '../../models/Branch';
 
 interface UserFormProps {
     selectedUser: AdminUser | null;

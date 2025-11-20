@@ -1,4 +1,3 @@
-// src/components/shared/PageMessage.tsx
 import { FC, useContext } from 'react';
 import { useTranslation } from 'react-i18next';
 import { AuthContext } from '../../contexts/authContext';
@@ -8,11 +7,7 @@ import { useGetBranchSmsUsageQuery } from '../../rtk/services/branch-service';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTriangleExclamation, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 
-interface Props {
-    sidebarWidth: string;
-}
-
-const PageMessage: FC<Props> = ({ sidebarWidth }) => {
+const PageMessage: FC = () => {
     const { t } = useTranslation();
     const { isAuthenticated, user } = useContext(AuthContext);
 
@@ -39,25 +34,25 @@ const PageMessage: FC<Props> = ({ sidebarWidth }) => {
     const icon = isErrorState ? faCircleXmark : faTriangleExclamation;
 
     return (
-        <div
-            className="absolute top-0 right-0 z-[9999]"
-            style={{ left: sidebarWidth }}
-        >
-            <div className={`${bgColor} w-full py-1 px-2 flex items-center gap-3 shadow-lg`}>
-                <FontAwesomeIcon icon={icon} className="h-6 w-6" />
+        <>
+            <div className="fixed top-0 right-0 left-0 md:left-16 z-[9999]">
+                <div className={`${bgColor} w-full py-1 px-2 flex items-center gap-3 shadow-lg`}>
+                    <FontAwesomeIcon icon={icon} className="h-6 w-6" />
 
-                <div>
-                    <div className="font-heading font-semibold">
-                        {isErrorState ? t('smsBanner.errorTitle') : t('smsBanner.warningTitle')}
-                    </div>
-                    <div className="text-sm opacity-90">
-                        {isErrorState
-                            ? t('smsBanner.errorBody')
-                            : t('smsBanner.warningBody', { percent: Math.round(remainingPercent) })}
+                    <div>
+                        <div className="font-heading font-semibold">
+                            {isErrorState ? t('smsBanner.errorTitle') : t('smsBanner.warningTitle')}
+                        </div>
+                        <div className="text-sm opacity-90">
+                            {isErrorState
+                                ? t('smsBanner.errorBody')
+                                : t('smsBanner.warningBody', { percent: Math.round(remainingPercent) })}
+                        </div>
                     </div>
                 </div>
             </div>
-        </div>
+            <div className="h-24 sm:h-20 md:h-16" />
+        </>
     );
 };
 
