@@ -149,28 +149,39 @@ const AdministrationPage: FC = () => {
         <div className="min-h-screen w-full bg-background">
             <div className="h-screen flex flex-col lg:flex-row lg:gap-6 lg:p-6">
                 <aside className="lg:w-64 xl:w-72 bg-card lg:rounded-xl lg:shadow-md">
-                    <div className="p-4 lg:p-6">
+                    <div className="lg:p-6">
                         <h2 className="text-xl lg:text-2xl font-heading font-bold text-text mb-4 lg:mb-6 hidden lg:block">
                             {t('administration')}
                         </h2>
 
-                        <nav className="flex lg:flex-col gap-2 lg:gap-4 overflow-x-auto lg:overflow-x-visible pb-2 lg:pb-0">
-                            {menuItems.map((item, index) => (
-                                <AdministrationItem
-                                    key={index}
-                                    icon={item.icon}
-                                    name={item.name}
-                                    link={item.link}
-                                    isSelected={selectedItem?.tabKey === item.tabKey}
-                                    onSelect={() => handleSelectItem(item)}
-                                />
-                            ))}
-                        </nav>
+                        <div className="bg-primary/10 rounded-md lg:bg-transparent">
+                            <nav
+                                className="
+                                    flex lg:flex-col
+                                    gap-1 lg:gap-4
+                                    overflow-x-auto lg:overflow-x-visible
+                                    justify-center lg:justify-start
+                                    py-1"
+                                >
+                                {menuItems.map((item, index) => (
+                                    <AdministrationItem
+                                        key={index}
+                                        icon={item.icon}
+                                        name={item.name}
+                                        link={item.link}
+                                        isSelected={selectedItem?.tabKey === item.tabKey}
+                                        onSelect={() => handleSelectItem(item)}
+                                    />
+                                ))}
+                            </nav>
+                        </div>
                     </div>
                 </aside>
 
                 <main className="flex-1 bg-card lg:rounded-xl lg:shadow-md overflow-hidden">
-                    <div className="h-full overflow-y-auto p-4 lg:p-6">{selectedItem?.component}</div>
+                    <div className="h-full overflow-y-auto p-4 lg:p-6">
+                        {selectedItem?.component}
+                    </div>
                 </main>
             </div>
         </div>
