@@ -1,7 +1,7 @@
 import { FC, ReactNode, useEffect } from 'react';
 import { X } from 'lucide-react';
 import { IconButton } from './IconButton';
-import { Text } from './Text';
+import { CustomText } from './CustomText';
 
 interface DrawerProps {
   isOpen: boolean;
@@ -41,9 +41,9 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose, title, children }) => {
       >
         <div className="flex items-center justify-between px-5 py-4 border-b border-card/40">
           {title && (
-            <Text variant="h3" className="m-0">
+            <CustomText variant="h3" className="m-0">
               {title}
-            </Text>
+            </CustomText>
           )}
           <IconButton
             type="button"

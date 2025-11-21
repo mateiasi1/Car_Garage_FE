@@ -7,7 +7,7 @@ import { AuthContext } from '../../contexts/authContext';
 import { useLoginMutation } from '../../rtk/services/auth-service';
 import { showToast } from '../../utils/showToast';
 import { Button } from '../shared/Button';
-import { Input } from '../shared/Input';
+import { CustomInput } from '../shared/CustomInput';
 import { CustomSelect } from '../shared/CustomSelect';
 import { PageContainer } from '../shared/PageContainer';
 import { FormContainer } from '../shared/FormContainer';
@@ -84,14 +84,14 @@ const Login: FC = () => {
 
         {!selectBranch ? (
           <>
-            <Input
+            <CustomInput
               label={`${t('usernameTitle')} *`}
               {...register('username')}
               error={errors.username && t(errors.username)}
               placeholder="john@example.com"
               autoComplete="username"
             />
-            <Input
+            <CustomInput
               label={`${t('passwordTitle')} *`}
               type="password"
               {...register('password')}

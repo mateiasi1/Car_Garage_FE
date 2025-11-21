@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useChangePasswordMutation } from '../../../rtk/services/user-service';
 import { useForm } from '../../../hooks/useForm';
 import { FormSection } from '../../shared/FormGrid';
-import { Input } from '../../shared/Input';
+import { CustomInput } from '../../shared/CustomInput';
 import { Button } from '../../shared/Button';
 
 type PasswordFormValues = {
@@ -67,7 +67,7 @@ export const PasswordForm: FC = () => {
   return (
     <FormSection title={t('changePassword')}>
       <form onSubmit={handleSubmit()} className="space-y-6">
-        <Input
+        <CustomInput
           type="password"
           label={t('currentPassword')}
           error={errors.currentPassword ? t(errors.currentPassword) : undefined}
@@ -75,14 +75,14 @@ export const PasswordForm: FC = () => {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Input
+          <CustomInput
             type="password"
             label={t('newPassword')}
             wrapperClassName="mb-0"
             error={errors.newPassword ? t(errors.newPassword) : undefined}
             {...register('newPassword')}
           />
-          <Input
+          <CustomInput
             type="password"
             label={t('confirmPassword')}
             wrapperClassName="mb-0"

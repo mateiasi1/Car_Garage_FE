@@ -1,7 +1,7 @@
 import { ReactNode, useLayoutEffect, useRef, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from './IconButton';
-import { Input } from './Input';
+import { CustomInput } from './CustomInput';
 import { ListFilter as ListFilterIcon } from 'lucide-react';
 
 export interface TableColumn<T> {
@@ -163,7 +163,7 @@ const GenericTable = <T extends { id: string }>({
               )}
 
               <div className="order-2 flex-1 min-w-[200px]">
-                <Input
+                <CustomInput
                   id="table-search"
                   name="table-search"
                   value={effectiveSearch}

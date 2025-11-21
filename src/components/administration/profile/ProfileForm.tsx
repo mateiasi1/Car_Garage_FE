@@ -4,7 +4,7 @@ import { useUpdateUserProfileMutation } from '../../../rtk/services/user-service
 import { useAuth } from '../../../hooks/useAuth';
 import { useForm } from '../../../hooks/useForm';
 import { FormSection } from '../../shared/FormGrid';
-import { Input } from '../../shared/Input';
+import { CustomInput } from '../../shared/CustomInput';
 import { Button } from '../../shared/Button';
 
 type ProfileFormValues = {
@@ -45,7 +45,7 @@ export const ProfileForm: FC = () => {
   return (
     <FormSection title={t('profileInformation')}>
       <form onSubmit={handleSubmit()} className="space-y-6">
-        <Input
+        <CustomInput
           label={t('username')}
           disabled
           wrapperClassName="mb-2"
@@ -54,13 +54,13 @@ export const ProfileForm: FC = () => {
         />
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Input
+          <CustomInput
             label={t('firstName')}
             wrapperClassName="mb-0"
             error={errors.firstName ? t(errors.firstName) : undefined}
             {...register('firstName')}
           />
-          <Input
+          <CustomInput
             label={t('lastName')}
             wrapperClassName="mb-0"
             error={errors.lastName ? t(errors.lastName) : undefined}

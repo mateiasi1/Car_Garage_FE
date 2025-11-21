@@ -10,7 +10,7 @@ interface TextProps {
   children: ReactNode;
 }
 
-export const Text: FC<TextProps> = ({ variant = 'body', className, color, children }) => {
+export const CustomText: FC<TextProps> = ({ variant = 'body', className, color, children }) => {
   const base = 'font-body';
 
   const variants: Record<TextVariant, string> = {

@@ -3,7 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
 import { IdCard, Users, UserCog, Building2, Building, Store } from 'lucide-react';
 import { PageContainer } from '../../components/shared/PageContainer';
-import { Text } from '../../components/shared/Text';
+import { CustomText } from '../../components/shared/CustomText';
 import { AdminCard } from '../../components/shared/AdminCard';
 import { AdministrationItem, AdministrationItemProps } from '../../components/administration/AdministrationItem';
 import UserProfile from '../../components/administration/profile/UserProfile';
@@ -150,9 +150,9 @@ const AdministrationPage: FC = () => {
       <div className="w-full max-w-6xl mx-auto h-[calc(100vh-6rem)] lg:h-[calc(100vh-8rem)] flex flex-col lg:flex-row gap-6">
         <div className="w-full lg:w-72 xl:w-80 lg:h-full flex">
           <AdminCard fullHeight className="flex-1 flex flex-col overflow-hidden">
-            <Text variant="h3" className="hidden lg:block text-primary mb-2">
+            <CustomText variant="h3" className="hidden lg:block text-primary mb-2">
               {t('administration')}
-            </Text>
+            </CustomText>
             <nav className="mt-2 flex-1 flex flex-row flex-wrap justify-center items-center lg:flex-col lg:items-stretch lg:justify-start gap-3 lg:gap-2 lg:overflow-y-auto pr-1">
               {menuItems.map((item) => (
                 <AdministrationItem

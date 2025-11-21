@@ -9,7 +9,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   wrapperClassName?: string;
 }
 
-export const Input: FC<InputProps> = ({
+export const CustomInput: FC<InputProps> = ({
   label,
   type = 'text',
   error,

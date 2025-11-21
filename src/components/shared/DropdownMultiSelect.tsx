@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import { ChevronDown } from 'lucide-react';
 
 interface DropdownMultiSelectProps<T> {
   label: string;
@@ -12,6 +13,7 @@ interface DropdownMultiSelectProps<T> {
   selectedCountMessage: (count: number) => string;
   className?: string;
   disabled?: boolean;
+  error?: string;
 }
 
 const DropdownMultiSelect = <T,>({
@@ -26,14 +28,15 @@ const DropdownMultiSelect = <T,>({
   selectedCountMessage,
   className = '',
   disabled = false,
+  error,
 }: DropdownMultiSelectProps<T>) => {
-  const [dropdownOpen, setDropdownOpen] = useState(false);
-  const dropdownRef = useRef<HTMLDivElement>(null);
+  const [open, setOpen] = useState(false);
+  const ref = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (dropdownRef.current && !dropdownRef.current.contains(event.target as Node)) {
-        setDropdownOpen(false);
+      if (ref.current && !ref.current.contains(event.target as Node)) {
+        setOpen(false);
       }
     };
 
@@ -42,11 +45,11 @@ const DropdownMultiSelect = <T,>({
   }, []);
 
   const handleToggle = (optionId: string) => {
-    const newSelection = selectedIds.includes(optionId)
+    const nextSelection = selectedIds.includes(optionId)
       ? selectedIds.filter((id) => id !== optionId)
       : [...selectedIds, optionId];
 
-    onSelectionChange(newSelection);
+    onSelectionChange(nextSelection);
   };
 
   const getDisplayText = () => {
@@ -58,55 +61,70 @@ const DropdownMultiSelect = <T,>({
     return selectedCountMessage(selectedIds.length);
   };
 
-  const inputBaseClass =
-    'w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 border-gray-300 focus:ring-primary';
+  const displayText = getDisplayText();
+  const isPlaceholder = selectedIds.length === 0;
 
   return (
-    <div ref={dropdownRef} className={`relative ${className}`}>
-      <label className="block font-semibold mb-1">{label}</label>
+    <div className={`relative mb-6 ${className}`} ref={ref}>
+      {label && <label className="block text-text text-sm font-bold font-body mb-2">{label}</label>}
+
       <button
         type="button"
-        onClick={() => !disabled && setDropdownOpen(!dropdownOpen)}
         disabled={disabled}
-        className={`${inputBaseClass} flex items-center justify-between bg-white ${
-          disabled ? 'cursor-not-allowed opacity-50' : ''
-        }`}
+        onClick={() => !disabled && setOpen((prev) => !prev)}
+        className={`
+          w-full px-4 py-3 rounded-2xl
+          bg-card border border-text/10
+          text-text shadow-sm font-body
+          flex items-center justify-between
+          focus:outline-none focus:ring-2 focus:ring-primary
+          ${disabled ? 'opacity-60 cursor-not-allowed' : ''}
+        `}
       >
-        <span className={selectedIds.length === 0 ? 'text-gray-400' : ''}>{getDisplayText()}</span>
-        <svg
-          className={`w-5 h-5 transition-transform ${dropdownOpen ? 'rotate-180' : ''}`}
-          fill="none"
-          stroke="currentColor"
-          viewBox="0 0 24 24"
-        >
-          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M19 9l-7 7-7-7" />
-        </svg>
+        <span className={isPlaceholder ? 'text-text/50' : ''}>{displayText || '—'}</span>
+        <ChevronDown className={`w-4 h-4 transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
 
-      {dropdownOpen && (
-        <div className="absolute z-10 w-full mt-1 bg-white border border-gray-300 rounded-md shadow-lg max-h-60 overflow-y-auto">
+      {open && (
+        <div
+          className="
+            absolute left-0 right-0 mt-2
+            bg-card rounded-2xl shadow-lg border border-text/10
+            max-h-60 overflow-y-auto z-[999]
+          "
+        >
           {options.length === 0 ? (
-            <div className="p-3 text-gray-500 text-sm">{emptyMessage}</div>
+            <div className="px-4 py-3 text-sm font-body text-text/60">{emptyMessage}</div>
           ) : (
-            <div className="py-1">
-              {options.map((option) => {
-                const optionId = getOptionId(option);
-                return (
-                  <label key={optionId} className="flex items-center px-3 py-2 hover:bg-gray-50 cursor-pointer">
-                    <input
-                      type="checkbox"
-                      checked={selectedIds.includes(optionId)}
-                      onChange={() => handleToggle(optionId)}
-                      className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
-                    />
-                    <span className="ml-2 text-sm">{getOptionLabel(option)}</span>
-                  </label>
-                );
-              })}
-            </div>
+            options.map((option) => {
+              const optionId = getOptionId(option);
+              const checked = selectedIds.includes(optionId);
+
+              return (
+                <div
+                  key={optionId}
+                  className="
+                    flex items-center gap-3 px-4 py-2
+                    cursor-pointer font-body text-text
+                    hover:bg-background transition
+                  "
+                  onClick={() => handleToggle(optionId)}
+                >
+                  <input
+                    type="checkbox"
+                    checked={checked}
+                    onChange={() => handleToggle(optionId)}
+                    className="w-4 h-4 rounded border-text/30 text-primary focus:ring-primary"
+                  />
+                  <span>{getOptionLabel(option)}</span>
+                </div>
+              );
+            })
           )}
         </div>
       )}
+
+      {error && <p className="text-error text-sm mt-1 font-body">{error}</p>}
     </div>
   );
 };

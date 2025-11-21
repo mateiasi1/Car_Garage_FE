@@ -7,7 +7,7 @@ import { useFetchInspectorsQuery } from '../../rtk/services/inspector-service';
 import Drawer from '../shared/Drawer';
 import InspectorForm from '../forms/InspectorForm';
 import { Button } from '../shared/Button';
-import { Text } from '../shared/Text';
+import { CustomText } from '../shared/CustomText';
 import { UserBranch } from '../../models/UserBranch';
 
 interface InspectorRow {
@@ -98,11 +98,11 @@ const InspectorsList: FC = () => {
   if (error) {
     return (
       <div className="flex flex-col h-full">
-        <Text variant="h3" className="mb-4">
+        <CustomText variant="h3" className="mb-4">
           {t('inspectors')}
-        </Text>
+        </CustomText>
         <div className="flex-1 flex items-center justify-center">
-          <Text className="text-error">{t('failedToLoadInspectors')}</Text>
+          <CustomText className="text-error">{t('failedToLoadInspectors')}</CustomText>
         </div>
       </div>
     );
@@ -110,9 +110,9 @@ const InspectorsList: FC = () => {
 
   return (
     <div className="flex flex-col h-full">
-      <Text variant="h3" className="mb-4">
+      <CustomText variant="h3" className="mb-4">
         {t('inspectors')}
-      </Text>
+      </CustomText>
 
       <div className="flex-1 min-h-0">
         <GenericTable<InspectorRow>

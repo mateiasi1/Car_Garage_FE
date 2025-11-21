@@ -12,7 +12,7 @@ import { showToast } from '../../utils/showToast';
 import { Branch } from '../../models/Branch';
 import { UserBranch } from '../../models/UserBranch';
 import DropdownMultiSelect from '../shared/DropdownMultiSelect';
-import { Input } from '../shared/Input';
+import { CustomInput } from '../shared/CustomInput';
 import { Button } from '../shared/Button';
 import ConfirmationModal from '../shared/ConfirmationModal';
 import { useForm } from '../../hooks/useForm';
@@ -152,13 +152,13 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
     <>
       <form onSubmit={onSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <Input
+          <CustomInput
             label={t('lastName')}
             {...register('lastName')}
             error={errors.lastName && t(errors.lastName)}
             wrapperClassName="mb-0"
           />
-          <Input
+          <CustomInput
             label={t('firstName')}
             {...register('firstName')}
             error={errors.firstName && t(errors.firstName)}
@@ -166,7 +166,7 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
           />
 
           <div className="md:col-span-2">
-            <Input
+            <CustomInput
               label={t('username')}
               {...register('username')}
               disabled
@@ -193,7 +193,7 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
         </div>
 
         {!isEdit && (
-          <Input
+          <CustomInput
             type="password"
             label={t('password')}
             {...register('password')}
