@@ -117,7 +117,7 @@ const About = () => {
               </p>
 
               <a
-                href="mailto:contact@roadready.ro"
+                href="mailto:contact@bytedracula.ro"
                 className="inline-flex items-center justify-center px-7 py-3 bg-card text-primary font-semibold font-heading rounded-full hover:bg-background transition-colors shadow-lg text-sm sm:text-base"
               >
                 <i className="fas fa-envelope mr-2" />
@@ -138,7 +138,7 @@ const About = () => {
             <Link to="/terms" className="hover:text-primary transition-colors">
               {t('home.footer.terms')}
             </Link>
-            <a href="mailto:contact@roadready.ro" className="hover:text-primary transition-colors">
+            <a href="mailto:contact@bytedracula.ro" className="hover:text-primary transition-colors">
               {t('home.footer.contact')}
             </a>
           </div>

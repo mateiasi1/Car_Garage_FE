@@ -193,7 +193,7 @@
       "smsPerMonth": "SMS/month",
       "currentPackage": "Current Package",
       "selectPackage": "Select Package",
-      "purchaseNote": "To purchase a package, please contact support or send an email to contact@roadready.ro",
+      "purchaseNote": "To purchase a package, please contact support or send an email to contact@bytedracula.ro",
       "selectPackageTitle": "Select Package",
       "choosePackage": "Choose Package",
       "selectPeriod": "Select Period",
@@ -484,5 +484,7 @@
     "errorBody": "Clients are no longer receiving SMS reminders about expiring inspections. Please top up the SMS credits for this branch."
   },
   "searchInspectors": "Search inspectors",
-  "failedToLoadInspectors": "Failed to load inspectors"
+  "failedToLoadInspectors": "Failed to load inspectors",
+  "searchCustomers": "Search customers",
+  "failedToLoadCustomers": "Failed to load customers"
 }

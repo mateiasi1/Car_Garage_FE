@@ -1,6 +1,6 @@
 import { FC, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Pencil } from 'lucide-react';
+import { Pencil, Users } from 'lucide-react';
 
 import GenericTable, { TableAction, TableColumn } from '../shared/GenericTable';
 import { useFetchInspectorsQuery } from '../../rtk/services/inspector-service';
@@ -110,9 +110,14 @@ const InspectorsList: FC = () => {
 
   return (
     <div className="flex flex-col h-full">
-      <CustomText variant="h3" className="mb-4">
-        {t('inspectors')}
-      </CustomText>
+      <div className="flex items-center gap-2">
+        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+          <Users className="w-6 h-6 text-primary" />
+        </div>
+        <CustomText variant="h3" color="primary">
+          {t('inspectors')}
+        </CustomText>
+      </div>
 
       <div className="flex-1 min-h-0">
         <GenericTable<InspectorRow>

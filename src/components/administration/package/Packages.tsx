@@ -1,7 +1,9 @@
 import { FC } from 'react';
-import { useFetchPackagesQuery } from '../../../rtk/services/package-service.tsx';
+import { useFetchPackagesQuery } from '../../../rtk/services/package-service';
 import { useTranslation } from 'react-i18next';
-import { useFetchBranchQuery } from '../../../rtk/services/branch-service.tsx';
+import { useFetchBranchQuery } from '../../../rtk/services/branch-service';
+import { Check, Store } from 'lucide-react';
+import { CustomText } from '../../shared/CustomText';
 
 const PackagesPage: FC = () => {
   const { data: branch } = useFetchBranchQuery();
@@ -10,21 +12,21 @@ const PackagesPage: FC = () => {
 
   if (isLoading)
     return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
+      <div className="flex items-center justify-center min-h-screen">
         <p className="text-text font-body">{t('packages.loading')}</p>
       </div>
     );
 
   if (error)
     return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
+      <div className="flex items-center justify-center min-h-screen">
         <p className="text-error font-body">{t('packages.error')}</p>
       </div>
     );
 
   if (!packages || packages.length === 0)
     return (
-      <div className="flex items-center justify-center min-h-screen bg-background">
+      <div className="flex items-center justify-center min-h-screen">
         <p className="text-text font-body">{t('packages.noPackages')}</p>
       </div>
     );
@@ -32,16 +34,20 @@ const PackagesPage: FC = () => {
   const activePackageId = branch?.activePackage?.package?.id;
 
   return (
-    <div className="min-h-screen p-6">
-      <div className="container mx-auto">
-        {/* Header */}
-        <div className="mb-8">
-          <h1 className="text-3xl font-bold font-heading text-text">{t('packages.availablePackages')}</h1>
-          <p className="text-gray-600 mt-2 font-body">{t('packages.choosePackageDescription')}</p>
+    <div className="min-h-screen p-6 flex flex-col">
+      <div className="w-full max-w-6xl mx-auto space-y-10">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+            <Store className="w-6 h-6 text-primary" />
+          </div>
+          <CustomText variant="h3" color="primary">
+            {t('packages.availablePackages')}
+          </CustomText>
         </div>
 
-        {/* Packages Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        <p className="text-text/60 font-body max-w-lg">{t('packages.choosePackageDescription')}</p>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {packages.map((pkg) => {
             const isActive = pkg.id === activePackageId;
 
@@ -49,51 +55,42 @@ const PackagesPage: FC = () => {
               <div
                 key={pkg.id}
                 className={`
-                                    relative border rounded-lg shadow-md p-6 bg-card
-                                    transition-all duration-200
-                                    ${
-                                      isActive
-                                        ? 'border-primary border-2 ring-2 ring-primary ring-opacity-20'
-                                        : 'border-gray-200 hover:border-primary hover:shadow-lg'
-                                    }
-                                `}
+                  relative rounded-3xl p-6 flex flex-col gap-5
+                  transition-all duration-200
+                  bg-card border
+                  ${isActive ? 'border-primary bg-primary/5' : 'border-text/10 hover:border-primary/50 hover:shadow-sm'}
+                `}
               >
-                {/* Active Badge */}
                 {isActive && (
                   <div className="absolute top-4 right-4">
-                    <span className="bg-primary text-primary-text text-xs font-semibold font-heading px-3 py-1 rounded-full">
+                    <span className="bg-primary text-primary-text text-xs font-heading px-3 py-1 rounded-full shadow-sm">
                       {t('packages.activeBadge')}
                     </span>
                   </div>
                 )}
 
-                {/* Package Name */}
-                <h3 className="text-2xl font-bold font-heading text-text mb-2">{pkg.name}</h3>
+                <h3 className="text-xl font-heading text-text">{pkg.name}</h3>
 
-                {/* Price */}
-                <div className="mb-4">
+                <div>
                   <span className="text-3xl font-bold font-heading text-primary">{pkg.price}</span>
-                  <span className="text-gray-600 font-body ml-1">RON</span>
+                  <span className="ml-1 text-text/60 font-body">RON</span>
                 </div>
 
-                {/* Description */}
-                {pkg.description && <p className="text-gray-600 text-sm font-body mb-4">{pkg.description}</p>}
+                {pkg.description && <p className="text-sm text-text/70 font-body leading-relaxed">{pkg.description}</p>}
 
-                {/* Features */}
-                <div className="space-y-3 mb-6">
-                  <div className="flex items-center gap-2">
-                    <svg className="w-5 h-5 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
-                    </svg>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Check className="w-5 h-5 text-primary" />
+                    </div>
                     <span className="text-sm font-body text-text">
                       {`${pkg.features.sms.limit} ${t('packages.smsPerMonth')}`}
                     </span>
                   </div>
                 </div>
 
-                {/* Current Package Badge */}
                 {isActive && (
-                  <div className="w-full py-2 px-4 bg-background text-text rounded text-center font-medium font-body">
+                  <div className="mt-4 py-2 px-4 bg-background/60 text-text rounded-xl text-center font-body text-sm">
                     {t('packages.currentPackage')}
                   </div>
                 )}
@@ -102,12 +99,9 @@ const PackagesPage: FC = () => {
           })}
         </div>
 
-        {/* Purchase Note */}
-        <div className="mt-8 p-4 bg-card border border-primary/20 rounded-lg shadow-sm">
-          <p className="text-sm text-text font-body">
-            <i className="fas fa-info-circle text-primary mr-2"></i>
-            {t('packages.purchaseNote')}
-          </p>
+        <div className="p-4 rounded-2xl bg-background/60 border border-text/10 flex items-center gap-3">
+          <Store className="w-6 h-6 text-primary" />
+          <p className="text-sm text-text font-body">{t('packages.purchaseNote')}</p>
         </div>
       </div>
     </div>

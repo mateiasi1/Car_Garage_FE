@@ -192,7 +192,7 @@
       "smsPerMonth": "SMS/lună",
       "currentPackage": "Pachet Curent",
       "selectPackage": "Selectează Pachetul",
-      "purchaseNote": "Pentru a achiziționa un pachet, vă rugăm să contactați suportul sau trimiteți un email la contact@roadready.ro",
+      "purchaseNote": "Pentru a achiziționa un pachet, vă rugăm să contactați suportul sau trimiteți un email la contact@bytedracula.ro",
       "selectPackageTitle": "Selectează Pachet",
       "choosePackage": "Alege Pachetul",
       "selectPeriod": "Selectează Perioada",
@@ -482,6 +482,8 @@
       "errorBody": "Clienții nu mai primesc SMS-uri de reamintire pentru expirarea ITP-ului. Te rugăm să reîncarci creditul SMS pentru această stație."
     },
     "searchInspectors": "Caută inspectori",
-    "failedToLoadInspectors": "Nu s-au putut încărca inspectorii"
+    "failedToLoadInspectors": "Nu s-au putut încărca inspectorii",
+    "searchCustomers": "Caută clienți",
+    "failedToLoadCustomers": "Nu s-au putut încărca clienții"
   }
 }

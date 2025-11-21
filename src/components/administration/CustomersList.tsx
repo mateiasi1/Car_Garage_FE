@@ -1,63 +1,147 @@
-import { FC, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Pencil, UserCog } from 'lucide-react';
+
+import GenericTable, { TableAction, TableColumn } from '../shared/GenericTable';
 import { useFetchAllCustomersQuery } from '../../rtk/services/customer-service';
 import Drawer from '../shared/Drawer';
-import { PersonItemBase } from '../shared/PersonItem';
-import { PersonList } from '../shared/PersonList';
-import { t } from 'i18next';
 import CustomerForm from '../forms/CustomerForm';
+import { Button } from '../shared/Button';
+import { CustomText } from '../shared/CustomText';
 
-interface CustomerListItem extends PersonItemBase {
+interface CustomerRow {
   id: string;
+  firstName: string;
+  lastName: string;
   phoneNumber: string;
 }
 
 const CustomersList: FC = () => {
-  const { data: customers, error, isLoading } = useFetchAllCustomersQuery();
+  const { t } = useTranslation();
+  const { data: customers, isLoading, error } = useFetchAllCustomersQuery();
+
+  const [search, setSearch] = useState('');
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<CustomerListItem | null>(null);
+  const [selectedCustomer, setSelectedCustomer] = useState<CustomerRow | null>(null);
 
-  if (isLoading) return <p>Loading customers...</p>;
-  if (error) return <p>Failed to load customers</p>;
+  const items: CustomerRow[] = useMemo(
+    () =>
+      customers?.map((customer) => ({
+        id: customer.id,
+        firstName: customer.firstName,
+        lastName: customer.lastName,
+        phoneNumber: customer.phoneNumber,
+      })) ?? [],
+    [customers]
+  );
 
-  const handleItemClick = (item: CustomerListItem) => {
-    setSelectedItem(item);
-    setDrawerOpen(true);
-  };
+  const columns: TableColumn<CustomerRow>[] = useMemo(
+    () => [
+      {
+        key: 'name',
+        label: t('name'),
+        width: '2fr',
+        render: (item) => `${item.firstName} ${item.lastName}`,
+        getSearchValue: (item) => `${item.firstName} ${item.lastName}`,
+        searchable: true,
+      },
+      {
+        key: 'phoneNumber',
+        label: t('phoneNumber'),
+        width: '2fr',
+        render: (item) => item.phoneNumber || '—',
+        getSearchValue: (item) => item.phoneNumber ?? '',
+        searchable: true,
+      },
+    ],
+    [t]
+  );
 
-  const handleCloseDrawer = () => {
+  const actions: TableAction<CustomerRow>[] = useMemo(
+    () => [
+      {
+        icon: <Pencil className="w-5 h-5 text-primary hover:text-primary-hover" />,
+        label: t('edit'),
+        onClick: (item) => {
+          setSelectedCustomer(item);
+          setDrawerOpen(true);
+        },
+      },
+    ],
+    [t]
+  );
+
+  const toolbarActions = (
+    <Button
+      type="button"
+      variant="primary"
+      size="md"
+      fullWidth={false}
+      className="whitespace-nowrap"
+      onClick={() => {
+        setSelectedCustomer(null);
+        setDrawerOpen(true);
+      }}
+    >
+      {t('addCustomer')}
+    </Button>
+  );
+
+  const handleDrawerClose = () => {
     setDrawerOpen(false);
-    setSelectedItem(null);
+    setSelectedCustomer(null);
   };
 
-  const items: CustomerListItem[] =
-    customers?.map((customer) => ({
-      id: customer.id,
-      firstName: customer.firstName,
-      lastName: customer.lastName,
-      email: undefined,
-      phoneNumber: customer.phoneNumber,
-    })) ?? [];
+  if (error) {
+    return (
+      <div className="flex flex-col h-full">
+        <CustomText variant="h3" className="mb-4">
+          {t('customers')}
+        </CustomText>
+        <div className="flex-1 flex items-center justify-center">
+          <CustomText className="text-error">{t('failedToLoadCustomers')}</CustomText>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex flex-col h-[calc(100vh-12rem)] pb-4">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-2xl font-heading">{t('customers')}</h2>
-        <button
-          className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover transition-colors"
-          onClick={() => setDrawerOpen(true)}
-        >
-          {t('addCustomer')}
-        </button>
+    <div className="flex flex-col h-full">
+      <div className="flex items-center gap-2">
+        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+          <UserCog className="w-6 h-6 text-primary" />
+        </div>
+        <CustomText variant="h3" color="primary">
+          {t('customers')}
+        </CustomText>
       </div>
 
-      <PersonList items={items} onItemClick={handleItemClick} />
+      <div className="flex-1 min-h-0">
+        <GenericTable<CustomerRow>
+          data={items}
+          columns={columns}
+          actions={actions}
+          isLoading={isLoading}
+          showNumberColumn
+          search={search}
+          onSearchChange={setSearch}
+          searchPlaceholder={t('searchCustomers')}
+          showFilters
+          toolbarActions={toolbarActions}
+          embedded
+        />
+      </div>
 
       <Drawer
         isOpen={drawerOpen}
-        onClose={handleCloseDrawer}
-        title={selectedItem ? t('editCustomer') : t('addCustomer')}
+        onClose={handleDrawerClose}
+        title={selectedCustomer ? t('editCustomer') : t('addCustomer')}
       >
-        <CustomerForm selectedCustomer={selectedItem} onCloseDrawer={handleCloseDrawer} />
+        <CustomerForm
+          key={selectedCustomer?.id ?? 'new'}
+          selectedCustomer={selectedCustomer}
+          onCloseDrawer={handleDrawerClose}
+        />
       </Drawer>
     </div>
   );

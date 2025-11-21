@@ -152,7 +152,7 @@ const TermsAndConditions = () => {
               <div className="space-y-2 text-text font-body">
                 <p>
                   <i className="fas fa-envelope text-primary mr-2" />
-                  <strong>{t('terms.sections.contact.email')}:</strong> contact@roadready.ro
+                  <strong>{t('terms.sections.contact.email')}:</strong> contact@bytedracula.ro
                 </p>
                 <p>
                   <i className="fas fa-map-marker-alt text-primary mr-2" />
