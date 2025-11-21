@@ -1,8 +1,8 @@
-import { ReactNode, useLayoutEffect, useRef, useState, FormEvent } from 'react';
+import { ReactNode, useLayoutEffect, useRef, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from './IconButton';
 import { Input } from './Input';
-import { ListFilterIcon } from 'lucide-react';
+import { ListFilter as ListFilterIcon } from 'lucide-react';
 
 export interface TableColumn<T> {
   key: string;
@@ -11,6 +11,7 @@ export interface TableColumn<T> {
   render?: (item: T, index: number) => ReactNode;
   className?: string;
   searchable?: boolean;
+  getSearchValue?: (item: T) => string;
 }
 
 export interface TableAction<T> {
@@ -31,7 +32,7 @@ export interface GenericTableProps<T> {
   onPageChange?: (page: number) => void;
   search?: string;
   onSearchChange?: (search: string) => void;
-  onSearch?: (search: string) => void;
+
   searchPlaceholder?: string;
   showFilters?: boolean;
   toolbarActions?: ReactNode;
@@ -49,9 +50,8 @@ const GenericTable = <T extends { id: string }>({
   page = 1,
   totalPages = 1,
   onPageChange,
-  search = '',
+  search,
   onSearchChange,
-  onSearch,
   searchPlaceholder,
   showFilters = false,
   toolbarActions,
@@ -65,27 +65,54 @@ const GenericTable = <T extends { id: string }>({
   const [showScrollbarGutter, setShowScrollbarGutter] = useState(false);
   const [filtersVisible, setFiltersVisible] = useState(false);
 
+  const [internalSearch, setInternalSearch] = useState('');
+  const effectiveSearch = search ?? internalSearch;
+
+  const handleSearchChange = (value: string) => {
+    if (onSearchChange) {
+      onSearchChange(value);
+    } else {
+      setInternalSearch(value);
+    }
+  };
+
+  const searchableColumns = columns.filter((col) => col.searchable !== false);
+
   const [filterConfig, setFilterConfig] = useState<Record<string, boolean>>(() => {
     const config: Record<string, boolean> = {};
-    columns.forEach((col) => {
-      if (col.searchable !== false) {
-        config[col.key] = true;
-      }
+    searchableColumns.forEach((col) => {
+      config[col.key] = true;
     });
     return config;
   });
 
-  const searchableColumns = columns.filter((col) => col.searchable !== false);
+  useEffect(() => {
+    setFilterConfig((prev) => {
+      const next: Record<string, boolean> = {};
+      searchableColumns.forEach((col) => {
+        next[col.key] = prev[col.key] ?? true;
+      });
+      return next;
+    });
+  }, [columns, searchableColumns]);
 
   const filteredData = data.filter((item) => {
-    if (!search) return true;
+    if (!effectiveSearch) return true;
 
-    const searchLower = search.toLowerCase();
+    const searchLower = effectiveSearch.toLowerCase();
 
     return searchableColumns.some((col) => {
       if (!filterConfig[col.key]) return false;
 
-      const value = String((item as Record<string, unknown>)[col.key] ?? '');
+      let value = '';
+
+      if (col.getSearchValue) {
+        value = col.getSearchValue(item) ?? '';
+      } else {
+        const raw = (item as Record<string, unknown>)[col.key];
+        value = raw == null ? '' : String(raw);
+      }
+
       return value.toLowerCase().includes(searchLower);
     });
   });
@@ -97,11 +124,6 @@ const GenericTable = <T extends { id: string }>({
     }
   }, [filteredData, isLoading]);
 
-  const handleSearchSubmit = (e: FormEvent) => {
-    e.preventDefault();
-    onSearch?.(search);
-  };
-
   const gridTemplateColumns = [
     showNumberColumn ? '120px' : '',
     ...columns.map((col) => col.width || '1fr'),
@@ -110,7 +132,7 @@ const GenericTable = <T extends { id: string }>({
     .filter(Boolean)
     .join(' ');
 
-  const showToolbar = showFilters || onSearchChange || toolbarActions;
+  const showToolbar = showFilters || onSearchChange || toolbarActions || !search;
 
   return (
     <div className="flex flex-col h-[calc(100vh-12rem)] w-full">
@@ -121,8 +143,8 @@ const GenericTable = <T extends { id: string }>({
               {showFilters && (
                 <div className="order-1 flex items-center">
                   <IconButton
-                    aria-label="Filter inspections"
-                    onClick={() => setFiltersVisible(!filtersVisible)}
+                    aria-label="Filter rows"
+                    onClick={() => setFiltersVisible((prev) => !prev)}
                     variant={filtersVisible ? 'secondary' : 'primary'}
                     size="md"
                     className="flex items-center justify-center"
@@ -132,22 +154,23 @@ const GenericTable = <T extends { id: string }>({
                 </div>
               )}
 
-              {onSearchChange && onSearch && (
-                <form onSubmit={handleSearchSubmit} className="order-2 flex-1 min-w-[200px]">
-                  <Input
-                    id="table-search"
-                    name="table-search"
-                    value={search}
-                    onChange={(e) => onSearchChange(e.target.value)}
-                    placeholder={searchPlaceholder || t('table.search')}
-                    label={undefined}
-                    fullWidth
-                    wrapperClassName="mb-0"
-                  />
-                </form>
-              )}
+              {/* Search */}
+              <div className="order-2 flex-1 min-w-[200px]">
+                <Input
+                  id="table-search"
+                  name="table-search"
+                  value={effectiveSearch}
+                  onChange={(e) => handleSearchChange(e.target.value)}
+                  placeholder={searchPlaceholder || t('table.search')}
+                  label={undefined}
+                  fullWidth
+                  wrapperClassName="mb-0"
+                />
+              </div>
 
-              <div className="order-3 w-full md:w-auto [&>*]:w-full md:[&>*]:w-auto">{toolbarActions}</div>
+              <div className="order-3 w-full md:w-auto [&>*]:w-full md:[&>*]:w-auto flex items-center">
+                {toolbarActions}
+              </div>
             </div>
 
             {showFilters && searchableColumns.length > 0 && (
@@ -267,7 +290,6 @@ const GenericTable = <T extends { id: string }>({
               )}
             </div>
 
-            {/* Mobile cards */}
             <div className="md:hidden space-y-4 p-4">
               {isLoading ? (
                 <div className="py-8 text-center text-text/40 font-body">{t('table.loading')}</div>
@@ -346,12 +368,12 @@ const GenericTable = <T extends { id: string }>({
                   disabled={p === page}
                   aria-label={t('table.goToPage', { page: p })}
                   className={`
-            rounded-full
-            w-9 h-9 sm:w-10 sm:h-10   /* dimensiune fixă, cerc */
-            flex items-center justify-center
-            text-sm font-body
-            ${p === page ? 'bg-primary text-primary-text' : 'bg-background/80 text-text/80 hover:bg-background'}
-          `}
+                    rounded-full
+                    w-9 h-9 sm:w-10 sm:h-10
+                    flex items-center justify-center
+                    text-sm font-body
+                    ${p === page ? 'bg-primary text-primary-text' : 'bg-background/80 text-text/80 hover:bg-background'}
+                  `}
                   onClick={() => onPageChange(Number(p))}
                 >
                   {p}

@@ -1,7 +1,8 @@
 import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { MessageSquare, Pencil, Trash2 } from 'lucide-react';
+import { MessageCircle, Pencil, Trash2 } from 'lucide-react';
+
 import GenericTable, { TableAction, TableColumn } from '../../components/shared/GenericTable';
 import {
   InspectionsFilters as ApiFilters,
@@ -15,9 +16,9 @@ import { Inspection } from '../../models/Inspection';
 import { InspectionType } from '../../utils/enums/InspectionTypes';
 import { showToast } from '../../utils/showToast';
 import ConfirmationModal from '../../components/shared/ConfirmationModal';
+import { Button } from '../../components/shared/Button';
 import { routes } from '../../constants/routes';
 import { PageContainer } from '../../components/shared/PageContainer';
-import { Button } from '../../components/shared/Button';
 
 const InspectionsPage: FC = () => {
   const { i18n, t } = useTranslation();
@@ -97,20 +98,8 @@ const InspectionsPage: FC = () => {
     const diffDays = diffMs / (1000 * 60 * 60 * 24);
 
     if (diffDays < 0) return 'text-error';
-    if (diffDays < 7) return 'text-warning';
-    return 'text-text';
-  };
-
-  const handleSearchSubmit = (searchTerm: string) => {
-    setSearch(searchTerm);
-    setFilters((prev) => ({
-      ...prev,
-      page: 1,
-      customerName: searchTerm,
-      licensePlate: searchTerm,
-      inspectorName: searchTerm,
-      inspectionType: '',
-    }));
+    if (diffDays < 7) return 'text-orange';
+    return '';
   };
 
   const handlePageChange = (page: number) => {
@@ -162,6 +151,8 @@ const InspectionsPage: FC = () => {
       width: '2fr',
       render: (inspection) =>
         `${inspection.inspectedBy?.firstName ?? ''} ${inspection.inspectedBy?.lastName ?? ''}`.trim(),
+      getSearchValue: (inspection) =>
+        `${inspection.inspectedBy?.firstName ?? ''} ${inspection.inspectedBy?.lastName ?? ''}`.trim(),
       searchable: true,
     },
     {
@@ -169,6 +160,7 @@ const InspectionsPage: FC = () => {
       label: t('licensePlate'),
       width: '2fr',
       render: (inspection) => inspection.car?.licensePlate ?? '',
+      getSearchValue: (inspection) => inspection.car?.licensePlate ?? '',
       searchable: true,
     },
     {
@@ -177,6 +169,8 @@ const InspectionsPage: FC = () => {
       width: '2fr',
       render: (inspection) =>
         `${inspection.car?.customer?.firstName ?? ''} ${inspection.car?.customer?.lastName ?? ''}`.trim(),
+      getSearchValue: (inspection) =>
+        `${inspection.car?.customer?.firstName ?? ''} ${inspection.car?.customer?.lastName ?? ''}`.trim(),
       searchable: true,
     },
     {
@@ -184,6 +178,7 @@ const InspectionsPage: FC = () => {
       label: t('inspectionDate'),
       width: '2fr',
       render: (inspection) => formatDate(inspection.inspectedAt),
+      getSearchValue: (inspection) => formatDate(inspection.inspectedAt),
     },
     {
       key: 'inspectionExpiresAt',
@@ -194,12 +189,13 @@ const InspectionsPage: FC = () => {
           {getExpiryDate(inspection.inspectedAt, inspection.type)}
         </span>
       ),
+      getSearchValue: (inspection) => getExpiryDate(inspection.inspectedAt, inspection.type),
     },
   ];
 
   const actions: TableAction<Inspection>[] = [
     {
-      icon: <MessageSquare className="w-5 h-5 text-green-600 hover:text-green-700" />,
+      icon: <MessageCircle className="w-5 h-5 text-green-600 hover:text-green-700" />,
       label: t('sendReminder'),
       onClick: handleMessageClick,
     },
@@ -243,7 +239,6 @@ const InspectionsPage: FC = () => {
           showNumberColumn
           search={search}
           onSearchChange={setSearch}
-          onSearch={handleSearchSubmit}
           searchPlaceholder={t('searchInspections')}
           showFilters
           page={filters.page}

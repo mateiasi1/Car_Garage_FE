@@ -17,7 +17,7 @@ const navItems: NavItem[] = [
     roles: [RoleEnum.inspector, RoleEnum.owner],
   },
   {
-    to: routes.ADMINISTRATION,
+    to: routes.ADMINISTRATION_SHORT,
     icon: Settings,
     labelKey: 'administration',
     roles: [RoleEnum.admin, RoleEnum.owner, RoleEnum.inspector],
