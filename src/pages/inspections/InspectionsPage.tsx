@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { faMessage, faPenToSquare, faTrashCan } from '@fortawesome/free-solid-svg-icons';
+import { MessageSquare, Pencil, Trash2 } from 'lucide-react';
 import GenericTable, { TableAction, TableColumn } from '../../components/shared/GenericTable';
 import {
   InspectionsFilters as ApiFilters,
@@ -15,6 +15,9 @@ import { Inspection } from '../../models/Inspection';
 import { InspectionType } from '../../utils/enums/InspectionTypes';
 import { showToast } from '../../utils/showToast';
 import ConfirmationModal from '../../components/shared/ConfirmationModal';
+import { routes } from '../../constants/routes';
+import { PageContainer } from '../../components/shared/PageContainer';
+import { Button } from '../../components/shared/Button';
 
 const InspectionsPage: FC = () => {
   const { i18n, t } = useTranslation();
@@ -94,8 +97,8 @@ const InspectionsPage: FC = () => {
     const diffDays = diffMs / (1000 * 60 * 60 * 24);
 
     if (diffDays < 0) return 'text-error';
-    if (diffDays < 7) return 'text-orange';
-    return '';
+    if (diffDays < 7) return 'text-warning';
+    return 'text-text';
   };
 
   const handleSearchSubmit = (searchTerm: string) => {
@@ -118,14 +121,14 @@ const InspectionsPage: FC = () => {
     try {
       const response = await sendReminder(inspection.id).unwrap();
       showToast(`SMS reminder sent successfully to ${response.data.customerName}`, 'success');
-    } catch (error) {
+    } catch {
       showToast(t('unknownError'), 'error');
     }
   };
 
   const handleEditClick = (inspection: Inspection) => {
     dispatch(setSelectedInspection(inspection));
-    navigate('/add-inspection');
+    navigate(routes.ADD_INSPECTION);
   };
 
   const handleDeleteClick = (inspection: Inspection) => {
@@ -139,7 +142,7 @@ const InspectionsPage: FC = () => {
     try {
       await deleteInspection(selectedInspection.id).unwrap();
       showToast(t('inspectionDeleted'), 'success');
-    } catch (error) {
+    } catch {
       showToast(t('inspectionDeletedError'), 'error');
     } finally {
       setIsDeleteModalOpen(false);
@@ -187,7 +190,7 @@ const InspectionsPage: FC = () => {
       label: t('inspectionExpiresAt'),
       width: '2fr',
       render: (inspection) => (
-        <span className={getExpirationColorClass(inspection.inspectedAt, inspection.type)}>
+        <span className={`font-body ${getExpirationColorClass(inspection.inspectedAt, inspection.type)}`}>
           {getExpiryDate(inspection.inspectedAt, inspection.type)}
         </span>
       ),
@@ -196,37 +199,41 @@ const InspectionsPage: FC = () => {
 
   const actions: TableAction<Inspection>[] = [
     {
-      icon: faMessage,
+      icon: <MessageSquare className="w-5 h-5 text-green-600 hover:text-green-700" />,
       label: t('sendReminder'),
       onClick: handleMessageClick,
     },
     {
-      icon: faPenToSquare,
+      icon: <Pencil className="w-5 h-5 text-primary hover:text-primary-hover" />,
       label: t('edit'),
       onClick: handleEditClick,
     },
     {
-      icon: faTrashCan,
+      icon: <Trash2 className="w-5 h-5 text-error hover:text-red-700" />,
       label: t('delete'),
       onClick: handleDeleteClick,
     },
   ];
 
   const toolbarActions = (
-    <button
-      className="w-full sm:w-auto px-6 py-2 rounded-md bg-primary text-white font-semibold hover:bg-primary-hover transition-colors whitespace-nowrap"
+    <Button
+      type="button"
+      variant="primary"
+      size="md"
+      fullWidth={false}
+      className="whitespace-nowrap"
       onClick={() => {
         dispatch(setSelectedInspection(null));
-        navigate('/add-inspection');
+        navigate(routes.ADD_INSPECTION);
       }}
     >
       {t('addNewInspection')}
-    </button>
+    </Button>
   );
 
   return (
-    <div className="flex flex-col min-h-screen w-full bg-background p-6">
-      <div className="w-full bg-white rounded-xl shadow-md p-4 flex flex-col h-[calc(100vh-6rem)]">
+    <PageContainer className="items-start justify-center">
+      <div className="w-full max-w-6xl mx-auto">
         <GenericTable
           data={inspections}
           columns={columns}
@@ -252,7 +259,7 @@ const InspectionsPage: FC = () => {
         onConfirm={handleDeleteConfirm}
         onCancel={handleDeleteCancel}
       />
-    </div>
+    </PageContainer>
   );
 };
 

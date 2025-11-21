@@ -39,7 +39,7 @@ export const CustomSelect: FC<CustomSelectProps> = ({ label, value, onChange, op
         type="button"
         onClick={() => setOpen((prev) => !prev)}
         className="
-          w-full px-4 py-2 rounded-2xl bg-card
+          w-full px-4 py-3 rounded-2xl bg-card
           border border-text/10
           text-text shadow-sm
           font-body flex items-center justify-between

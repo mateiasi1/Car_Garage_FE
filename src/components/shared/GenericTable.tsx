@@ -1,7 +1,8 @@
-import { ReactNode, useLayoutEffect, useRef, useState } from 'react';
+import { ReactNode, useLayoutEffect, useRef, useState, FormEvent } from 'react';
 import { useTranslation } from 'react-i18next';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import type { IconDefinition } from '@fortawesome/fontawesome-svg-core';
+import { IconButton } from './IconButton';
+import { Input } from './Input';
+import { ListFilterIcon } from 'lucide-react';
 
 export interface TableColumn<T> {
   key: string;
@@ -13,7 +14,7 @@ export interface TableColumn<T> {
 }
 
 export interface TableAction<T> {
-  icon: IconDefinition | string;
+  icon: ReactNode;
   label: string;
   onClick: (item: T) => void;
   className?: string;
@@ -84,15 +85,7 @@ const GenericTable = <T extends { id: string }>({
     return searchableColumns.some((col) => {
       if (!filterConfig[col.key]) return false;
 
-      let value: string;
-
-      if (col.render) {
-        const raw = (item as Record<string, unknown>)[col.key];
-        value = String(raw ?? '');
-      } else {
-        value = String((item as Record<string, unknown>)[col.key] ?? '');
-      }
-
+      const value = String((item as Record<string, unknown>)[col.key] ?? '');
       return value.toLowerCase().includes(searchLower);
     });
   });
@@ -104,15 +97,15 @@ const GenericTable = <T extends { id: string }>({
     }
   }, [filteredData, isLoading]);
 
-  const handleSearchSubmit = (e: React.FormEvent) => {
+  const handleSearchSubmit = (e: FormEvent) => {
     e.preventDefault();
     onSearch?.(search);
   };
 
   const gridTemplateColumns = [
-    showNumberColumn ? '150px' : '',
+    showNumberColumn ? '120px' : '',
     ...columns.map((col) => col.width || '1fr'),
-    actions && actions.length > 0 ? '100px' : '',
+    actions && actions.length > 0 ? '110px' : '',
   ]
     .filter(Boolean)
     .join(' ');
@@ -121,45 +114,39 @@ const GenericTable = <T extends { id: string }>({
 
   return (
     <div className="flex flex-col h-[calc(100vh-12rem)] w-full">
-      <div className="w-full bg-white rounded-xl flex flex-col h-full overflow-visible">
+      <div className="w-full bg-card rounded-3xl flex flex-col h-full overflow-visible shadow-2xl border border-card/40">
         {showToolbar && (
-          <div className="space-y-4 flex-shrink-0">
+          <div className="space-y-4 flex-shrink-0 p-4 pb-0">
             <div className="flex items-center gap-3 flex-wrap">
               {showFilters && (
-                <button
-                  type="button"
-                  onClick={() => setFiltersVisible(!filtersVisible)}
-                  className={`order-1 p-2 transition-colors ${
-                    filtersVisible ? 'text-primary' : 'text-gray-600'
-                  } hover:text-primary`}
-                >
-                  <i className={`fas fa-filter transition-transform ${filtersVisible ? 'rotate-180' : ''}`}></i>
-                </button>
+                <div className="order-1 flex items-center">
+                  <IconButton
+                    aria-label="Filter inspections"
+                    onClick={() => setFiltersVisible(!filtersVisible)}
+                    variant={filtersVisible ? 'secondary' : 'primary'}
+                    size="md"
+                    className="flex items-center justify-center"
+                  >
+                    <ListFilterIcon className="w-5 h-5" />
+                  </IconButton>
+                </div>
               )}
 
               {onSearchChange && onSearch && (
                 <form onSubmit={handleSearchSubmit} className="order-2 flex-1 min-w-[200px]">
-                  <div className="relative w-full">
-                    <input
-                      id="table-search"
-                      name="table-search"
-                      type="text"
-                      value={search}
-                      onChange={(e) => onSearchChange(e.target.value)}
-                      placeholder={searchPlaceholder || t('table.search')}
-                      className="w-full border border-gray-300 rounded-md px-4 py-2 pr-10 focus:outline-none focus:ring-2 focus:ring-primary"
-                    />
-                    <button
-                      type="submit"
-                      className="absolute right-3 top-1/2 -translate-y-1/2 text-primary hover:text-primary-hover cursor-pointer"
-                    >
-                      <i className="fas fa-search"></i>
-                    </button>
-                  </div>
+                  <Input
+                    id="table-search"
+                    name="table-search"
+                    value={search}
+                    onChange={(e) => onSearchChange(e.target.value)}
+                    placeholder={searchPlaceholder || t('table.search')}
+                    label={undefined}
+                    fullWidth
+                    wrapperClassName="mb-0"
+                  />
                 </form>
               )}
 
-              {/* wrapper care face butonul de Add full width pe mobile */}
               <div className="order-3 w-full md:w-auto [&>*]:w-full md:[&>*]:w-auto">{toolbarActions}</div>
             </div>
 
@@ -169,8 +156,8 @@ const GenericTable = <T extends { id: string }>({
                   filtersVisible ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
                 }`}
               >
-                <div className="flex flex-wrap items-center gap-4 md:gap-6 p-4 bg-gray-50 rounded-lg">
-                  <span className="text-sm font-medium text-gray-700">{t('table.searchBy')}:</span>
+                <div className="flex flex-wrap items-center gap-4 md:gap-6 p-4 bg-background/60 rounded-2xl">
+                  <span className="text-sm font-medium text-text/80">{t('table.searchBy')}:</span>
 
                   {searchableColumns.map((col) => (
                     <label key={col.key} className="flex items-center gap-2 cursor-pointer">
@@ -183,9 +170,9 @@ const GenericTable = <T extends { id: string }>({
                             [col.key]: !prev[col.key],
                           }));
                         }}
-                        className="w-4 h-4 text-primary border-gray-300 rounded focus:ring-primary"
+                        className="w-4 h-4 text-primary border-text/20 rounded focus:ring-primary"
                       />
-                      <span className="text-sm text-gray-700">{col.label}</span>
+                      <span className="text-sm text-text/80">{col.label}</span>
                     </label>
                   ))}
                 </div>
@@ -197,32 +184,34 @@ const GenericTable = <T extends { id: string }>({
         <div className="flex flex-col flex-1 min-h-0 w-full">
           <div className="hidden md:block w-full overflow-x-auto">
             <div
-              className={`grid min-w-full border-t border-b border-gray-200 font-semibold text-sm text-gray-700 flex-shrink-0 ${
+              className={`grid min-w-full border-t border-b border-card/40 font-semibold text-sm text-text/80 flex-shrink-0 bg-background/60 ${
                 showScrollbarGutter ? 'pr-[16px]' : ''
               }`}
               style={{ gridTemplateColumns }}
             >
-              {showNumberColumn && <div className="py-2 px-4 text-left">{t('table.number')}</div>}
+              {showNumberColumn && <div className="py-2 px-4 text-left font-body">{t('table.number')}</div>}
               {columns.map((col) => (
-                <div key={col.key} className={`py-2 px-4 text-left ${col.className || ''}`}>
+                <div key={col.key} className={`py-2 px-4 text-left font-body ${col.className || ''}`}>
                   {col.label}
                 </div>
               ))}
-              {actions && actions.length > 0 && <div className="py-2 px-4 text-left">{t('table.actions')}</div>}
+              {actions && actions.length > 0 && (
+                <div className="py-2 px-4 text-left font-body">{t('table.actions')}</div>
+              )}
             </div>
           </div>
 
           <div ref={bodyRef} className="flex-1 min-h-0 overflow-y-auto w-full">
             <div className="hidden md:block overflow-x-auto">
               {isLoading ? (
-                <div className="py-8 text-center text-gray-400">{t('table.loading')}</div>
+                <div className="py-8 text-center text-text/40 font-body">{t('table.loading')}</div>
               ) : filteredData.length === 0 ? (
-                <div className="py-8 text-center text-gray-400">{t('table.noDataFound')}</div>
+                <div className="py-8 text-center text-text/40 font-body">{t('table.noDataFound')}</div>
               ) : (
                 filteredData.map((item, idx) => {
-                  const defaultRowClass = `group grid border-b border-gray-200 last:border-b-0 text-sm ${
-                    idx % 2 === 0 ? 'bg-white' : 'bg-gray-50'
-                  } hover:bg-gray-200 transition-colors ${onRowClick ? 'cursor-pointer' : ''}`;
+                  const defaultRowClass = `group grid border-b border-card/30 last:border-b-0 text-sm ${
+                    idx % 2 === 0 ? 'bg-card' : 'bg-background/60'
+                  } hover:bg-activeMenu/40 transition-colors ${onRowClick ? 'cursor-pointer' : ''}`;
 
                   const customRowClass = rowClassName ? rowClassName(item, idx) : '';
 
@@ -234,11 +223,13 @@ const GenericTable = <T extends { id: string }>({
                       onClick={() => onRowClick?.(item)}
                     >
                       {showNumberColumn && (
-                        <div className="py-2 px-4 text-left">{(page - 1) * itemsPerPage + (idx + 1)}</div>
+                        <div className="py-2 px-4 text-left font-body text-text/80">
+                          {(page - 1) * itemsPerPage + (idx + 1)}
+                        </div>
                       )}
 
                       {columns.map((col) => (
-                        <div key={col.key} className={`py-2 px-4 text-left ${col.className || ''}`}>
+                        <div key={col.key} className={`py-2 px-4 text-left font-body text-text ${col.className || ''}`}>
                           {col.render
                             ? col.render(item, idx)
                             : String((item as Record<string, unknown>)[col.key] ?? '')}
@@ -246,34 +237,26 @@ const GenericTable = <T extends { id: string }>({
                       ))}
 
                       {actions && actions.length > 0 && (
-                        <div className="py-2 px-4 text-left flex items-center space-x-3 opacity-0 group-hover:opacity-100 transition-opacity">
+                        <div className="py-2 px-4 text-left flex items-center gap-2 opacity-0 group-hover:opacity-100 transition-opacity">
                           {actions.map((action, actionIdx) => {
-                            if (action.show && !action.show(item)) return null;
+                            if (action.show && !action.show(item)) {
+                              return null;
+                            }
 
-                            const baseClass =
-                              action.className || 'text-gray-600 hover:text-gray-800 cursor-pointer transition-colors';
-
-                            return typeof action.icon === 'string' ? (
-                              <i
+                            return (
+                              <IconButton
                                 key={actionIdx}
-                                className={`fas ${action.icon} ${baseClass}`}
-                                title={action.label}
+                                variant="ghost"
+                                size="sm"
+                                className={action.className || 'text-text/70 hover:text-primary'}
                                 onClick={(e) => {
                                   e.stopPropagation();
                                   action.onClick(item);
                                 }}
-                              ></i>
-                            ) : (
-                              <FontAwesomeIcon
-                                key={actionIdx}
-                                icon={action.icon}
-                                className={baseClass}
-                                title={action.label}
-                                onClick={(e) => {
-                                  e.stopPropagation();
-                                  action.onClick(item);
-                                }}
-                              />
+                                aria-label={action.label}
+                              >
+                                {action.icon}
+                              </IconButton>
                             );
                           })}
                         </div>
@@ -284,29 +267,30 @@ const GenericTable = <T extends { id: string }>({
               )}
             </div>
 
+            {/* Mobile cards */}
             <div className="md:hidden space-y-4 p-4">
               {isLoading ? (
-                <div className="py-8 text-center text-gray-400">{t('table.loading')}</div>
+                <div className="py-8 text-center text-text/40 font-body">{t('table.loading')}</div>
               ) : filteredData.length === 0 ? (
-                <div className="py-8 text-center text-gray-400">{t('table.noDataFound')}</div>
+                <div className="py-8 text-center text-text/40 font-body">{t('table.noDataFound')}</div>
               ) : (
                 filteredData.map((item, idx) => (
                   <div
                     key={item.id}
-                    className="bg-white border border-gray-200 rounded-lg p-4 space-y-2 hover:bg-gray-50 transition-colors"
+                    className="bg-card border border-card/40 rounded-2xl p-4 space-y-2 hover:bg-activeMenu/20 transition-colors shadow-sm"
                     onClick={() => onRowClick?.(item)}
                   >
                     {showNumberColumn && (
-                      <div className="flex justify-between border-b pb-2 mb-2">
-                        <span className="font-semibold text-gray-700">{t('table.number')}:</span>
-                        <span className="text-gray-600">{(page - 1) * itemsPerPage + (idx + 1)}</span>
+                      <div className="flex justify-between border-b border-card/40 pb-2 mb-2">
+                        <span className="font-semibold text-text/80 font-body">{t('table.number')}:</span>
+                        <span className="text-text/80 font-body">{(page - 1) * itemsPerPage + (idx + 1)}</span>
                       </div>
                     )}
 
                     {columns.map((col) => (
-                      <div key={col.key} className="flex justify-between">
-                        <span className="font-semibold text-gray-700">{col.label}:</span>
-                        <span className="text-gray-600 text-right">
+                      <div key={col.key} className="flex justify-between gap-4">
+                        <span className="font-semibold text-text/80 font-body">{col.label}:</span>
+                        <span className="text-text/80 text-right font-body">
                           {col.render
                             ? col.render(item, idx)
                             : String((item as Record<string, unknown>)[col.key] ?? '')}
@@ -315,34 +299,26 @@ const GenericTable = <T extends { id: string }>({
                     ))}
 
                     {actions && actions.length > 0 && (
-                      <div className="flex justify-end items-center space-x-3 pt-2 border-t mt-2">
+                      <div className="flex justify-end items-center gap-2 pt-2 border-t border-card/40 mt-2">
                         {actions.map((action, actionIdx) => {
-                          if (action.show && !action.show(item)) return null;
+                          if (action.show && !action.show(item)) {
+                            return null;
+                          }
 
-                          const baseClass =
-                            action.className || 'text-gray-600 hover:text-gray-800 cursor-pointer transition-colors';
-
-                          return typeof action.icon === 'string' ? (
-                            <i
+                          return (
+                            <IconButton
                               key={actionIdx}
-                              className={`fas ${action.icon} ${baseClass}`}
-                              title={action.label}
+                              variant="ghost"
+                              size="sm"
+                              className={action.className || 'text-text/70 hover:text-primary'}
                               onClick={(e) => {
                                 e.stopPropagation();
                                 action.onClick(item);
                               }}
-                            ></i>
-                          ) : (
-                            <FontAwesomeIcon
-                              key={actionIdx}
-                              icon={action.icon}
-                              className={baseClass}
-                              title={action.label}
-                              onClick={(e) => {
-                                e.stopPropagation();
-                                action.onClick(item);
-                              }}
-                            />
+                              aria-label={action.label}
+                            >
+                              {action.icon}
+                            </IconButton>
                           );
                         })}
                       </div>
@@ -358,20 +334,28 @@ const GenericTable = <T extends { id: string }>({
           <div className="flex items-center justify-start flex-wrap gap-2 p-4 flex-shrink-0">
             {getPaginationNumbers(page, totalPages).map((p, i) =>
               p === '...' ? (
-                <span key={i} className="mx-1 text-gray-400">
+                <span key={i} className="mx-1 text-text/40 font-body">
                   ...
                 </span>
               ) : (
-                <button
+                <IconButton
                   key={p}
-                  className={`px-3 py-1 rounded ${
-                    p === page ? 'bg-primary text-white' : 'bg-gray-100 text-gray-700 hover:bg-gray-200'
-                  }`}
-                  onClick={() => onPageChange(Number(p))}
+                  type="button"
+                  size="sm"
+                  variant={p === page ? 'primary' : 'ghost'}
                   disabled={p === page}
+                  aria-label={t('table.goToPage', { page: p })}
+                  className={`
+            rounded-full
+            w-9 h-9 sm:w-10 sm:h-10   /* dimensiune fixă, cerc */
+            flex items-center justify-center
+            text-sm font-body
+            ${p === page ? 'bg-primary text-primary-text' : 'bg-background/80 text-text/80 hover:bg-background'}
+          `}
+                  onClick={() => onPageChange(Number(p))}
                 >
                   {p}
-                </button>
+                </IconButton>
               )
             )}
           </div>

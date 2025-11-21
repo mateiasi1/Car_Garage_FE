@@ -10,6 +10,11 @@ import { CarCategories } from '../../utils/enums/CarCategories';
 import { InspectionType } from '../../utils/enums/InspectionTypes';
 import { formatInspectionDate } from '../../utils/formatInspectionDate';
 import { showToast } from '../../utils/showToast';
+import { PageContainer } from '../shared/PageContainer';
+import { Input } from '../shared/Input';
+import { CustomSelect } from '../shared/CustomSelect';
+import { Button } from '../shared/Button';
+import { PhoneNumberRoInput } from '../PhoneNumberRoInput';
 
 type FormData = {
   licensePlate: string;
@@ -59,11 +64,12 @@ const InspectionForm: FC = () => {
     }
   }, [selectedInspection]);
 
-  const clearError = (field: keyof FormData) => {
+  const updateField = (field: keyof FormData, value: string) => {
+    setForm((prev) => ({ ...prev, [field]: value }));
     setErrors((prev) => {
-      const updated = { ...prev };
-      delete updated[field];
-      return updated;
+      const next = { ...prev };
+      delete next[field];
+      return next;
     });
   };
 
@@ -85,11 +91,6 @@ const InspectionForm: FC = () => {
 
     setErrors(newErrors);
     return Object.keys(newErrors).length === 0;
-  };
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
   };
 
   const handleSubmit = async (e: React.FormEvent) => {
@@ -122,149 +123,129 @@ const InspectionForm: FC = () => {
     }
   };
 
-  const inputBaseClass = 'w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 text-sm sm:text-base';
-  const inputClass = (field: keyof FormData) =>
-    `${inputBaseClass} ${errors[field] ? 'border-red-500 focus:ring-red-500' : 'border-gray-300 focus:ring-primary'}`;
-
   return (
-    <div className="flex flex-col min-h-screen w-full bg-background px-3 py-2 sm:px-6">
-      <div className="w-full bg-white rounded-xl shadow-md px-3 py-2 sm:px-6 mt-4 flex-1 flex flex-col max-w-6xl mx-auto">
-        <h2 className="text-xl sm:text-2xl font-heading text-center mb-4 sm:mb-8">{t('addNewInspection')}</h2>
-        <div className="flex-1 flex items-stretch sm:items-center overflow-visible sm:overflow-y-auto">
-          <form onSubmit={handleSubmit} className="space-y-6 w-full max-w-7xl mx-auto pb-6">
-            <div className="grid grid-cols-1 lg:grid-cols-3 gap-4 lg:gap-6">
-              <section>
-                <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 border-b border-gray-300 pb-2">
-                  {t('carInformation')}
-                </h3>
+    <PageContainer className="items-start justify-center">
+      <div className="flex flex-col h-[calc(100vh-12rem)] w-full max-w-6xl mx-auto">
+        <form
+          onSubmit={handleSubmit}
+          className="
+            w-full h-full bg-card rounded-3xl shadow-2xl border border-card/40
+            flex flex-col overflow-hidden
+          "
+        >
+          {/* Header */}
+          <div className="px-4 sm:px-6 pt-4 pb-2 border-b border-card/40">
+            <h1 className="text-xl sm:text-2xl font-heading font-semibold text-primary text-center sm:text-left">
+              {t('addNewInspection')}
+            </h1>
+          </div>
 
-                <div className="mb-4 min-h-[4.5rem]">
-                  <label htmlFor="licensePlate" className="block font-semibold mb-1 text-sm sm:text-base">
-                    {t('licensePlate')}
-                  </label>
-                  <input
-                    type="text"
-                    name="licensePlate"
-                    id="licensePlate"
-                    value={form.licensePlate}
-                    onChange={handleChange}
-                    onFocus={() => clearError('licensePlate')}
-                    placeholder="DJ-51-ABC"
-                    className={inputClass('licensePlate')}
-                  />
-                  {errors.licensePlate && (
-                    <p className="text-red-600 text-xs sm:text-sm mt-1">{t(errors.licensePlate)}</p>
+          {/* Content (scrollable) */}
+          <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 space-y-6 bg-background/40">
+            {/* Car info */}
+            <div className="bg-card rounded-2xl p-4 sm:p-5 border border-card/40">
+              <h3 className="text-lg font-heading font-semibold text-text mb-4">{t('carInformation')}</h3>
+
+              <div className="space-y-4">
+                <Input
+                  label={t('licensePlate')}
+                  value={form.licensePlate}
+                  onChange={(e) => updateField('licensePlate', e.target.value.toUpperCase())}
+                  placeholder="DJ-51-ABC"
+                  autoComplete="off"
+                  error={errors.licensePlate && t(errors.licensePlate)}
+                />
+
+                <CustomSelect
+                  label={t('carCategory')}
+                  value={form.carCategory}
+                  onChange={(val) => updateField('carCategory', val)}
+                  options={[CarCategories.A, CarCategories.B, CarCategories.C, CarCategories.D, CarCategories.E].map(
+                    (cat) => ({
+                      value: cat,
+                      label: cat,
+                    })
                   )}
-                </div>
-
-                <div className="mb-4 min-h-[4.5rem]">
-                  <label htmlFor="carCategory" className="block font-semibold mb-1 text-sm sm:text-base">
-                    {t('carCategory')}
-                  </label>
-                  <select
-                    name="carCategory"
-                    id="carCategory"
-                    value={form.carCategory}
-                    onChange={handleChange}
-                    onFocus={() => clearError('carCategory')}
-                    className={inputClass('carCategory')}
-                  >
-                    {[CarCategories.A, CarCategories.B, CarCategories.C, CarCategories.D, CarCategories.E].map(
-                      (cat) => (
-                        <option key={cat} value={cat}>
-                          {cat}
-                        </option>
-                      )
-                    )}
-                  </select>
-                  {errors.carCategory && (
-                    <p className="text-red-600 text-xs sm:text-sm mt-1">{t(errors.carCategory)}</p>
-                  )}
-                </div>
-              </section>
-
-              <section>
-                <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 border-b border-gray-300 pb-2">
-                  {t('customerInformation')}
-                </h3>
-
-                {(['firstName', 'lastName', 'phoneNumber'] as const).map((field) => (
-                  <div key={field} className="mb-4 min-h-[4.5rem]">
-                    <label htmlFor={field} className="block font-semibold mb-1 text-sm sm:text-base">
-                      {t(field)}
-                    </label>
-                    <input
-                      type={field === 'phoneNumber' ? 'tel' : 'text'}
-                      name={field}
-                      id={field}
-                      value={form[field]}
-                      onChange={handleChange}
-                      onFocus={() => clearError(field)}
-                      className={inputClass(field)}
-                      placeholder={field === 'phoneNumber' ? '+40712345678' : ''}
-                    />
-                    {errors[field] && <p className="text-red-600 text-xs sm:text-sm mt-1">{t(errors[field])}</p>}
-                  </div>
-                ))}
-              </section>
-
-              <section>
-                <h3 className="text-base sm:text-lg font-semibold mb-3 sm:mb-4 border-b border-gray-300 pb-2">
-                  {t('inspectionInformation')}
-                </h3>
-
-                <div className="mb-4 min-h-[4.5rem]">
-                  <label htmlFor="inspectionType" className="block font-semibold mb-1 text-sm sm:text-base">
-                    {t('inspectionDuration')}
-                  </label>
-                  <select
-                    name="inspectionType"
-                    id="inspectionType"
-                    value={form.inspectionType}
-                    onChange={handleChange}
-                    onFocus={() => clearError('inspectionType')}
-                    className={inputClass('inspectionType')}
-                  >
-                    <option value={InspectionType.halfYear}>{t('halfYear')}</option>
-                    <option value={InspectionType.oneYear}>{t('yearly')}</option>
-                    <option value={InspectionType.twoYears}>{t('twoYears')}</option>
-                  </select>
-                  {errors.inspectionType && (
-                    <p className="text-red-600 text-xs sm:text-sm mt-1">{t(errors.inspectionType)}</p>
-                  )}
-                </div>
-
-                <div className="mb-4 min-h-[4.5rem]">
-                  <label htmlFor="inspectedAt" className="block font-semibold mb-1 text-sm sm:text-base">
-                    {t('inspectionDate')}
-                  </label>
-                  <input
-                    type="date"
-                    name="inspectedAt"
-                    id="inspectedAt"
-                    value={form.inspectedAt}
-                    onChange={handleChange}
-                    onFocus={() => clearError('inspectedAt')}
-                    className={inputClass('inspectedAt')}
-                    max={new Date().toISOString().split('T')[0]}
-                  />
-                  {errors.inspectedAt && (
-                    <p className="text-red-600 text-xs sm:text-sm mt-1">{t(errors.inspectedAt)}</p>
-                  )}
-                </div>
-              </section>
+                  error={errors.carCategory && t(errors.carCategory)}
+                />
+              </div>
             </div>
 
-            <button
-              type="submit"
-              className="w-full py-3 rounded-md bg-primary text-white font-semibold hover:bg-primary-hover transition-colors text-sm sm:text-base"
-            >
-              {t('submit')}
-            </button>
-          </form>
-        </div>
+            {/* Customer info */}
+            <div className="bg-card rounded-2xl p-4 sm:p-5 border border-card/40">
+              <h3 className="text-lg font-heading font-semibold text-text mb-4">{t('customerInformation')}</h3>
+
+              <div className="space-y-4">
+                <Input
+                  label={t('firstName')}
+                  value={form.firstName}
+                  onChange={(e) => updateField('firstName', e.target.value)}
+                  placeholder={t('firstName')} // ex. "Ion"
+                  error={errors.firstName && t(errors.firstName)}
+                />
+
+                <Input
+                  label={t('lastName')}
+                  value={form.lastName}
+                  onChange={(e) => updateField('lastName', e.target.value)}
+                  placeholder={t('lastName')}
+                  error={errors.lastName && t(errors.lastName)}
+                />
+
+                <PhoneNumberRoInput
+                  label={t('phoneNumber')}
+                  value={form.phoneNumber}
+                  onChange={(val) => updateField('phoneNumber', val)}
+                  placeholder="712345678"
+                  error={errors.phoneNumber && t(errors.phoneNumber)}
+                />
+              </div>
+            </div>
+
+            {/* Inspection info */}
+            <div className="bg-card rounded-2xl p-4 sm:p-5 border border-card/40">
+              <h3 className="text-lg font-heading font-semibold text-text mb-4">{t('inspectionInformation')}</h3>
+
+              <div className="space-y-4">
+                <CustomSelect
+                  label={t('inspectionDuration')}
+                  value={form.inspectionType}
+                  onChange={(val) => updateField('inspectionType', val)}
+                  options={[
+                    { value: InspectionType.halfYear, label: t('halfYear') },
+                    { value: InspectionType.oneYear, label: t('yearly') },
+                    { value: InspectionType.twoYears, label: t('twoYears') },
+                  ]}
+                  error={errors.inspectionType && t(errors.inspectionType)}
+                />
+
+                <Input
+                  label={t('inspectionDate')}
+                  type="date"
+                  value={form.inspectedAt}
+                  onChange={(e) => updateField('inspectedAt', e.target.value)}
+                  onClick={(e) => {
+                    const target = e.target as HTMLInputElement;
+                    if (target.showPicker) target.showPicker();
+                  }}
+                  placeholder={t('inspectionDatePlaceholder')} // ex. "Selectează data"
+                  error={errors.inspectedAt && t(errors.inspectedAt)}
+                  max={new Date().toISOString().split('T')[0]}
+                />
+              </div>
+            </div>
+          </div>
+
+          <div className="px-4 sm:px-6 py-4 border-t border-card/40 bg-card">
+            <div className="flex justify-end">
+              <Button type="submit" variant="primary" fullWidth={false} className="w-full md:w-auto">
+                {t('submit')}
+              </Button>
+            </div>
+          </div>
+        </form>
       </div>
-    </div>
+    </PageContainer>
   );
 };
 
