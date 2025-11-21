@@ -1,10 +1,9 @@
-import React, { FC, useContext, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, Link } from 'react-router-dom';
+import { useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import { routes } from '../../constants/routes';
 import { AuthContext } from '../../contexts/authContext';
-import { Credentials } from '../../models/Credentials';
 import { useLoginMutation } from '../../rtk/services/auth-service';
 import { showToast } from '../../utils/showToast';
 import { Button } from '../shared/Button';
@@ -12,17 +11,19 @@ import { Input } from '../shared/Input';
 import { CustomSelect } from '../shared/CustomSelect';
 import { PageContainer } from '../shared/PageContainer';
 import { FormContainer } from '../shared/FormContainer';
+import { useForm } from '../../hooks/useForm';
+
+interface LoginFormValues {
+  username: string;
+  password: string;
+  branchId?: string;
+}
 
 const Login: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
   const { login, isAuthenticated, user } = useContext(AuthContext);
   const [loginMutation] = useLoginMutation();
-
-  const [credentials, setCredentials] = useState<Credentials>({
-    username: '',
-    password: '',
-  });
 
   const [selectBranch, setSelectBranch] = useState(false);
   const [branches, setBranches] = useState<{ id: string; name: string }[]>([]);
@@ -41,68 +42,60 @@ const Login: FC = () => {
     }
   }, [selectBranch, branches, selectedBranchId]);
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { id, value } = e.target;
-    setCredentials((prev) => ({ ...prev, [id]: value }));
-  };
-
-  const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-    e.preventDefault();
-
-    if (!credentials.username || !credentials.password) return;
-
-    try {
+  const { errors, canSubmit, handleSubmit, register } = useForm<LoginFormValues>({
+    initialValues: { username: '', password: '' },
+    fields: {
+      username: { required: true },
+      password: { required: true },
+    },
+    onSubmit: async (formValues) => {
       const payload =
-        selectBranch && selectedBranchId ? { ...credentials, branchId: selectedBranchId } : { ...credentials };
+        selectBranch && selectedBranchId ? { ...formValues, branchId: selectedBranchId } : { ...formValues };
 
-      const data = await loginMutation(payload).unwrap();
+      try {
+        const data = await loginMutation(payload).unwrap();
 
-      if (data.selectBranch && data.branches) {
-        setSelectBranch(true);
-        setBranches(data.branches);
-        return;
-      }
+        if (data.selectBranch && data.branches) {
+          setSelectBranch(true);
+          setBranches(data.branches);
+          return;
+        }
 
-      if (data.accessToken) {
-        login({ accessToken: data.accessToken });
-      } else {
+        if (data.accessToken) {
+          login({ accessToken: data.accessToken });
+        } else {
+          showToast(t('wrongCredentials'), 'error');
+        }
+      } catch {
         showToast(t('wrongCredentials'), 'error');
       }
-    } catch {
-      showToast(t('wrongCredentials'), 'error');
-    }
-  };
+    },
+  });
+
+  const onSubmit = handleSubmit();
 
   return (
     <PageContainer>
-      <FormContainer onSubmit={handleSubmit}>
-        {/* logo + title */}
-        <button
-          type="button"
-          className="flex items-center justify-center mb-6 cursor-pointer w-full"
-          onClick={() => navigate(routes.HOME)}
-        >
+      <FormContainer onSubmit={onSubmit} noValidate>
+        <div className="flex items-center justify-center mb-8 cursor-pointer" onClick={() => navigate(routes.HOME)}>
           <img src={logo} alt="RoadReady Logo" className="h-14 w-14 mr-3" />
           <span className="text-2xl font-bold font-heading text-primary">RoadReady</span>
-        </button>
+        </div>
 
-        {/* fields */}
         {!selectBranch ? (
           <>
             <Input
-              label={t('usernameTitle')}
-              id="username"
-              value={credentials.username}
-              onChange={handleChange}
+              label={`${t('usernameTitle')} *`}
+              {...register('username')}
+              error={errors.username && t(errors.username)}
               placeholder="john@example.com"
               autoComplete="username"
             />
             <Input
-              label={t('passwordTitle')}
+              label={`${t('passwordTitle')} *`}
               type="password"
-              id="password"
-              value={credentials.password}
-              onChange={handleChange}
+              {...register('password')}
+              error={errors.password && t(errors.password)}
               placeholder="•••••••"
               autoComplete="current-password"
             />
@@ -119,20 +112,9 @@ const Login: FC = () => {
           />
         )}
 
-        {/* submit */}
-        <Button type="submit" fullWidth disabled={selectBranch && !selectedBranchId} variant="primary">
+        <Button type="submit" fullWidth variant="primary" disabled={selectBranch ? !selectedBranchId : !canSubmit}>
           {t('loginButton')}
         </Button>
-
-        {/* terms */}
-        <div className="mt-4 text-center text-sm text-gray-600 font-body">
-          {t('login.termsInfo.prefix')}{' '}
-          <Link to="/terms" target="_blank" className="text-primary hover:text-primary-hover font-medium underline">
-            {t('login.termsInfo.link')}
-          </Link>
-        </div>
-
-        <div className="mt-4 text-center text-sm text-gray-600 font-body">{t('registerButton')}</div>
       </FormContainer>
     </PageContainer>
   );
