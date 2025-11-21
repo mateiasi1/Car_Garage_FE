@@ -1,10 +1,10 @@
 import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useSearchParams } from 'react-router-dom';
-import { AdminUser, useFetchAdminCompanyUsersQuery } from '../../rtk/services/admin-service';
-import Drawer from '../shared/Drawer';
-import GenericTable, { TableColumn, TableAction } from '../shared/GenericTable';
-import UserForm from '../forms/UserForm';
+import { AdminUser, useFetchAdminCompanyUsersQuery } from '../../../rtk/services/admin-service.tsx';
+import Drawer from '../../shared/Drawer.tsx';
+import GenericTable, { TableColumn, TableAction } from '../../shared/GenericTable.tsx';
+import UserForm from '../../forms/UserForm.tsx';
 
 const AdminUsers: FC = () => {
   const { t } = useTranslation();

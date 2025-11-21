@@ -1,7 +1,7 @@
 import { FC } from 'react';
-import { useFetchPackagesQuery } from '../../rtk/services/package-service';
+import { useFetchPackagesQuery } from '../../../rtk/services/package-service.tsx';
 import { useTranslation } from 'react-i18next';
-import { useFetchBranchQuery } from '../../rtk/services/branch-service';
+import { useFetchBranchQuery } from '../../../rtk/services/branch-service.tsx';
 
 const PackagesPage: FC = () => {
   const { data: branch } = useFetchBranchQuery();

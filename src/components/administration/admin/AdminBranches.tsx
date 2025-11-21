@@ -1,12 +1,12 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Drawer from '../shared/Drawer';
-import { Branch } from '../../models/Branch';
-import GenericTable, { TableColumn, TableAction } from '../shared/GenericTable';
-import BranchForm from '../forms/BranchForm';
-import PackageSubscribeDrawer from './PackageSubscribeDrawer';
-import { useFetchAdminCompanyBranchesQuery } from '../../rtk/services/admin-service';
-import { useFetchPackagesQuery } from '../../rtk/services/package-service';
+import Drawer from '../../shared/Drawer.tsx';
+import { Branch } from '../../../models/Branch.ts';
+import GenericTable, { TableColumn, TableAction } from '../../shared/GenericTable.tsx';
+import BranchForm from '../../forms/BranchForm.tsx';
+import PackageSubscribeDrawer from '../package/PackageSubscribeDrawer.tsx';
+import { useFetchAdminCompanyBranchesQuery } from '../../../rtk/services/admin-service.tsx';
+import { useFetchPackagesQuery } from '../../../rtk/services/package-service.tsx';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 
 const AdminBranches: FC = () => {

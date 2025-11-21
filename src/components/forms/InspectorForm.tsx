@@ -9,36 +9,32 @@ import {
 import { useFetchCompanyBranchesQuery } from '../../rtk/services/company-service';
 import { useGenerateUsernameMutation } from '../../rtk/services/user-service';
 import { showToast } from '../../utils/showToast';
-import PasswordInput from '../shared/PasswordInput';
-import { PrimaryButton } from '../shared/PrimaryButton';
-import ConfirmationModal from '../shared/ConfirmationModal';
-import { DangerButton } from '../shared/DangerButton';
 import { Branch } from '../../models/Branch';
 import { UserBranch } from '../../models/UserBranch';
 import DropdownMultiSelect from '../shared/DropdownMultiSelect';
+import { Input } from '../shared/Input';
+import { Button } from '../shared/Button';
+import ConfirmationModal from '../shared/ConfirmationModal';
+import { useForm } from '../../hooks/useForm';
 
 interface InspectorFormProps {
-  selectedInspector: Partial<InspectorFormState> | null;
+  selectedInspector: {
+    id?: string;
+    firstName?: string;
+    lastName?: string;
+    username?: string;
+    branches?: UserBranch[];
+  } | null;
   onCloseDrawer: () => void;
 }
 
-type InspectorFormState = {
+type InspectorFormValues = {
   id?: string;
   firstName: string;
   lastName: string;
   username: string;
-  password?: string;
+  password: string;
   branchIds: string[];
-  branches?: UserBranch[];
-};
-
-const initialState: InspectorFormState = {
-  username: '',
-  password: '',
-  firstName: '',
-  lastName: '',
-  branchIds: [],
-  branches: [],
 };
 
 const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawer }) => {
@@ -49,215 +45,177 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
   const [generateUsername] = useGenerateUsernameMutation();
   const { data: branches = [], isLoading: branchesLoading } = useFetchCompanyBranchesQuery();
 
-  const [showPassword, setShowPassword] = useState(false);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
-  const isEdit = Boolean(selectedInspector);
+  const isEdit = Boolean(selectedInspector?.id);
 
-  const [form, setForm] = useState<InspectorFormState>(initialState);
-
-  useEffect(() => {
-    if (selectedInspector) {
-      const branchIds = selectedInspector.branches?.map((b: UserBranch) => b.id) || selectedInspector.branchIds || [];
-
-      setForm({
-        id: selectedInspector.id,
-        firstName: selectedInspector.firstName || '',
-        lastName: selectedInspector.lastName || '',
-        username: selectedInspector.username || '',
-        password: '',
-        branchIds: branchIds,
-        branches: selectedInspector.branches,
-      });
-    } else {
-      setForm(initialState);
-      setShowDeleteModal(false);
-    }
-  }, [selectedInspector]);
+  const { values, errors, register, handleSubmit, setFieldValue, isSubmitting } = useForm<InspectorFormValues>({
+    initialValues: {
+      id: selectedInspector?.id ?? '',
+      firstName: selectedInspector?.firstName ?? '',
+      lastName: selectedInspector?.lastName ?? '',
+      username: selectedInspector?.username ?? '',
+      password: '',
+      branchIds: selectedInspector?.branches?.map((b) => b.id) ?? [],
+    },
+    fields: {
+      firstName: { required: true },
+      lastName: { required: true },
+      password: {
+        validate: (value) => {
+          if (isEdit) return null;
+          const pwd = String(value ?? '').trim();
+          if (!pwd) return 'passwordEmpty';
+          if (pwd.length < 6) return 'passwordTooShort';
+          return null;
+        },
+      },
+      branchIds: {
+        validate: (value) => {
+          const arr = Array.isArray(value) ? value : [];
+          if (arr.length === 0) return 'selectAtLeastOneBranch';
+          return null;
+        },
+      },
+    },
+    onSubmit: async (formValues) => {
+      try {
+        if (isEdit && formValues.id) {
+          const payload: UpdateInspectorDTO = {
+            id: formValues.id,
+            firstName: formValues.firstName,
+            lastName: formValues.lastName,
+            branchIds: formValues.branchIds,
+          };
+          await updateInspector(payload).unwrap();
+          showToast(t('inspectorUpdateSuccess'), 'success');
+        } else {
+          const payload: CreateInspectorDTO = {
+            firstName: formValues.firstName,
+            lastName: formValues.lastName,
+            password: formValues.password,
+            branchIds: formValues.branchIds,
+          };
+          await createInspector(payload).unwrap();
+          showToast(t('inspectorCreateSuccess'), 'success');
+        }
+        onCloseDrawer();
+      } catch {
+        showToast(isEdit ? t('inspectorUpdateError') : t('inspectorCreateError'), 'error');
+      }
+    },
+  });
 
   useEffect(() => {
     if (isEdit) return;
-    if (!form.firstName?.trim() || !form.lastName?.trim()) return;
+    if (!values.firstName.trim() || !values.lastName.trim()) return;
 
-    const timeoutId = setTimeout(async () => {
+    const timeoutId = window.setTimeout(async () => {
       try {
         const result = await generateUsername({
-          firstName: form.firstName,
-          lastName: form.lastName,
+          firstName: values.firstName,
+          lastName: values.lastName,
         }).unwrap();
 
-        setForm((prev) => ({ ...prev, username: result.username }));
-      } catch (error) {
-        console.error('Error generating username:', error);
+        setFieldValue('username', result.username);
+      } catch {
+        /* silent */
       }
     }, 500);
 
-    return () => clearTimeout(timeoutId);
-  }, [form.firstName, form.lastName, isEdit, generateUsername]);
-
-  const inputBaseClass =
-    'w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 border-gray-300 focus:ring-primary';
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
+    return () => window.clearTimeout(timeoutId);
+  }, [values.firstName, values.lastName, isEdit, generateUsername, setFieldValue]);
 
   const handleBranchSelectionChange = (selectedIds: string[]) => {
-    setForm((prev) => ({ ...prev, branchIds: selectedIds }));
+    setFieldValue('branchIds', selectedIds);
   };
 
-  const validateForm = (): boolean => {
-    if (!form.username?.trim()) {
-      showToast(t('usernameEmpty'), 'error');
-      return false;
-    }
-    if (!form.firstName?.trim()) {
-      showToast(t('firstNameEmpty'), 'error');
-      return false;
-    }
-    if (!form.lastName?.trim()) {
-      showToast(t('lastNameEmpty'), 'error');
-      return false;
-    }
-    if (form.branchIds.length === 0) {
-      showToast(t('selectAtLeastOneBranch'), 'error');
-      return false;
-    }
-
-    if (!isEdit) {
-      if (!form.password?.trim()) {
-        showToast(t('passwordEmpty'), 'error');
-        return false;
-      }
-      if (form.password.length < 6) {
-        showToast(t('passwordTooShort'), 'error');
-        return false;
-      }
-    }
-
-    return true;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validateForm()) return;
-
+  const onDelete = async () => {
+    if (!values.id) return;
     try {
-      if (isEdit && form.id) {
-        const { firstName, lastName, branchIds } = form;
-        const payload: UpdateInspectorDTO = { id: form.id, firstName, lastName, branchIds };
-        await updateInspector(payload).unwrap();
-        showToast(t('inspectorUpdateSuccess'), 'success');
-        onCloseDrawer();
-      } else {
-        const { firstName, lastName, branchIds } = form;
-        const payload: CreateInspectorDTO = {
-          firstName,
-          lastName,
-          password: form.password || '',
-          branchIds,
-        };
-        await createInspector(payload).unwrap();
-        showToast(t('inspectorCreateSuccess'), 'success');
-        onCloseDrawer();
-      }
-    } catch (error) {
-      showToast(isEdit ? t('inspectorUpdateError') : t('inspectorCreateError'), 'error');
-    }
-  };
-
-  const handleDelete = async () => {
-    if (!form.id) return;
-    try {
-      await deleteInspector(form.id).unwrap();
+      await deleteInspector(values.id).unwrap();
       showToast(t('inspectorDeleteSuccess'), 'success');
       setShowDeleteModal(false);
       onCloseDrawer();
-    } catch (error) {
+    } catch {
       showToast(t('inspectorDeleteError'), 'error');
     }
   };
 
   if (branchesLoading) {
-    return <div className="p-4">{t('loading')}</div>;
+    return <div className="p-4 text-sm font-body text-text/80">{t('loading')}</div>;
   }
+
+  const onSubmit = handleSubmit();
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="space-y-6">
+      <form onSubmit={onSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="block font-semibold mb-1">{t('lastName')}</label>
-            <input
-              type="text"
-              name="lastName"
-              value={form.lastName}
-              onChange={handleChange}
-              className={inputBaseClass}
-            />
-          </div>
+          <Input
+            label={t('lastName')}
+            {...register('lastName')}
+            error={errors.lastName && t(errors.lastName)}
+            wrapperClassName="mb-0"
+          />
+          <Input
+            label={t('firstName')}
+            {...register('firstName')}
+            error={errors.firstName && t(errors.firstName)}
+            wrapperClassName="mb-0"
+          />
 
-          <div>
-            <label className="block font-semibold mb-1">{t('firstName')}</label>
-            <input
-              type="text"
-              name="firstName"
-              value={form.firstName}
-              onChange={handleChange}
-              className={inputBaseClass}
-            />
-          </div>
-
-          <div className="col-span-full">
-            <label className="block font-semibold mb-1">{t('username')}</label>
-            <input
-              type="text"
-              name="username"
-              value={form.username}
+          <div className="md:col-span-2">
+            <Input
+              label={t('username')}
+              {...register('username')}
               disabled
-              className={`${inputBaseClass} bg-gray-100 cursor-not-allowed`}
-              placeholder={isEdit ? form.username : t('autoGeneratedUsername')}
+              className="bg-background/60 cursor-not-allowed"
+              wrapperClassName="mb-1"
             />
-            {!isEdit && <p className="text-sm text-gray-500 mt-1">{t('usernameGeneratedAutomatically')}</p>}
+            {!isEdit && <p className="text-xs font-body text-text/60 mt-1">{t('usernameGeneratedAutomatically')}</p>}
           </div>
         </div>
 
-        <DropdownMultiSelect
-          label={t('assignedBranches')}
-          options={branches}
-          selectedIds={form.branchIds}
-          onSelectionChange={handleBranchSelectionChange}
-          getOptionId={(branch: Branch) => branch.id}
-          getOptionLabel={(branch: Branch) => branch.name}
-          placeholder={t('selectBranches')}
-          emptyMessage={t('noBranchesAvailable')}
-          selectedCountMessage={(count) => `${count} ${t('branchesSelected')}`}
-        />
+        <div>
+          <DropdownMultiSelect
+            label={t('assignedBranches')}
+            options={branches}
+            selectedIds={values.branchIds}
+            onSelectionChange={handleBranchSelectionChange}
+            getOptionId={(branch: Branch) => branch.id}
+            getOptionLabel={(branch: Branch) => branch.name}
+            placeholder={t('selectBranches')}
+            emptyMessage={t('noBranchesAvailable')}
+            selectedCountMessage={(count) => `${count} ${t('branchesSelected')}`}
+          />
+          {errors.branchIds && <p className="text-error text-sm mt-1 font-body">{t(errors.branchIds)}</p>}
+        </div>
 
         {!isEdit && (
-          <div>
-            <PasswordInput
-              name="password"
-              label={t('password')}
-              value={form.password || ''}
-              showPassword={showPassword}
-              onChange={handleChange}
-              onToggleVisibility={() => setShowPassword(!showPassword)}
-            />
-          </div>
+          <Input
+            type="password"
+            label={t('password')}
+            {...register('password')}
+            error={errors.password && t(errors.password)}
+          />
         )}
 
-        <div className="flex justify-end gap-3">
+        <div className="flex justify-end gap-3 pt-2">
           {isEdit && (
-            <DangerButton type="button" text={t('delete')} onClick={() => setShowDeleteModal(true)} className="w-1/4" />
+            <Button type="button" variant="danger" size="md" className="w-1/3" onClick={() => setShowDeleteModal(true)}>
+              {t('delete')}
+            </Button>
           )}
-          <PrimaryButton
+          <Button
             type="submit"
-            text={t('submit')}
-            disabled={isCreating || isUpdating}
-            className={isEdit ? 'w-3/4' : 'w-full'}
-          />
+            variant="primary"
+            size="md"
+            className={isEdit ? 'w-2/3' : 'w-full'}
+            loading={isCreating || isUpdating || isSubmitting}
+          >
+            {t('submit')}
+          </Button>
         </div>
       </form>
 
@@ -265,7 +223,7 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
         open={showDeleteModal}
         title={t('areYouSure')}
         message={t('areYouSureDeleteInspector')}
-        onConfirm={handleDelete}
+        onConfirm={onDelete}
         onCancel={() => setShowDeleteModal(false)}
       />
     </>

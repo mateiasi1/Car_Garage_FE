@@ -1,71 +1,145 @@
-import { FC, useState } from 'react';
+import { FC, useMemo, useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { Pencil } from 'lucide-react';
+
+import GenericTable, { TableAction, TableColumn } from '../shared/GenericTable';
 import { useFetchInspectorsQuery } from '../../rtk/services/inspector-service';
 import Drawer from '../shared/Drawer';
-import { PersonItemBase } from '../shared/PersonItem';
-import { PersonList } from '../shared/PersonList';
-import { useTranslation } from 'react-i18next';
 import InspectorForm from '../forms/InspectorForm';
+import { Button } from '../shared/Button';
+import { Text } from '../shared/Text';
 import { UserBranch } from '../../models/UserBranch';
 
-interface InspectorListItem extends PersonItemBase {
+interface InspectorRow {
   id: string;
+  firstName: string;
+  lastName: string;
   username: string;
   branches?: UserBranch[];
 }
 
 const InspectorsList: FC = () => {
-  const { data: inspectors, error, isLoading } = useFetchInspectorsQuery();
-  const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedItem, setSelectedItem] = useState<InspectorListItem | null>(null);
   const { t } = useTranslation();
+  const { data: inspectors, isLoading, error } = useFetchInspectorsQuery();
 
-  if (isLoading) return <p>Loading inspectors...</p>;
-  if (error) return <p>Failed to load inspectors</p>;
+  const [search, setSearch] = useState('');
+  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [selectedInspector, setSelectedInspector] = useState<InspectorRow | null>(null);
 
-  const handleItemClick = (item: InspectorListItem) => {
-    setSelectedItem(item);
-    setDrawerOpen(true);
-  };
+  const items: InspectorRow[] = useMemo(
+    () =>
+      inspectors?.map((user) => ({
+        id: user.id,
+        firstName: user.firstName,
+        lastName: user.lastName,
+        username: user.username,
+        branches: user.branches,
+      })) ?? [],
+    [inspectors]
+  );
+
+  const columns: TableColumn<InspectorRow>[] = useMemo(
+    () => [
+      {
+        key: 'name',
+        label: t('name'),
+        width: '2fr',
+        render: (item) => `${item.firstName} ${item.lastName}`,
+        getSearchValue: (item) => `${item.firstName} ${item.lastName}`,
+        searchable: true,
+      },
+      {
+        key: 'branches',
+        label: t('assignedBranches'),
+        width: '3fr',
+        render: (item) => item.branches?.map((b) => b.name).join(', ') || '—',
+        getSearchValue: (item) => item.branches?.map((b) => b.name).join(' ') ?? '',
+        searchable: true,
+      },
+    ],
+    [t]
+  );
+
+  const actions: TableAction<InspectorRow>[] = useMemo(
+    () => [
+      {
+        icon: <Pencil className="w-5 h-5 text-primary hover:text-primary-hover" />,
+        label: t('edit'),
+        onClick: (item) => {
+          setSelectedInspector(item);
+          setDrawerOpen(true);
+        },
+      },
+    ],
+    [t]
+  );
+
+  const toolbarActions = (
+    <Button
+      type="button"
+      variant="primary"
+      size="md"
+      fullWidth={false}
+      className="whitespace-nowrap"
+      onClick={() => {
+        setSelectedInspector(null);
+        setDrawerOpen(true);
+      }}
+    >
+      {t('addInspector')}
+    </Button>
+  );
 
   const handleDrawerClose = () => {
     setDrawerOpen(false);
-    setSelectedItem(null);
+    setSelectedInspector(null);
   };
 
-  const items: InspectorListItem[] =
-    inspectors?.map((user) => ({
-      id: user?.id,
-      username: user.username,
-      firstName: user.firstName,
-      lastName: user.lastName,
-      email: user.email ?? null,
-      phoneNumber: null,
-      branches: user.branches,
-    })) ?? [];
+  if (error) {
+    return (
+      <div className="flex flex-col h-full">
+        <Text variant="h3" className="mb-4">
+          {t('inspectors')}
+        </Text>
+        <div className="flex-1 flex items-center justify-center">
+          <Text className="text-error">{t('failedToLoadInspectors')}</Text>
+        </div>
+      </div>
+    );
+  }
 
   return (
-    <div className="flex flex-col h-[calc(100vh-12rem)] pb-4">
-      <div className="flex items-center justify-between mb-4">
-        <h2 className="text-2xl font-heading">{t('inspectors')}</h2>
-        <button
-          className="bg-primary text-white px-4 py-2 rounded-lg hover:bg-primary-hover transition-colors"
-          onClick={() => setDrawerOpen(true)}
-        >
-          {t('addInspector')}
-        </button>
-      </div>
+    <div className="flex flex-col h-full">
+      <Text variant="h3" className="mb-4">
+        {t('inspectors')}
+      </Text>
 
-      <PersonList items={items} onItemClick={handleItemClick} />
+      <div className="flex-1 min-h-0">
+        <GenericTable<InspectorRow>
+          data={items}
+          columns={columns}
+          actions={actions}
+          isLoading={isLoading}
+          showNumberColumn
+          search={search}
+          onSearchChange={setSearch}
+          searchPlaceholder={t('searchInspectors')}
+          showFilters
+          toolbarActions={toolbarActions}
+          embedded
+        />
+      </div>
 
       <Drawer
         isOpen={drawerOpen}
-        onClose={() => {
-          setDrawerOpen(false);
-          setSelectedItem(null);
-        }}
-        title={selectedItem ? t('editInspector') : t('addInspector')}
+        onClose={handleDrawerClose}
+        title={selectedInspector ? t('editInspector') : t('addInspector')}
       >
-        <InspectorForm selectedInspector={selectedItem} onCloseDrawer={handleDrawerClose} />
+        <InspectorForm
+          key={selectedInspector?.id ?? 'new'}
+          selectedInspector={selectedInspector}
+          onCloseDrawer={handleDrawerClose}
+        />
       </Drawer>
     </div>
   );

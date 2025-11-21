@@ -1,20 +1,20 @@
 import { FC, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { routes } from '../../constants/routes';
-import { AuthContext } from '../../contexts/authContext';
-import { useAppSelector } from '../../hooks/reduxHooks';
-import { useCreateInspectionMutation, useUpdateInspectionMutation } from '../../rtk/services/inspections-service';
-import { useFetchLicensePlatePatternsQuery } from '../../rtk/services/licensePlatePattern-service';
-import { CarCategories } from '../../utils/enums/CarCategories';
-import { InspectionType } from '../../utils/enums/InspectionTypes';
-import { formatInspectionDate } from '../../utils/formatInspectionDate';
-import { showToast } from '../../utils/showToast';
-import { PageContainer } from '../shared/PageContainer';
-import { Input } from '../shared/Input';
-import { CustomSelect } from '../shared/CustomSelect';
-import { Button } from '../shared/Button';
-import { PhoneNumberRoInput } from '../PhoneNumberRoInput';
+import { routes } from '../../constants/routes.ts';
+import { AuthContext } from '../../contexts/authContext.tsx';
+import { useAppSelector } from '../../hooks/reduxHooks.ts';
+import { useCreateInspectionMutation, useUpdateInspectionMutation } from '../../rtk/services/inspections-service.tsx';
+import { useFetchLicensePlatePatternsQuery } from '../../rtk/services/licensePlatePattern-service.tsx';
+import { CarCategories } from '../../utils/enums/CarCategories.ts';
+import { InspectionType } from '../../utils/enums/InspectionTypes.ts';
+import { formatInspectionDate } from '../../utils/formatInspectionDate.ts';
+import { showToast } from '../../utils/showToast.ts';
+import { PageContainer } from '../shared/PageContainer.tsx';
+import { Input } from '../shared/Input.tsx';
+import { CustomSelect } from '../shared/CustomSelect.tsx';
+import { Button } from '../shared/Button.tsx';
+import { PhoneNumberRoInput } from '../PhoneNumberRoInput.tsx';
 
 type FormData = {
   licensePlate: string;

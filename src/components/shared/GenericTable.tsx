@@ -34,6 +34,7 @@ export interface GenericTableProps<T> {
   onSearchChange?: (search: string) => void;
 
   searchPlaceholder?: string;
+  embedded?: boolean;
   showFilters?: boolean;
   toolbarActions?: ReactNode;
   showNumberColumn?: boolean;
@@ -53,6 +54,7 @@ const GenericTable = <T extends { id: string }>({
   search,
   onSearchChange,
   searchPlaceholder,
+  embedded = false,
   showFilters = false,
   toolbarActions,
   showNumberColumn = true,
@@ -135,8 +137,14 @@ const GenericTable = <T extends { id: string }>({
   const showToolbar = showFilters || onSearchChange || toolbarActions || !search;
 
   return (
-    <div className="flex flex-col h-[calc(100vh-12rem)] w-full">
-      <div className="w-full bg-card rounded-3xl flex flex-col h-full overflow-visible shadow-2xl border border-card/40">
+    <div className={embedded ? 'flex flex-col w-full h-full' : 'flex flex-col h-[calc(100vh-12rem)] w-full'}>
+      <div
+        className={
+          embedded
+            ? 'w-full flex flex-col h-full'
+            : 'w-full bg-card rounded-3xl flex flex-col h-full overflow-visible shadow-2xl border border-card/40'
+        }
+      >
         {showToolbar && (
           <div className="space-y-4 flex-shrink-0 p-4 pb-0">
             <div className="flex items-center gap-3 flex-wrap">
@@ -154,7 +162,6 @@ const GenericTable = <T extends { id: string }>({
                 </div>
               )}
 
-              {/* Search */}
               <div className="order-2 flex-1 min-w-[200px]">
                 <Input
                   id="table-search"
@@ -224,7 +231,7 @@ const GenericTable = <T extends { id: string }>({
             </div>
           </div>
 
-          <div ref={bodyRef} className="flex-1 min-h-0 overflow-y-auto w-full">
+          <div ref={bodyRef} className={embedded ? 'flex-1 min-h-0 w-full' : 'flex-1 min-h-0 overflow-y-auto w-full'}>
             <div className="hidden md:block overflow-x-auto">
               {isLoading ? (
                 <div className="py-8 text-center text-text/40 font-body">{t('table.loading')}</div>

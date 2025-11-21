@@ -18,23 +18,28 @@ export const AdministrationItem: FC<AdministrationItemProps> = ({ icon: Icon, na
   return (
     <Button
       type="button"
-      variant={isSelected ? 'primary' : 'ghost'}
-      fullWidth
+      variant="ghost"
       onClick={onSelect}
       className={clsx(
-        'group flex items-center lg:justify-start justify-center gap-3 rounded-2xl px-4 h-14 transition-all duration-200',
-        !isSelected && 'bg-transparent text-text hover:bg-primary hover:text-primary-text',
-        isSelected && 'text-primary-text'
+        'group flex items-center justify-center lg:justify-start gap-3 rounded-full lg:rounded-2xl',
+        'h-14 lg:h-14',
+        'px-1 lg:px-4',
+        'w-auto lg:w-full',
+        !isSelected && 'bg-transparent text-text',
+        isSelected && 'lg:bg-primary lg:text-primary-text'
       )}
     >
       <span
         className={clsx(
-          'inline-flex items-center justify-center rounded-full w-9 h-9 flex-shrink-0',
-          isSelected ? 'bg-primary-text/15' : 'bg-primary/5 group-hover:bg-primary/20'
+          'inline-flex items-center justify-center rounded-full w-12 h-12 flex-shrink-0',
+          isSelected ? 'bg-primary/20 lg:bg-primary-text/15' : 'bg-primary/5 group-hover:bg-primary/20'
         )}
       >
         <Icon
-          className={clsx('w-4 h-4', isSelected ? 'text-primary-text' : 'text-primary group-hover:text-primary-text')}
+          className={clsx(
+            'w-5 h-5',
+            isSelected ? 'text-primary lg:text-primary-text' : 'text-primary group-hover:text-primary-text'
+          )}
         />
       </span>
 

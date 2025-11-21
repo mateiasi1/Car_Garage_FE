@@ -480,6 +480,8 @@
       "warningBody": "Au rămas mai puțin de {{percent}}% SMS-uri pentru această stație. În curând clienții nu vor mai primi notificări despre expirarea ITP-ului.",
       "errorTitle": "Nu mai ai SMS-uri disponibile",
       "errorBody": "Clienții nu mai primesc SMS-uri de reamintire pentru expirarea ITP-ului. Te rugăm să reîncarci creditul SMS pentru această stație."
-    }
+    },
+    "searchInspectors": "Caută inspectori",
+    "failedToLoadInspectors": "Nu s-au putut încărca inspectorii"
   }
 }

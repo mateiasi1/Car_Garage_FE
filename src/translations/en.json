@@ -482,5 +482,7 @@
     "warningBody": "Less than {{percent}}% of SMS credits remain for this branch. Clients may soon stop receiving reminders about expiring inspections.",
     "errorTitle": "No SMS credits left",
     "errorBody": "Clients are no longer receiving SMS reminders about expiring inspections. Please top up the SMS credits for this branch."
-  }
+  },
+  "searchInspectors": "Search inspectors",
+  "failedToLoadInspectors": "Failed to load inspectors"
 }

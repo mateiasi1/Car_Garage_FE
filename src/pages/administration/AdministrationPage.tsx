@@ -6,15 +6,15 @@ import { PageContainer } from '../../components/shared/PageContainer';
 import { Text } from '../../components/shared/Text';
 import { AdminCard } from '../../components/shared/AdminCard';
 import { AdministrationItem, AdministrationItemProps } from '../../components/administration/AdministrationItem';
-import UserProfile from '../../components/administration/UserProfile';
+import UserProfile from '../../components/administration/profile/UserProfile';
 import InspectorsList from '../../components/administration/InspectorsList';
 import CustomersList from '../../components/administration/CustomersList';
 import CompanyDetails from '../../components/administration/CompanyDetails';
 import BranchDetails from '../../components/administration/BranchDetails';
-import AdminCompanies from '../../components/administration/AdminCompanies';
-import Packages from '../../components/administration/Packages';
-import AdminUsers from '../../components/administration/AdminUsers';
-import AdminBranches from '../../components/administration/AdminBranches';
+import AdminCompanies from '../../components/administration/admin/AdminCompanies';
+import Packages from '../../components/administration/package/Packages';
+import AdminUsers from '../../components/administration/admin/AdminUsers';
+import AdminBranches from '../../components/administration/admin/AdminBranches';
 import { AuthContext } from '../../contexts/authContext';
 import { Role as RoleModel } from '../../models/Role';
 import { Role } from '../../utils/enums/Role';
@@ -148,12 +148,12 @@ const AdministrationPage: FC = () => {
   return (
     <PageContainer className="px-4 sm:px-6 lg:px-10 py-4 sm:py-6">
       <div className="w-full max-w-6xl mx-auto h-[calc(100vh-6rem)] lg:h-[calc(100vh-8rem)] flex flex-col lg:flex-row gap-6">
-        <div className="w-full lg:w-72 xl:w-80 h-full flex">
+        <div className="w-full lg:w-72 xl:w-80 lg:h-full flex">
           <AdminCard fullHeight className="flex-1 flex flex-col overflow-hidden">
-            <Text variant="h3" className="text-primary mb-2">
+            <Text variant="h3" className="hidden lg:block text-primary mb-2">
               {t('administration')}
             </Text>
-            <nav className="mt-2 flex-1 flex flex-col gap-3 lg:gap-2 overflow-y-auto pr-1">
+            <nav className="mt-2 flex-1 flex flex-row flex-wrap justify-center items-center lg:flex-col lg:items-stretch lg:justify-start gap-3 lg:gap-2 lg:overflow-y-auto pr-1">
               {menuItems.map((item) => (
                 <AdministrationItem
                   key={item.tabKey}
