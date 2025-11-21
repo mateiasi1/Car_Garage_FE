@@ -1,27 +1,23 @@
-import {
-  faBuilding,
-  faBuildingUser,
-  faIdCard,
-  faPeopleGroup,
-  faStore,
-  faUsers,
-} from '@fortawesome/free-solid-svg-icons';
 import { FC, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import AdminCompanies from '../../components/administration/AdminCompanies';
+import { IdCard, Users, UserCog, Building2, Building, Store } from 'lucide-react';
+import { PageContainer } from '../../components/shared/PageContainer';
+import { Text } from '../../components/shared/Text';
+import { AdminCard } from '../../components/shared/AdminCard';
 import { AdministrationItem, AdministrationItemProps } from '../../components/administration/AdministrationItem';
-import CustomersList from '../../components/administration/CustomersList';
-import InspectorsList from '../../components/administration/InspectorsList';
 import UserProfile from '../../components/administration/UserProfile';
+import InspectorsList from '../../components/administration/InspectorsList';
+import CustomersList from '../../components/administration/CustomersList';
+import CompanyDetails from '../../components/administration/CompanyDetails';
+import BranchDetails from '../../components/administration/BranchDetails';
+import AdminCompanies from '../../components/administration/AdminCompanies';
+import Packages from '../../components/administration/Packages';
+import AdminUsers from '../../components/administration/AdminUsers';
+import AdminBranches from '../../components/administration/AdminBranches';
 import { AuthContext } from '../../contexts/authContext';
 import { Role as RoleModel } from '../../models/Role';
 import { Role } from '../../utils/enums/Role';
-import CompanyDetails from '../../components/administration/CompanyDetails';
-import Packages from '../../components/administration/Packages';
-import BranchDetails from '../../components/administration/BranchDetails';
-import AdminUsers from '../../components/administration/AdminUsers';
-import AdminBranches from '../../components/administration/AdminBranches';
 
 interface AdministrationSetting extends AdministrationItemProps {
   roles: Role[];
@@ -40,7 +36,7 @@ const AdministrationPage: FC = () => {
   const items: AdministrationSetting[] = useMemo(
     () => [
       {
-        icon: faIdCard,
+        icon: IdCard,
         name: 'profile',
         link: '/administration/profile',
         tabKey: 'profile',
@@ -49,7 +45,7 @@ const AdministrationPage: FC = () => {
         onSelect: () => {},
       },
       {
-        icon: faUsers,
+        icon: Users,
         name: 'inspectors',
         link: '/administration/inspectors',
         tabKey: 'inspectors',
@@ -58,7 +54,7 @@ const AdministrationPage: FC = () => {
         onSelect: () => {},
       },
       {
-        icon: faPeopleGroup,
+        icon: UserCog,
         name: 'customers',
         link: '/administration/customers',
         tabKey: 'customers',
@@ -67,7 +63,7 @@ const AdministrationPage: FC = () => {
         onSelect: () => {},
       },
       {
-        icon: faBuilding,
+        icon: Building2,
         name: 'companyData',
         link: '/administration/company-data',
         tabKey: 'company-data',
@@ -76,7 +72,7 @@ const AdministrationPage: FC = () => {
         onSelect: () => {},
       },
       {
-        icon: faBuildingUser,
+        icon: Building,
         name: 'branchData',
         link: '/administration/branch-data',
         tabKey: 'branch-data',
@@ -85,7 +81,7 @@ const AdministrationPage: FC = () => {
         onSelect: () => {},
       },
       {
-        icon: faBuilding,
+        icon: Building2,
         name: 'companies',
         link: '/administration/companies',
         tabKey: 'companies',
@@ -94,7 +90,7 @@ const AdministrationPage: FC = () => {
         onSelect: () => {},
       },
       {
-        icon: faStore,
+        icon: Store,
         name: 'packages.name',
         link: '/administration/packages',
         tabKey: 'packages',
@@ -103,7 +99,7 @@ const AdministrationPage: FC = () => {
         onSelect: () => {},
       },
       {
-        icon: faPeopleGroup,
+        icon: Users,
         name: 'companyUsers',
         link: '/administration/company-users',
         tabKey: 'company-users',
@@ -113,7 +109,7 @@ const AdministrationPage: FC = () => {
         hidden: true,
       },
       {
-        icon: faBuilding,
+        icon: Building2,
         name: 'companyBranches',
         link: '/administration/company-branches',
         tabKey: 'company-branches',
@@ -127,21 +123,15 @@ const AdministrationPage: FC = () => {
   );
 
   const filteredItems = useMemo(() => {
-    return items.filter((item) => {
-      if (!user?.roles) return false;
-      return user.roles.some((role: RoleModel) => item.roles.includes(role.name as Role));
-    });
+    if (!user?.roles) return [];
+    return items.filter((item) => user.roles.some((role: RoleModel) => item.roles.includes(role.name as Role)));
   }, [items, user?.roles]);
 
-  const menuItems = useMemo(() => {
-    return filteredItems.filter((item) => !item.hidden);
-  }, [filteredItems]);
+  const menuItems = useMemo(() => filteredItems.filter((item) => !item.hidden), [filteredItems]);
 
   useEffect(() => {
     if (menuItems.length === 0) return;
-
     const existingTab = filteredItems.find((i) => i.tabKey === tab);
-
     if (!tab || !existingTab) {
       setSelectedItem(menuItems[0]);
       navigate(`/administration/${menuItems[0].tabKey}`, { replace: true });
@@ -156,43 +146,35 @@ const AdministrationPage: FC = () => {
   };
 
   return (
-    <div className="min-h-screen w-full bg-background">
-      <div className="h-screen flex flex-col lg:flex-row lg:gap-6 lg:p-6">
-        <aside className="lg:w-64 xl:w-72 bg-card lg:rounded-xl lg:shadow-md">
-          <div className="lg:p-6">
-            <h2 className="text-xl lg:text-2xl font-heading font-bold text-text mb-4 lg:mb-6 hidden lg:block">
+    <PageContainer className="px-4 sm:px-6 lg:px-10 py-4 sm:py-6">
+      <div className="w-full max-w-6xl mx-auto h-[calc(100vh-6rem)] lg:h-[calc(100vh-8rem)] flex flex-col lg:flex-row gap-6">
+        <div className="w-full lg:w-72 xl:w-80 h-full flex">
+          <AdminCard fullHeight className="flex-1 flex flex-col overflow-hidden">
+            <Text variant="h3" className="text-primary mb-2">
               {t('administration')}
-            </h2>
+            </Text>
+            <nav className="mt-2 flex-1 flex flex-col gap-3 lg:gap-2 overflow-y-auto pr-1">
+              {menuItems.map((item) => (
+                <AdministrationItem
+                  key={item.tabKey}
+                  icon={item.icon}
+                  name={item.name}
+                  link={item.link}
+                  isSelected={selectedItem?.tabKey === item.tabKey}
+                  onSelect={() => handleSelectItem(item)}
+                />
+              ))}
+            </nav>
+          </AdminCard>
+        </div>
 
-            <div className="bg-primary/10 rounded-md lg:bg-transparent">
-              <nav
-                className="
-                                    flex lg:flex-col
-                                    gap-1 lg:gap-4
-                                    overflow-x-auto lg:overflow-x-visible
-                                    justify-center lg:justify-start
-                                    py-1"
-              >
-                {menuItems.map((item, index) => (
-                  <AdministrationItem
-                    key={index}
-                    icon={item.icon}
-                    name={item.name}
-                    link={item.link}
-                    isSelected={selectedItem?.tabKey === item.tabKey}
-                    onSelect={() => handleSelectItem(item)}
-                  />
-                ))}
-              </nav>
-            </div>
-          </div>
-        </aside>
-
-        <main className="flex-1 bg-card lg:rounded-xl lg:shadow-md overflow-hidden">
-          <div className="h-full overflow-y-auto p-4 lg:p-6">{selectedItem?.component}</div>
-        </main>
+        <div className="flex-1 h-full flex">
+          <AdminCard fullHeight className="flex-1 flex flex-col overflow-hidden">
+            <div className="flex-1 min-h-0 overflow-y-auto pr-1">{selectedItem?.component}</div>
+          </AdminCard>
+        </div>
       </div>
-    </div>
+    </PageContainer>
   );
 };
 
