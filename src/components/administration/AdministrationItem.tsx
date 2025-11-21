@@ -21,24 +21,31 @@ export const AdministrationItem: FC<AdministrationItemProps> = ({ icon: Icon, na
       variant="ghost"
       onClick={onSelect}
       className={clsx(
-        'group flex items-center justify-center lg:justify-start gap-3 rounded-full lg:rounded-2xl',
+        'group flex items-center justify-center lg:justify-start gap-3',
+        'rounded-full lg:rounded-2xl',
         'h-14 lg:h-14',
         'px-1 lg:px-4',
         'w-auto lg:w-full',
-        !isSelected && 'bg-transparent text-text',
-        isSelected && 'lg:bg-primary lg:text-primary-text'
+        'transition-colors duration-200',
+        'hover:bg-transparent hover:text-text',
+        !isSelected && 'bg-transparent text-text lg:hover:bg-primary lg:hover:text-primary-text',
+        isSelected &&
+          'bg-transparent text-text lg:bg-primary lg:text-primary-text lg:hover:bg-primary lg:hover:text-primary-text'
       )}
     >
       <span
         className={clsx(
           'inline-flex items-center justify-center rounded-full w-12 h-12 flex-shrink-0',
-          isSelected ? 'bg-primary/20 lg:bg-primary-text/15' : 'bg-primary/5 group-hover:bg-primary/20'
+          'transition-colors duration-200',
+          !isSelected && 'bg-primary/5 group-hover:bg-primary/20',
+          isSelected && 'bg-primary/10 lg:bg-primary-text/15'
         )}
       >
         <Icon
           className={clsx(
-            'w-5 h-5',
-            isSelected ? 'text-primary lg:text-primary-text' : 'text-primary group-hover:text-primary-text'
+            'w-5 h-5 transition-colors duration-200',
+            !isSelected && 'text-primary group-hover:text-primary-text',
+            isSelected && 'text-primary lg:text-primary-text'
           )}
         />
       </span>
@@ -46,7 +53,9 @@ export const AdministrationItem: FC<AdministrationItemProps> = ({ icon: Icon, na
       <span
         className={clsx(
           'hidden lg:inline truncate whitespace-nowrap text-sm font-body',
-          isSelected ? 'text-primary-text' : 'text-text group-hover:text-primary-text'
+          'transition-colors duration-200',
+          !isSelected && 'text-text group-hover:text-primary-text',
+          isSelected && 'text-primary-text'
         )}
       >
         {t(name)}
