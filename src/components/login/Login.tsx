@@ -1,6 +1,6 @@
 import { FC, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import { routes } from '../../constants/routes';
 import { AuthContext } from '../../contexts/authContext';
@@ -115,6 +115,17 @@ const Login: FC = () => {
         <Button type="submit" fullWidth variant="primary" disabled={selectBranch ? !selectedBranchId : !canSubmit}>
           {t('loginButton')}
         </Button>
+
+        {/* Terms & Conditions */}
+        <div className="mt-4 text-center text-sm text-text/70 font-body">
+          {t('login.termsInfo.prefix')}{' '}
+          <Link to="/terms" target="_blank" className="text-primary hover:text-primary-hover font-medium underline">
+            {t('login.termsInfo.link')}
+          </Link>
+        </div>
+
+        {/* Register link */}
+        <div className="mt-3 text-center text-sm text-text/70 font-body">{t('registerButton')}</div>
       </FormContainer>
     </PageContainer>
   );

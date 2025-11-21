@@ -1,4 +1,3 @@
-// src/components/ui/CustomSelect.tsx
 import { FC, useEffect, useRef, useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
@@ -20,7 +19,6 @@ export const CustomSelect: FC<CustomSelectProps> = ({ label, value, onChange, op
   const [open, setOpen] = useState(false);
   const ref = useRef<HTMLDivElement | null>(null);
 
-  // închide dropdown-ul la click în afara lui
   useEffect(() => {
     const handleClick = (e: MouseEvent) => {
       if (ref.current && !ref.current.contains(e.target as Node)) {
@@ -41,9 +39,9 @@ export const CustomSelect: FC<CustomSelectProps> = ({ label, value, onChange, op
         type="button"
         onClick={() => setOpen((prev) => !prev)}
         className="
-          w-full px-4 py-2 rounded-2xl bg-white
-          border border-gray-300
-          text-gray-900 shadow-sm
+          w-full px-4 py-2 rounded-2xl bg-card
+          border border-text/10
+          text-text shadow-sm
           font-body flex items-center justify-between
           focus:outline-none focus:ring-2 focus:ring-primary
         "
@@ -56,7 +54,7 @@ export const CustomSelect: FC<CustomSelectProps> = ({ label, value, onChange, op
         <div
           className="
             absolute left-0 right-0 mt-2
-            bg-white rounded-2xl shadow-lg border border-gray-200
+            bg-card rounded-2xl shadow-lg border border-text/10
             max-h-60 overflow-y-auto z-[999]
           "
         >
@@ -67,13 +65,13 @@ export const CustomSelect: FC<CustomSelectProps> = ({ label, value, onChange, op
               <div
                 key={opt.value}
                 onClick={() => {
-                  onChange(opt.value.toString()); // 👈 trimitem DOAR valoarea
+                  onChange(opt.value.toString());
                   setOpen(false);
                 }}
                 className={`
-                  px-4 py-2 cursor-pointer font-body text-gray-900
-                  hover:bg-gray-100 transition
-                  ${isActive ? 'bg-gray-100 font-semibold' : ''}
+                  px-4 py-2 cursor-pointer font-body text-text
+                  hover:bg-background transition
+                  ${isActive ? 'bg-background font-semibold' : ''}
                 `}
               >
                 {opt.label}

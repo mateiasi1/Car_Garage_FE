@@ -24,9 +24,9 @@ export const Input: FC<InputProps> = ({ label, type = 'text', error, fullWidth =
           {...props}
           type={actualType}
           className={clsx(
-            'w-full px-4 py-2 rounded-2xl border bg-white font-body shadow-sm',
-            'focus:outline-none focus:ring-2 focus:ring-primary',
-            error ? 'border-error focus:ring-error' : 'border-gray-300 focus:border-primary',
+            'w-full px-4 py-2 rounded-2xl border bg-card font-body shadow-sm',
+            'focus:outline-none focus:ring-2',
+            error ? 'border-error focus:ring-error' : 'border-text/10 focus:ring-primary',
             className
           )}
         />
@@ -35,7 +35,7 @@ export const Input: FC<InputProps> = ({ label, type = 'text', error, fullWidth =
           <button
             type="button"
             onClick={() => setShowPassword((v) => !v)}
-            className="absolute right-3 top-1/2 -translate-y-1/2 text-gray-500 hover:text-primary"
+            className="absolute right-3 top-1/2 -translate-y-1/2 text-text/60 hover:text-primary"
           >
             <FontAwesomeIcon icon={showPassword ? faEyeSlash : faEye} />
           </button>

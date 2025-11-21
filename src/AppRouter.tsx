@@ -1,8 +1,7 @@
-import { Route, BrowserRouter as Router, Routes } from 'react-router-dom';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 import InspectionForm from './components/inspections/InspectionForm';
 import AdministrationPage from './pages/administration/AdministrationPage';
 import InspectionsPage from './pages/inspections/InspectionsPage';
-import AppLayout from './pages/layout/AppLayout';
 import ProtectedLayout from './pages/layout/ProtectedLayout';
 import LoginPage from './pages/login/LoginPage';
 import ProtectedRoute from './ProtectedRoute';
@@ -14,35 +13,32 @@ import HomePage from './pages/home/homePage';
 import TermsPage from './pages/terms/TermsPage';
 
 const AppRouter = () => {
+  const authenticatedRoles = [Role.admin, Role.owner, Role.inspector];
+  const inspectorRoles = [Role.owner, Role.inspector];
+
   return (
     <Router>
       <Routes>
-        {/* PUBLIC ROUTES  */}
-        <Route path={routes.UNSUBSCRIBE} element={<Unsubscribe />} />
+        {/* PUBLIC ROUTES */}
         <Route path={routes.HOME} element={<HomePage />} />
         <Route path={routes.TERMS} element={<TermsPage />} />
+        <Route path={routes.UNSUBSCRIBE} element={<Unsubscribe />} />
+        <Route path={routes.LOGIN} element={<LoginPage />} />
 
-        {/* AUTHENTICATED ROUTES */}
-        <Route element={<AppLayout />}>
-          <Route path={routes.LOGIN} element={<LoginPage />} />
+        {/* AUTHENTICATED AREA WITH LAYOUT */}
+        <Route element={<ProtectedRoute element={<ProtectedLayout />} roles={authenticatedRoles} />}>
           <Route
-            element={<ProtectedRoute element={<ProtectedLayout />} roles={[Role.admin, Role.owner, Role.inspector]} />}
-          >
-            <Route
-              path={routes.INSPECTIONS}
-              element={<ProtectedRoute element={<InspectionsPage />} roles={[Role.owner, Role.inspector]} />}
-            />
-            <Route
-              path={routes.ADMINISTRATION}
-              element={
-                <ProtectedRoute element={<AdministrationPage />} roles={[Role.admin, Role.owner, Role.inspector]} />
-              }
-            />
-            <Route
-              path={routes.ADD_INSPECTION}
-              element={<ProtectedRoute element={<InspectionForm />} roles={[Role.owner, Role.inspector]} />}
-            />
-          </Route>
+            path={routes.INSPECTIONS}
+            element={<ProtectedRoute element={<InspectionsPage />} roles={inspectorRoles} />}
+          />
+          <Route
+            path={routes.ADMINISTRATION}
+            element={<ProtectedRoute element={<AdministrationPage />} roles={authenticatedRoles} />}
+          />
+          <Route
+            path={routes.ADD_INSPECTION}
+            element={<ProtectedRoute element={<InspectionForm />} roles={inspectorRoles} />}
+          />
         </Route>
 
         {/* CATCH-ALL 404 */}

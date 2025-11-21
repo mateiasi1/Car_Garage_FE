@@ -12,6 +12,7 @@ export const PageContainer: FC<PageContainerProps> = ({ children, className }) =
       className={clsx(
         'min-h-screen w-full bg-gradient-to-br from-background via-primary to-sidebar',
         'flex items-center justify-center',
+        'px-4',
         className
       )}
     >

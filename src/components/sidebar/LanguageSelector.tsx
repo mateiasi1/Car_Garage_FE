@@ -2,6 +2,7 @@ import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import flagEn from '../../assets/images/flag-en.png';
 import flagRo from '../../assets/images/flag-ro.png';
+import { Button } from '../shared/Button';
 
 const LanguageSelector = () => {
   const {
@@ -15,26 +16,19 @@ const LanguageSelector = () => {
     changeLanguage(newLanguage);
   };
 
+  const isEn = currentLanguage === 'en';
+
   return (
-    <button
+    <Button
       type="button"
       onClick={handleChangeLanguage}
-      className="
-        flex items-center justify-center gap-2
-        bg-gray-200 hover:bg-gray-300
-        rounded-md px-3 py-2
-        text-text font-body text-sm
-        shadow-sm transition
-        w-full
-      "
+      variant="secondary"
+      size="sm"
+      className="flex items-center justify-center gap-2 rounded-xl px-3 py-2 w-full"
     >
-      <img
-        src={currentLanguage === 'en' ? flagEn : flagRo}
-        alt={currentLanguage === 'en' ? 'EN' : 'RO'}
-        className="w-5 h-5"
-      />
-      <span className="font-medium">{currentLanguage === 'en' ? 'EN' : 'RO'}</span>
-    </button>
+      <img src={isEn ? flagEn : flagRo} alt={isEn ? 'EN' : 'RO'} className="w-5 h-5 rounded-sm" />
+      <span className="font-body font-medium text-sm">{isEn ? 'EN' : 'RO'}</span>
+    </Button>
   );
 };
 

@@ -3,6 +3,7 @@ export const routes = {
   LOGIN: '/login',
   INSPECTIONS: '/inspections',
   ADMINISTRATION: '/administration/:tab?',
+  ADMINISTRATION_SHORT: '/administration',
   ADD_INSPECTION: '/add-inspection',
   UNSUBSCRIBE: '/unsubscribe',
   TERMS: '/terms',

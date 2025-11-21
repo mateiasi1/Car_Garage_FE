@@ -1,38 +1,42 @@
-import { faClipboardList, faGear, faPowerOff } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { FC, useContext } from 'react';
-import { AuthContext } from '../../contexts/authContext';
-import { Role as RoleModel } from '../../models/Role';
-import { Role } from '../../utils/enums/Role';
+import { FC, useState } from 'react';
+import { ClipboardList, Settings, Power, Menu } from 'lucide-react';
+import { Role as RoleEnum } from '../../utils/enums/Role';
 import SidebarNav, { NavItem } from './SidebarNav';
 import LanguageSelector from './LanguageSelector';
 import { routes } from '../../constants/routes';
+import { IconButton } from '../shared/IconButton';
+import { useAuth } from '../../hooks/useAuth';
+import { useUserRoles } from '../../hooks/useUserRoles';
+import { useMediaQuery } from '../../hooks/useMediaQuery';
 
 const navItems: NavItem[] = [
   {
     to: routes.INSPECTIONS,
-    icon: faClipboardList,
+    icon: ClipboardList,
     labelKey: 'inspections',
-    roles: [Role.inspector, Role.owner],
+    roles: [RoleEnum.inspector, RoleEnum.owner],
   },
   {
-    to: '/administration',
-    icon: faGear,
+    to: routes.ADMINISTRATION,
+    icon: Settings,
     labelKey: 'administration',
-    roles: [Role.admin, Role.owner, Role.inspector],
+    roles: [RoleEnum.admin, RoleEnum.owner, RoleEnum.inspector],
   },
 ];
 
 const Sidebar: FC = () => {
-  const { user, logout } = useContext(AuthContext);
-  const userRoles = user?.roles?.map((r: RoleModel) => r.name) || [];
+  const { user, logout } = useAuth();
+  const { roles: userRoles } = useUserRoles();
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const isCompactMobile = useMediaQuery('(max-width: 450px)');
 
   const initials = `${user?.firstName?.charAt(0) ?? ''}${user?.lastName?.charAt(0) ?? ''}`.toUpperCase() || '??';
 
   return (
     <>
-      <div className="hidden md:flex fixed top-0 left-0 h-screen w-16 flex-col items-center bg-primary text-white py-4 z-20">
-        <div className="w-10 h-10 rounded-full bg-white text-primary flex items-center justify-center font-bold text-lg">
+      <div className="hidden md:flex fixed top-0 left-0 h-screen w-16 flex-col items-center bg-primary text-primary-text py-4 z-20 shadow-2xl shadow-black/20">
+        <div className="w-10 h-10 rounded-full bg-card text-primary flex items-center justify-center font-bold text-lg shadow-md">
           {initials}
         </div>
 
@@ -42,18 +46,16 @@ const Sidebar: FC = () => {
 
         <SidebarNav navItems={navItems} userRoles={userRoles} variant="vertical" />
 
-        <button
-          onClick={logout}
-          className="mt-auto mb-3 w-10 h-10 rounded-full flex items-center justify-center text-red-300 hover:text-red-500"
-          aria-label="Logout"
-        >
-          <FontAwesomeIcon icon={faPowerOff} className="text-xl" />
-        </button>
+        <div className="mt-auto mb-3">
+          <IconButton onClick={logout} aria-label="Logout" variant="dangerGhost" size="md">
+            <Power className="w-5 h-5" />
+          </IconButton>
+        </div>
       </div>
 
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-primary text-white flex items-center px-4 py-3 z-50">
-        <div className="flex items-center gap-4">
-          <div className="w-8 h-8 rounded-full bg-white text-primary flex items-center justify-center font-bold text-sm">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-primary text-primary-text flex items-center px-4 py-3 z-50 shadow-2xl shadow-black/25">
+        <div className="flex items-center gap-3">
+          <div className="w-8 h-8 rounded-full bg-card text-primary flex items-center justify-center font-bold text-sm shadow-md">
             {initials}
           </div>
           <div className="scale-90">
@@ -61,17 +63,50 @@ const Sidebar: FC = () => {
           </div>
         </div>
 
-        <div className="absolute left-1/2 -translate-x-1/2 flex gap-8">
-          <SidebarNav navItems={navItems} userRoles={userRoles} variant="bottom" />
-        </div>
+        {!isCompactMobile && (
+          <>
+            <div className="absolute left-1/2 -translate-x-1/2">
+              <SidebarNav navItems={navItems} userRoles={userRoles} variant="bottom" colorMode="onPrimary" />
+            </div>
 
-        <button
-          onClick={logout}
-          className="ml-auto w-8 h-8 rounded-full flex items-center justify-center text-red-300 hover:text-red-500"
-          aria-label="Logout"
-        >
-          <FontAwesomeIcon icon={faPowerOff} className="text-lg" />
-        </button>
+            <div className="ml-auto">
+              <IconButton onClick={logout} aria-label="Logout" variant="dangerGhost" size="sm">
+                <Power className="w-4 h-4" />
+              </IconButton>
+            </div>
+          </>
+        )}
+
+        {isCompactMobile && (
+          <div className="ml-auto relative">
+            <IconButton
+              onClick={() => setMenuOpen((open) => !open)}
+              aria-label="Open navigation menu"
+              variant="ghost"
+              size="sm"
+            >
+              <Menu className="w-4 h-4" />
+            </IconButton>
+
+            {menuOpen && (
+              <div className="absolute bottom-12 right-0 z-50">
+                <div className="bg-card text-text rounded-2xl shadow-2xl px-4 py-3 flex items-center gap-4 border border-card/40">
+                  <SidebarNav navItems={navItems} userRoles={userRoles} variant="bottom" colorMode="onCard" />
+
+                  <IconButton
+                    onClick={logout}
+                    aria-label="Logout"
+                    variant="dangerGhost"
+                    size="sm"
+                    className="flex-shrink-0"
+                  >
+                    <Power className="w-4 h-4" />
+                  </IconButton>
+                </div>
+              </div>
+            )}
+          </div>
+        )}
       </div>
     </>
   );
