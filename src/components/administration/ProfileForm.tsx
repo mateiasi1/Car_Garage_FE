@@ -56,12 +56,7 @@ export const ProfileForm: FC = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         <div className="col-span-full">
           <label className="block font-semibold mb-1">{t('username')}</label>
-          <input
-              type="text"
-              name="username"
-              value={form.username}
-              disabled
-              className={inputBaseClass} />
+          <input type="text" name="username" value={form.username} disabled className={inputBaseClass} />
         </div>
 
         <div>

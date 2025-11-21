@@ -11,7 +11,7 @@ import { PrimaryButton } from '../shared/PrimaryButton';
 import { DangerButton } from '../shared/DangerButton';
 import ConfirmationModal from '../shared/ConfirmationModal';
 import { Error } from '../../interfaces/error';
-import {PhoneNumberRoInput} from "../PhoneNumberRoInput";
+import { PhoneNumberRoInput } from '../PhoneNumberRoInput';
 
 interface CustomerFormProps {
   selectedCustomer: Partial<CustomerFormState> | null;
@@ -139,10 +139,10 @@ const CustomerForm: FC<CustomerFormProps> = ({ selectedCustomer, onCloseDrawer }
           </div>
           <div className="col-span-full">
             <label className="block font-semibold mb-1">{t('phoneNumber')}</label>
-              <PhoneNumberRoInput
-                  value={form.phoneNumber}
-                  onChange={(val) => setForm((prev) => ({ ...prev, phoneNumber: val }))}
-              />
+            <PhoneNumberRoInput
+              value={form.phoneNumber}
+              onChange={(val) => setForm((prev) => ({ ...prev, phoneNumber: val }))}
+            />
           </div>
         </div>
 

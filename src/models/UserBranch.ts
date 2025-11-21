@@ -1,4 +1,4 @@
 export interface UserBranch {
-    id: string;
-    name: string;
+  id: string;
+  name: string;
 }

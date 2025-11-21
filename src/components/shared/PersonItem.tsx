@@ -14,11 +14,7 @@ export interface PersonItemProps<T extends PersonItemBase> {
   onClick?: (item: T) => void;
 }
 
-export const PersonItem = <T extends PersonItemBase>({
-  item,
-  onClick,
-  isLast,
-}: PersonItemProps<T>) => {
+export const PersonItem = <T extends PersonItemBase>({ item, onClick, isLast }: PersonItemProps<T>) => {
   const { firstName, lastName, email, phoneNumber } = item;
 
   return (

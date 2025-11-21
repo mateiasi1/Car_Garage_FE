@@ -8,52 +8,51 @@ import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faTriangleExclamation, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
 
 const PageMessage: FC = () => {
-    const { t } = useTranslation();
-    const { isAuthenticated, user } = useContext(AuthContext);
+  const { t } = useTranslation();
+  const { isAuthenticated, user } = useContext(AuthContext);
 
-    const userRoles = user?.roles?.map((r) => r.name as Role) ?? [];
-    const isAdmin = userRoles.includes(Role.admin);
-    const isOwnerOrInspector =
-        userRoles.includes(Role.owner) || userRoles.includes(Role.inspector);
+  const userRoles = user?.roles?.map((r) => r.name as Role) ?? [];
+  const isAdmin = userRoles.includes(Role.admin);
+  const isOwnerOrInspector = userRoles.includes(Role.owner) || userRoles.includes(Role.inspector);
 
-    const { data, isLoading, isError } = useGetBranchSmsUsageQuery(undefined, {
-        skip: !isOwnerOrInspector || !isAuthenticated,
-        pollingInterval: 30 * 60 * 1000,
-        refetchOnMountOrArgChange: true,
-    });
+  const { data, isLoading, isError } = useGetBranchSmsUsageQuery(undefined, {
+    skip: !isOwnerOrInspector || !isAuthenticated,
+    pollingInterval: 30 * 60 * 1000,
+    refetchOnMountOrArgChange: true,
+  });
 
-    if (!isAuthenticated || isAdmin || !isOwnerOrInspector) return null;
-    if (isLoading || isError || !data) return null;
+  if (!isAuthenticated || isAdmin || !isOwnerOrInspector) return null;
+  if (isLoading || isError || !data) return null;
 
-    const { remainingPercent, status } = data;
-    if (status === 'ok') return null;
+  const { remainingPercent, status } = data;
+  if (status === 'ok') return null;
 
-    const isErrorState = status === 'empty';
+  const isErrorState = status === 'empty';
 
-    const bgColor = isErrorState ? 'bg-error text-primary-text' : 'bg-warning text-text';
-    const icon = isErrorState ? faCircleXmark : faTriangleExclamation;
+  const bgColor = isErrorState ? 'bg-error text-primary-text' : 'bg-warning text-text';
+  const icon = isErrorState ? faCircleXmark : faTriangleExclamation;
 
-    return (
-        <>
-            <div className="fixed top-0 right-0 left-0 md:left-16 z-[9999]">
-                <div className={`${bgColor} w-full py-1 px-2 flex items-center gap-3 shadow-lg`}>
-                    <FontAwesomeIcon icon={icon} className="h-6 w-6" />
+  return (
+    <>
+      <div className="fixed top-0 right-0 left-0 md:left-16 z-[9999]">
+        <div className={`${bgColor} w-full py-1 px-2 flex items-center gap-3 shadow-lg`}>
+          <FontAwesomeIcon icon={icon} className="h-6 w-6" />
 
-                    <div>
-                        <div className="font-heading font-semibold">
-                            {isErrorState ? t('smsBanner.errorTitle') : t('smsBanner.warningTitle')}
-                        </div>
-                        <div className="text-sm opacity-90">
-                            {isErrorState
-                                ? t('smsBanner.errorBody')
-                                : t('smsBanner.warningBody', { percent: Math.round(remainingPercent) })}
-                        </div>
-                    </div>
-                </div>
+          <div>
+            <div className="font-heading font-semibold">
+              {isErrorState ? t('smsBanner.errorTitle') : t('smsBanner.warningTitle')}
             </div>
-            <div className="h-24 sm:h-20 md:h-16" />
-        </>
-    );
+            <div className="text-sm opacity-90">
+              {isErrorState
+                ? t('smsBanner.errorBody')
+                : t('smsBanner.warningBody', { percent: Math.round(remainingPercent) })}
+            </div>
+          </div>
+        </div>
+      </div>
+      <div className="h-24 sm:h-20 md:h-16" />
+    </>
+  );
 };
 
 export default PageMessage;

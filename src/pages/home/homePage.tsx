@@ -1,9 +1,7 @@
-import About from "../../components/home/about";
+import About from '../../components/home/about';
 
 const HomePage = () => {
-  return (
-      <About />
-  );
+  return <About />;
 };
 
 export default HomePage;

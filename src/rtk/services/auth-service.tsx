@@ -1,51 +1,51 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import config from '../../config';
-import {baseQueryWithReAuth} from "../baseQuery";
+import { baseQueryWithReAuth } from '../baseQuery';
 
 export interface LoginPayload {
-    username: string;
-    password: string;
-    branchId?: string;
+  username: string;
+  password: string;
+  branchId?: string;
 }
 
 export interface LoginResponse {
-    accessToken?: string;
-    selectBranch?: boolean;
-    branches?: { id: string; name: string }[];
+  accessToken?: string;
+  selectBranch?: boolean;
+  branches?: { id: string; name: string }[];
 }
 
 export interface RefreshTokenResponse {
-    accessToken: string;
+  accessToken: string;
 }
 
 export const authApi = createApi({
-    reducerPath: 'authApi',
-    baseQuery: baseQueryWithReAuth,
-    endpoints: (builder) => ({
-        login: builder.mutation<LoginResponse, LoginPayload>({
-            query: (credentials) => ({
-                url: config.loginUrl,
-                method: 'POST',
-                body: credentials,
-            }),
-        }),
-
-        refreshToken: builder.mutation<RefreshTokenResponse, void>({
-            query: () => ({
-                url: '/auth/refresh',
-                method: 'POST',
-                body: {},
-            }),
-        }),
-
-        logout: builder.mutation<{ message: string }, void>({
-            query: () => ({
-                url: '/auth/logout',
-                method: 'POST',
-                body: {},
-            }),
-        }),
+  reducerPath: 'authApi',
+  baseQuery: baseQueryWithReAuth,
+  endpoints: (builder) => ({
+    login: builder.mutation<LoginResponse, LoginPayload>({
+      query: (credentials) => ({
+        url: config.loginUrl,
+        method: 'POST',
+        body: credentials,
+      }),
     }),
+
+    refreshToken: builder.mutation<RefreshTokenResponse, void>({
+      query: () => ({
+        url: '/auth/refresh',
+        method: 'POST',
+        body: {},
+      }),
+    }),
+
+    logout: builder.mutation<{ message: string }, void>({
+      query: () => ({
+        url: '/auth/logout',
+        method: 'POST',
+        body: {},
+      }),
+    }),
+  }),
 });
 
 export const { useLoginMutation, useRefreshTokenMutation, useLogoutMutation } = authApi;

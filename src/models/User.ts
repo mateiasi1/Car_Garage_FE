@@ -1,6 +1,6 @@
 import { Role } from './Role';
 import { UserCompany } from './UserCompany';
-import { UserBranch } from "./UserBranch";
+import { UserBranch } from './UserBranch';
 
 export interface User {
   id: string;

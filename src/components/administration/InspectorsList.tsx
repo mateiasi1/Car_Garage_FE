@@ -5,7 +5,7 @@ import { PersonItemBase } from '../shared/PersonItem';
 import { PersonList } from '../shared/PersonList';
 import { useTranslation } from 'react-i18next';
 import InspectorForm from '../forms/InspectorForm';
-import {UserBranch} from "../../models/UserBranch";
+import { UserBranch } from '../../models/UserBranch';
 
 interface InspectorListItem extends PersonItemBase {
   id: string;
@@ -65,7 +65,7 @@ const InspectorsList: FC = () => {
         }}
         title={selectedItem ? t('editInspector') : t('addInspector')}
       >
-        <InspectorForm selectedInspector={selectedItem} onCloseDrawer={handleDrawerClose}  />
+        <InspectorForm selectedInspector={selectedItem} onCloseDrawer={handleDrawerClose} />
       </Drawer>
     </div>
   );
