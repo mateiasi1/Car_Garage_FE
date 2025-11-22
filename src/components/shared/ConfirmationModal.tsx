@@ -1,6 +1,7 @@
 import { FC } from 'react';
 import { createPortal } from 'react-dom';
 import { useTranslation } from 'react-i18next';
+import { Button } from './Button';
 
 interface ConfirmationModalProps {
   open: boolean;
@@ -16,23 +17,17 @@ const ConfirmationModal: FC<ConfirmationModalProps> = ({ open, title, message, o
   if (!open) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/50">
-      <div className="bg-white rounded-xl shadow-xl max-w-md w-full mx-4 p-6">
-        <h2 className="text-lg font-semibold mb-2">{title}</h2>
-        <p className="text-sm text-gray-700 mb-6">{message}</p>
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-text/40 backdrop-blur-sm">
+      <div className="bg-card rounded-3xl shadow-2xl max-w-md w-full mx-4 p-6 border border-card/40">
+        <h2 className="text-lg font-heading font-semibold mb-2 text-text">{title}</h2>
+        <p className="text-sm font-body text-text/80 mb-6">{message}</p>
         <div className="flex justify-end gap-3">
-          <button
-            onClick={onCancel}
-            className="px-4 py-2 rounded-md text-sm font-medium border border-gray-300 hover:bg-gray-100 transition"
-          >
+          <Button type="button" variant="secondary" size="sm" onClick={onCancel}>
             {t('cancel')}
-          </button>
-          <button
-            onClick={onConfirm}
-            className="px-4 py-2 rounded-md text-sm font-medium bg-red-600 text-white hover:bg-red-700 transition"
-          >
+          </Button>
+          <Button type="button" variant="danger" size="sm" onClick={onConfirm}>
             {t('confirm')}
-          </button>
+          </Button>
         </div>
       </div>
     </div>,

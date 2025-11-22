@@ -1,9 +1,9 @@
 export interface UnsubscribeRequest {
-    token: string;
+  token: string;
 }
 
 export interface UnsubscribeResponse {
-    success: boolean;
-    message: string;
-    alreadyUnsubscribed: boolean;
+  success: boolean;
+  message: string;
+  alreadyUnsubscribed: boolean;
 }

@@ -1,63 +1,66 @@
-import { faXmark } from '@fortawesome/free-solid-svg-icons';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { FC, ReactNode, useEffect } from 'react';
+import { X } from 'lucide-react';
+import { IconButton } from './IconButton';
+import { CustomText } from './CustomText';
 
 interface DrawerProps {
-    isOpen: boolean;
-    onClose: () => void;
-    title?: string;
-    children: ReactNode;
+  isOpen: boolean;
+  onClose: () => void;
+  title?: string;
+  children: ReactNode;
 }
 
 const Drawer: FC<DrawerProps> = ({ isOpen, onClose, title, children }) => {
-    useEffect(() => {
-        const handleKeyDown = (e: KeyboardEvent) => {
-            if (e.key === 'Escape') onClose();
-        };
+  useEffect(() => {
+    const handleKeyDown = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') onClose();
+    };
 
-        if (isOpen) window.addEventListener('keydown', handleKeyDown);
-        return () => window.removeEventListener('keydown', handleKeyDown);
-    }, [isOpen, onClose]);
+    if (isOpen) window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [isOpen, onClose]);
 
-    return (
-        <div
-            className={`
-        fixed inset-0 z-50 transition-opacity duration-300
-        ${isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'}
-      `}
-        >
-            {/* Overlay */}
-            <div className="absolute inset-0 bg-black bg-opacity-40" onClick={onClose} />
+  return (
+    <div
+      className={`fixed inset-0 z-50 transition-opacity duration-300 ${
+        isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
+      }`}
+    >
+      <div className="absolute inset-0 bg-text/40 backdrop-blur-sm" onClick={onClose} />
 
-            {/* Drawer – un singur element, responsive */}
-            <div
-                className={`
-          fixed bg-white shadow-xl flex flex-col
-          transition-transform duration-300
-
-          /* Mobile: bottom sheet */
-          bottom-0 left-0 right-0 h-[80%] rounded-t-xl
-
-          /* Desktop: right drawer */
+      <div
+        className={`
+          fixed bg-card text-text border border-card/40 shadow-2xl flex flex-col
+          bottom-0 left-0 right-0 h-[80%] rounded-t-3xl
           md:top-0 md:bottom-0 md:right-0 md:left-auto
           md:h-full md:w-[35%] md:max-w-lg
-          md:rounded-tl-xl md:rounded-bl-xl md:rounded-tr-none md:rounded-br-none
-
-          /* Animations */
+          md:rounded-tl-3xl md:rounded-bl-3xl md:rounded-tr-none md:rounded-br-none
+          transition-transform duration-300
           ${isOpen ? 'translate-y-0 md:translate-x-0' : 'translate-y-full md:translate-x-full'}
         `}
-            >
-                <div className="flex items-center justify-between p-4 border-b">
-                    <h2 className="text-xl font-heading">{title}</h2>
-                    <button className="text-gray-700 hover:text-gray-900" onClick={onClose}>
-                        <FontAwesomeIcon icon={faXmark} size="lg" />
-                    </button>
-                </div>
-
-                <div className="p-4 overflow-y-auto flex-1">{children}</div>
-            </div>
+      >
+        <div className="flex items-center justify-between px-5 py-4 border-b border-card/40">
+          {title && (
+            <CustomText variant="h3" className="m-0">
+              {title}
+            </CustomText>
+          )}
+          <IconButton
+            type="button"
+            variant="ghost"
+            size="sm"
+            onClick={onClose}
+            className="text-text/70 hover:text-text"
+            aria-label="Close"
+          >
+            <X className="w-5 h-5" />
+          </IconButton>
         </div>
-    );
+
+        <div className="p-5 overflow-y-auto flex-1">{children}</div>
+      </div>
+    </div>
+  );
 };
 
 export default Drawer;

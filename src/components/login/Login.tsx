@@ -1,171 +1,217 @@
-// src/components/login/Login.tsx
-import React, { FC, useContext, useEffect, useState } from 'react';
+import { FC, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { useNavigate, Link } from 'react-router-dom';
-import wallpaper from '../../assets/login_wallpaper.jpg';
-import logo from '../../assets/logo.png';
+import { Link, useNavigate } from 'react-router-dom';
 import { routes } from '../../constants/routes';
 import { AuthContext } from '../../contexts/authContext';
-import { Credentials } from '../../models/Credentials';
-import { useLoginMutation } from '../../rtk/services/auth-service';
+import { useLoginMutation, LoginResponse } from '../../rtk/services/auth-service';
 import { showToast } from '../../utils/showToast';
+import { Button } from '../shared/Button';
+import { CustomInput } from '../shared/CustomInput';
+import { CustomSelect } from '../shared/CustomSelect';
+import { PageContainer } from '../shared/PageContainer';
+import { FormContainer } from '../shared/FormContainer';
+import { useForm } from '../../hooks/useForm';
+import LoginBranchForm from './LoginBranchForm';
+import { Logo } from '../shared/Logo';
+
+interface LoginFormValues {
+  username: string;
+  password: string;
+}
+
+interface BranchOption {
+  id: string;
+  name: string;
+}
 
 const Login: FC = () => {
-    const { t } = useTranslation();
-    const navigate = useNavigate();
-    const { login, isAuthenticated, user } = useContext(AuthContext);
-    const [loginMutation] = useLoginMutation();
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+  const { login, isAuthenticated, user } = useContext(AuthContext);
+  const [loginMutation] = useLoginMutation();
 
-    const [credentials, setCredentials] = useState<Credentials>({ username: '', password: '' });
+  const [selectBranch, setSelectBranch] = useState(false);
+  const [branches, setBranches] = useState<BranchOption[]>([]);
+  const [selectedBranchId, setSelectedBranchId] = useState<string>('');
+  const [canAddBranch, setCanAddBranch] = useState(false);
 
-    const [selectBranch, setSelectBranch] = useState(false);
-    const [branches, setBranches] = useState<{ id: string; name: string }[]>([]);
-    const [selectedBranchId, setSelectedBranchId] = useState<string>('');
+  const { values, errors, canSubmit, handleSubmit, register } = useForm<LoginFormValues>({
+    initialValues: { username: '', password: '' },
+    fields: {
+      username: { required: true },
+      password: { required: true },
+    },
+    onSubmit: async (formValues) => {
+      const payload = selectBranch && selectedBranchId ? { ...formValues, branchId: selectedBranchId } : formValues;
 
-    useEffect(() => {
-        if (!isAuthenticated || !user) return;
+      try {
+        const data: LoginResponse = await loginMutation(payload).unwrap();
 
-        const isAdmin = user.roles?.some((r) => r.name === 'ADMIN');
-        navigate(isAdmin ? routes.ADMINISTRATION : routes.INSPECTIONS);
-    }, [isAuthenticated, user, navigate]);
+        if (data.selectBranch) {
+          setSelectBranch(true);
 
-    useEffect(() => {
-        if (selectBranch && branches.length > 0 && !selectedBranchId) {
-            setSelectedBranchId(branches[0].id);
+          setBranches(
+            (data.branches ?? []).map((b) => ({
+              id: b.id,
+              name: b.name,
+            }))
+          );
+
+          setCanAddBranch(Boolean(data.canAddBranch));
+
+          if (data.branches && data.branches.length > 0 && !selectedBranchId) {
+            setSelectedBranchId(data.branches[0].id);
+          }
+
+          return;
         }
-    }, [selectBranch, branches, selectedBranchId]);
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const { id, value } = e.target;
-        setCredentials((prevState) => ({ ...prevState, [id]: value }));
-    };
-
-    const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-        e.preventDefault();
-
-        if (!credentials.username || !credentials.password) return;
-
-        try {
-            const payload =
-                selectBranch && selectedBranchId
-                    ? {
-                        ...credentials,
-                        branchId: selectedBranchId,
-                    }
-                    : {
-                        ...credentials,
-                    };
-
-            const data = await loginMutation(payload).unwrap();
-
-            if (data.selectBranch && data.branches) {
-                setSelectBranch(true);
-                setBranches(data.branches);
-                return;
-            }
-
-            if (data.accessToken) {
-                login({ accessToken: data.accessToken });
-            } else {
-                showToast(t('wrongCredentials'), 'error');
-            }
-        } catch (error) {
-            showToast(t('wrongCredentials'), 'error');
+        if (data.accessToken) {
+          login({ accessToken: data.accessToken });
+        } else {
+          showToast(t('wrongCredentials'), 'error');
         }
-    };
+      } catch {
+        showToast(t('wrongCredentials'), 'error');
+      }
+    },
+  });
 
-    return (
-        <div className="flex h-screen w-screen">
-            <div className="w-full md:w-2/5 flex items-center justify-center bg-card">
-                <form onSubmit={handleSubmit} className="w-full max-w-sm bg-card px-8 pt-8 pb-8">
-                    <div
-                        className="flex items-center justify-center mb-8 cursor-pointer"
-                        onClick={() => navigate(routes.HOME)}
-                    >
-                        <img src={logo} alt="RoadReady Logo" className="h-14 w-14 mr-3" />
-                        <span className="text-2xl font-bold font-heading text-primary">RoadReady</span>
-                    </div>
+  const onSubmit = handleSubmit();
 
-                    {!selectBranch ? (
-                        <>
-                            <div className="mb-4">
-                                <label htmlFor="username" className="block text-text text-sm font-bold font-body mb-2">
-                                    {t('usernameTitle')}
-                                </label>
-                                <input
-                                    id="username"
-                                    value={credentials.username}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary font-body"
-                                />
-                            </div>
+  useEffect(() => {
+    if (!isAuthenticated || !user) return;
 
-                            <div className="mb-6">
-                                <label htmlFor="password" className="block text-text text-sm font-bold font-body mb-2">
-                                    {t('passwordTitle')}
-                                </label>
-                                <input
-                                    type="password"
-                                    id="password"
-                                    value={credentials.password}
-                                    onChange={handleChange}
-                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary font-body"
-                                />
-                            </div>
-                        </>
-                    ) : (
-                        <>
-                            <div className="mb-6">
-                                <label htmlFor="branch" className="block text-text text-sm font-bold font-body mb-2">
-                                    {t('selectBranch')}
-                                </label>
-                                <select
-                                    id="branch"
-                                    value={selectedBranchId}
-                                    onChange={(e) => setSelectedBranchId(e.target.value)}
-                                    className="w-full px-4 py-2 rounded-lg border border-gray-300 bg-gray-50 text-gray-900 shadow-sm focus:outline-none focus:ring-2 focus:ring-primary font-body"
-                                >
-                                    {branches.map((branch) => (
-                                        <option key={branch.id} value={branch.id}>
-                                            {branch.name}
-                                        </option>
-                                    ))}
-                                </select>
-                            </div>
-                        </>
-                    )}
+    const isAdmin = user.roles?.some((r) => r.name === 'ADMIN');
+    navigate(isAdmin ? routes.ADMINISTRATION : routes.INSPECTIONS);
+  }, [isAuthenticated, user, navigate]);
 
-                    <button
-                        type="submit"
-                        disabled={selectBranch && !selectedBranchId}
-                        className={`w-full py-2 px-4 rounded font-bold font-heading text-primary-text bg-primary hover:bg-primary-hover cursor-pointer transition-colors ${
-                            selectBranch && !selectedBranchId ? 'opacity-50 cursor-not-allowed bg-primary-disabled' : ''
-                        }`}
-                    >
-                        {t('loginButton')}
-                    </button>
+  useEffect(() => {
+    if (selectBranch && branches.length > 0 && !selectedBranchId) {
+      setSelectedBranchId(branches[0].id);
+    }
+  }, [selectBranch, branches, selectedBranchId]);
 
-                    <div className="mt-4 text-center text-sm text-gray-600 font-body">
-                        {t('login.termsInfo.prefix')}{' '}
-                        <Link
-                            to="/terms"
-                            target="_blank"
-                            className="text-primary hover:text-primary-hover font-medium underline"
-                        >
-                            {t('login.termsInfo.link')}
-                        </Link>
-                    </div>
-                    <div className="mt-4 text-center text-sm text-gray-600 font-body">
-                        {t('registerButton')}{' '}
-                    </div>
-                </form>
+  const noBranches = selectBranch && branches.length === 0;
+  const showCreateBranch = noBranches && canAddBranch;
+  const showNoBranchError = noBranches && !canAddBranch;
+
+  const handleBranchCreated = async (branchId: string) => {
+    setSelectedBranchId(branchId);
+    setBranches([{ id: branchId, name: t('branch.newBranchDefaultName') }]);
+
+    try {
+      const data: LoginResponse = await loginMutation({
+        username: values.username,
+        password: values.password,
+        branchId,
+      }).unwrap();
+
+      if (data.accessToken) {
+        login({ accessToken: data.accessToken });
+      } else if (data.selectBranch && data.branches && data.branches.length > 0) {
+        setSelectBranch(true);
+        setBranches(
+          data.branches.map((b) => ({
+            id: b.id,
+            name: b.name,
+          }))
+        );
+        setCanAddBranch(Boolean(data.canAddBranch));
+      } else {
+        showToast(t('wrongCredentials'), 'error');
+      }
+    } catch {
+      showToast(t('wrongCredentials'), 'error');
+    }
+  };
+
+  const isCreateBranchView = showCreateBranch;
+  const shouldHandleLoginSubmit = !isCreateBranchView && (!selectBranch || branches.length > 0);
+
+  return (
+    <PageContainer>
+      <FormContainer onSubmit={shouldHandleLoginSubmit ? onSubmit : undefined} noValidate>
+        <div className="h-[490px] flex flex-col">
+          <Logo />
+
+          {!isCreateBranchView ? (
+            <>
+              <div className="flex-1 min-h-0 space-y-6 pb-4">
+                {!selectBranch && (
+                  <>
+                    <CustomInput
+                      label={`${t('usernameTitle')} *`}
+                      {...register('username')}
+                      error={errors.username && t(errors.username)}
+                      placeholder="john@example.com"
+                      autoComplete="username"
+                    />
+
+                    <CustomInput
+                      label={`${t('passwordTitle')} *`}
+                      type="password"
+                      {...register('password')}
+                      error={errors.password && t(errors.password)}
+                      placeholder="•••••••"
+                      autoComplete="current-password"
+                    />
+                  </>
+                )}
+
+                {selectBranch && branches.length > 0 && (
+                  <CustomSelect
+                    label={t('branch.selectBranch')}
+                    value={selectedBranchId}
+                    onChange={(val) => setSelectedBranchId(val)}
+                    options={branches.map((branch) => ({
+                      value: branch.id,
+                      label: branch.name,
+                    }))}
+                  />
+                )}
+
+                {showNoBranchError && (
+                  <p className="mt-4 text-sm font-body text-error text-center">
+                    {t('branch.noBranchesForLoginNoPermission')}
+                  </p>
+                )}
+              </div>
+
+              <div className="mt-4 space-y-4">
+                <Button
+                  type="submit"
+                  fullWidth
+                  variant="primary"
+                  disabled={selectBranch ? !selectedBranchId : !canSubmit}
+                >
+                  {t('loginButton')}
+                </Button>
+
+                <div className="mt-2 text-center text-sm text-text/70 font-body">
+                  {t('login.termsInfo.prefix')}{' '}
+                  <Link
+                    to="/terms"
+                    target="_blank"
+                    className="text-primary hover:text-primary-hover font-medium underline"
+                  >
+                    {t('login.termsInfo.link')}
+                  </Link>
+                </div>
+
+                <div className="mt-1 text-center text-sm text-text/70 font-body">{t('registerButton')}</div>
+              </div>
+            </>
+          ) : (
+            <div className="flex-1 min-h-0 overflow-y-auto space-y-4 pb-4">
+              <p className="text-sm font-body text-text/80">{t('branch.noBranchesForLoginCanCreate')}</p>
+              <LoginBranchForm onBranchCreated={handleBranchCreated} />
             </div>
-
-            <div className="hidden md:flex md:w-3/5 items-center justify-center bg-[#7FADF1]">
-                <img src={wallpaper} alt="Login Wallpaper" className="max-h-[80%] max-w-[80%] object-contain" />
-            </div>
+          )}
         </div>
-    );
+      </FormContainer>
+    </PageContainer>
+  );
 };
 
 export default Login;

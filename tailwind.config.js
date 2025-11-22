@@ -16,13 +16,22 @@ export default {
           disabled: '#A1A7BA',
           text: '#FFFFFF',
         },
-        error: '#B84A67',
+        error: '#E02424',
         success: '#4B9E75',
         warning: '#FFC107',
       },
       fontFamily: {
         heading: ['Poppins', 'sans-serif'],
         body: ['Inter', 'sans-serif'],
+      },
+      keyframes: {
+        float: {
+          '0%, 100%': { transform: 'translateY(0)' },
+          '50%': { transform: 'translateY(-10px)' },
+        },
+      },
+      animation: {
+        float: 'float 4s ease-in-out infinite',
       },
     },
   },

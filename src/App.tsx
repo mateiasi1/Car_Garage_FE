@@ -2,6 +2,7 @@ import { ToastContainer } from 'react-toastify';
 import 'react-toastify/dist/ReactToastify.css';
 import AppRouter from './AppRouter';
 import { AuthProvider } from './contexts/authContext';
+import PageMessage from './components/shared/PageMessage';
 
 function App() {
   return (
@@ -18,6 +19,7 @@ function App() {
         pauseOnHover
         theme="light"
       />
+      <PageMessage />
       <AppRouter />
     </AuthProvider>
   );

@@ -1,1 +1,1 @@
-export const brandName = 'RoadReady';
+export const brandName = 'ByteDracula';

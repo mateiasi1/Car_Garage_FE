@@ -1,21 +1,17 @@
-// src/pages/layout/ProtectedLayout.tsx
-import { useState } from 'react';
 import { Outlet } from 'react-router-dom';
-import Sidebar from '../../components/shared/Sidebar/Sidebar';
-import PageMessage from "../../components/shared/PageMessage";
+import Sidebar from '../../components/sidebar/Sidebar';
 
 const ProtectedLayout = () => {
-    const [expanded, setExpanded] = useState(false);
-    const sidebarWidth = expanded ? '13rem' : '4rem';
-
   return (
-    <>
-      <PageMessage sidebarWidth={sidebarWidth} />
-      <Sidebar expanded={expanded} setExpanded={setExpanded} />
-      <div className="flex-1 min-h-screen bg-gray-100 transition-all duration-300" style={{ marginLeft: sidebarWidth }}>
-        <Outlet />
+    <div className="min-h-screen w-full bg-gradient-to-br from-background via-primary to-sidebar flex">
+      <Sidebar />
+
+      <div className="flex-1 min-h-screen pb-20 md:pb-0 md:ml-16 flex">
+        <main className="flex-1 bg-background/90 md:bg-background rounded-tl-3xl md:rounded-none overflow-x-auto">
+          <Outlet />
+        </main>
       </div>
-    </>
+    </div>
   );
 };
 

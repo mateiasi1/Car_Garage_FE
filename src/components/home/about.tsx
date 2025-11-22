@@ -1,136 +1,151 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import {useContext} from "react";
-import {AuthContext} from "../../contexts/authContext";
-import {routes} from "../../constants/routes";
+import { useContext } from 'react';
+import { AuthContext } from '../../contexts/authContext';
+import { routes } from '../../constants/routes';
 import logo from '../../assets/logo.png';
+import carHome from '../../assets/car_home.png';
+import { Button } from '../shared/Button';
+import { FeatureCard } from '../shared/FeatureCard';
+import { brandName } from '../../constants/constants';
 
 const About = () => {
-    const { t } = useTranslation();
-    const { isAuthenticated } = useContext(AuthContext);
+  const { t } = useTranslation();
+  const { isAuthenticated } = useContext(AuthContext);
 
-    console.log("@@@ isAuthenticated", isAuthenticated);
+  const primaryCtaLink = isAuthenticated ? routes.ADMINISTRATION : routes.LOGIN;
+  const primaryCtaLabel = isAuthenticated ? t('home.adminButton') : t('home.loginButton');
 
-    return (
-        <div className="min-h-screen bg-background">
-            {/* Header */}
-            <header className="bg-card shadow-sm">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-4 flex justify-between items-center">
-                    <div className="flex items-center space-x-2">
-                        <div className="flex items-center justify-center">
-                            <img src={logo} alt="RoadReady Logo" className="h-14 w-14 mr-3" />
-                            <span className="text-2xl font-bold font-heading text-primary">RoadReady</span>
-                        </div>
-                    </div>
-                    <Link
-                        to={isAuthenticated ? routes.ADMINISTRATION : routes.LOGIN}
-                        className="px-6 py-2 bg-primary text-primary-text rounded-lg hover:bg-primary-hover transition-colors font-body"
-                    >
-                        {isAuthenticated ? t('home.adminButton') : t('home.loginButton')}
-                    </Link>
-                </div>
-            </header>
+  return (
+    <div className="min-h-screen bg-gradient-to-b from-background via-primary to-sidebar text-primary-text flex flex-col">
+      {/* HEADER */}
+      <header className="sticky top-0 z-20 bg-background/95 backdrop-blur-md border-b border-card/10">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex justify-between items-center">
+          <div className="flex items-center space-x-3">
+            <img src={logo} alt="RoadReady Logo" className="h-10 w-10 rounded-md shadow-md" />
+            <span className="text-xl sm:text-2xl font-bold font-heading tracking-tight text-primary">RoadReady</span>
+          </div>
 
-            {/* Hero Section */}
-            <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-16">
-                <div className="text-center mb-16">
-                    <h2 className="text-4xl md:text-5xl font-bold font-heading text-text mb-6">
-                        {t('home.hero.title')}
-                    </h2>
-                    <p className="text-xl text-gray-600 max-w-3xl mx-auto mb-8 font-body">
-                        {t('home.hero.subtitle')}
-                    </p>
-                    <Link
-                        to={isAuthenticated ? routes.ADMINISTRATION : routes.LOGIN}
-                        className="inline-block px-8 py-4 bg-primary text-primary-text text-lg font-semibold font-heading rounded-lg hover:bg-primary-hover transition-colors shadow-lg"
-                    >
-                        {t('home.hero.cta')}
-                    </Link>
-                </div>
-
-                {/* Features */}
-                <div className="grid md:grid-cols-3 gap-8 mb-16">
-                    <div className="bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                        <div className="text-primary text-4xl mb-4">
-                            <i className="fas fa-building"></i>
-                        </div>
-                        <h3 className="text-xl font-bold font-heading text-text mb-2">
-                            {t('home.features.stations.title')}
-                        </h3>
-                        <p className="text-gray-600 font-body">
-                            {t('home.features.stations.description')}
-                        </p>
-                    </div>
-
-                    <div className="bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                        <div className="text-primary text-4xl mb-4">
-                            <i className="fas fa-clipboard-check"></i>
-                        </div>
-                        <h3 className="text-xl font-bold font-heading text-text mb-2">
-                            {t('home.features.inspections.title')}
-                        </h3>
-                        <p className="text-gray-600 font-body">
-                            {t('home.features.inspections.description')}
-                        </p>
-                    </div>
-
-                    <div className="bg-card p-6 rounded-lg shadow-md hover:shadow-lg transition-shadow">
-                        <div className="text-primary text-4xl mb-4">
-                            <i className="fas fa-bell"></i>
-                        </div>
-                        <h3 className="text-xl font-bold font-heading text-text mb-2">
-                            {t('home.features.notifications.title')}
-                        </h3>
-                        <p className="text-gray-600 font-body">
-                            {t('home.features.notifications.description')}
-                        </p>
-                    </div>
-                </div>
-
-                {/* Contact Card */}
-                <div className="bg-sidebar rounded-lg shadow-xl p-8 text-primary-text text-center">
-                    <h3 className="text-2xl font-bold font-heading mb-4">
-                        {t('home.contact.title')}
-                    </h3>
-                    <p className="text-lg mb-6 opacity-90 font-body">
-                        {t('home.contact.description')}
-                    </p>
-                    <a
-                        href="mailto:contact@roadready.ro"
-                        className="inline-block px-8 py-3 bg-primary text-primary-text font-semibold font-heading rounded-lg hover:bg-primary-hover transition-colors"
-                    >
-                        <i className="fas fa-envelope mr-2"></i>
-                        {t('home.contact.button')}
-                    </a>
-                </div>
-            </main>
-
-            {/* Footer */}
-            <footer className="bg-card border-t border-gray-200 mt-16">
-                <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
-                    <div className="flex flex-col md:flex-row justify-between items-center space-y-4 md:space-y-0">
-                        <div className="text-gray-600 font-body">
-                            © 2025 RoadReady. {t('home.footer.rights')}
-                        </div>
-                        <div className="flex space-x-6">
-                            <Link
-                                to="/terms"
-                                className="text-gray-600 hover:text-primary transition-colors font-body"
-                            >
-                                {t('home.footer.terms')}
-                            </Link>
-                            <a
-                                href="mailto:contact@roadready.ro"
-                                className="text-gray-600 hover:text-primary transition-colors font-body"
-                            >
-                                {t('home.footer.contact')}
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </footer>
+          <Link to={primaryCtaLink} className="inline-flex">
+            <Button size="sm" variant="primary" className="rounded-full shadow-md px-5 py-2 text-sm sm:text-base">
+              {primaryCtaLabel}
+            </Button>
+          </Link>
         </div>
-    );
+      </header>
+
+      {/* MAIN */}
+      <main className="flex-1">
+        {/* HERO */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12 lg:py-16">
+          <div className="grid lg:grid-cols-2 gap-12 items-center">
+            <div className="text-center lg:text-left space-y-6">
+              <h1 className="text-3xl sm:text-4xl lg:text-5xl font-heading font-bold text-primary drop-shadow-sm">
+                {t('home.hero.title')}
+              </h1>
+
+              <p className="text-base sm:text-lg text-primary/90 max-w-lg mx-auto lg:mx-0 font-body leading-relaxed">
+                {t('home.hero.subtitle')}
+              </p>
+
+              <div className="flex justify-center lg:justify-start">
+                <Link to={primaryCtaLink} className="inline-flex">
+                  <Button
+                    size="md"
+                    variant="primary"
+                    className="rounded-full shadow-lg hover:shadow-xl hover:-translate-y-0.5 px-8 py-3"
+                  >
+                    {t('home.hero.cta')}
+                  </Button>
+                </Link>
+              </div>
+            </div>
+
+            <div className="flex items-center justify-center relative">
+              <div className="relative">
+                <div className="absolute inset-0 rounded-3xl bg-primary/30 blur-3xl animate-pulse" />
+                <div className="flex items-center justify-center">
+                  <img
+                    src={carHome}
+                    alt="F1 pitstop illustration"
+                    className="
+                      w-64 sm:w-80
+                      h-auto
+                      rounded-[2rem]
+                      drop-shadow-2xl
+                      animate-float
+                      object-cover
+                    "
+                  />
+                </div>
+              </div>
+            </div>
+          </div>
+        </section>
+
+        {/* FEATURES */}
+        <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 pb-12">
+          <div className="grid md:grid-cols-3 gap-6 lg:gap-8">
+            <FeatureCard
+              icon={<i className="fas fa-building" />}
+              title={t('home.features.stations.title')}
+              description={t('home.features.stations.description')}
+            />
+            <FeatureCard
+              icon={<i className="fas fa-clipboard-check" />}
+              title={t('home.features.inspections.title')}
+              description={t('home.features.inspections.description')}
+            />
+            <FeatureCard
+              icon={<i className="fas fa-bell" />}
+              title={t('home.features.notifications.title')}
+              description={t('home.features.notifications.description')}
+            />
+          </div>
+        </section>
+
+        {/* CONTACT CTA */}
+        <section className="max-w-5xl mx-auto px-4 sm:px-6 lg:px-8 pb-16">
+          <div className="bg-primary rounded-3xl shadow-2xl px-6 sm:px-10 py-8 sm:py-10 text-primary-text text-center relative overflow-hidden">
+            <div className="absolute -top-10 -right-10 h-32 w-32 rounded-full bg-activeMenu/30 blur-2xl" />
+            <div className="absolute bottom-[-3rem] left-[-3rem] h-32 w-32 rounded-full bg-background/40 blur-2xl" />
+
+            <div className="relative">
+              <h3 className="text-2xl sm:text-3xl font-heading font-bold mb-3">{t('home.contact.title')}</h3>
+              <p className="text-base sm:text-lg mb-6 opacity-90 font-body max-w-2xl mx-auto">
+                {t('home.contact.description')}
+              </p>
+
+              <a
+                href="mailto:contact@bytedracula.ro"
+                className="inline-flex items-center justify-center px-7 py-3 bg-card text-primary font-semibold font-heading rounded-full hover:bg-background transition-colors shadow-lg text-sm sm:text-base"
+              >
+                <i className="fas fa-envelope mr-2" />
+                {t('home.contact.button')}
+              </a>
+            </div>
+          </div>
+        </section>
+      </main>
+
+      {/* FOOTER */}
+      <footer className="bg-card/95 border-t border-card/20">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-6 flex flex-col md:flex-row justify-between items-center gap-4 text-text/70 font-body text-sm sm:text-base">
+          <div className="text-center md:text-left">
+            © 2025 {brandName}. {t('home.footer.rights')}
+          </div>
+          <div className="flex space-x-6">
+            <Link to="/terms" className="hover:text-primary transition-colors">
+              {t('home.footer.terms')}
+            </Link>
+            <a href="mailto:contact@bytedracula.ro" className="hover:text-primary transition-colors">
+              {t('home.footer.contact')}
+            </a>
+          </div>
+        </div>
+      </footer>
+    </div>
+  );
 };
 
 export default About;

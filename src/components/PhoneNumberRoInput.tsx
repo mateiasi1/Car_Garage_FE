@@ -1,46 +1,58 @@
 import React, { FC } from 'react';
+// eslint-disable-next-line import/no-unresolved
 import flagRo from '../assets/images/flag-ro.png';
 
 interface PhoneNumberRoInputProps {
-    value: string;
-    onChange: (value: string) => void;
-    className?: string;
+  value: string;
+  onChange: (value: string) => void;
+  label?: string;
+  error?: string;
+  placeholder?: string;
 }
 
 export const PhoneNumberRoInput: FC<PhoneNumberRoInputProps> = ({
-    value,
-    onChange,
-    className = '',
+  value,
+  onChange,
+  label,
+  error,
+  placeholder = '712345678',
 }) => {
-    const localPart = value.startsWith('+40') ? value.slice(3) : value;
+  const localPart = value.startsWith('+40') ? value.slice(3) : value;
 
-    const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-        const onlyDigits = e.target.value.replace(/\D/g, '').slice(0, 9);
-        const fullValue = onlyDigits ? `+40${onlyDigits}` : '';
-        onChange(fullValue);
-    };
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const onlyDigits = e.target.value.replace(/\D/g, '').slice(0, 9);
+    const fullValue = onlyDigits ? `+40${onlyDigits}` : '';
+    onChange(fullValue);
+  };
 
-    return (
-        <div
-            className={`flex items-center border rounded-md px-3 py-2 bg-white
-                  focus-within:ring-2 focus-within:ring-primary
-                  focus-within:border-primary border-gray-300 ${className}`}
-        >
-            <img
-                src={flagRo}
-                alt="Romania flag"
-                className="w-5 h-5 mr-2 rounded-sm object-cover"
-            />
-            <span className="mr-2 text-sm text-gray-700 font-medium">+40</span>
-            <input
-                type="tel"
-                inputMode="numeric"
-                pattern="[0-9]*"
-                value={localPart}
-                onChange={handleChange}
-                className="flex-1 outline-none border-0 bg-transparent text-gray-900"
-                placeholder="712345678"
-            />
-        </div>
-    );
+  return (
+    <div className="w-full">
+      {label && <label className="block text-text text-sm font-semibold font-body mb-2">{label}</label>}
+
+      <div
+        className={`
+          w-full flex items-center
+          rounded-2xl border bg-white font-body shadow-sm
+          px-4 py-3
+          focus-within:outline-none focus-within:ring-2 focus-within:ring-primary
+          ${error ? 'border-error focus-within:ring-error' : 'border-gray-300 focus-within:border-primary'}
+        `}
+      >
+        <img src={flagRo} alt="RO" className="w-5 h-5 mr-2 rounded-sm object-cover" />
+        <span className="mr-2 text-sm text-gray-700 font-medium">+40</span>
+
+        <input
+          type="tel"
+          inputMode="numeric"
+          pattern="[0-9]*"
+          value={localPart}
+          onChange={handleChange}
+          className="flex-1 outline-none border-0 bg-transparent text-text text-sm sm:text-base placeholder:text-gray-400"
+          placeholder={placeholder}
+        />
+      </div>
+
+      {error && <p className="text-error text-sm mt-1 font-body">{error}</p>}
+    </div>
+  );
 };

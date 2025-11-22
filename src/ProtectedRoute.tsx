@@ -15,8 +15,6 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element, roles }) => {
     return userRoles.some((role) => roles.includes(role.name));
   };
 
-
-
   if (isLoading) {
     return <div>Loading...</div>;
   }

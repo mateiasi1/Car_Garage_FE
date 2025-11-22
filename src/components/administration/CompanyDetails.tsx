@@ -1,92 +1,68 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFetchCompanyQuery } from '../../rtk/services/company-service';
+import { Building2, Plus } from 'lucide-react';
+import { PageHeader } from '../shared/PageHeader';
+import Drawer from '../shared/Drawer';
+import BranchForm from '../forms/BranchForm';
+import { IconButton } from '../shared/IconButton';
+
+interface Row {
+  label: string;
+  value: string;
+}
 
 const CompanyDetails: FC = () => {
-    const { data: company, error, isLoading } = useFetchCompanyQuery();
-    const { t } = useTranslation();
+  const { data: company, error, isLoading } = useFetchCompanyQuery();
+  const { t } = useTranslation();
+  const [createBranchOpen, setCreateBranchOpen] = useState(false);
 
-    if (isLoading)
-        return (
-            <div className="flex items-center justify-center p-8">
-                <p className="text-text font-body">{t('company.loading')}</p>
-            </div>
-        );
+  if (isLoading) return <div className="p-8 text-text font-body">{t('company.loading')}</div>;
 
-    if (error)
-        return (
-            <div className="flex items-center justify-center p-8">
-                <p className="text-error font-body">{t('company.error')}</p>
-            </div>
-        );
+  if (error) return <div className="p-8 text-error font-body">{t('company.error')}</div>;
 
-    if (!company)
-        return (
-            <div className="flex items-center justify-center p-8">
-                <p className="text-text font-body">{t('company.noData')}</p>
-            </div>
-        );
+  if (!company) return <div className="p-8 text-text font-body">{t('company.noData')}</div>;
 
-    return (
-        <div className="space-y-6">
-            <div className="p-6 max-w-md">
-                <div className="flex items-center gap-2 mb-4">
-                    <i className="fas fa-clipboard-list text-primary text-xl"></i>
-                    <h3 className="text-lg font-bold font-heading text-primary">{t('companyData')}</h3>
-                </div>
+  const rows: Row[] = [
+    { label: t('name'), value: company.name },
+    { label: t('shortName'), value: company.shortName },
+    { label: t('country'), value: company.country },
+    { label: t('city'), value: company.city },
+    company.zipcode && { label: t('zipcode'), value: company.zipcode },
+    { label: t('street'), value: company.street },
+    company.streetNumber && { label: t('streetNumber'), value: company.streetNumber },
+    company.houseNumber && { label: t('houseNumber'), value: company.houseNumber },
+    company.phoneNumber && { label: t('phoneNumber'), value: company.phoneNumber },
+  ].filter((x): x is Row => Boolean(x));
 
-                <div className="flex flex-col">
-                    <div className="flex items-center justify-between py-2 border-b border-gray-200">
-                        <span className="text-sm font-body text-gray-600 w-48 text-text">{t('name')}:</span>
-                        <span className="font-body text-text">{company.name}</span>
-                    </div>
+  return (
+    <div className="w-full">
+      <div className="flex items-center justify-between">
+        <PageHeader
+          title={t('companyData')}
+          icon={Building2}
+          action={
+            <IconButton type="button" variant="primary" size="md" onClick={() => setCreateBranchOpen(true)}>
+              <Plus className="w-4 h-4" />
+            </IconButton>
+          }
+        />
+      </div>
 
-                    <div className="flex items-center justify-between py-2 border-b border-gray-200">
-                        <span className="text-sm font-body text-gray-600 w-48 text-text">{t('country')}:</span>
-                        <span className="font-body text-text">{company.country}</span>
-                    </div>
+      <div className="p-4 sm:p-5 lg:p-6 divide-y divide-gray-200">
+        {rows.map((row, idx) => (
+          <div key={idx} className="flex items-center justify-between py-4">
+            <span className="text-text/70 font-body">{row.label}</span>
+            <span className="text-text font-body font-medium">{row.value}</span>
+          </div>
+        ))}
+      </div>
 
-                    <div className="flex items-center justify-between py-2 border-b border-gray-200">
-                        <span className="text-sm font-body text-gray-600 w-48 text-text">{t('city')}:</span>
-                        <span className="font-body text-text">{company.city}</span>
-                    </div>
-
-                    {company.zipcode && (
-                        <div className="flex items-center justify-between py-2 border-b border-gray-200">
-                            <span className="text-sm font-body text-gray-600 w-48 text-text">{t('zipcode')}:</span>
-                            <span className="font-body text-text">{company.zipcode}</span>
-                        </div>
-                    )}
-
-                    <div className="flex items-center justify-between py-2 border-b border-gray-200">
-                        <span className="text-sm font-body text-gray-600 w-48 text-text">{t('street')}:</span>
-                        <span className="font-body text-text">{company.street}</span>
-                    </div>
-
-                    {company.streetNumber && (
-                        <div className="flex items-center justify-between py-2 border-b border-gray-200">
-                            <span className="text-sm font-body text-gray-600 w-48 text-text">{t('streetNumber')}:</span>
-                            <span className="font-body text-text">{company.streetNumber}</span>
-                        </div>
-                    )}
-
-                    {company.houseNumber && (
-                        <div className="flex items-center justify-between py-2 border-b border-gray-200">
-                            <span className="text-sm font-body text-gray-600 w-48 text-text">{t('houseNumber')}:</span>
-                            <span className="font-body text-text">{company.houseNumber}</span>
-                        </div>
-                    )}
-
-                    {company.phoneNumber && (
-                        <div className="flex items-center justify-between py-2 border-b border-gray-200">
-                            <span className="text-sm font-body text-gray-600 w-48 text-text">{t('phoneNumber')}:</span>
-                            <span className="font-body text-text">{company.phoneNumber}</span>
-                        </div>
-                    )}
-                </div>
-            </div>
-        </div>
-    );
+      <Drawer isOpen={createBranchOpen} onClose={() => setCreateBranchOpen(false)} title={t('adminBranches.addBranch')}>
+        <BranchForm selectedBranch={null} onCloseDrawer={() => setCreateBranchOpen(false)} isOwnerMode={true} />
+      </Drawer>
+    </div>
+  );
 };
 
 export default CompanyDetails;
