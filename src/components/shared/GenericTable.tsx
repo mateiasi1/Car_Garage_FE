@@ -162,7 +162,7 @@ const GenericTable = <T extends { id: string }>({
                 </div>
               )}
 
-              <div className="order-2 flex-1 min-w-[200px]">
+              <div className="order-2 flex-1 min-w-[200px] flex items-center">
                 <CustomInput
                   id="table-search"
                   name="table-search"
@@ -171,7 +171,7 @@ const GenericTable = <T extends { id: string }>({
                   placeholder={searchPlaceholder || t('table.search')}
                   label={undefined}
                   fullWidth
-                  wrapperClassName="mb-0"
+                  wrapperClassName="!mt-0 !mb-0"
                 />
               </div>
 
