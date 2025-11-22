@@ -97,13 +97,7 @@ const BranchDetails: FC = () => {
           icon={Building}
           action={
             branches.length > 1 && (
-              <Button
-                type="button"
-                variant="primary"
-                size="md"
-                className="flex items-center gap-2"
-                onClick={() => setDrawerOpen(true)}
-              >
+              <Button type="button" variant="primary" size="md" onClick={() => setDrawerOpen(true)}>
                 <ArrowLeftRight className="w-4 h-4" />
                 {t('branch.switchBranch')}
               </Button>

@@ -5,6 +5,11 @@ import {
   useUpdateAdminBranchMutation,
   useDeleteAdminBranchMutation,
 } from '../../rtk/services/admin-service';
+import {
+  useCreateBranchMutation as useOwnerCreateBranchMutation,
+  useUpdateBranchMutation as useOwnerUpdateBranchMutation,
+  useDeleteBranchMutation as useOwnerDeleteBranchMutation,
+} from '../../rtk/services/branch-service';
 import { Branch } from '../../models/Branch';
 import { Error } from '../../interfaces/error';
 import { showToast } from '../../utils/showToast';
@@ -15,8 +20,9 @@ import { CustomInput } from '../shared/CustomInput';
 
 interface BranchFormProps {
   selectedBranch: Branch | null;
-  companyId: string;
+  companyId?: string;
   onCloseDrawer: () => void;
+  isOwnerMode?: boolean;
 }
 
 type BranchFormValues = {
@@ -43,16 +49,22 @@ const initialValues: BranchFormValues = {
   zipcode: '',
 };
 
-const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDrawer }) => {
+const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDrawer, isOwnerMode }) => {
   const { t } = useTranslation();
-
-  const [createBranch, { isLoading: isCreating }] = useCreateAdminBranchMutation();
-  const [updateBranch, { isLoading: isUpdating }] = useUpdateAdminBranchMutation();
-  const [deleteBranch] = useDeleteAdminBranchMutation();
-
   const [showDeleteModal, setShowDeleteModal] = useState(false);
 
   const isEdit = Boolean(selectedBranch?.id);
+  const isOwner = Boolean(isOwnerMode);
+
+  // --- Mutations ADMIN ---
+  const [createAdminBranch, { isLoading: isCreatingAdmin }] = useCreateAdminBranchMutation();
+  const [updateAdminBranch, { isLoading: isUpdatingAdmin }] = useUpdateAdminBranchMutation();
+  const [deleteAdminBranch] = useDeleteAdminBranchMutation();
+
+  // --- Mutations OWNER (branch-service) ---
+  const [createOwnerBranch, { isLoading: isCreatingOwner }] = useOwnerCreateBranchMutation();
+  const [updateOwnerBranch, { isLoading: isUpdatingOwner }] = useOwnerUpdateBranchMutation();
+  const [deleteOwnerBranch] = useOwnerDeleteBranchMutation();
 
   const { values, errors, register, handleSubmit, isSubmitting } = useForm<BranchFormValues>({
     initialValues: selectedBranch
@@ -106,36 +118,46 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
       },
     },
     onSubmit: async (formValues) => {
+      const payload = {
+        name: formValues.name,
+        phoneNumber: formValues.phoneNumber,
+        country: formValues.country,
+        city: formValues.city,
+        street: formValues.street,
+        streetNumber: formValues.streetNumber,
+        houseNumber: formValues.houseNumber,
+        zipcode: formValues.zipcode,
+      };
+
       try {
-        if (isEdit && formValues.id) {
-          await updateBranch({
-            companyId,
-            branchId: formValues.id,
-            name: formValues.name,
-            phoneNumber: formValues.phoneNumber,
-            country: formValues.country,
-            city: formValues.city,
-            street: formValues.street,
-            streetNumber: formValues.streetNumber,
-            houseNumber: formValues.houseNumber,
-            zipcode: formValues.zipcode,
-          }).unwrap();
-          showToast(t('branch.branchUpdateSuccess'), 'success');
+        // OWNER MODE: branch-service
+        if (isOwner) {
+          if (isEdit && formValues.id) {
+            await updateOwnerBranch({
+              branchId: formValues.id,
+              ...payload,
+            }).unwrap();
+            showToast(t('branch.branchUpdateSuccess'), 'success');
+          } else {
+            await createOwnerBranch(payload).unwrap();
+            showToast(t('branch.branchCreateSuccess'), 'success');
+          }
         } else {
-          await createBranch({
-            companyId,
-            data: {
-              name: formValues.name,
-              phoneNumber: formValues.phoneNumber,
-              country: formValues.country,
-              city: formValues.city,
-              street: formValues.street,
-              streetNumber: formValues.streetNumber,
-              houseNumber: formValues.houseNumber,
-              zipcode: formValues.zipcode,
-            },
-          }).unwrap();
-          showToast(t('branch.branchCreateSuccess'), 'success');
+          // ADMIN MODE: admin-service (ca înainte)
+          if (isEdit && formValues.id) {
+            await updateAdminBranch({
+              companyId: companyId as string,
+              branchId: formValues.id,
+              ...payload,
+            }).unwrap();
+            showToast(t('branch.branchUpdateSuccess'), 'success');
+          } else {
+            await createAdminBranch({
+              companyId: companyId as string,
+              data: payload,
+            }).unwrap();
+            showToast(t('branch.branchCreateSuccess'), 'success');
+          }
         }
 
         onCloseDrawer();
@@ -146,12 +168,18 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
   });
 
   const onSubmit = handleSubmit();
+  const isSaving = isSubmitting || (isOwner ? isCreatingOwner || isUpdatingOwner : isCreatingAdmin || isUpdatingAdmin);
 
   const handleDelete = async () => {
     if (!values.id) return;
 
     try {
-      await deleteBranch({ companyId, branchId: values.id }).unwrap();
+      if (isOwner) {
+        await deleteOwnerBranch(values.id).unwrap();
+      } else {
+        await deleteAdminBranch({ companyId: companyId as string, branchId: values.id }).unwrap();
+      }
+
       showToast(t('branch.branchDeleteSuccess'), 'success');
       setShowDeleteModal(false);
       onCloseDrawer();
@@ -214,13 +242,7 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
               {t('delete')}
             </Button>
           )}
-          <Button
-            type="submit"
-            variant="primary"
-            size="md"
-            className={isEdit ? 'w-2/3' : 'w-full'}
-            loading={isCreating || isUpdating || isSubmitting}
-          >
+          <Button type="submit" variant="primary" size="md" className={isEdit ? 'w-2/3' : 'w-full'} loading={isSaving}>
             {t('submit')}
           </Button>
         </div>

@@ -42,10 +42,9 @@ export const branchApi = createApi({
       }),
       providesTags: ['Branch'],
     }),
-    // Fetch all company branches (pentru admin) - va fi pe /company/branches
     fetchCompanyBranches: builder.query<Branch[], void>({
       query: () => ({
-        url: `${config.companyUrl}/branches`, // GET /company/branches
+        url: `${config.companyUrl}/branches`,
         method: 'GET',
       }),
       providesTags: ['Branch'],

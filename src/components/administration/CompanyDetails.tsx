@@ -1,8 +1,11 @@
-import { FC } from 'react';
+import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFetchCompanyQuery } from '../../rtk/services/company-service';
 import { Building2 } from 'lucide-react';
 import { PageHeader } from '../shared/PageHeader';
+import Drawer from '../shared/Drawer';
+import { Button } from '../shared/Button';
+import BranchForm from '../forms/BranchForm';
 
 interface Row {
   label: string;
@@ -12,6 +15,7 @@ interface Row {
 const CompanyDetails: FC = () => {
   const { data: company, error, isLoading } = useFetchCompanyQuery();
   const { t } = useTranslation();
+  const [createBranchOpen, setCreateBranchOpen] = useState(false);
 
   if (isLoading) return <div className="p-8 text-text font-body">{t('company.loading')}</div>;
 
@@ -33,7 +37,17 @@ const CompanyDetails: FC = () => {
 
   return (
     <div className="w-full">
-      <PageHeader title={t('companyData')} icon={Building2} />
+      <div className="flex items-center justify-between">
+        <PageHeader
+          title={t('companyData')}
+          icon={Building2}
+          action={
+            <Button type="button" variant="primary" size="md" onClick={() => setCreateBranchOpen(true)}>
+              {t('adminBranches.addBranch')}
+            </Button>
+          }
+        />
+      </div>
 
       <div className="p-4 sm:p-5 lg:p-6 divide-y divide-gray-200 border-t border-gray-200">
         {rows.map((row, idx) => (
@@ -43,6 +57,10 @@ const CompanyDetails: FC = () => {
           </div>
         ))}
       </div>
+
+      <Drawer isOpen={createBranchOpen} onClose={() => setCreateBranchOpen(false)} title={t('adminBranches.addBranch')}>
+        <BranchForm selectedBranch={null} onCloseDrawer={() => setCreateBranchOpen(false)} isOwnerMode={true} />
+      </Drawer>
     </div>
   );
 };
