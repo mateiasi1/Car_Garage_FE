@@ -1,11 +1,11 @@
 import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFetchCompanyQuery } from '../../rtk/services/company-service';
-import { Building2 } from 'lucide-react';
+import { Building2, Plus } from 'lucide-react';
 import { PageHeader } from '../shared/PageHeader';
 import Drawer from '../shared/Drawer';
-import { Button } from '../shared/Button';
 import BranchForm from '../forms/BranchForm';
+import { IconButton } from '../shared/IconButton';
 
 interface Row {
   label: string;
@@ -42,9 +42,9 @@ const CompanyDetails: FC = () => {
           title={t('companyData')}
           icon={Building2}
           action={
-            <Button type="button" variant="primary" size="md" onClick={() => setCreateBranchOpen(true)}>
-              {t('adminBranches.addBranch')}
-            </Button>
+            <IconButton type="button" variant="primary" size="md" onClick={() => setCreateBranchOpen(true)}>
+              <Plus className="w-4 h-4" />
+            </IconButton>
           }
         />
       </div>

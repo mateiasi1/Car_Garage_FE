@@ -35,11 +35,15 @@ const PackagesPage: FC = () => {
 
   return (
     <div className="pb-4 min-h-screen flex flex-col">
-      <div className="w-full max-w-6xl mx-auto space-y-10">
-        <PageHeader title={t('packages.availablePackages')} icon={Store} />
-        <p className="p-6 text-text/60 font-body max-w-lg">{t('packages.choosePackageDescription')}</p>
+      <div className="w-full max-w-6xl mx-auto">
+        {/* Header */}
+        <PageHeader title={t('packages.availablePackages')} icon={Store} className="mb-4" />
 
-        <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        {/* Description sub-title */}
+        <p className="px-6 mb-4 text-text/60 font-body max-w-lg">{t('packages.choosePackageDescription')}</p>
+
+        {/* Packages grid */}
+        <div className="px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {packages.map((pkg) => {
             const isActive = pkg.id === activePackageId;
 
@@ -61,15 +65,19 @@ const PackagesPage: FC = () => {
                   </div>
                 )}
 
+                {/* Name */}
                 <h3 className="text-xl font-heading text-text">{pkg.name}</h3>
 
+                {/* Price */}
                 <div>
                   <span className="text-3xl font-bold font-heading text-primary">{pkg.price}</span>
                   <span className="ml-1 text-text/60 font-body">RON</span>
                 </div>
 
+                {/* Description */}
                 {pkg.description && <p className="text-sm text-text/70 font-body leading-relaxed">{pkg.description}</p>}
 
+                {/* Features */}
                 <div className="space-y-3">
                   <div className="flex items-center gap-3">
                     <div className="w-8 h-8 rounded-full bg-primary/10 flex items-center justify-center">
@@ -81,6 +89,7 @@ const PackagesPage: FC = () => {
                   </div>
                 </div>
 
+                {/* Active badge bottom */}
                 {isActive && (
                   <div className="mt-4 py-2 px-4 bg-background/60 text-text rounded-xl text-center font-body text-sm">
                     {t('packages.currentPackage')}
@@ -91,7 +100,8 @@ const PackagesPage: FC = () => {
           })}
         </div>
 
-        <div className="m-6 p-6 rounded-2xl bg-background/60 border border-text/10 flex items-center gap-3">
+        {/* Info note */}
+        <div className="mx-6 mt-6 p-6 rounded-2xl bg-background/60 border border-text/10 flex items-center gap-3">
           <Store className="w-6 h-6 text-primary" />
           <p className="text-sm text-text font-body">{t('packages.purchaseNote')}</p>
         </div>

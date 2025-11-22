@@ -10,13 +10,16 @@ import { Branch } from '../../models/Branch';
 import { AuthContext } from '../../contexts/authContext';
 import { Role } from '../../utils/enums/Role';
 import { CustomSelect } from '../shared/CustomSelect';
-import { ArrowLeftRight, Building, Store } from 'lucide-react';
+import { ArrowLeftRight, Building, Store, Pencil } from 'lucide-react';
 import { Button } from '../shared/Button';
 import { PageHeader } from '../shared/PageHeader';
+import BranchForm from '../forms/BranchForm';
+import { IconButton } from '../shared/IconButton';
 
 const BranchDetails: FC = () => {
   const { t } = useTranslation();
-  const [drawerOpen, setDrawerOpen] = useState(false);
+  const [switchDrawerOpen, setSwitchDrawerOpen] = useState(false);
+  const [editDrawerOpen, setEditDrawerOpen] = useState(false);
 
   const { data: branch, error, isLoading } = useFetchBranchQuery();
   const { data: branches = [] } = useFetchCompanyBranchesQuery();
@@ -25,13 +28,13 @@ const BranchDetails: FC = () => {
   const { user, login } = useContext(AuthContext);
   const isOwner = user?.roles?.some((r) => r.name === Role.owner);
 
-  const [selectedBranchId, setSelectedBranchId] = useState<string>(branch?.id ?? '');
+  const [selectedBranchId, setSelectedBranchId] = useState<string>('');
 
   useEffect(() => {
-    if (drawerOpen && branch?.id) {
+    if (switchDrawerOpen && branch?.id) {
       setSelectedBranchId(branch.id);
     }
-  }, [drawerOpen, branch?.id]);
+  }, [switchDrawerOpen, branch?.id]);
 
   const handleSwitchBranch = async () => {
     if (!selectedBranchId) {
@@ -46,7 +49,7 @@ const BranchDetails: FC = () => {
         login({ accessToken: result.accessToken });
 
         showToast(t('branch.branchSwitchedSuccessfully'), 'success');
-        setDrawerOpen(false);
+        setSwitchDrawerOpen(false);
 
         window.location.reload();
       }
@@ -96,17 +99,36 @@ const BranchDetails: FC = () => {
           title={t('branch.data')}
           icon={Building}
           action={
-            branches.length > 1 && (
-              <Button type="button" variant="primary" size="md" onClick={() => setDrawerOpen(true)}>
-                <ArrowLeftRight className="w-4 h-4" />
-                {t('branch.switchBranch')}
-              </Button>
-            )
+            <div className="flex items-center gap-3">
+              {isOwner && (
+                <IconButton
+                  type="button"
+                  variant="secondary"
+                  size="md"
+                  onClick={() => setEditDrawerOpen(true)}
+                  className="flex items-center gap-2"
+                >
+                  <Pencil className="w-4 h-4" />
+                </IconButton>
+              )}
+
+              {branches.length > 1 && (
+                <IconButton
+                  type="button"
+                  variant="primary"
+                  size="md"
+                  onClick={() => setSwitchDrawerOpen(true)}
+                  className="flex items-center gap-2"
+                >
+                  <ArrowLeftRight className="w-4 h-4" />
+                </IconButton>
+              )}
+            </div>
           }
         />
       </div>
 
-      <div className="p-4 sm:p-5 lg:p-6 w-full rounded-2xl bg-white">
+      <div className="mt-0 p-4 sm:p-5 lg:p-6 w-full rounded-2xl bg-white">
         {rows.map((row, index) => (
           <div key={index} className="flex items-center justify-between py-4 border-b border-gray-200 last:border-none">
             <span className="text-sm text-text/60 font-body">{row.label}</span>
@@ -167,7 +189,7 @@ const BranchDetails: FC = () => {
         </div>
       )}
 
-      <Drawer isOpen={drawerOpen} onClose={() => setDrawerOpen(false)} title={t('branch.switchBranch')}>
+      <Drawer isOpen={switchDrawerOpen} onClose={() => setSwitchDrawerOpen(false)} title={t('branch.switchBranch')}>
         <div className="space-y-6">
           <CustomSelect
             label={t('branch.selectBranch')}
@@ -191,6 +213,16 @@ const BranchDetails: FC = () => {
           </Button>
         </div>
       </Drawer>
+
+      {isOwner && (
+        <Drawer isOpen={editDrawerOpen} onClose={() => setEditDrawerOpen(false)} title={t('branch.editBranch')}>
+          <BranchForm
+            selectedBranch={branch}
+            companyId={branch.companyId}
+            onCloseDrawer={() => setEditDrawerOpen(false)}
+          />
+        </Drawer>
+      )}
     </div>
   );
 };

@@ -11,7 +11,7 @@ interface PageHeaderProps {
 
 export const PageHeader: FC<PageHeaderProps> = ({ title, icon: Icon, action, className = '' }) => {
   return (
-    <div className={`flex items-center justify-between mb-8 ${className}`}>
+    <div className={`flex items-center justify-between mb-2 ${className}`}>
       <div className="p-4 flex items-center gap-3">
         <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
           <Icon className="text-primary" size={22} />

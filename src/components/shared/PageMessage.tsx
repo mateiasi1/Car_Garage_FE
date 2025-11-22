@@ -29,20 +29,28 @@ const PageMessage: FC = () => {
 
   const isErrorState = status === 'empty';
 
-  const bgColor = isErrorState ? 'bg-error text-primary-text' : 'bg-warning text-text';
+  const wrapperBg = isErrorState ? 'bg-red-500' : 'bg-amber-400';
   const icon = isErrorState ? faCircleXmark : faTriangleExclamation;
 
   return (
     <>
-      <div className="fixed top-0 right-0 left-0 md:left-16 z-[9999]">
-        <div className={`${bgColor} w-full py-1 px-2 flex items-center gap-3 shadow-lg`}>
-          <FontAwesomeIcon icon={icon} className="h-6 w-6" />
+      <div className="fixed top-0 right-0 left-0 md:left-16 z-[50]">
+        <div
+          className={`
+            ${wrapperBg} text-text
+            w-full
+            flex items-center gap-3
+            px-4 sm:px-6 py-3
+            shadow-[0_4px_12px_rgba(0,0,0,0.18)]
+          `}
+        >
+          <FontAwesomeIcon icon={icon} className="h-6 w-6 text-text" />
 
-          <div>
-            <div className="font-heading font-semibold">
+          <div className="flex flex-col gap-0.5">
+            <div className="font-heading font-semibold text-base sm:text-lg text-text">
               {isErrorState ? t('smsBanner.errorTitle') : t('smsBanner.warningTitle')}
             </div>
-            <div className="text-sm opacity-90">
+            <div className="text-sm sm:text-base font-body text-text/90">
               {isErrorState
                 ? t('smsBanner.errorBody')
                 : t('smsBanner.warningBody', { percent: Math.round(remainingPercent) })}
@@ -50,7 +58,8 @@ const PageMessage: FC = () => {
           </div>
         </div>
       </div>
-      <div className="h-24 sm:h-20 md:h-16" />
+
+      <div className="h-20 sm:h-18 md:h-16" />
     </>
   );
 };
