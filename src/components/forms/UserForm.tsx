@@ -18,6 +18,7 @@ import { Branch } from '../../models/Branch';
 import { useForm } from '../../hooks/useForm';
 import { CustomInput } from '../shared/CustomInput';
 import { CustomSelect } from '../shared/CustomSelect';
+import { Role } from '../../utils/enums/Role';
 
 interface UserFormProps {
   selectedUser: AdminUser | null;
@@ -30,7 +31,7 @@ type UserFormValues = {
   firstName: string;
   lastName: string;
   password: string;
-  role: 'owner' | 'inspector' | '';
+  role: Role | '';
   branchIds: string[];
 };
 
@@ -66,25 +67,17 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
             id: selectedUser.id,
             firstName: selectedUser.firstName,
             lastName: selectedUser.lastName,
-            role: (selectedUser.roles[0] as 'owner' | 'inspector') ?? '',
+            role: (selectedUser.roles?.[0] as Role) ?? '',
             branchIds: selectedUser.branches?.map((b) => b.id) ?? [],
           }
         : {}),
     },
     fields: {
       firstName: {
-        validate: (value) => {
-          const v = String(value ?? '').trim();
-          if (!v) return 'adminUsers.firstNameEmpty';
-          return null;
-        },
+        validate: (value) => (!String(value ?? '').trim() ? 'adminUsers.firstNameEmpty' : null),
       },
       lastName: {
-        validate: (value) => {
-          const v = String(value ?? '').trim();
-          if (!v) return 'adminUsers.lastNameEmpty';
-          return null;
-        },
+        validate: (value) => (!String(value ?? '').trim() ? 'adminUsers.lastNameEmpty' : null),
       },
       password: {
         validate: (value) => {
@@ -102,7 +95,7 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
         return;
       }
 
-      if (formValues.role === 'inspector' && (!formValues.branchIds || formValues.branchIds.length === 0)) {
+      if (formValues.role === Role.inspector && (!formValues.branchIds || formValues.branchIds.length === 0)) {
         showToast(t('adminUsers.branchRequired'), 'error');
         return;
       }
@@ -115,9 +108,10 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
             data: {
               firstName: formValues.firstName,
               lastName: formValues.lastName,
-              branchIds: formValues.role === 'inspector' ? formValues.branchIds : undefined,
+              branchIds: formValues.role === Role.inspector ? formValues.branchIds : undefined,
             },
           }).unwrap();
+
           showToast(t('adminUsers.userUpdateSuccess'), 'success');
         } else {
           await createUser({
@@ -126,10 +120,11 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
               firstName: formValues.firstName,
               lastName: formValues.lastName,
               password: formValues.password,
-              roles: [formValues.role.toUpperCase()],
-              branchIds: formValues.role === 'inspector' ? formValues.branchIds : undefined,
+              roles: formValues.role ? [formValues.role as Role] : [],
+              branchIds: formValues.role === Role.inspector ? formValues.branchIds : undefined,
             },
           }).unwrap();
+
           showToast(t('adminUsers.userCreateSuccess'), 'success');
         }
 
@@ -146,11 +141,8 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
       setFieldValue('firstName', selectedUser.firstName ?? '');
       setFieldValue('lastName', selectedUser.lastName ?? '');
       setFieldValue('password', '');
-      setFieldValue('role', (selectedUser.roles[0] as 'owner' | 'inspector') ?? '');
-      setFieldValue(
-        'branchIds',
-        selectedUser.branches && selectedUser.branches.length > 0 ? selectedUser.branches.map((b) => b.id) : []
-      );
+      setFieldValue('role', (selectedUser.roles?.[0] as Role) ?? '');
+      setFieldValue('branchIds', selectedUser.branches?.map((b) => b.id) ?? []);
       setGeneratedUsername(selectedUser.username);
     } else {
       setFieldValue('id', '');
@@ -161,7 +153,7 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
       setFieldValue('branchIds', []);
       setGeneratedUsername('');
     }
-  }, [selectedUser, setFieldValue]);
+  }, [selectedUser]); // aici era bucla: am scos setFieldValue din deps
 
   useEffect(() => {
     if (isEdit) return;
@@ -176,8 +168,8 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
         }).unwrap();
 
         setGeneratedUsername(result.username);
-      } catch {
-        /* silent */
+      } catch (error) {
+        console.error(error);
       }
     }, 500);
 
@@ -187,15 +179,16 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
   const onSubmit = handleSubmit();
 
   const handleRoleChange = (value: string) => {
-    const role = value as 'owner' | 'inspector' | '';
+    const role = (value as Role) || '';
     setFieldValue('role', role);
-    if (role === 'owner') {
+
+    if (role !== Role.inspector) {
       setFieldValue('branchIds', []);
     }
   };
 
-  const handleBranchesChange = (selectedIds: string[]) => {
-    setFieldValue('branchIds', selectedIds);
+  const handleBranchesChange = (ids: string[]) => {
+    setFieldValue('branchIds', ids);
   };
 
   const handleDelete = async () => {
@@ -210,8 +203,8 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
     }
   };
 
-  const isInspector = values.role === 'inspector';
-  const isOwner = values.role === 'owner';
+  const isInspector = values.role === Role.inspector;
+  const isOwner = values.role === Role.owner;
 
   return (
     <>
@@ -241,6 +234,7 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
             wrapperClassName="mb-1"
             placeholder={isEdit ? generatedUsername : t('adminUsers.usernameWillBeGenerated')}
           />
+
           {!isEdit && <p className="text-xs font-body text-text/60 mt-1">{t('adminUsers.usernameWillBeGenerated')}</p>}
         </div>
 
@@ -257,12 +251,12 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
         {!isEdit && (
           <CustomSelect
             label={t('adminUsers.selectRole')}
-            value={values.role}
+            value={values.role || ''}
             onChange={handleRoleChange}
             options={[
               { value: '', label: t('adminUsers.chooseRole') },
-              { value: 'owner', label: t('adminUsers.owner') },
-              { value: 'inspector', label: t('adminUsers.inspector') },
+              { value: Role.owner, label: t('adminUsers.owner') },
+              { value: Role.inspector, label: t('adminUsers.inspector') },
             ]}
           />
         )}
@@ -293,6 +287,7 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
               {t('delete')}
             </Button>
           )}
+
           <Button
             type="submit"
             variant="primary"
