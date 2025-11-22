@@ -1,20 +1,25 @@
 import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { useFetchAdminCompaniesQuery } from '../../../rtk/services/admin-service.tsx';
-import CompanyForm from '../../forms/CompanyForm.tsx';
-import Drawer from '../../shared/Drawer.tsx';
-import { Company } from '../../../models/Company.ts';
-import GenericTable, { TableColumn, TableAction } from '../../shared/GenericTable.tsx';
+import { Users, GitBranch, Pencil, Building2 } from 'lucide-react';
+
+import { useFetchAdminCompaniesQuery } from '../../../rtk/services/admin-service';
+import { Company } from '../../../models/Company';
+import GenericTable, { TableColumn, TableAction } from '../../shared/GenericTable';
+import Drawer from '../../shared/Drawer';
+import CompanyForm from '../../forms/CompanyForm';
+import { Button } from '../../shared/Button';
+import { CustomText } from '../../shared/CustomText';
 
 const AdminCompanies: FC = () => {
+  const { t } = useTranslation();
+  const navigate = useNavigate();
+
   const [drawerOpen, setDrawerOpen] = useState(false);
   const [selectedCompany, setSelectedCompany] = useState<Company | null>(null);
   const [search, setSearch] = useState('');
-  const navigate = useNavigate();
 
-  const { data: companies, error, isLoading } = useFetchAdminCompaniesQuery();
-  const { t } = useTranslation();
+  const { data: companies = [], error, isLoading } = useFetchAdminCompaniesQuery();
 
   const handleEditCompany = (company: Company) => {
     setSelectedCompany(company);
@@ -56,7 +61,7 @@ const AdminCompanies: FC = () => {
       key: 'phoneNumber',
       label: t('adminCompanies.phoneNumber'),
       width: '1.5fr',
-      render: (company) => company.phoneNumber || '-',
+      render: (company) => company.phoneNumber || '—',
       searchable: true,
     },
     {
@@ -64,59 +69,87 @@ const AdminCompanies: FC = () => {
       label: t('adminCompanies.location'),
       width: '2fr',
       render: (company) => `${company.city}, ${company.country}`,
+      getSearchValue: (company) => `${company.city} ${company.country}`,
       searchable: true,
     },
   ];
 
   const actions: TableAction<Company>[] = [
     {
-      icon: 'fa-users',
+      icon: <Users className="w-5 h-5 text-primary hover:text-primary-hover" />,
       label: t('adminCompanies.viewUsers'),
       onClick: handleViewUsers,
     },
     {
-      icon: 'fa-sitemap',
+      icon: <GitBranch className="w-5 h-5 text-primary hover:text-primary-hover" />,
       label: t('adminCompanies.viewBranches'),
       onClick: handleViewBranches,
     },
     {
-      icon: 'fa-edit',
+      icon: <Pencil className="w-5 h-5 text-primary hover:text-primary-hover" />,
       label: t('adminCompanies.edit'),
       onClick: handleEditCompany,
     },
   ];
 
-  // Toolbar actions (Add Company button)
   const toolbarActions = (
-    <button
-      className="w-full sm:w-auto px-6 py-2 rounded-md bg-primary text-white font-semibold hover:bg-primary-hover transition-colors whitespace-nowrap"
+    <Button
+      type="button"
+      variant="primary"
+      size="md"
+      fullWidth={false}
+      className="whitespace-nowrap flex items-center gap-2"
       onClick={handleAddCompany}
     >
       {t('adminCompanies.addCompany')}
-    </button>
+    </Button>
   );
 
   if (error) {
-    return <div className="text-center p-8 text-error">{t('adminCompanies.failedToLoadCompanies')}</div>;
+    return (
+      <div className="flex flex-col h-full">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+            <Building2 className="w-6 h-6 text-primary" />
+          </div>
+          <CustomText variant="h3" color="primary">
+            {t('adminCompanies.title')}
+          </CustomText>
+        </div>
+        <div className="flex-1 flex items-center justify-center">
+          <CustomText className="text-error">{t('adminCompanies.failedToLoadCompanies')}</CustomText>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <>
-      <GenericTable
-        data={companies || []}
-        columns={columns}
-        actions={actions}
-        isLoading={isLoading}
-        toolbarActions={toolbarActions}
-        showNumberColumn={false}
-        search={search}
-        onSearchChange={setSearch}
-        onSearch={(searchTerm) => setSearch(searchTerm)}
-        searchPlaceholder={t('adminCompanies.searchCompanies')}
-        showFilters={true}
-      />
+    <div className="flex flex-col h-full">
+      <div className="flex items-center gap-3">
+        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+          <Building2 className="w-6 h-6 text-primary" />
+        </div>
+        <CustomText variant="h3" color="primary">
+          {t('adminCompanies.title')}
+        </CustomText>
+      </div>
 
-      {/* Edit/Add Company Drawer */}
+      <div className="flex-1 min-h-0">
+        <GenericTable
+          data={companies}
+          columns={columns}
+          actions={actions}
+          isLoading={isLoading}
+          toolbarActions={toolbarActions}
+          showNumberColumn
+          search={search}
+          onSearchChange={setSearch}
+          searchPlaceholder={t('adminCompanies.searchCompanies')}
+          showFilters
+          embedded
+        />
+      </div>
+
       <Drawer
         isOpen={drawerOpen}
         onClose={handleCloseDrawer}
@@ -124,7 +157,7 @@ const AdminCompanies: FC = () => {
       >
         <CompanyForm selectedCompany={selectedCompany} onCloseDrawer={handleCloseDrawer} />
       </Drawer>
-    </>
+    </div>
   );
 };
 

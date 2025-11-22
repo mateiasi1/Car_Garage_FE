@@ -1,9 +1,10 @@
 import { FC, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
-import { showToast } from '../../../utils/showToast.ts';
-import { useUpdateBranchPackageMutation } from '../../../rtk/services/branch-service.tsx';
-import { useFetchPackagesQuery } from '../../../rtk/services/package-service.tsx';
-import Drawer from '../../shared/Drawer.tsx';
+import Drawer from '../../shared/Drawer';
+import { showToast } from '../../../utils/showToast';
+import { useUpdateBranchPackageMutation } from '../../../rtk/services/branch-service';
+import { useFetchPackagesQuery } from '../../../rtk/services/package-service';
+import { Button } from '../../shared/Button';
 
 interface PackageDialogProps {
   isOpen: boolean;
@@ -21,14 +22,14 @@ const PackageSubscribeDrawer: FC<PackageDialogProps> = ({ isOpen, onClose, curre
   const [period, setPeriod] = useState<'monthly' | 'yearly'>('monthly');
   const [calculatedPrice, setCalculatedPrice] = useState<number>(0);
 
-  // Set default selected package
+  // setează pachetul selectat inițial
   useEffect(() => {
     if (packages && packages.length > 0 && !selectedPackageId) {
       setSelectedPackageId(currentPackageId || packages[0].id);
     }
   }, [packages, currentPackageId, selectedPackageId]);
 
-  // Calculate price when package or period changes
+  // recalculează prețul când se schimbă pachetul sau perioada
   useEffect(() => {
     if (selectedPackageId && packages) {
       const selectedPkg = packages.find((p) => p.id === selectedPackageId);
@@ -62,62 +63,74 @@ const PackageSubscribeDrawer: FC<PackageDialogProps> = ({ isOpen, onClose, curre
   const selectedPackage = packages?.find((p) => p.id === selectedPackageId);
   const isSamePackage = selectedPackageId === currentPackageId;
 
+  const yearlySaving =
+    selectedPackage && period === 'yearly'
+      ? (selectedPackage.price * 12 - selectedPackage.price * 10).toFixed(2)
+      : selectedPackage
+        ? (selectedPackage.price * 2).toFixed(2)
+        : '0';
+
   return (
     <Drawer isOpen={isOpen} onClose={onClose} title={t('packages.selectPackageTitle')}>
       <div className="flex flex-col h-full">
-        {/* Content */}
+        {/* CONȚINUT */}
         <div className="flex-1 space-y-6 overflow-y-auto pr-1">
-          {/* Package Selector */}
+          {/* Selector pachet */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">{t('packages.choosePackage')}</label>
+            <label className="block text-sm font-body font-semibold text-text mb-2">
+              {t('packages.choosePackage')}
+            </label>
             <select
               value={selectedPackageId}
               onChange={(e) => setSelectedPackageId(e.target.value)}
-              className="w-full p-3 border border-gray-300 rounded-lg focus:ring-2 focus:ring-primary focus:border-primary"
+              className="w-full px-4 py-3 rounded-2xl bg-card border border-text/10 text-text font-body focus:outline-none focus:ring-2 focus:ring-primary"
             >
               {packages?.map((pkg) => (
                 <option key={pkg.id} value={pkg.id}>
-                  {pkg.name} - {pkg.price} RON/lună
+                  {pkg.name} - {pkg.price} RON / {t('packages.1month')}
                 </option>
               ))}
             </select>
           </div>
 
-          {/* Period Selector */}
           <div>
-            <label className="block text-sm font-medium text-gray-700 mb-2">{t('packages.selectPeriod')}</label>
+            <p className="block text-sm font-body font-semibold text-text mb-2">{t('packages.selectPeriod')}</p>
+
             <div className="grid grid-cols-2 gap-3">
-              <button
+              <Button
                 type="button"
+                variant={period === 'monthly' ? 'primary' : 'secondary'}
+                size="md"
+                className="h-24 rounded-2xl flex flex-col items-center justify-center text-center"
                 onClick={() => setPeriod('monthly')}
-                className={`p-3 border rounded-lg font-medium transition-all ${
-                  period === 'monthly' ? 'border-primary bg-primary text-white' : 'border-gray-300 hover:border-primary'
-                }`}
               >
-                {t('packages.monthly')}
-              </button>
-              <button
+                <span className="text-base font-heading">{t('packages.monthly')}</span>
+                <span className="text-xs font-body opacity-80 mt-1">{t('packages.1month')}</span>
+              </Button>
+
+              <Button
                 type="button"
+                variant={period === 'yearly' ? 'primary' : 'secondary'}
+                size="md"
+                className="h-24 rounded-2xl flex flex-col items-center justify-center text-center"
                 onClick={() => setPeriod('yearly')}
-                className={`p-3 border rounded-lg font-medium transition-all ${
-                  period === 'yearly' ? 'border-primary bg-primary text-white' : 'border-gray-300 hover:border-primary'
-                }`}
               >
-                {t('packages.yearly')}
-                <span className="block text-xs mt-1">
-                  {t('packages.save')} {selectedPackage ? (selectedPackage.price * 2).toFixed(2) : 0} RON
+                <span className="text-base font-heading">{t('packages.yearly')}</span>
+                <span className="text-xs font-body mt-1 opacity-80">
+                  {t('packages.save')} {yearlySaving} RON
                 </span>
-              </button>
+              </Button>
             </div>
           </div>
 
-          {/* Package Details */}
           {selectedPackage && (
-            <div className="bg-gray-50 p-4 rounded-lg">
-              <h3 className="font-semibold mb-2">{selectedPackage.name}</h3>
-              <p className="text-sm text-gray-600 mb-3">{selectedPackage.description}</p>
+            <div className="bg-card border border-text/10 rounded-2xl p-4">
+              <h3 className="font-semibold font-heading text-text mb-2">{selectedPackage.name}</h3>
+              {selectedPackage.description && (
+                <p className="text-sm font-body text-text/70 mb-3">{selectedPackage.description}</p>
+              )}
 
-              <div className="flex items-center gap-2 text-sm">
+              <div className="flex items-center gap-2 text-sm font-body text-text">
                 <svg className="w-4 h-4 text-success" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                   <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M5 13l4 4L19 7" />
                 </svg>
@@ -130,44 +143,41 @@ const PackageSubscribeDrawer: FC<PackageDialogProps> = ({ isOpen, onClose, curre
             </div>
           )}
 
-          {/* Price Summary */}
-          <div className="border-t pt-4">
-            <div className="flex justify-between items-center mb-2">
-              <span className="text-gray-600">{t('packages.period')}:</span>
-              <span className="font-medium">{period === 'yearly' ? t('packages.12months') : t('packages.1month')}</span>
+          <div className="border-t border-text/10 pt-4">
+            <div className="flex justify-between items-center mb-2 text-sm font-body">
+              <span className="text-text/70">{t('packages.period')}:</span>
+              <span className="font-medium text-text">
+                {period === 'yearly' ? t('packages.12months') : t('packages.1month')}
+              </span>
             </div>
             <div className="flex justify-between items-center">
-              <span className="text-lg font-semibold">{t('packages.totalPrice')}:</span>
-              <span className="text-2xl font-bold text-primary">{calculatedPrice.toFixed(2)} RON</span>
+              <span className="text-base font-heading text-text">{t('packages.totalPrice')}:</span>
+              <span className="text-2xl font-heading font-bold text-primary">{calculatedPrice.toFixed(2)} RON</span>
             </div>
           </div>
 
-          {/* Action Info */}
           {isSamePackage && (
-            <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-              <p className="text-sm text-blue-800">ℹ️ {t('packages.extendInfo')}</p>
+            <div className="bg-blue-50 border border-blue-200 rounded-2xl p-3">
+              <p className="text-sm font-body text-blue-800">ℹ️ {t('packages.extendInfo')}</p>
             </div>
           )}
         </div>
 
-        {/* Footer */}
-        <div className="pt-4 mt-4 border-t flex gap-3">
-          <button
-            type="button"
-            onClick={onClose}
-            className="flex-1 px-4 py-2 border border-gray-300 rounded-lg hover:bg-gray-50 transition-colors"
-            disabled={isLoading}
-          >
+        <div className="pt-4 mt-4 border-t border-text/10 flex gap-3">
+          <Button type="button" variant="secondary" size="md" className="flex-1" onClick={onClose} disabled={isLoading}>
             {t('cancel')}
-          </button>
-          <button
+          </Button>
+          <Button
             type="button"
+            variant="primary"
+            size="md"
+            className="flex-1"
             onClick={handleSubmit}
-            className="flex-1 px-4 py-2 bg-primary text-white rounded-lg hover:bg-primary-hover transition-colors disabled:opacity-50"
             disabled={isLoading}
+            loading={isLoading}
           >
             {isLoading ? t('packages.processing') : t('confirm')}
-          </button>
+          </Button>
         </div>
       </div>
     </Drawer>

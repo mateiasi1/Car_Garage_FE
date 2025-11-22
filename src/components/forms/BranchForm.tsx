@@ -1,4 +1,4 @@
-import { FC, useEffect, useState } from 'react';
+import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   useCreateAdminBranchMutation,
@@ -9,8 +9,9 @@ import { Branch } from '../../models/Branch';
 import { Error } from '../../interfaces/error';
 import { showToast } from '../../utils/showToast';
 import ConfirmationModal from '../shared/ConfirmationModal';
-import { DangerButton } from '../shared/DangerButton';
-import { PrimaryButton } from '../shared/PrimaryButton';
+import { Button } from '../shared/Button';
+import { useForm } from '../../hooks/useForm';
+import { CustomInput } from '../shared/CustomInput';
 
 interface BranchFormProps {
   selectedBranch: Branch | null;
@@ -18,7 +19,7 @@ interface BranchFormProps {
   onCloseDrawer: () => void;
 }
 
-type BranchFormState = {
+type BranchFormValues = {
   id?: string;
   name: string;
   phoneNumber: string;
@@ -30,7 +31,8 @@ type BranchFormState = {
   zipcode?: string;
 };
 
-const initialState: BranchFormState = {
+const initialValues: BranchFormValues = {
+  id: '',
   name: '',
   phoneNumber: '',
   country: '',
@@ -48,9 +50,12 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
   const [updateBranch, { isLoading: isUpdating }] = useUpdateAdminBranchMutation();
   const [deleteBranch] = useDeleteAdminBranchMutation();
 
-  const [form, setForm] = useState<BranchFormState>({
-    ...initialState,
-    ...(selectedBranch
+  const [showDeleteModal, setShowDeleteModal] = useState(false);
+
+  const isEdit = Boolean(selectedBranch?.id);
+
+  const { values, errors, register, handleSubmit, isSubmitting } = useForm<BranchFormValues>({
+    initialValues: selectedBranch
       ? {
           id: selectedBranch.id,
           name: selectedBranch.name,
@@ -62,115 +67,91 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
           houseNumber: selectedBranch.houseNumber ?? '',
           zipcode: selectedBranch.zipcode ?? '',
         }
-      : {}),
+      : initialValues,
+    fields: {
+      name: {
+        validate: (value) => {
+          const v = String(value ?? '').trim();
+          if (!v) return 'branch.branchNameEmpty';
+          return null;
+        },
+      },
+      phoneNumber: {
+        validate: (value) => {
+          const v = String(value ?? '').trim();
+          if (!v) return 'branch.branchPhoneEmpty';
+          return null;
+        },
+      },
+      country: {
+        validate: (value) => {
+          const v = String(value ?? '').trim();
+          if (!v) return 'countryEmpty';
+          return null;
+        },
+      },
+      city: {
+        validate: (value) => {
+          const v = String(value ?? '').trim();
+          if (!v) return 'cityEmpty';
+          return null;
+        },
+      },
+      street: {
+        validate: (value) => {
+          const v = String(value ?? '').trim();
+          if (!v) return 'streetEmpty';
+          return null;
+        },
+      },
+    },
+    onSubmit: async (formValues) => {
+      try {
+        if (isEdit && formValues.id) {
+          await updateBranch({
+            companyId,
+            branchId: formValues.id,
+            name: formValues.name,
+            phoneNumber: formValues.phoneNumber,
+            country: formValues.country,
+            city: formValues.city,
+            street: formValues.street,
+            streetNumber: formValues.streetNumber,
+            houseNumber: formValues.houseNumber,
+            zipcode: formValues.zipcode,
+          }).unwrap();
+          showToast(t('branch.branchUpdateSuccess'), 'success');
+        } else {
+          await createBranch({
+            companyId,
+            data: {
+              name: formValues.name,
+              phoneNumber: formValues.phoneNumber,
+              country: formValues.country,
+              city: formValues.city,
+              street: formValues.street,
+              streetNumber: formValues.streetNumber,
+              houseNumber: formValues.houseNumber,
+              zipcode: formValues.zipcode,
+            },
+          }).unwrap();
+          showToast(t('branch.branchCreateSuccess'), 'success');
+        }
+
+        onCloseDrawer();
+      } catch (error) {
+        showToast((error as Error).data?.message ?? t('branch.branchSaveError'), 'error');
+      }
+    },
   });
 
-  const [showDeleteModal, setShowDeleteModal] = useState(false);
-
-  const isEdit = !!selectedBranch;
-
-  useEffect(() => {
-    if (selectedBranch) {
-      setForm({
-        ...initialState,
-        id: selectedBranch.id,
-        name: selectedBranch.name,
-        phoneNumber: selectedBranch.phoneNumber ?? '',
-        country: selectedBranch.country,
-        city: selectedBranch.city,
-        street: selectedBranch.street,
-        streetNumber: selectedBranch.streetNumber ?? '',
-        houseNumber: selectedBranch.houseNumber ?? '',
-        zipcode: selectedBranch.zipcode ?? '',
-      });
-    } else {
-      setForm({ ...initialState });
-    }
-  }, [selectedBranch]);
-
-  const inputBaseClass =
-    'w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 border-gray-300 focus:ring-primary';
-
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
-  };
-
-  const validateForm = (): boolean => {
-    if (!form.name?.trim()) {
-      showToast(t('branch.branchNameEmpty'), 'error');
-      return false;
-    }
-
-    if (!form.phoneNumber?.trim()) {
-      showToast(t('branch.branchPhoneEmpty'), 'error');
-      return false;
-    }
-
-    if (!form.country?.trim()) {
-      showToast(t('countryEmpty'), 'error');
-      return false;
-    }
-
-    if (!form.city?.trim()) {
-      showToast(t('cityEmpty'), 'error');
-      return false;
-    }
-
-    if (!form.street?.trim()) {
-      showToast(t('streetEmpty'), 'error');
-      return false;
-    }
-
-    return true;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validateForm()) return;
-
-    try {
-      if (isEdit && form.id) {
-        await updateBranch({
-          companyId,
-          branchId: form.id,
-          name: form.name,
-          phoneNumber: form.phoneNumber,
-          country: form.country,
-          city: form.city,
-          street: form.street,
-          streetNumber: form.streetNumber,
-          houseNumber: form.houseNumber,
-          zipcode: form.zipcode,
-        }).unwrap();
-        showToast(t('branch.branchUpdateSuccess'), 'success');
-      } else {
-        await createBranch({
-          companyId,
-          data: {
-            name: form.name,
-            phoneNumber: form.phoneNumber,
-            country: form.country,
-            city: form.city,
-            street: form.street,
-            streetNumber: form.streetNumber,
-            houseNumber: form.houseNumber,
-            zipcode: form.zipcode,
-          },
-        }).unwrap();
-        showToast(t('branch.branchCreateSuccess'), 'success');
-      }
-
-      onCloseDrawer();
-    } catch (error) {
-      showToast((error as Error).data?.message ?? t('branch.branchSaveError'), 'error');
-    }
-  };
+  const onSubmit = handleSubmit();
 
   const handleDelete = async () => {
-    if (!form.id) return;
+    if (!values.id) return;
+
     try {
-      await deleteBranch({ companyId, branchId: form.id }).unwrap();
+      await deleteBranch({ companyId, branchId: values.id }).unwrap();
       showToast(t('branch.branchDeleteSuccess'), 'success');
       setShowDeleteModal(false);
       onCloseDrawer();
@@ -181,81 +162,67 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+      <form onSubmit={onSubmit} className="space-y-6" noValidate>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div className="col-span-full">
-            <label className="block font-semibold mb-1">{t('branch.branchName')}</label>
-            <input type="text" name="name" value={form.name} onChange={handleChange} className={inputBaseClass} />
-          </div>
-
-          <div className="col-span-full">
-            <label className="block font-semibold mb-1">{t('phoneNumber')}</label>
-            <input
-              type="text"
-              name="phoneNumber"
-              value={form.phoneNumber}
-              onChange={handleChange}
-              className={inputBaseClass}
-            />
-          </div>
-        </div>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="block font-semibold mb-1">{t('country')}</label>
-            <input type="text" name="country" value={form.country} onChange={handleChange} className={inputBaseClass} />
-          </div>
-
-          <div>
-            <label className="block font-semibold mb-1">{t('city')}</label>
-            <input type="text" name="city" value={form.city} onChange={handleChange} className={inputBaseClass} />
-          </div>
-
-          <div className="col-span-full">
-            <label className="block font-semibold mb-1">{t('street')}</label>
-            <input type="text" name="street" value={form.street} onChange={handleChange} className={inputBaseClass} />
-          </div>
-
-          <div className="col-span-full md:grid md:grid-cols-2 md:gap-6">
-            <div>
-              <label className="block font-semibold mb-1">{t('streetNumber')}</label>
-              <input
-                type="text"
-                name="streetNumber"
-                value={form.streetNumber}
-                onChange={handleChange}
-                className={inputBaseClass}
-              />
-            </div>
-
-            <div>
-              <label className="block font-semibold mb-1">{t('houseNumber')}</label>
-              <input
-                type="text"
-                name="houseNumber"
-                value={form.houseNumber}
-                onChange={handleChange}
-                className={inputBaseClass}
-              />
-            </div>
-          </div>
-
-          <div className="col-span-full">
-            <label className="block font-semibold mb-1">{t('zipcode')}</label>
-            <input type="text" name="zipcode" value={form.zipcode} onChange={handleChange} className={inputBaseClass} />
-          </div>
-        </div>
-
-        <div className="flex justify-end gap-3 mt-4">
-          {isEdit && (
-            <DangerButton type="button" text={t('delete')} onClick={() => setShowDeleteModal(true)} className="w-1/4" />
-          )}
-          <PrimaryButton
-            type="submit"
-            text={t('submit')}
-            disabled={isCreating || isUpdating}
-            className={isEdit ? 'w-3/4' : 'w-full'}
+          <CustomInput
+            label={t('branch.branchName')}
+            {...register('name')}
+            error={errors.name && t(errors.name)}
+            wrapperClassName="mb-0 md:col-span-2"
           />
+
+          <CustomInput
+            label={t('phoneNumber')}
+            {...register('phoneNumber')}
+            error={errors.phoneNumber && t(errors.phoneNumber)}
+            wrapperClassName="mb-0 md:col-span-2"
+          />
+        </div>
+
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+          <CustomInput
+            label={t('country')}
+            {...register('country')}
+            error={errors.country && t(errors.country)}
+            wrapperClassName="mb-0"
+          />
+
+          <CustomInput
+            label={t('city')}
+            {...register('city')}
+            error={errors.city && t(errors.city)}
+            wrapperClassName="mb-0"
+          />
+
+          <CustomInput
+            label={t('street')}
+            {...register('street')}
+            error={errors.street && t(errors.street)}
+            wrapperClassName="mb-0 md:col-span-2"
+          />
+
+          <CustomInput label={t('streetNumber')} {...register('streetNumber')} wrapperClassName="mb-0" />
+
+          <CustomInput label={t('houseNumber')} {...register('houseNumber')} wrapperClassName="mb-0" />
+
+          <CustomInput label={t('zipcode')} {...register('zipcode')} wrapperClassName="mb-0 md:col-span-2" />
+        </div>
+
+        <div className="flex justify-end gap-3 pt-2">
+          {isEdit && (
+            <Button type="button" variant="danger" size="md" className="w-1/3" onClick={() => setShowDeleteModal(true)}>
+              {t('delete')}
+            </Button>
+          )}
+          <Button
+            type="submit"
+            variant="primary"
+            size="md"
+            className={isEdit ? 'w-2/3' : 'w-full'}
+            loading={isCreating || isUpdating || isSubmitting}
+          >
+            {t('submit')}
+          </Button>
         </div>
       </form>
 

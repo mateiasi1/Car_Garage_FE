@@ -123,6 +123,7 @@
     "pageNotFoundDescription": "Pagina pe care o căutați nu există. Veți fi redirecționat către inspecții în 5 secunde.",
     "backToInspections": "Mergi la Inspecții",
     "name": "Nume",
+    "shortName": "Denumire brand",
     "country": "Țară",
     "city": "Oraș",
     "zipcode": "Cod poștal",
@@ -384,10 +385,11 @@
     "noBranchesAvailable": "Nu există sedii disponibile",
     "selectAtLeastOneBranch": "Te rog selectează cel puțin un sediu",
     "adminCompanies": {
+      "title": "Comapanii",
       "actions": "Acțiuni",
       "addCompany": "Adaugă companie",
-      "branches": "Sucursale",
-      "branchesForCompany": "Sucursale pentru compania",
+      "branches": "Sedii",
+      "branchesForCompany": "Sedii pentru compania",
       "companyName": "Nume companie",
       "edit": "Editează",
       "editCompany": "Editează companie",
@@ -441,6 +443,7 @@
       "branchUpdated": "Sediul a fost actualizat cu succes"
     },
     "adminUsers": {
+      "title": "Utilizatori",
       "username": "Nume utilizator",
       "name": "Nume",
       "role": "Rol",
@@ -484,6 +487,9 @@
     "searchInspectors": "Caută inspectori",
     "failedToLoadInspectors": "Nu s-au putut încărca inspectorii",
     "searchCustomers": "Caută clienți",
-    "failedToLoadCustomers": "Nu s-au putut încărca clienții"
+    "failedToLoadCustomers": "Nu s-au putut încărca clienții",
+    "companySaveError": "Compania nu a putut fi salvată",
+    "companyDeleteError": "Compania nu a putut fi ștearsă",
+    "failedToLoadBranches": "Nu s-au putut încărca sedii"
   }
 }

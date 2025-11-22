@@ -1,13 +1,17 @@
 import { FC, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import Drawer from '../../shared/Drawer.tsx';
-import { Branch } from '../../../models/Branch.ts';
-import GenericTable, { TableColumn, TableAction } from '../../shared/GenericTable.tsx';
-import BranchForm from '../../forms/BranchForm.tsx';
-import PackageSubscribeDrawer from '../package/PackageSubscribeDrawer.tsx';
-import { useFetchAdminCompanyBranchesQuery } from '../../../rtk/services/admin-service.tsx';
-import { useFetchPackagesQuery } from '../../../rtk/services/package-service.tsx';
 import { useNavigate, useSearchParams } from 'react-router-dom';
+import { Store, Pencil, Building } from 'lucide-react';
+
+import Drawer from '../../shared/Drawer';
+import GenericTable, { TableColumn, TableAction } from '../../shared/GenericTable';
+import BranchForm from '../../forms/BranchForm';
+import PackageSubscribeDrawer from '../package/PackageSubscribeDrawer';
+import { Branch } from '../../../models/Branch';
+import { useFetchAdminCompanyBranchesQuery } from '../../../rtk/services/admin-service';
+import { useFetchPackagesQuery } from '../../../rtk/services/package-service';
+import { Button } from '../../shared/Button';
+import { CustomText } from '../../shared/CustomText';
 
 const AdminBranches: FC = () => {
   const { t } = useTranslation();
@@ -53,11 +57,6 @@ const AdminBranches: FC = () => {
     return null;
   }
 
-  const handleEditBranch = (branch: Branch) => {
-    setSelectedBranch(branch);
-    setDrawerOpen(true);
-  };
-
   const handleAddBranch = () => {
     setSelectedBranch(null);
     setDrawerOpen(true);
@@ -67,11 +66,6 @@ const AdminBranches: FC = () => {
     setDrawerOpen(false);
     setSelectedBranch(null);
     refetch();
-  };
-
-  const handleManagePackage = (branch: Branch) => {
-    setSelectedBranchForPackage(branch);
-    setPackageDialogOpen(true);
   };
 
   const handleClosePackageDialog = () => {
@@ -91,7 +85,7 @@ const AdminBranches: FC = () => {
       key: 'phoneNumber',
       label: t('adminBranches.phoneNumber'),
       width: '1.5fr',
-      render: (branch) => branch.phoneNumber || '-',
+      render: (branch) => branch.phoneNumber || '—',
       searchable: true,
     },
     {
@@ -106,60 +100,100 @@ const AdminBranches: FC = () => {
       label: t('adminBranches.package'),
       width: '1.5fr',
       render: (branch) => {
-        if (!branch.activePackage?.packageId) return '-';
-        return packageMap[branch.activePackage.packageId] || '-';
+        if (!branch.activePackage?.packageId) return '—';
+        return packageMap[branch.activePackage.packageId] || '—';
       },
     },
   ];
 
   const actions: TableAction<Branch>[] = [
     {
-      icon: 'fa-store',
+      icon: <Store className="w-5 h-5 text-primary hover:text-primary-hover" />,
       label: t('adminBranches.managePackage'),
-      onClick: handleManagePackage,
+      onClick: (branch) => {
+        setSelectedBranchForPackage(branch);
+        setPackageDialogOpen(true);
+      },
     },
     {
-      icon: 'fa-edit',
+      icon: <Pencil className="w-5 h-5 text-primary hover:text-primary-hover" />,
       label: t('adminBranches.edit'),
-      onClick: handleEditBranch,
+      onClick: (branch) => {
+        setSelectedBranch(branch);
+        setDrawerOpen(true);
+      },
     },
   ];
 
   const toolbarActions = (
-    <button
-      className="w-full sm:w-auto px-6 py-2 rounded-md bg-primary text-white font-semibold hover:bg-primary-hover transition-colors whitespace-nowrap"
+    <Button
+      type="button"
+      variant="primary"
+      size="md"
+      fullWidth={false}
+      className="whitespace-nowrap"
       onClick={handleAddBranch}
     >
       {t('adminBranches.addBranch')}
-    </button>
+    </Button>
   );
 
   if (error) {
-    return <div className="text-center p-8 text-error">{t('adminBranches.failedToLoadBranches')}</div>;
+    return (
+      <div className="flex flex-col h-full">
+        <div className="flex items-center gap-3">
+          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+            <Building className="w-6 h-6 text-primary" />
+          </div>
+          <CustomText variant="h3" color="primary">
+            {t('adminCompanies.branches')}
+          </CustomText>
+        </div>
+        <div className="flex-1 flex items-center justify-center">
+          <CustomText className="text-error">{t('adminBranches.failedToLoadBranches')}</CustomText>
+        </div>
+      </div>
+    );
   }
 
   return (
-    <>
-      <GenericTable
-        data={branches || []}
-        columns={columns}
-        actions={actions}
-        isLoading={isLoading}
-        toolbarActions={toolbarActions}
-        showNumberColumn={false}
-        search={search}
-        onSearchChange={setSearch}
-        onSearch={(searchTerm) => setSearch(searchTerm)}
-        searchPlaceholder={t('adminBranches.searchBranches')}
-        showFilters={true}
-      />
+    <div className="flex flex-col h-full">
+      <div className="flex items-center gap-3">
+        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+          <Building className="w-6 h-6 text-primary" />
+        </div>
+        <CustomText variant="h3" color="primary">
+          {t('adminCompanies.branches')}
+        </CustomText>
+      </div>
+
+      <div className="flex-1 min-h-0">
+        <GenericTable<Branch>
+          data={branches || []}
+          columns={columns}
+          actions={actions}
+          isLoading={isLoading}
+          toolbarActions={toolbarActions}
+          showNumberColumn={false}
+          search={search}
+          onSearchChange={setSearch}
+          searchPlaceholder={t('adminBranches.searchBranches')}
+          showFilters
+          embedded
+        />
+      </div>
 
       <Drawer
         isOpen={drawerOpen}
         onClose={handleCloseDrawer}
         title={selectedBranch ? t('adminBranches.editBranch') : t('adminBranches.addBranch')}
       >
-        <BranchForm selectedBranch={selectedBranch} companyId={companyId} onCloseDrawer={handleCloseDrawer} />
+        <BranchForm
+          key={selectedBranch?.id ?? 'new'}
+          selectedBranch={selectedBranch}
+          companyId={companyId}
+          onCloseDrawer={handleCloseDrawer}
+        />
       </Drawer>
 
       {selectedBranchForPackage && (
@@ -170,7 +204,7 @@ const AdminBranches: FC = () => {
           branchId={selectedBranchForPackage.id}
         />
       )}
-    </>
+    </div>
   );
 };
 

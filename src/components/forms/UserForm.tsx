@@ -1,5 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+
 import {
   useCreateAdminUserMutation,
   useUpdateAdminUserMutation,
@@ -11,10 +12,12 @@ import { useGenerateUsernameMutation } from '../../rtk/services/user-service';
 import { Error } from '../../interfaces/error';
 import { showToast } from '../../utils/showToast';
 import ConfirmationModal from '../shared/ConfirmationModal';
-import { DangerButton } from '../shared/DangerButton';
-import { PrimaryButton } from '../shared/PrimaryButton';
+import { Button } from '../shared/Button';
 import DropdownMultiSelect from '../shared/DropdownMultiSelect';
 import { Branch } from '../../models/Branch';
+import { useForm } from '../../hooks/useForm';
+import { CustomInput } from '../shared/CustomInput';
+import { CustomSelect } from '../shared/CustomSelect';
 
 interface UserFormProps {
   selectedUser: AdminUser | null;
@@ -22,7 +25,7 @@ interface UserFormProps {
   onCloseDrawer: () => void;
 }
 
-type UserFormState = {
+type UserFormValues = {
   id?: string;
   firstName: string;
   lastName: string;
@@ -31,7 +34,8 @@ type UserFormState = {
   branchIds: string[];
 };
 
-const initialState: UserFormState = {
+const initialValues: UserFormValues = {
+  id: '',
   firstName: '',
   lastName: '',
   password: '',
@@ -47,143 +51,157 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
   const [deleteUser] = useDeleteAdminUserMutation();
   const [generateUsername] = useGenerateUsernameMutation();
 
-  const { data: branches } = useFetchAdminCompanyBranchesQuery(companyId);
+  const { data: branches = [] } = useFetchAdminCompanyBranchesQuery(companyId);
 
-  const [form, setForm] = useState<UserFormState>(initialState);
   const [showDeleteModal, setShowDeleteModal] = useState(false);
   const [generatedUsername, setGeneratedUsername] = useState('');
 
-  const isEdit = !!selectedUser;
+  const isEdit = Boolean(selectedUser?.id);
+
+  const { values, errors, register, handleSubmit, setFieldValue, isSubmitting } = useForm<UserFormValues>({
+    initialValues: {
+      ...initialValues,
+      ...(selectedUser
+        ? {
+            id: selectedUser.id,
+            firstName: selectedUser.firstName,
+            lastName: selectedUser.lastName,
+            role: (selectedUser.roles[0] as 'owner' | 'inspector') ?? '',
+            branchIds: selectedUser.branches?.map((b) => b.id) ?? [],
+          }
+        : {}),
+    },
+    fields: {
+      firstName: {
+        validate: (value) => {
+          const v = String(value ?? '').trim();
+          if (!v) return 'adminUsers.firstNameEmpty';
+          return null;
+        },
+      },
+      lastName: {
+        validate: (value) => {
+          const v = String(value ?? '').trim();
+          if (!v) return 'adminUsers.lastNameEmpty';
+          return null;
+        },
+      },
+      password: {
+        validate: (value) => {
+          if (isEdit) return null;
+          const v = String(value ?? '').trim();
+          if (!v) return 'adminUsers.passwordEmpty';
+          if (v.length < 8) return 'adminUsers.passwordTooShort';
+          return null;
+        },
+      },
+    },
+    onSubmit: async (formValues) => {
+      if (!isEdit && !formValues.role) {
+        showToast(t('adminUsers.roleRequired'), 'error');
+        return;
+      }
+
+      if (formValues.role === 'inspector' && (!formValues.branchIds || formValues.branchIds.length === 0)) {
+        showToast(t('adminUsers.branchRequired'), 'error');
+        return;
+      }
+
+      try {
+        if (isEdit && formValues.id) {
+          await updateUser({
+            companyId,
+            userId: formValues.id,
+            data: {
+              firstName: formValues.firstName,
+              lastName: formValues.lastName,
+              branchIds: formValues.role === 'inspector' ? formValues.branchIds : undefined,
+            },
+          }).unwrap();
+          showToast(t('adminUsers.userUpdateSuccess'), 'success');
+        } else {
+          await createUser({
+            companyId,
+            data: {
+              firstName: formValues.firstName,
+              lastName: formValues.lastName,
+              password: formValues.password,
+              roles: [formValues.role.toUpperCase()],
+              branchIds: formValues.role === 'inspector' ? formValues.branchIds : undefined,
+            },
+          }).unwrap();
+          showToast(t('adminUsers.userCreateSuccess'), 'success');
+        }
+
+        onCloseDrawer();
+      } catch (error) {
+        showToast((error as Error).data?.message ?? t('adminUsers.userSaveError'), 'error');
+      }
+    },
+  });
 
   useEffect(() => {
     if (selectedUser) {
-      setForm({
-        id: selectedUser.id,
-        firstName: selectedUser.firstName,
-        lastName: selectedUser.lastName,
-        password: '',
-        role: selectedUser.roles[0] as 'owner' | 'inspector',
-        branchIds: selectedUser.branches?.map((b) => b.id) || [],
-      });
+      setFieldValue('id', selectedUser.id ?? '');
+      setFieldValue('firstName', selectedUser.firstName ?? '');
+      setFieldValue('lastName', selectedUser.lastName ?? '');
+      setFieldValue('password', '');
+      setFieldValue('role', (selectedUser.roles[0] as 'owner' | 'inspector') ?? '');
+      setFieldValue(
+        'branchIds',
+        selectedUser.branches && selectedUser.branches.length > 0 ? selectedUser.branches.map((b) => b.id) : []
+      );
       setGeneratedUsername(selectedUser.username);
     } else {
-      setForm(initialState);
+      setFieldValue('id', '');
+      setFieldValue('firstName', '');
+      setFieldValue('lastName', '');
+      setFieldValue('password', '');
+      setFieldValue('role', '');
+      setFieldValue('branchIds', []);
       setGeneratedUsername('');
     }
-  }, [selectedUser]);
+  }, [selectedUser, setFieldValue]);
 
   useEffect(() => {
     if (isEdit) return;
-    if (!form.firstName?.trim() || !form.lastName?.trim()) return;
+    if (!values.firstName.trim() || !values.lastName.trim()) return;
 
-    const timeoutId = setTimeout(async () => {
+    const timeoutId = window.setTimeout(async () => {
       try {
         const result = await generateUsername({
-          firstName: form.firstName,
-          lastName: form.lastName,
-          companyId: companyId,
+          firstName: values.firstName,
+          lastName: values.lastName,
+          companyId,
         }).unwrap();
 
         setGeneratedUsername(result.username);
-      } catch (error) {
-        console.error('Error generating username:', error);
+      } catch {
+        /* silent */
       }
     }, 500);
 
-    return () => clearTimeout(timeoutId);
-  }, [form.firstName, form.lastName, isEdit, generateUsername, companyId]);
+    return () => window.clearTimeout(timeoutId);
+  }, [values.firstName, values.lastName, isEdit, generateUsername, companyId]);
 
-  const inputBaseClass =
-    'w-full border rounded-md px-3 py-2 focus:outline-none focus:ring-2 border-gray-300 focus:ring-primary';
+  const onSubmit = handleSubmit();
 
-  const handleChange = (e: React.ChangeEvent<HTMLInputElement | HTMLSelectElement>) => {
-    const { name, value } = e.target;
-    setForm((prev) => ({ ...prev, [name]: value }));
+  const handleRoleChange = (value: string) => {
+    const role = value as 'owner' | 'inspector' | '';
+    setFieldValue('role', role);
+    if (role === 'owner') {
+      setFieldValue('branchIds', []);
+    }
   };
 
-  const handleRoleChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    const role = e.target.value as 'owner' | 'inspector' | '';
-    setForm((prev) => ({
-      ...prev,
-      role,
-      branchIds: role === 'owner' ? [] : prev.branchIds,
-    }));
-  };
-
-  const validateForm = (): boolean => {
-    if (!form.firstName?.trim()) {
-      showToast(t('adminUsers.firstNameEmpty'), 'error');
-      return false;
-    }
-
-    if (!form.lastName?.trim()) {
-      showToast(t('adminUsers.lastNameEmpty'), 'error');
-      return false;
-    }
-
-    if (!isEdit && !form.password?.trim()) {
-      showToast(t('adminUsers.passwordEmpty'), 'error');
-      return false;
-    }
-
-    if (!isEdit && form.password && form.password.length < 8) {
-      showToast(t('adminUsers.passwordTooShort'), 'error');
-      return false;
-    }
-
-    if (!form.role) {
-      showToast(t('adminUsers.roleRequired'), 'error');
-      return false;
-    }
-
-    if (form.role === 'inspector' && form.branchIds.length === 0) {
-      showToast(t('adminUsers.branchRequired'), 'error');
-      return false;
-    }
-
-    return true;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validateForm()) return;
-
-    try {
-      if (isEdit && form.id) {
-        await updateUser({
-          companyId,
-          userId: form.id,
-          data: {
-            firstName: form.firstName,
-            lastName: form.lastName,
-            branchIds: form.role === 'inspector' ? form.branchIds : undefined,
-          },
-        }).unwrap();
-        showToast(t('adminUsers.userUpdateSuccess'), 'success');
-      } else {
-        await createUser({
-          companyId,
-          data: {
-            firstName: form.firstName,
-            lastName: form.lastName,
-            password: form.password,
-            roles: [form.role.toUpperCase()],
-            branchIds: form.role === 'inspector' ? form.branchIds : undefined,
-          },
-        }).unwrap();
-        showToast(t('adminUsers.userCreateSuccess'), 'success');
-      }
-
-      onCloseDrawer();
-    } catch (error) {
-      showToast((error as Error).data?.message ?? t('adminUsers.userSaveError'), 'error');
-    }
+  const handleBranchesChange = (selectedIds: string[]) => {
+    setFieldValue('branchIds', selectedIds);
   };
 
   const handleDelete = async () => {
-    if (!form.id) return;
+    if (!values.id) return;
     try {
-      await deleteUser({ companyId, userId: form.id }).unwrap();
+      await deleteUser({ companyId, userId: values.id }).unwrap();
       showToast(t('adminUsers.userDeleteSuccess'), 'success');
       setShowDeleteModal(false);
       onCloseDrawer();
@@ -192,80 +210,69 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
     }
   };
 
-  const isOwner = form.role === 'owner';
-  const isInspector = form.role === 'inspector';
+  const isInspector = values.role === 'inspector';
+  const isOwner = values.role === 'owner';
 
   return (
     <>
-      <form onSubmit={handleSubmit} className="space-y-6" noValidate>
+      <form onSubmit={onSubmit} className="space-y-6" noValidate>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <div>
-            <label className="block font-semibold mb-1">{t('firstName')}</label>
-            <input
-              type="text"
-              name="firstName"
-              value={form.firstName}
-              onChange={handleChange}
-              className={inputBaseClass}
-            />
-          </div>
-
-          <div>
-            <label className="block font-semibold mb-1">{t('lastName')}</label>
-            <input
-              type="text"
-              name="lastName"
-              value={form.lastName}
-              onChange={handleChange}
-              className={inputBaseClass}
-            />
-          </div>
+          <CustomInput
+            label={t('firstName')}
+            {...register('firstName')}
+            error={errors.firstName && t(errors.firstName)}
+            wrapperClassName="mb-0"
+          />
+          <CustomInput
+            label={t('lastName')}
+            {...register('lastName')}
+            error={errors.lastName && t(errors.lastName)}
+            wrapperClassName="mb-0"
+          />
         </div>
 
         <div>
-          <label className="block font-semibold mb-1">{t('adminUsers.username')}</label>
-          <input
-            type="text"
+          <CustomInput
+            label={t('adminUsers.username')}
             name="username"
             value={generatedUsername}
             disabled
-            className={`${inputBaseClass} bg-gray-100 cursor-not-allowed`}
+            className="bg-background/60 cursor-not-allowed"
+            wrapperClassName="mb-1"
             placeholder={isEdit ? generatedUsername : t('adminUsers.usernameWillBeGenerated')}
           />
-          {!isEdit && <p className="text-sm text-gray-500 mt-1">{t('adminUsers.usernameWillBeGenerated')}</p>}
+          {!isEdit && <p className="text-xs font-body text-text/60 mt-1">{t('adminUsers.usernameWillBeGenerated')}</p>}
         </div>
 
         {!isEdit && (
-          <div>
-            <label className="block font-semibold mb-1">{t('password')}</label>
-            <input
-              type="password"
-              name="password"
-              value={form.password}
-              onChange={handleChange}
-              className={inputBaseClass}
-              placeholder={t('adminUsers.minLength8')}
-            />
-          </div>
+          <CustomInput
+            type="password"
+            label={t('password')}
+            {...register('password')}
+            error={errors.password && t(errors.password)}
+            placeholder={t('adminUsers.minLength8')}
+          />
         )}
 
         {!isEdit && (
-          <div>
-            <label className="block font-semibold mb-1">{t('adminUsers.selectRole')}</label>
-            <select name="role" value={form.role} onChange={handleRoleChange} className={inputBaseClass}>
-              <option value="">{t('adminUsers.chooseRole')}</option>
-              <option value="owner">{t('adminUsers.owner')}</option>
-              <option value="inspector">{t('adminUsers.inspector')}</option>
-            </select>
-          </div>
+          <CustomSelect
+            label={t('adminUsers.selectRole')}
+            value={values.role}
+            onChange={handleRoleChange}
+            options={[
+              { value: '', label: t('adminUsers.chooseRole') },
+              { value: 'owner', label: t('adminUsers.owner') },
+              { value: 'inspector', label: t('adminUsers.inspector') },
+            ]}
+          />
         )}
 
         {isInspector && (
           <DropdownMultiSelect
             label={t('adminUsers.selectBranches')}
-            options={branches || []}
-            selectedIds={form.branchIds}
-            onSelectionChange={(selectedIds) => setForm((prev) => ({ ...prev, branchIds: selectedIds }))}
+            options={branches}
+            selectedIds={values.branchIds}
+            onSelectionChange={handleBranchesChange}
             getOptionId={(branch: Branch) => branch.id}
             getOptionLabel={(branch: Branch) => branch.name}
             placeholder={t('adminUsers.selectBranches')}
@@ -280,16 +287,21 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
           </div>
         )}
 
-        <div className="flex justify-end gap-3 mt-4">
+        <div className="flex justify-end gap-3 pt-2">
           {isEdit && (
-            <DangerButton type="button" text={t('delete')} onClick={() => setShowDeleteModal(true)} className="w-1/4" />
+            <Button type="button" variant="danger" size="md" className="w-1/3" onClick={() => setShowDeleteModal(true)}>
+              {t('delete')}
+            </Button>
           )}
-          <PrimaryButton
+          <Button
             type="submit"
-            text={t('submit')}
-            disabled={isCreating || isUpdating}
-            className={isEdit ? 'w-3/4' : 'w-full'}
-          />
+            variant="primary"
+            size="md"
+            className={isEdit ? 'w-2/3' : 'w-full'}
+            loading={isCreating || isUpdating || isSubmitting}
+          >
+            {t('submit')}
+          </Button>
         </div>
       </form>
 

@@ -95,9 +95,14 @@ const CustomersList: FC = () => {
   if (error) {
     return (
       <div className="flex flex-col h-full">
-        <CustomText variant="h3" className="mb-4">
-          {t('customers')}
-        </CustomText>
+        <div className="flex items-center gap-2">
+          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
+            <UserCog className="w-6 h-6 text-primary" />
+          </div>
+          <CustomText variant="h3" color="primary">
+            {t('customers')}
+          </CustomText>
+        </div>
         <div className="flex-1 flex items-center justify-center">
           <CustomText className="text-error">{t('failedToLoadCustomers')}</CustomText>
         </div>
@@ -117,7 +122,7 @@ const CustomersList: FC = () => {
       </div>
 
       <div className="flex-1 min-h-0">
-        <GenericTable<CustomerRow>
+        <GenericTable
           data={items}
           columns={columns}
           actions={actions}

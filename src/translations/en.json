@@ -124,6 +124,7 @@
     "pageNotFoundDescription": "The page you're looking for doesn't exist. You'll be redirected to inspections in 5 seconds.",
     "backToInspections": "Go to Inspections",
     "name": "Name",
+    "shortName": "Company brand",
     "country": "Country",
     "city": "City",
     "zipcode": "Zip Code",
@@ -386,6 +387,7 @@
   "noBranchesAvailable": "No branches available",
   "selectAtLeastOneBranch": "Please select at least one branch",
   "adminCompanies": {
+    "title": "Companies",
     "actions": "Actions",
     "addCompany": "Add company",
     "branches": "Branches",
@@ -443,6 +445,7 @@
     "branchUpdated": "Branch updated successfully"
   },
   "adminUsers": {
+    "title": "Users",
     "username": "Username",
     "name": "Name",
     "role": "Role",
@@ -486,5 +489,8 @@
   "searchInspectors": "Search inspectors",
   "failedToLoadInspectors": "Failed to load inspectors",
   "searchCustomers": "Search customers",
-  "failedToLoadCustomers": "Failed to load customers"
+  "failedToLoadCustomers": "Failed to load customers",
+  "companySaveError": "Could not save company",
+  "companyDeleteError": "Could not delete the company",
+  "failedToLoadBranches": "Failed to load branches"
 }

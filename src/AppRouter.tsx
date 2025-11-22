@@ -1,5 +1,5 @@
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import InspectionForm from './components/forms/InspectionForm.tsx';
+import InspectionForm from './components/forms/InspectionForm';
 import AdministrationPage from './pages/administration/AdministrationPage';
 import InspectionsPage from './pages/inspections/InspectionsPage';
 import ProtectedLayout from './pages/layout/ProtectedLayout';
