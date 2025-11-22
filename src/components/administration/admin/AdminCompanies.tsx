@@ -10,6 +10,7 @@ import Drawer from '../../shared/Drawer';
 import CompanyForm from '../../forms/CompanyForm';
 import { Button } from '../../shared/Button';
 import { CustomText } from '../../shared/CustomText';
+import { PageHeader } from '../../shared/PageHeader';
 
 const AdminCompanies: FC = () => {
   const { t } = useTranslation();
@@ -108,14 +109,7 @@ const AdminCompanies: FC = () => {
   if (error) {
     return (
       <div className="flex flex-col h-full">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-            <Building2 className="w-6 h-6 text-primary" />
-          </div>
-          <CustomText variant="h3" color="primary">
-            {t('adminCompanies.title')}
-          </CustomText>
-        </div>
+        <PageHeader title={t('adminCompanies.title')} icon={Building2} />
         <div className="flex-1 flex items-center justify-center">
           <CustomText className="text-error">{t('adminCompanies.failedToLoadCompanies')}</CustomText>
         </div>
@@ -125,14 +119,7 @@ const AdminCompanies: FC = () => {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center gap-3">
-        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-          <Building2 className="w-6 h-6 text-primary" />
-        </div>
-        <CustomText variant="h3" color="primary">
-          {t('adminCompanies.title')}
-        </CustomText>
-      </div>
+      <PageHeader title={t('adminCompanies.title')} icon={Building2} />
 
       <div className="flex-1 min-h-0">
         <GenericTable

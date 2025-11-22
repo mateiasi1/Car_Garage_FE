@@ -9,6 +9,7 @@ import InspectorForm from '../forms/InspectorForm';
 import { Button } from '../shared/Button';
 import { CustomText } from '../shared/CustomText';
 import { UserBranch } from '../../models/UserBranch';
+import { PageHeader } from '../shared/PageHeader.tsx';
 
 interface InspectorRow {
   id: string;
@@ -98,14 +99,7 @@ const InspectorsList: FC = () => {
   if (error) {
     return (
       <div className="flex flex-col h-full">
-        <div className="flex items-center gap-2">
-          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-            <Users className="w-6 h-6 text-primary" />
-          </div>
-          <CustomText variant="h3" color="primary">
-            {t('inspectors')}
-          </CustomText>
-        </div>
+        <PageHeader title={t('inspectors')} icon={Users} />
         <div className="flex-1 flex items-center justify-center">
           <CustomText className="text-error">{t('failedToLoadInspectors')}</CustomText>
         </div>
@@ -115,15 +109,7 @@ const InspectorsList: FC = () => {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center gap-2">
-        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-          <Users className="w-6 h-6 text-primary" />
-        </div>
-        <CustomText variant="h3" color="primary">
-          {t('inspectors')}
-        </CustomText>
-      </div>
-
+      <PageHeader title={t('inspectors')} icon={Users} />
       <div className="flex-1 min-h-0">
         <GenericTable<InspectorRow>
           data={items}

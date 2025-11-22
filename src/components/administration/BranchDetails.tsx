@@ -10,9 +10,9 @@ import { Branch } from '../../models/Branch';
 import { AuthContext } from '../../contexts/authContext';
 import { Role } from '../../utils/enums/Role';
 import { CustomSelect } from '../shared/CustomSelect';
-import { CustomText } from '../shared/CustomText';
 import { ArrowLeftRight, Building, Store } from 'lucide-react';
 import { Button } from '../shared/Button';
+import { PageHeader } from '../shared/PageHeader';
 
 const BranchDetails: FC = () => {
   const { t } = useTranslation();
@@ -85,30 +85,27 @@ const BranchDetails: FC = () => {
   return (
     <div className="space-y-10">
       <div className="flex items-center justify-between">
-        <div className="flex items-center gap-2">
-          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-            <Building className="w-6 h-6 text-primary" />
-          </div>
-          <CustomText variant="h3" color="primary">
-            {t('branch.data')}
-          </CustomText>
-        </div>
-
-        {branches.length > 1 && (
-          <Button
-            type="button"
-            variant="primary"
-            size="md"
-            className="flex items-center gap-2"
-            onClick={() => setDrawerOpen(true)}
-          >
-            <ArrowLeftRight className="w-4 h-4" />
-            {t('branch.switchBranch')}
-          </Button>
-        )}
+        <PageHeader
+          title={t('branch.data')}
+          icon={Building}
+          action={
+            branches.length > 1 && (
+              <Button
+                type="button"
+                variant="primary"
+                size="md"
+                className="flex items-center gap-2"
+                onClick={() => setDrawerOpen(true)}
+              >
+                <ArrowLeftRight className="w-4 h-4" />
+                {t('branch.switchBranch')}
+              </Button>
+            )
+          }
+        />
       </div>
 
-      <div className="w-full rounded-2xl p-6 bg-white">
+      <div className="p-4 sm:p-5 lg:p-6 w-full rounded-2xl bg-white">
         {rows.map((row, index) => (
           <div key={index} className="flex items-center justify-between py-4 border-b border-gray-200 last:border-none">
             <span className="text-sm text-text/60 font-body">{row.label}</span>
@@ -119,16 +116,9 @@ const BranchDetails: FC = () => {
 
       {isOwner && (
         <div className="space-y-4">
-          <div className="flex items-center gap-2 mb-2">
-            <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-              <Store className="w-6 h-6 text-primary" />
-            </div>
-            <CustomText variant="h3" color="primary">
-              {activePackage ? t('packages.activePackage') : t('packages.noActivePackage')}
-            </CustomText>
-          </div>
+          <PageHeader title={t('packages.activePackage')} icon={Store} />
 
-          <div className="w-full rounded-2xl p-6 bg-white">
+          <div className="p-4 sm:p-5 lg:p-6 w-full rounded-2xl bg-white">
             {activePackage ? (
               <>
                 <div className="flex items-center justify-between py-4 border-b border-gray-200">

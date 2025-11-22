@@ -3,7 +3,7 @@ import { useFetchPackagesQuery } from '../../../rtk/services/package-service';
 import { useTranslation } from 'react-i18next';
 import { useFetchBranchQuery } from '../../../rtk/services/branch-service';
 import { Check, Store } from 'lucide-react';
-import { CustomText } from '../../shared/CustomText';
+import { PageHeader } from '../../shared/PageHeader';
 
 const PackagesPage: FC = () => {
   const { data: branch } = useFetchBranchQuery();
@@ -34,20 +34,12 @@ const PackagesPage: FC = () => {
   const activePackageId = branch?.activePackage?.package?.id;
 
   return (
-    <div className="min-h-screen p-6 flex flex-col">
+    <div className="pb-4 min-h-screen flex flex-col">
       <div className="w-full max-w-6xl mx-auto space-y-10">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-            <Store className="w-6 h-6 text-primary" />
-          </div>
-          <CustomText variant="h3" color="primary">
-            {t('packages.availablePackages')}
-          </CustomText>
-        </div>
+        <PageHeader title={t('packages.availablePackages')} icon={Store} />
+        <p className="p-6 text-text/60 font-body max-w-lg">{t('packages.choosePackageDescription')}</p>
 
-        <p className="text-text/60 font-body max-w-lg">{t('packages.choosePackageDescription')}</p>
-
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+        <div className="p-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {packages.map((pkg) => {
             const isActive = pkg.id === activePackageId;
 
@@ -99,7 +91,7 @@ const PackagesPage: FC = () => {
           })}
         </div>
 
-        <div className="p-4 rounded-2xl bg-background/60 border border-text/10 flex items-center gap-3">
+        <div className="m-6 p-6 rounded-2xl bg-background/60 border border-text/10 flex items-center gap-3">
           <Store className="w-6 h-6 text-primary" />
           <p className="text-sm text-text font-body">{t('packages.purchaseNote')}</p>
         </div>

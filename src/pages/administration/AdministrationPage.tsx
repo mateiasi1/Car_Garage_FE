@@ -150,7 +150,7 @@ const AdministrationPage: FC = () => {
       <div className="w-full max-w-6xl mx-auto h-[calc(100vh-6rem)] lg:h-[calc(100vh-8rem)] flex flex-col lg:flex-row gap-6">
         <div className="w-full lg:w-72 xl:w-80 lg:h-full flex">
           <AdminCard fullHeight className="flex-1 flex flex-col overflow-hidden">
-            <CustomText variant="h3" className="hidden lg:block text-primary mb-2">
+            <CustomText variant="h3" className="p-4 sm:p-5 lg:p-6 hidden lg:block text-primary mb-2">
               {t('administration')}
             </CustomText>
             <nav className="mt-2 flex-1 flex flex-row flex-wrap justify-center items-center lg:flex-col lg:items-stretch lg:justify-start gap-3 lg:gap-2 lg:overflow-y-auto pr-1">

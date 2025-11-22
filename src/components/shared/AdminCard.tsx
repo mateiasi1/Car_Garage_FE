@@ -9,14 +9,7 @@ interface AdminCardProps {
 
 export const AdminCard: FC<AdminCardProps> = ({ children, className, fullHeight }) => {
   return (
-    <div
-      className={clsx(
-        'bg-card rounded-3xl shadow-2xl border border-card/40',
-        'p-4 sm:p-5 lg:p-6',
-        fullHeight && 'h-full',
-        className
-      )}
-    >
+    <div className={clsx('bg-card rounded-3xl shadow-2xl border border-card/40', fullHeight && 'h-full', className)}>
       {children}
     </div>
   );

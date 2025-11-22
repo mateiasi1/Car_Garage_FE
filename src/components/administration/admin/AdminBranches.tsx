@@ -12,6 +12,7 @@ import { useFetchAdminCompanyBranchesQuery } from '../../../rtk/services/admin-s
 import { useFetchPackagesQuery } from '../../../rtk/services/package-service';
 import { Button } from '../../shared/Button';
 import { CustomText } from '../../shared/CustomText';
+import { PageHeader } from '../../shared/PageHeader';
 
 const AdminBranches: FC = () => {
   const { t } = useTranslation();
@@ -141,14 +142,7 @@ const AdminBranches: FC = () => {
   if (error) {
     return (
       <div className="flex flex-col h-full">
-        <div className="flex items-center gap-3">
-          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-            <Building className="w-6 h-6 text-primary" />
-          </div>
-          <CustomText variant="h3" color="primary">
-            {t('adminCompanies.branches')}
-          </CustomText>
-        </div>
+        <PageHeader title={t('adminCompanies.branches')} icon={Building} />
         <div className="flex-1 flex items-center justify-center">
           <CustomText className="text-error">{t('adminBranches.failedToLoadBranches')}</CustomText>
         </div>
@@ -158,14 +152,7 @@ const AdminBranches: FC = () => {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center gap-3">
-        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-          <Building className="w-6 h-6 text-primary" />
-        </div>
-        <CustomText variant="h3" color="primary">
-          {t('adminCompanies.branches')}
-        </CustomText>
-      </div>
+      <PageHeader title={t('adminCompanies.branches')} icon={Building} />
 
       <div className="flex-1 min-h-0">
         <GenericTable<Branch>

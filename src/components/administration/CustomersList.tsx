@@ -8,6 +8,7 @@ import Drawer from '../shared/Drawer';
 import CustomerForm from '../forms/CustomerForm';
 import { Button } from '../shared/Button';
 import { CustomText } from '../shared/CustomText';
+import { PageHeader } from '../shared/PageHeader';
 
 interface CustomerRow {
   id: string;
@@ -95,14 +96,7 @@ const CustomersList: FC = () => {
   if (error) {
     return (
       <div className="flex flex-col h-full">
-        <div className="flex items-center gap-2">
-          <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-            <UserCog className="w-6 h-6 text-primary" />
-          </div>
-          <CustomText variant="h3" color="primary">
-            {t('customers')}
-          </CustomText>
-        </div>
+        <PageHeader title={t('customers')} icon={UserCog} />
         <div className="flex-1 flex items-center justify-center">
           <CustomText className="text-error">{t('failedToLoadCustomers')}</CustomText>
         </div>
@@ -112,14 +106,7 @@ const CustomersList: FC = () => {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center gap-2">
-        <div className="w-12 h-12 rounded-full bg-primary/10 flex items-center justify-center">
-          <UserCog className="w-6 h-6 text-primary" />
-        </div>
-        <CustomText variant="h3" color="primary">
-          {t('customers')}
-        </CustomText>
-      </div>
+      <PageHeader title={t('customers')} icon={UserCog} />
 
       <div className="flex-1 min-h-0">
         <GenericTable

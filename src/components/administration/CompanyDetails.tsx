@@ -1,8 +1,8 @@
 import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useFetchCompanyQuery } from '../../rtk/services/company-service';
-import { CustomText } from '../shared/CustomText';
 import { Building2 } from 'lucide-react';
+import { PageHeader } from '../shared/PageHeader';
 
 interface Row {
   label: string;
@@ -33,16 +33,9 @@ const CompanyDetails: FC = () => {
 
   return (
     <div className="w-full">
-      <div className="flex items-center gap-3 mb-8">
-        <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
-          <Building2 className="w-6 h-6 text-primary" />
-        </div>
-        <CustomText variant="h3" color="primary">
-          {t('companyData')}
-        </CustomText>
-      </div>
+      <PageHeader title={t('companyData')} icon={Building2} />
 
-      <div className="divide-y divide-gray-200 border-t border-gray-200">
+      <div className="p-4 sm:p-5 lg:p-6 divide-y divide-gray-200 border-t border-gray-200">
         {rows.map((row, idx) => (
           <div key={idx} className="flex items-center justify-between py-4">
             <span className="text-text/70 font-body">{row.label}</span>

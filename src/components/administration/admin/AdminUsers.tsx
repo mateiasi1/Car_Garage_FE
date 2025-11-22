@@ -9,6 +9,7 @@ import GenericTable, { TableColumn, TableAction } from '../../shared/GenericTabl
 import UserForm from '../../forms/UserForm';
 import { Button } from '../../shared/Button';
 import { CustomText } from '../../shared/CustomText';
+import { PageHeader } from '../../shared/PageHeader';
 
 const AdminUsers: FC = () => {
   const { t } = useTranslation();
@@ -128,14 +129,7 @@ const AdminUsers: FC = () => {
   if (error) {
     return (
       <div className="flex flex-col h-full">
-        <div className="flex items-center gap-3 mb-8">
-          <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
-            <Users className="w-6 h-6 text-primary" />
-          </div>
-          <CustomText variant="h3" color="primary">
-            {t('adminUsers.title')}
-          </CustomText>
-        </div>
+        <PageHeader title={t('adminUsers.title')} icon={Users} />
         <div className="flex-1 flex items-center justify-center">
           <CustomText className="text-error">{t('adminUsers.failedToLoadUsers')}</CustomText>
         </div>
@@ -145,14 +139,7 @@ const AdminUsers: FC = () => {
 
   return (
     <div className="flex flex-col h-full">
-      <div className="flex items-center gap-3 mb-8">
-        <div className="w-12 h-12 rounded-2xl bg-primary/10 flex items-center justify-center">
-          <Users className="w-6 h-6 text-primary" />
-        </div>
-        <CustomText variant="h3" color="primary">
-          {t('adminUsers.title')}
-        </CustomText>
-      </div>
+      <PageHeader title={t('adminUsers.title')} icon={Users} />
 
       <div className="flex-1 min-h-0">
         <GenericTable<AdminUser>
