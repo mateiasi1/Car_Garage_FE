@@ -1,4 +1,4 @@
-import { FC, useState, useContext } from 'react';
+import { FC, useState, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
 import { useFetchBranchQuery } from '../../rtk/services/branch-service';
@@ -17,7 +17,6 @@ import { PageHeader } from '../shared/PageHeader';
 const BranchDetails: FC = () => {
   const { t } = useTranslation();
   const [drawerOpen, setDrawerOpen] = useState(false);
-  const [selectedBranchId, setSelectedBranchId] = useState('');
 
   const { data: branch, error, isLoading } = useFetchBranchQuery();
   const { data: branches = [] } = useFetchCompanyBranchesQuery();
@@ -25,6 +24,14 @@ const BranchDetails: FC = () => {
 
   const { user, login } = useContext(AuthContext);
   const isOwner = user?.roles?.some((r) => r.name === Role.owner);
+
+  const [selectedBranchId, setSelectedBranchId] = useState<string>(branch?.id ?? '');
+
+  useEffect(() => {
+    if (drawerOpen && branch?.id) {
+      setSelectedBranchId(branch.id);
+    }
+  }, [drawerOpen, branch?.id]);
 
   const handleSwitchBranch = async () => {
     if (!selectedBranchId) {
@@ -172,13 +179,10 @@ const BranchDetails: FC = () => {
             label={t('branch.selectBranch')}
             value={selectedBranchId}
             onChange={setSelectedBranchId}
-            options={[
-              { value: '', label: t('branch.selectBranch') },
-              ...branches.map((b: Branch) => ({
-                value: b.id,
-                label: `${b.name} – ${b.city}`,
-              })),
-            ]}
+            options={branches.map((b: Branch) => ({
+              value: b.id,
+              label: `${b.name} – ${b.city}`,
+            }))}
           />
           <Button
             type="button"
