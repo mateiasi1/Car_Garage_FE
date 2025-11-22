@@ -102,7 +102,7 @@ const Login: FC = () => {
           </>
         ) : (
           <CustomSelect
-            label={t('selectBranch')}
+            label={t('branch.selectBranch')}
             value={selectedBranchId}
             onChange={(val) => setSelectedBranchId(val)}
             options={branches.map((branch) => ({
