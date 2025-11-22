@@ -27,6 +27,7 @@ export const AdministrationItem: FC<AdministrationItemProps> = ({ icon: Icon, na
         'px-1 lg:px-4',
         'w-auto lg:w-full',
         'transition-colors duration-200',
+        // desktop hover
         'hover:bg-transparent hover:text-text',
         !isSelected && 'bg-transparent text-text lg:hover:bg-primary lg:hover:text-primary-text',
         isSelected &&
@@ -37,15 +38,18 @@ export const AdministrationItem: FC<AdministrationItemProps> = ({ icon: Icon, na
         className={clsx(
           'inline-flex items-center justify-center rounded-full w-12 h-12 flex-shrink-0',
           'transition-colors duration-200',
+          // neselctat – exact ca înainte
           !isSelected && 'bg-primary/5 group-hover:bg-primary/20',
-          isSelected && 'bg-primary/10 lg:bg-primary-text/15'
+          // selectat – pe mobil cerc plin cu icon alb, pe desktop rămâne stilul vechi
+          isSelected && 'bg-primary text-primary-text shadow-md lg:bg-primary-text/15 lg:shadow-none'
         )}
       >
         <Icon
           className={clsx(
             'w-5 h-5 transition-colors duration-200',
             !isSelected && 'text-primary group-hover:text-primary-text',
-            isSelected && 'text-primary lg:text-primary-text'
+            // pe mobil icon alb în cercul plin, pe desktop rămâne albastru în cerc deschis
+            isSelected && 'text-primary-text lg:text-primary'
           )}
         />
       </span>

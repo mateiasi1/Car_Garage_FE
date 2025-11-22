@@ -49,7 +49,7 @@ const CompanyDetails: FC = () => {
         />
       </div>
 
-      <div className="p-4 sm:p-5 lg:p-6 divide-y divide-gray-200 border-t border-gray-200">
+      <div className="p-4 sm:p-5 lg:p-6 divide-y divide-gray-200">
         {rows.map((row, idx) => (
           <div key={idx} className="flex items-center justify-between py-4">
             <span className="text-text/70 font-body">{row.label}</span>
