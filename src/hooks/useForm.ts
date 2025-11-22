@@ -27,6 +27,7 @@ interface RegisteredFieldProps {
   onBlur: () => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export const useForm = <TValues extends Record<string, any>>({
   initialValues,
   fields = {},
@@ -77,6 +78,7 @@ export const useForm = <TValues extends Record<string, any>>({
     [validateField]
   );
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const handleChangeValue = useCallback(
     (name: keyof TValues, value: any) => {
       setValues((prev) => {
@@ -142,6 +144,7 @@ export const useForm = <TValues extends Record<string, any>>({
     onBlur: () => handleBlur(name),
   });
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const setFieldValue = (name: keyof TValues, value: any) => {
     handleChangeValue(name, value);
   };

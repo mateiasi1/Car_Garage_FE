@@ -9,7 +9,7 @@ import InspectorForm from '../forms/InspectorForm';
 import { Button } from '../shared/Button';
 import { CustomText } from '../shared/CustomText';
 import { UserBranch } from '../../models/UserBranch';
-import { PageHeader } from '../shared/PageHeader.tsx';
+import { PageHeader } from '../shared/PageHeader';
 
 interface InspectorRow {
   id: string;

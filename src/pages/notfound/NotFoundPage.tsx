@@ -1,31 +1,55 @@
-import { FC, useEffect } from 'react';
+import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { PrimaryButton } from '../../components/shared/PrimaryButton';
+import { PageContainer } from '../../components/shared/PageContainer';
+import { Button } from '../../components/shared/Button';
+import { Logo } from '../../components/shared/Logo';
+
+const REDIRECT_SECONDS = 5;
 
 const NotFoundPage: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
+  const [secondsLeft, setSecondsLeft] = useState(REDIRECT_SECONDS);
 
   useEffect(() => {
-    const timer = setTimeout(() => {
+    const timeout = setTimeout(() => {
       navigate('/inspections');
-    }, 5000);
+    }, REDIRECT_SECONDS * 1000);
 
-    return () => clearTimeout(timer);
+    const interval = setInterval(() => {
+      setSecondsLeft((prev) => (prev > 0 ? prev - 1 : 0));
+    }, 1000);
+
+    return () => {
+      clearTimeout(timeout);
+      clearInterval(interval);
+    };
   }, [navigate]);
-  // TODO: Fix language switching to RO for some reason when this page comes up. It does not respect selected language
+
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background">
-      <div className="text-center space-y-6">
-        <h1 className="text-6xl font-bold text-primary">404</h1>
-        <h2 className="text-2xl font-heading">{t('pageNotFound')}</h2>
-        <p className="text-gray-600">{t('pageNotFoundDescription')}</p>
-        <div className="pt-4">
-          <PrimaryButton text={t('backToInspections')} onClick={() => navigate('/inspections')} />
+    <PageContainer>
+      <div className="w-full max-w-md mx-auto bg-card rounded-3xl shadow-lg border border-text/10 px-8 py-10 text-center space-y-6">
+        <Logo />
+
+        <div className="space-y-2">
+          <h1 className="text-6xl font-heading font-bold text-primary">404</h1>
+          <h2 className="text-2xl font-heading text-text">{t('pageNotFound')}</h2>
+        </div>
+
+        <p className="text-sm text-text/70 font-body">{t('pageNotFoundDescription')}</p>
+
+        <p className="text-xs text-text/60 font-body">
+          {t('backToInspections')} <span className="font-semibold text-primary">({secondsLeft}s)</span>
+        </p>
+
+        <div className="pt-2">
+          <Button type="button" variant="primary" size="md" className="w-full" onClick={() => navigate('/inspections')}>
+            {t('backToInspections')}
+          </Button>
         </div>
       </div>
-    </div>
+    </PageContainer>
   );
 };
 
