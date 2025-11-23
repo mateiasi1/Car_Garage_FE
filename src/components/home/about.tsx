@@ -69,7 +69,7 @@ const About = () => {
                     src={carHome}
                     alt="F1 pitstop illustration"
                     className="
-                      w-64 sm:w-80
+                     w-[24rem] sm:w-[32rem]
                       h-auto
                       rounded-[2rem]
                       drop-shadow-2xl
