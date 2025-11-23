@@ -17,6 +17,7 @@ import ConfirmationModal from '../shared/ConfirmationModal';
 import { Button } from '../shared/Button';
 import { useForm } from '../../hooks/useForm';
 import { CustomInput } from '../shared/CustomInput';
+import { PhoneNumberRoInput } from '../PhoneNumberRoInput';
 
 interface BranchFormProps {
   selectedBranch: Branch | null;
@@ -66,7 +67,7 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
   const [updateOwnerBranch, { isLoading: isUpdatingOwner }] = useOwnerUpdateBranchMutation();
   const [deleteOwnerBranch] = useOwnerDeleteBranchMutation();
 
-  const { values, errors, register, handleSubmit, isSubmitting } = useForm<BranchFormValues>({
+  const { values, errors, register, handleSubmit, isSubmitting, setFieldValue } = useForm<BranchFormValues>({
     initialValues: selectedBranch
       ? {
           id: selectedBranch.id,
@@ -199,12 +200,14 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
             wrapperClassName="mb-0 md:col-span-2"
           />
 
-          <CustomInput
-            label={t('phoneNumber')}
-            {...register('phoneNumber')}
-            error={errors.phoneNumber && t(errors.phoneNumber)}
-            wrapperClassName="mb-0 md:col-span-2"
-          />
+          <div className="mb-0 md:col-span-2">
+            <PhoneNumberRoInput
+              label={t('phoneNumber')}
+              value={values.phoneNumber}
+              onChange={(val) => setFieldValue('phoneNumber', val)}
+              error={errors.phoneNumber && t(errors.phoneNumber)}
+            />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

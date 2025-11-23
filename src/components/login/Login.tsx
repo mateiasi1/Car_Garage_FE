@@ -1,6 +1,7 @@
 import { FC, useContext, useEffect, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
+import logo from '../../assets/logo.png';
 import { routes } from '../../constants/routes';
 import { AuthContext } from '../../contexts/authContext';
 import { useLoginMutation, LoginResponse } from '../../rtk/services/auth-service';
@@ -12,7 +13,6 @@ import { PageContainer } from '../shared/PageContainer';
 import { FormContainer } from '../shared/FormContainer';
 import { useForm } from '../../hooks/useForm';
 import LoginBranchForm from './LoginBranchForm';
-import { Logo } from '../shared/Logo';
 
 interface LoginFormValues {
   username: string;
@@ -132,12 +132,15 @@ const Login: FC = () => {
   return (
     <PageContainer>
       <FormContainer onSubmit={shouldHandleLoginSubmit ? onSubmit : undefined} noValidate>
-        <div className="h-[490px] flex flex-col">
-          <Logo />
+        <div className="flex flex-col">
+          <div className="flex items-center justify-center mb-8 cursor-pointer" onClick={() => navigate(routes.HOME)}>
+            <img src={logo} alt="RoadReady Logo" className="h-14 w-14 mr-3" />
+            <span className="text-2xl font-bold font-heading text-primary">RoadReady</span>
+          </div>
 
           {!isCreateBranchView ? (
             <>
-              <div className="flex-1 min-h-0 space-y-6 pb-4">
+              <div className="space-y-6 pb-4 flex-1">
                 {!selectBranch && (
                   <>
                     <CustomInput
@@ -203,7 +206,7 @@ const Login: FC = () => {
               </div>
             </>
           ) : (
-            <div className="flex-1 min-h-0 overflow-y-auto space-y-4 pb-4">
+            <div className="space-y-4 pb-4 flex-1">
               <p className="text-sm font-body text-text/80">{t('branch.noBranchesForLoginCanCreate')}</p>
               <LoginBranchForm onBranchCreated={handleBranchCreated} />
             </div>

@@ -11,6 +11,7 @@ import ConfirmationModal from '../shared/ConfirmationModal';
 import { Button } from '../shared/Button';
 import { useForm } from '../../hooks/useForm';
 import { CustomInput } from '../shared/CustomInput';
+import { PhoneNumberRoInput } from '../PhoneNumberRoInput';
 
 interface CompanyFormProps {
   selectedCompany: Partial<CompanyFormValues> | null;
@@ -56,7 +57,7 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
 
   const isEdit = Boolean(selectedCompany?.id);
 
-  const { values, errors, register, handleSubmit, isSubmitting } = useForm<CompanyFormValues>({
+  const { values, errors, register, handleSubmit, isSubmitting, setFieldValue } = useForm<CompanyFormValues>({
     initialValues: {
       ...initialValues,
       ...(selectedCompany || {}),
@@ -192,12 +193,14 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
             wrapperClassName="mb-0"
           />
 
-          <CustomInput
-            label={t('phoneNumber')}
-            {...register('phoneNumber')}
-            error={errors.phoneNumber && t(errors.phoneNumber)}
-            wrapperClassName="mb-0"
-          />
+          <div className="mb-0">
+            <PhoneNumberRoInput
+              label={t('phoneNumber')}
+              value={values.phoneNumber}
+              onChange={(val) => setFieldValue('phoneNumber', val)}
+              error={errors.phoneNumber && t(errors.phoneNumber)}
+            />
+          </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">

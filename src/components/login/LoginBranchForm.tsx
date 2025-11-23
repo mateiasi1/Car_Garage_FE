@@ -7,6 +7,7 @@ import { Button } from '../shared/Button';
 import { Error } from '../../interfaces/error';
 import { showToast } from '../../utils/showToast';
 import { Branch } from '../../models/Branch';
+import { PhoneNumberRoInput } from '../PhoneNumberRoInput';
 
 interface LoginBranchFormProps {
   onBranchCreated: (branchId: string) => void;
@@ -38,7 +39,7 @@ const LoginBranchForm: FC<LoginBranchFormProps> = ({ onBranchCreated }) => {
   const { t } = useTranslation();
   const [createOwnerBranch, { isLoading: isCreatingOwner }] = useOwnerCreateBranchMutation();
 
-  const { errors, register, handleSubmit, isSubmitting } = useForm<LoginBranchFormValues>({
+  const { values, errors, register, handleSubmit, isSubmitting, setFieldValue } = useForm<LoginBranchFormValues>({
     initialValues,
     fields: {
       name: {
@@ -122,12 +123,14 @@ const LoginBranchForm: FC<LoginBranchFormProps> = ({ onBranchCreated }) => {
           wrapperClassName="mb-0 md:col-span-2"
         />
 
-        <CustomInput
-          label={t('phoneNumber')}
-          {...register('phoneNumber')}
-          error={errors.phoneNumber && t(errors.phoneNumber)}
-          wrapperClassName="mb-0 md:col-span-2"
-        />
+        <div className="mb-0 md:col-span-2">
+          <PhoneNumberRoInput
+            label={t('phoneNumber')}
+            value={values.phoneNumber}
+            onChange={(val) => setFieldValue('phoneNumber', val)}
+            error={errors.phoneNumber && t(errors.phoneNumber)}
+          />
+        </div>
 
         <CustomInput
           label={t('country')}
