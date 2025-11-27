@@ -73,25 +73,22 @@ const AdminUsers: FC = () => {
         label: t('adminUsers.role'),
         width: '1.5fr',
         render: (user) => {
-          const role = user.roles[0]; // primul rol
+          const role = user.roles[0];
           if (role === 'owner') return t('roles.owner');
           if (role === 'inspector') return t('roles.inspector');
           return role;
         },
       },
       {
-        key: 'branches',
+        key: 'branch',
         label: t('adminUsers.branches'),
         width: '3fr',
         render: (user) => {
           const isOwner = user.roles.includes('owner');
           if (isOwner) return '—';
-          if (!user.branches || user.branches.length === 0) return '—';
-
-          return user.branches.map((b) => b.name).join(', ');
+          return user.activeBranch?.name || '—';
         },
-        getSearchValue: (user) =>
-          user.branches && user.branches.length > 0 ? user.branches.map((b) => b.name).join(' ') : '',
+        getSearchValue: (user) => user.activeBranch?.name ?? '',
         searchable: true,
       },
     ],

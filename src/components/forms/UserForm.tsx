@@ -13,8 +13,6 @@ import { Error } from '../../interfaces/error';
 import { showToast } from '../../utils/showToast';
 import ConfirmationModal from '../shared/ConfirmationModal';
 import { Button } from '../shared/Button';
-import DropdownMultiSelect from '../shared/DropdownMultiSelect';
-import { Branch } from '../../models/Branch';
 import { useForm } from '../../hooks/useForm';
 import { CustomInput } from '../shared/CustomInput';
 import { CustomSelect } from '../shared/CustomSelect';
@@ -32,7 +30,7 @@ type UserFormValues = {
   lastName: string;
   password: string;
   role: Role | '';
-  branchIds: string[];
+  branchId: string;
 };
 
 const initialValues: UserFormValues = {
@@ -41,7 +39,7 @@ const initialValues: UserFormValues = {
   lastName: '',
   password: '',
   role: '',
-  branchIds: [],
+  branchId: '',
 };
 
 const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer }) => {
@@ -68,7 +66,7 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
             firstName: selectedUser.firstName,
             lastName: selectedUser.lastName,
             role: (selectedUser.roles?.[0] as Role) ?? '',
-            branchIds: selectedUser.branches?.map((b) => b.id) ?? [],
+            branchId: selectedUser.activeBranch?.id ?? '',
           }
         : {}),
     },
@@ -95,7 +93,7 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
         return;
       }
 
-      if (formValues.role === Role.inspector && (!formValues.branchIds || formValues.branchIds.length === 0)) {
+      if (formValues.role === Role.inspector && !formValues.branchId) {
         showToast(t('adminUsers.branchRequired'), 'error');
         return;
       }
@@ -108,7 +106,7 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
             data: {
               firstName: formValues.firstName,
               lastName: formValues.lastName,
-              branchIds: formValues.role === Role.inspector ? formValues.branchIds : undefined,
+              branchId: formValues.role === Role.inspector ? formValues.branchId : undefined,
             },
           }).unwrap();
 
@@ -121,7 +119,7 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
               lastName: formValues.lastName,
               password: formValues.password,
               roles: formValues.role ? [formValues.role as Role] : [],
-              branchIds: formValues.role === Role.inspector ? formValues.branchIds : undefined,
+              branchId: formValues.role === Role.inspector ? formValues.branchId : undefined,
             },
           }).unwrap();
 
@@ -142,7 +140,7 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
       setFieldValue('lastName', selectedUser.lastName ?? '');
       setFieldValue('password', '');
       setFieldValue('role', (selectedUser.roles?.[0] as Role) ?? '');
-      setFieldValue('branchIds', selectedUser.branches?.map((b) => b.id) ?? []);
+      setFieldValue('branchId', selectedUser.activeBranch?.id ?? '');
       setGeneratedUsername(selectedUser.username);
     } else {
       setFieldValue('id', '');
@@ -150,10 +148,10 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
       setFieldValue('lastName', '');
       setFieldValue('password', '');
       setFieldValue('role', '');
-      setFieldValue('branchIds', []);
+      setFieldValue('branchId', '');
       setGeneratedUsername('');
     }
-  }, [selectedUser]); // aici era bucla: am scos setFieldValue din deps
+  }, [selectedUser]);
 
   useEffect(() => {
     if (isEdit) return;
@@ -183,12 +181,8 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
     setFieldValue('role', role);
 
     if (role !== Role.inspector) {
-      setFieldValue('branchIds', []);
+      setFieldValue('branchId', '');
     }
-  };
-
-  const handleBranchesChange = (ids: string[]) => {
-    setFieldValue('branchIds', ids);
   };
 
   const handleDelete = async () => {
@@ -262,16 +256,17 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
         )}
 
         {isInspector && (
-          <DropdownMultiSelect
+          <CustomSelect
             label={t('adminUsers.selectBranches')}
-            options={branches}
-            selectedIds={values.branchIds}
-            onSelectionChange={handleBranchesChange}
-            getOptionId={(branch: Branch) => branch.id}
-            getOptionLabel={(branch: Branch) => branch.name}
-            placeholder={t('adminUsers.selectBranches')}
-            emptyMessage={t('adminUsers.noBranchesAvailable')}
-            selectedCountMessage={(count) => `${count} ${t('adminUsers.branchesSelected')}`}
+            value={values.branchId}
+            onChange={(val) => setFieldValue('branchId', val)}
+            options={[
+              { value: '', label: t('adminUsers.selectBranches') },
+              ...branches.map((branch) => ({
+                value: branch.id,
+                label: branch.name,
+              })),
+            ]}
           />
         )}
 
