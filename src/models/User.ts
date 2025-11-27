@@ -1,6 +1,5 @@
 import { Role } from './Role';
 import { UserCompany } from './UserCompany';
-import { UserBranch } from './UserBranch';
 
 export interface User {
   id: string;
@@ -12,7 +11,7 @@ export interface User {
   updatedAt: string;
   deletedAt: string;
   roles: Role[];
-  branches: UserBranch[];
+  activeBranch?: { id: string; name: string };
   companies?: UserCompany[];
   selectedBranchId?: string;
 }

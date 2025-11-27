@@ -10,13 +10,13 @@ export interface CreateUserDTO {
   lastName: string;
   password: string;
   roles: string[];
-  branchIds?: string[];
+  branchId?: string;
 }
 
 export interface UpdateUserDTO {
   firstName?: string;
   lastName?: string;
-  branchIds?: string[];
+  branchId?: string;
 }
 
 export interface AdminUser {
@@ -25,10 +25,10 @@ export interface AdminUser {
   firstName: string;
   lastName: string;
   roles: string[];
-  branches: {
+  activeBranch?: {
     id: string;
     name: string;
-  }[];
+  };
   createdAt: string;
   updatedAt: string;
 }

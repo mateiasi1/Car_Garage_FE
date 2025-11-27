@@ -9,10 +9,8 @@ import {
 import { useFetchCompanyBranchesQuery } from '../../rtk/services/company-service';
 import { useGenerateUsernameMutation } from '../../rtk/services/user-service';
 import { showToast } from '../../utils/showToast';
-import { Branch } from '../../models/Branch';
-import { UserBranch } from '../../models/UserBranch';
-import DropdownMultiSelect from '../shared/DropdownMultiSelect';
 import { CustomInput } from '../shared/CustomInput';
+import { CustomSelect } from '../shared/CustomSelect';
 import { Button } from '../shared/Button';
 import ConfirmationModal from '../shared/ConfirmationModal';
 import { useForm } from '../../hooks/useForm';
@@ -23,7 +21,7 @@ interface InspectorFormProps {
     firstName?: string;
     lastName?: string;
     username?: string;
-    branches?: UserBranch[];
+    activeBranch?: { id: string; name: string };
   } | null;
   onCloseDrawer: () => void;
 }
@@ -34,7 +32,7 @@ type InspectorFormValues = {
   lastName: string;
   username: string;
   password: string;
-  branchIds: string[];
+  branchId: string;
 };
 
 const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawer }) => {
@@ -56,7 +54,7 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
       lastName: selectedInspector?.lastName ?? '',
       username: selectedInspector?.username ?? '',
       password: '',
-      branchIds: selectedInspector?.branches?.map((b) => b.id) ?? [],
+      branchId: selectedInspector?.activeBranch?.id ?? '',
     },
     fields: {
       firstName: { required: true },
@@ -70,10 +68,9 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
           return null;
         },
       },
-      branchIds: {
+      branchId: {
         validate: (value) => {
-          const arr = Array.isArray(value) ? value : [];
-          if (arr.length === 0) return 'selectAtLeastOneBranch';
+          if (!value || String(value).trim() === '') return 'selectAtLeastOneBranch';
           return null;
         },
       },
@@ -85,7 +82,7 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
             id: formValues.id,
             firstName: formValues.firstName,
             lastName: formValues.lastName,
-            branchIds: formValues.branchIds,
+            branchId: formValues.branchId,
           };
           await updateInspector(payload).unwrap();
           showToast(t('inspectorUpdateSuccess'), 'success');
@@ -94,7 +91,7 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
             firstName: formValues.firstName,
             lastName: formValues.lastName,
             password: formValues.password,
-            branchIds: formValues.branchIds,
+            branchId: formValues.branchId,
           };
           await createInspector(payload).unwrap();
           showToast(t('inspectorCreateSuccess'), 'success');
@@ -125,10 +122,6 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
 
     return () => window.clearTimeout(timeoutId);
   }, [values.firstName, values.lastName, isEdit, generateUsername, setFieldValue]);
-
-  const handleBranchSelectionChange = (selectedIds: string[]) => {
-    setFieldValue('branchIds', selectedIds);
-  };
 
   const onDelete = async () => {
     if (!values.id) return;
@@ -177,20 +170,16 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
           </div>
         </div>
 
-        <div>
-          <DropdownMultiSelect
-            label={t('assignedBranches')}
-            options={branches}
-            selectedIds={values.branchIds}
-            onSelectionChange={handleBranchSelectionChange}
-            getOptionId={(branch: Branch) => branch.id}
-            getOptionLabel={(branch: Branch) => branch.name}
-            placeholder={t('selectBranches')}
-            emptyMessage={t('noBranchesAvailable')}
-            selectedCountMessage={(count) => `${count} ${t('branchesSelected')}`}
-          />
-          {errors.branchIds && <p className="text-error text-sm mt-1 font-body">{t(errors.branchIds)}</p>}
-        </div>
+        <CustomSelect
+          label={t('assignedBranches')}
+          value={values.branchId}
+          onChange={(val) => setFieldValue('branchId', val)}
+          options={branches.map((branch) => ({
+            value: branch.id,
+            label: branch.name,
+          }))}
+          error={errors.branchId && t(errors.branchId)}
+        />
 
         {!isEdit && (
           <CustomInput

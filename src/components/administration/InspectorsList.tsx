@@ -8,7 +8,6 @@ import Drawer from '../shared/Drawer';
 import InspectorForm from '../forms/InspectorForm';
 import { Button } from '../shared/Button';
 import { CustomText } from '../shared/CustomText';
-import { UserBranch } from '../../models/UserBranch';
 import { PageHeader } from '../shared/PageHeader';
 
 interface InspectorRow {
@@ -16,7 +15,7 @@ interface InspectorRow {
   firstName: string;
   lastName: string;
   username: string;
-  branches?: UserBranch[];
+  activeBranch?: { id: string; name: string };
 }
 
 const InspectorsList: FC = () => {
@@ -34,7 +33,7 @@ const InspectorsList: FC = () => {
         firstName: user.firstName,
         lastName: user.lastName,
         username: user.username,
-        branches: user.branches,
+        activeBranch: user.activeBranch,
       })) ?? [],
     [inspectors]
   );
@@ -50,11 +49,11 @@ const InspectorsList: FC = () => {
         searchable: true,
       },
       {
-        key: 'branches',
+        key: 'branch',
         label: t('assignedBranches'),
         width: '3fr',
-        render: (item) => item.branches?.map((b) => b.name).join(', ') || '—',
-        getSearchValue: (item) => item.branches?.map((b) => b.name).join(' ') ?? '',
+        render: (item) => item.activeBranch?.name || '—',
+        getSearchValue: (item) => item.activeBranch?.name ?? '',
         searchable: true,
       },
     ],
