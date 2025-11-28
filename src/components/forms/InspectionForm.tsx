@@ -36,6 +36,8 @@ const InspectionForm: FC = () => {
   const [updateInspection] = useUpdateInspectionMutation();
   const selectedInspection = useAppSelector((state) => state.inspection.selectedInspection);
 
+  const isDeleted = selectedInspection?.deletedAt !== null && selectedInspection?.deletedAt !== undefined;
+
   const [form, setForm] = useState<FormData>({
     licensePlate: '',
     phoneNumber: '',
@@ -237,8 +239,21 @@ const InspectionForm: FC = () => {
           </div>
 
           <div className="px-4 sm:px-6 py-4 border-t border-card/40 bg-card">
+            {isDeleted && (
+              <div className="mb-4 bg-amber-50 border border-amber-200 rounded-lg p-3">
+                <p className="text-sm text-amber-800">
+                  ⚠️ {t('inspectionDeleted.viewOnly', { licensePlate: selectedInspection?.car?.licensePlate })}
+                </p>
+              </div>
+            )}
             <div className="flex justify-end">
-              <Button type="submit" variant="primary" fullWidth={false} className="w-full md:w-auto">
+              <Button
+                type="submit"
+                variant="primary"
+                fullWidth={false}
+                className="w-full md:w-auto"
+                disabled={isDeleted}
+              >
                 {t('submit')}
               </Button>
             </div>

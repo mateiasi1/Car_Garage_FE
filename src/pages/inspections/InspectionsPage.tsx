@@ -159,7 +159,14 @@ const InspectionsPage: FC = () => {
       key: 'licensePlate',
       label: t('licensePlate'),
       width: '2fr',
-      render: (inspection) => inspection.car?.licensePlate ?? '',
+      render: (inspection) => (
+        <span className="flex items-center gap-2">
+          {inspection.car?.licensePlate ?? ''}
+          {inspection.deletedAt && (
+            <span className="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">{t('archived')}</span>
+          )}
+        </span>
+      ),
       getSearchValue: (inspection) => inspection.car?.licensePlate ?? '',
       searchable: true,
     },
@@ -198,16 +205,19 @@ const InspectionsPage: FC = () => {
       icon: <MessageCircle className="w-5 h-5 text-green-600 hover:text-green-700" />,
       label: t('sendReminder'),
       onClick: handleMessageClick,
+      isDisabled: (inspection) => !!inspection.deletedAt,
     },
     {
       icon: <Pencil className="w-5 h-5 text-primary hover:text-primary-hover" />,
       label: t('edit'),
       onClick: handleEditClick,
+      isDisabled: (inspection) => !!inspection.deletedAt,
     },
     {
       icon: <Trash2 className="w-5 h-5 text-error hover:text-red-700" />,
       label: t('delete'),
       onClick: handleDeleteClick,
+      isDisabled: (inspection) => !!inspection.deletedAt,
     },
   ];
 
@@ -244,6 +254,7 @@ const InspectionsPage: FC = () => {
           page={filters.page}
           totalPages={totalPages}
           onPageChange={handlePageChange}
+          rowClassName={(inspection) => (inspection.deletedAt ? 'opacity-50 bg-gray-100' : '')}
         />
       </div>
 

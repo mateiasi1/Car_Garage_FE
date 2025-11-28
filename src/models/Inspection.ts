@@ -11,6 +11,7 @@ export interface Inspection {
   inspectedAt: string;
   createdAt: string;
   updatedAt: string;
+  deletedAt: string;
   car: InspectionCar;
   inspectedBy: InspectedBy;
   companyId: string;

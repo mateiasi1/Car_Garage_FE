@@ -4,6 +4,12 @@ import { AuthTokens } from '../models/AuthTokens';
 import { User } from '../models/User';
 import { useFetchUserProfileQuery, userApi } from '../rtk/services/user-service';
 import { useLogoutMutation } from '../rtk/services/auth-service';
+import { inspectionsApi } from '../rtk/services/inspections-service';
+import { adminApi } from '../rtk/services/admin-service';
+import { branchApi } from '../rtk/services/branch-service';
+import { companyApi } from '../rtk/services/company-service';
+import { customerApi } from '../rtk/services/customer-service';
+import { inspectorApi } from '../rtk/services/inspector-service';
 
 type AuthProviderProps = {
   children?: ReactNode;
@@ -46,7 +52,14 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         localStorage.removeItem('access_token');
         setIsAuthenticated(false);
 
+        // Reset all API caches on logout
         dispatch(userApi.util.resetApiState());
+        dispatch(inspectionsApi.util.resetApiState());
+        dispatch(adminApi.util.resetApiState());
+        dispatch(branchApi.util.resetApiState());
+        dispatch(companyApi.util.resetApiState());
+        dispatch(customerApi.util.resetApiState());
+        dispatch(inspectorApi.util.resetApiState());
       });
   }, [dispatch, logoutMutation]);
 

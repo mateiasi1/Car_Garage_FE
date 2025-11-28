@@ -77,6 +77,8 @@
     "areYouSure": "Are you sure?",
     "areYouSureDeleteInspection": "Are you sure you want to delete this inspection? This action cannot be undone.",
     "inspectionDeleted": "Inspection successfully deleted",
+    "inspectionDeleted.viewOnly": "This inspection has been replaced by a newer version for {{licensePlate}}. It cannot be edited or deleted.",
+    "archived": "Archived",
     "inspectionDeletedError": "An error occurred while deleting the inspection. Please try again later.",
     "availability": "Availability",
     "inspectionTypes.one_year": "One year",

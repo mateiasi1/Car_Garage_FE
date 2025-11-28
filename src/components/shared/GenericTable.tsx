@@ -20,6 +20,7 @@ export interface TableAction<T> {
   onClick: (item: T) => void;
   className?: string;
   show?: (item: T) => boolean;
+  isDisabled?: (item: T) => boolean;
 }
 
 export interface GenericTableProps<T> {
@@ -247,7 +248,7 @@ const GenericTable = <T extends { id: string }>({
 
                   return (
                     <div
-                      key={item.id}
+                      key={`${item.id}-${idx}`}
                       className={`${defaultRowClass} ${customRowClass}`}
                       style={{ gridTemplateColumns }}
                       onClick={() => onRowClick?.(item)}
@@ -273,17 +274,22 @@ const GenericTable = <T extends { id: string }>({
                               return null;
                             }
 
+                            const disabled = action.isDisabled?.(item) ?? false;
+
                             return (
                               <IconButton
                                 key={actionIdx}
                                 variant="ghost"
                                 size="sm"
-                                className={action.className || 'text-text/70 hover:text-primary'}
+                                className={`${action.className || 'text-text/70 hover:text-primary'} ${disabled ? 'opacity-30 cursor-not-allowed' : ''}`}
                                 onClick={(e) => {
                                   e.stopPropagation();
-                                  action.onClick(item);
+                                  if (!disabled) {
+                                    action.onClick(item);
+                                  }
                                 }}
                                 aria-label={action.label}
+                                disabled={disabled}
                               >
                                 {action.icon}
                               </IconButton>
@@ -305,7 +311,7 @@ const GenericTable = <T extends { id: string }>({
               ) : (
                 filteredData.map((item, idx) => (
                   <div
-                    key={item.id}
+                    key={`${item.id}-${idx}`}
                     className="bg-card border border-card/40 rounded-2xl p-4 space-y-2 hover:bg-activeMenu/20 transition-colors shadow-sm"
                     onClick={() => onRowClick?.(item)}
                   >
@@ -334,17 +340,22 @@ const GenericTable = <T extends { id: string }>({
                             return null;
                           }
 
+                          const disabled = action.isDisabled?.(item) ?? false;
+
                           return (
                             <IconButton
                               key={actionIdx}
                               variant="ghost"
                               size="sm"
-                              className={action.className || 'text-text/70 hover:text-primary'}
+                              className={`${action.className || 'text-text/70 hover:text-primary'} ${disabled ? 'opacity-30 cursor-not-allowed' : ''}`}
                               onClick={(e) => {
                                 e.stopPropagation();
-                                action.onClick(item);
+                                if (!disabled) {
+                                  action.onClick(item);
+                                }
                               }}
                               aria-label={action.label}
+                              disabled={disabled}
                             >
                               {action.icon}
                             </IconButton>
