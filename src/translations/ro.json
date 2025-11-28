@@ -76,6 +76,8 @@
     "areYouSure": "Sunteți sigur?",
     "areYouSureDeleteInspection": "Această acțiune va șterge inspecția și nu va putea fi anulată. Sunteți sigur că doriți să continuați?",
     "inspectionDeleted": "Inspecția a fost ștearsă cu succes",
+    "inspectionDeleted.viewOnly": "Această inspecție a fost înlocuită cu o versiune mai nouă pentru {{licensePlate}}. Nu poate fi editată sau ștearsă.",
+    "archived": "Arhivată",
     "inspectionDeletedError": "A apărut o eroare la ștergerea inspecției. Vă rugăm să încercați din nou mai târziu.",
     "availability": "Valabilitate",
     "inspectionTypes.one_year": "Un an",
