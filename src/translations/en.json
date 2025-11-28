@@ -25,6 +25,7 @@
     "carCategory": "Car category",
     "inspectedBy": "Inspected by",
     "inspectionDate": "Inspection date",
+    "inspectionDatePlaceholder": "Select inspection date...",
     "inspectionExpiresAt": "Expires at",
     "selectInspectionType": "Select inspection type",
     "inspectionDuration": "Inspection duration",
@@ -207,6 +208,8 @@
       "1month": "1 month",
       "12months": "12 months",
       "totalPrice": "Total Price",
+      "discount": "Discount",
+      "discountExpires": "Discount valid until",
       "extendInfo": "You are extending your current package",
       "processing": "Processing...",
       "updateSuccess": "Package updated successfully!",
@@ -217,11 +220,14 @@
     "loginButton": "Login",
     "adminButton": "Administration",
     "hero": {
+      "badge": "✨ #1 Platform for ITP",
       "title": "Manage Your ITP Inspections Efficiently",
       "subtitle": "Complete management system for ITP stations. Track inspections, manage clients, and never miss an expiration date.",
       "cta": "Get Started"
     },
     "features": {
+      "title": "Everything You Need",
+      "subtitle": "Efficiently manage all aspects of your ITP station",
       "stations": {
         "title": "Station Management",
         "description": "Complete control over your ITP stations. View statistics, manage packages, and monitor performance."
@@ -234,6 +240,28 @@
         "title": "Automatic Notifications",
         "description": "Clients receive automatic reminders when their inspection is about to expire. Never lose a customer again."
       }
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "subtitle": "Get started in 3 simple steps",
+      "step1": {
+        "title": "Create Account",
+        "description": "Register your ITP station on the platform in minutes"
+      },
+      "step2": {
+        "title": "Add Inspections",
+        "description": "Record inspections with all client and vehicle details"
+      },
+      "step3": {
+        "title": "Relax",
+        "description": "Clients automatically receive notifications when their ITP is about to expire"
+      }
+    },
+    "stats": {
+      "stations": "ITP Stations",
+      "inspections": "Inspections",
+      "sms": "SMS Sent",
+      "satisfaction": "Satisfaction"
     },
     "contact": {
       "title": "Want to Collaborate?",
@@ -498,5 +526,72 @@
   "failedToLoadCustomers": "Failed to load customers",
   "companySaveError": "Could not save company",
   "companyDeleteError": "Could not delete the company",
-  "failedToLoadBranches": "Failed to load branches"
+  "failedToLoadBranches": "Failed to load branches",
+  "datePicker": {
+    "selectDate": "Select date...",
+    "clear": "Clear",
+    "today": "Today",
+    "days": {
+      "mon": "Mon",
+      "tue": "Tue",
+      "wed": "Wed",
+      "thu": "Thu",
+      "fri": "Fri",
+      "sat": "Sat",
+      "sun": "Sun"
+    },
+    "months": {
+      "january": "January",
+      "february": "February",
+      "march": "March",
+      "april": "April",
+      "may": "May",
+      "june": "June",
+      "july": "July",
+      "august": "August",
+      "september": "September",
+      "october": "October",
+      "november": "November",
+      "december": "December"
+    }
+  },
+  "discounts": {
+    "title": "Package Discounts",
+    "createNew": "Create New Discount",
+    "existingDiscounts": "Active Discounts",
+    "noDiscounts": "No active discounts",
+    "allCompanies": "Apply to all companies",
+    "allCompaniesLabel": "All companies",
+    "selectCompany": "Select Company",
+    "chooseCompany": "Choose a company...",
+    "selectBranches": "Select Branches",
+    "chooseBranches": "Choose branches...",
+    "allBranches": "Apply to all branches",
+    "allBranchesLabel": "All branches",
+    "noBranches": "No branches available",
+    "branchesSelected": "branches selected",
+    "selectPackages": "Select Packages",
+    "choosePackages": "Choose packages...",
+    "allPackages": "Apply to all packages",
+    "allPackagesLabel": "All packages",
+    "noPackages": "No packages available",
+    "packagesSelected": "packages selected",
+    "discountPercentage": "Discount Percentage (%)",
+    "saveDiscount": "Save Discount",
+    "reset": "Reset",
+    "companyRequired": "Please select a company",
+    "branchRequired": "Please select at least one branch or check 'All branches'",
+    "packageRequired": "Please select at least one package or check 'All packages'",
+    "discountRequired": "Please enter a discount percentage",
+    "discountRange": "Discount must be between 0 and 100",
+    "expiresAt": "Expiry Date",
+    "selectExpiryDate": "Select expiry date...",
+    "expiresAtRequired": "Please select an expiry date",
+    "expiresAtFuture": "Expiry date must be in the future",
+    "expiresLabel": "Expires on",
+    "discountCreated": "Discount created successfully",
+    "discountCreateError": "Failed to create discount",
+    "discountDeleted": "Discount deleted successfully",
+    "discountDeleteError": "Failed to delete discount"
+  }
 }

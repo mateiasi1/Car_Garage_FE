@@ -10,6 +10,7 @@ import { branchApi } from '../rtk/services/branch-service';
 import { companyApi } from '../rtk/services/company-service';
 import { customerApi } from '../rtk/services/customer-service';
 import { inspectorApi } from '../rtk/services/inspector-service';
+import { discountApi } from '../rtk/services/discount-service';
 
 type AuthProviderProps = {
   children?: ReactNode;
@@ -60,6 +61,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
         dispatch(companyApi.util.resetApiState());
         dispatch(customerApi.util.resetApiState());
         dispatch(inspectorApi.util.resetApiState());
+        dispatch(discountApi.util.resetApiState());
       });
   }, [dispatch, logoutMutation]);
 

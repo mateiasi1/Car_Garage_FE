@@ -1,14 +1,24 @@
-import { FC } from 'react';
+import { FC, useMemo } from 'react';
 import { useFetchPackagesQuery } from '../../../rtk/services/package-service';
+import { useFetchBranchDiscountsQuery } from '../../../rtk/services/discount-service';
 import { useTranslation } from 'react-i18next';
 import { useFetchBranchQuery } from '../../../rtk/services/branch-service';
-import { Check, Store } from 'lucide-react';
+import { Check, Store, Percent, Clock } from 'lucide-react';
 import { PageHeader } from '../../shared/PageHeader';
 
 const PackagesPage: FC = () => {
   const { data: branch } = useFetchBranchQuery();
   const { data: packages, error, isLoading } = useFetchPackagesQuery();
   const { t } = useTranslation();
+
+  // Get package IDs for discount query
+  const packageIds = useMemo(() => packages?.map((pkg) => pkg.id) || [], [packages]);
+
+  // Fetch discounts for all packages (Owner has branchId in token, so no need to pass it)
+  const { data: discounts = {} } = useFetchBranchDiscountsQuery(
+    { packageIds },
+    { skip: packageIds.length === 0 }
+  );
 
   if (isLoading)
     return (
@@ -46,6 +56,9 @@ const PackagesPage: FC = () => {
         <div className="px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
           {packages.map((pkg) => {
             const isActive = pkg.id === activePackageId;
+            const discountInfo = discounts[pkg.id];
+            const hasDiscount = discountInfo && discountInfo.percentage > 0;
+            const discountedPrice = hasDiscount ? pkg.price * (1 - discountInfo.percentage / 100) : pkg.price;
 
             return (
               <div
@@ -57,8 +70,18 @@ const PackagesPage: FC = () => {
                   ${isActive ? 'border-primary bg-primary/5' : 'border-text/10 hover:border-primary/50 hover:shadow-sm'}
                 `}
               >
+                {/* Discount badge */}
+                {hasDiscount && (
+                  <div className="absolute top-4 left-4">
+                    <span className="bg-green-500 text-white text-xs font-heading px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
+                      <Percent className="w-3 h-3" />
+                      -{discountInfo.percentage}%
+                    </span>
+                  </div>
+                )}
+
                 {isActive && (
-                  <div className="absolute top-4 right-4">
+                  <div className={`absolute top-4 ${hasDiscount ? 'right-4' : 'right-4'}`}>
                     <span className="bg-primary text-primary-text text-xs font-heading px-3 py-1 rounded-full shadow-sm">
                       {t('packages.activeBadge')}
                     </span>
@@ -66,13 +89,30 @@ const PackagesPage: FC = () => {
                 )}
 
                 {/* Name */}
-                <h3 className="text-xl font-heading text-text">{pkg.name}</h3>
+                <h3 className={`text-xl font-heading text-text ${hasDiscount ? 'mt-6' : ''}`}>{pkg.name}</h3>
 
                 {/* Price */}
                 <div>
-                  <span className="text-3xl font-bold font-heading text-primary">{pkg.price}</span>
+                  {hasDiscount ? (
+                    <>
+                      <span className="text-lg text-text/40 line-through font-heading mr-2">{pkg.price}</span>
+                      <span className="text-3xl font-bold font-heading text-green-600">{discountedPrice.toFixed(0)}</span>
+                    </>
+                  ) : (
+                    <span className="text-3xl font-bold font-heading text-primary">{pkg.price}</span>
+                  )}
                   <span className="ml-1 text-text/60 font-body">RON</span>
                 </div>
+
+                {/* Discount expiry */}
+                {hasDiscount && discountInfo.expiresAt && (
+                  <div className="flex items-center gap-2 text-xs text-text/60 font-body">
+                    <Clock className="w-3 h-3" />
+                    <span>
+                      {t('packages.discountExpires')} {new Date(discountInfo.expiresAt).toLocaleDateString()}
+                    </span>
+                  </div>
+                )}
 
                 {/* Description */}
                 {pkg.description && <p className="text-sm text-text/70 font-body leading-relaxed">{pkg.description}</p>}
