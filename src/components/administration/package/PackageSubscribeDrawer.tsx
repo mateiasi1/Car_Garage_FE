@@ -1,10 +1,12 @@
-import { FC, useState, useEffect } from 'react';
+import { FC, useState, useEffect, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import Drawer from '../../shared/Drawer';
 import { showToast } from '../../../utils/showToast';
 import { useUpdateBranchPackageMutation } from '../../../rtk/services/branch-service';
 import { useFetchPackagesQuery } from '../../../rtk/services/package-service';
+import { useFetchBranchDiscountsQuery } from '../../../rtk/services/discount-service';
 import { Button } from '../../shared/Button';
+import { Percent, Clock } from 'lucide-react';
 
 interface PackageDialogProps {
   isOpen: boolean;
@@ -21,6 +23,16 @@ const PackageSubscribeDrawer: FC<PackageDialogProps> = ({ isOpen, onClose, curre
   const [selectedPackageId, setSelectedPackageId] = useState<string>('');
   const [period, setPeriod] = useState<'monthly' | 'yearly'>('monthly');
   const [calculatedPrice, setCalculatedPrice] = useState<number>(0);
+  const [originalPrice, setOriginalPrice] = useState<number>(0);
+
+  // Get package IDs for discount query
+  const packageIds = useMemo(() => packages?.map((pkg) => pkg.id) || [], [packages]);
+
+  // Fetch discounts for all packages (pass branchId for Admin, Owner has it in token)
+  const { data: discounts = {} } = useFetchBranchDiscountsQuery(
+    { branchId, packageIds },
+    { skip: packageIds.length === 0 || !isOpen }
+  );
 
   // setează pachetul selectat inițial
   useEffect(() => {
@@ -35,10 +47,19 @@ const PackageSubscribeDrawer: FC<PackageDialogProps> = ({ isOpen, onClose, curre
       const selectedPkg = packages.find((p) => p.id === selectedPackageId);
       if (selectedPkg) {
         const multiplier = period === 'yearly' ? 10 : 1;
-        setCalculatedPrice(selectedPkg.price * multiplier);
+        const basePrice = selectedPkg.price * multiplier;
+        setOriginalPrice(basePrice);
+
+        // Apply discount if exists
+        const discountInfo = discounts[selectedPackageId];
+        if (discountInfo && discountInfo.percentage > 0) {
+          setCalculatedPrice(basePrice * (1 - discountInfo.percentage / 100));
+        } else {
+          setCalculatedPrice(basePrice);
+        }
       }
     }
-  }, [selectedPackageId, period, packages]);
+  }, [selectedPackageId, period, packages, discounts]);
 
   const handleSubmit = async () => {
     try {
@@ -62,6 +83,8 @@ const PackageSubscribeDrawer: FC<PackageDialogProps> = ({ isOpen, onClose, curre
 
   const selectedPackage = packages?.find((p) => p.id === selectedPackageId);
   const isSamePackage = selectedPackageId === currentPackageId;
+  const currentDiscountInfo = discounts[selectedPackageId];
+  const hasDiscount = currentDiscountInfo && currentDiscountInfo.percentage > 0;
 
   const yearlySaving =
     selectedPackage && period === 'yearly'
@@ -85,11 +108,21 @@ const PackageSubscribeDrawer: FC<PackageDialogProps> = ({ isOpen, onClose, curre
               onChange={(e) => setSelectedPackageId(e.target.value)}
               className="w-full px-4 py-3 rounded-2xl bg-card border border-text/10 text-text font-body focus:outline-none focus:ring-2 focus:ring-primary"
             >
-              {packages?.map((pkg) => (
-                <option key={pkg.id} value={pkg.id}>
-                  {pkg.name} - {pkg.price} RON / {t('packages.1month')}
-                </option>
-              ))}
+              {packages?.map((pkg) => {
+                const pkgDiscountInfo = discounts[pkg.id];
+                const pkgHasDiscount = pkgDiscountInfo && pkgDiscountInfo.percentage > 0;
+                const discountedPrice = pkgHasDiscount ? pkg.price * (1 - pkgDiscountInfo.percentage / 100) : pkg.price;
+
+                return (
+                  <option key={pkg.id} value={pkg.id}>
+                    {pkg.name} -{' '}
+                    {pkgHasDiscount
+                      ? `${discountedPrice.toFixed(0)} RON (-${pkgDiscountInfo.percentage}%)`
+                      : `${pkg.price} RON`}{' '}
+                    / {t('packages.1month')}
+                  </option>
+                );
+              })}
             </select>
           </div>
 
@@ -125,7 +158,15 @@ const PackageSubscribeDrawer: FC<PackageDialogProps> = ({ isOpen, onClose, curre
 
           {selectedPackage && (
             <div className="bg-card border border-text/10 rounded-2xl p-4">
-              <h3 className="font-semibold font-heading text-text mb-2">{selectedPackage.name}</h3>
+              <div className="flex items-center justify-between mb-2">
+                <h3 className="font-semibold font-heading text-text">{selectedPackage.name}</h3>
+                {hasDiscount && (
+                  <span className="bg-green-500 text-white text-xs font-heading px-2 py-1 rounded-full flex items-center gap-1">
+                    <Percent className="w-3 h-3" />
+                    -{currentDiscountInfo.percentage}%
+                  </span>
+                )}
+              </div>
               {selectedPackage.description && (
                 <p className="text-sm font-body text-text/70 mb-3">{selectedPackage.description}</p>
               )}
@@ -140,6 +181,16 @@ const PackageSubscribeDrawer: FC<PackageDialogProps> = ({ isOpen, onClose, curre
                     : `${selectedPackage.features.sms.limit.toLocaleString('ro-RO')} ${t('packages.smsPerMonth')}`}
                 </span>
               </div>
+
+              {/* Discount expiry */}
+              {hasDiscount && currentDiscountInfo.expiresAt && (
+                <div className="flex items-center gap-2 mt-2 text-xs text-text/60 font-body">
+                  <Clock className="w-3 h-3" />
+                  <span>
+                    {t('packages.discountExpires')} {new Date(currentDiscountInfo.expiresAt).toLocaleDateString()}
+                  </span>
+                </div>
+              )}
             </div>
           )}
 
@@ -150,9 +201,24 @@ const PackageSubscribeDrawer: FC<PackageDialogProps> = ({ isOpen, onClose, curre
                 {period === 'yearly' ? t('packages.12months') : t('packages.1month')}
               </span>
             </div>
+
+            {hasDiscount && (
+              <div className="flex justify-between items-center mb-2 text-sm font-body">
+                <span className="text-text/70">{t('packages.discount')}:</span>
+                <span className="font-medium text-green-600">-{currentDiscountInfo.percentage}%</span>
+              </div>
+            )}
+
             <div className="flex justify-between items-center">
               <span className="text-base font-heading text-text">{t('packages.totalPrice')}:</span>
-              <span className="text-2xl font-heading font-bold text-primary">{calculatedPrice.toFixed(2)} RON</span>
+              <div className="text-right">
+                {hasDiscount && (
+                  <span className="text-sm text-text/40 line-through mr-2">{originalPrice.toFixed(2)} RON</span>
+                )}
+                <span className={`text-2xl font-heading font-bold ${hasDiscount ? 'text-green-600' : 'text-primary'}`}>
+                  {calculatedPrice.toFixed(2)} RON
+                </span>
+              </div>
             </div>
           </div>
 

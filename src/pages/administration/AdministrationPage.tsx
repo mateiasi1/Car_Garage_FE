@@ -1,7 +1,7 @@
 import { FC, useContext, useEffect, useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate, useParams } from 'react-router-dom';
-import { IdCard, Users, UserCog, Building2, Building, Store } from 'lucide-react';
+import { IdCard, Users, UserCog, Building2, Building, Store, Percent } from 'lucide-react';
 import { PageContainer } from '../../components/shared/PageContainer';
 import { CustomText } from '../../components/shared/CustomText';
 import { AdminCard } from '../../components/shared/AdminCard';
@@ -15,6 +15,7 @@ import AdminCompanies from '../../components/administration/admin/AdminCompanies
 import Packages from '../../components/administration/package/Packages';
 import AdminUsers from '../../components/administration/admin/AdminUsers';
 import AdminBranches from '../../components/administration/admin/AdminBranches';
+import AdminDiscounts from '../../components/administration/admin/AdminDiscounts';
 import { AuthContext } from '../../contexts/authContext';
 import { Role as RoleModel } from '../../models/Role';
 import { Role } from '../../utils/enums/Role';
@@ -96,6 +97,15 @@ const AdministrationPage: FC = () => {
         tabKey: 'packages',
         roles: [Role.admin, Role.owner],
         component: <Packages />,
+        onSelect: () => {},
+      },
+      {
+        icon: Percent,
+        name: 'discounts.title',
+        link: '/administration/discounts',
+        tabKey: 'discounts',
+        roles: [Role.admin],
+        component: <AdminDiscounts />,
         onSelect: () => {},
       },
       {

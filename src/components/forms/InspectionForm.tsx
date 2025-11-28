@@ -13,6 +13,7 @@ import { showToast } from '../../utils/showToast';
 import { PageContainer } from '../shared/PageContainer';
 import { CustomInput } from '../shared/CustomInput';
 import { CustomSelect } from '../shared/CustomSelect';
+import { CustomDatePicker } from '../shared/CustomDatePicker';
 import { Button } from '../shared/Button';
 import { PhoneNumberRoInput } from '../PhoneNumberRoInput';
 
@@ -23,7 +24,7 @@ type FormData = {
   lastName: string;
   carCategory: CarCategories;
   inspectionType: InspectionType;
-  inspectedAt: string;
+  inspectedAt: Date | null;
   branchId: string;
 };
 
@@ -45,7 +46,7 @@ const InspectionForm: FC = () => {
     lastName: '',
     carCategory: CarCategories.B,
     inspectionType: InspectionType.twoYears,
-    inspectedAt: new Date().toISOString().split('T')[0],
+    inspectedAt: new Date(),
     branchId: '',
   });
 
@@ -60,13 +61,13 @@ const InspectionForm: FC = () => {
         lastName: selectedInspection.car.customer.lastName,
         carCategory: selectedInspection.car.category,
         inspectionType: selectedInspection.type,
-        inspectedAt: selectedInspection.inspectedAt.split('T')[0],
+        inspectedAt: new Date(selectedInspection.inspectedAt),
         branchId: selectedInspection.branchId,
       });
     }
   }, [selectedInspection]);
 
-  const updateField = (field: keyof FormData, value: string) => {
+  const updateField = <K extends keyof FormData>(field: K, value: FormData[K]) => {
     setForm((prev) => ({ ...prev, [field]: value }));
     setErrors((prev) => {
       const next = { ...prev };
@@ -108,7 +109,7 @@ const InspectionForm: FC = () => {
         carCategory: form.carCategory,
         inspectedBy: user?.id,
         inspectionType: form.inspectionType,
-        inspectedAt: formatInspectionDate(form.inspectedAt),
+        inspectedAt: form.inspectedAt ? formatInspectionDate(form.inspectedAt.toISOString().split('T')[0]) : '',
         branchId: form.branchId,
       };
 
@@ -221,18 +222,13 @@ const InspectionForm: FC = () => {
                   error={errors.inspectionType && t(errors.inspectionType)}
                 />
 
-                <CustomInput
+                <CustomDatePicker
                   label={t('inspectionDate')}
-                  type="date"
-                  value={form.inspectedAt}
-                  onChange={(e) => updateField('inspectedAt', e.target.value)}
-                  onClick={(e) => {
-                    const target = e.target as HTMLInputElement;
-                    if (target.showPicker) target.showPicker();
-                  }}
-                  placeholder={t('inspectionDatePlaceholder')} // ex. "Selectează data"
+                  selected={form.inspectedAt}
+                  onChange={(date) => updateField('inspectedAt', date)}
+                  maxDate={new Date()}
+                  placeholder={t('inspectionDatePlaceholder')}
                   error={errors.inspectedAt && t(errors.inspectedAt)}
-                  max={new Date().toISOString().split('T')[0]}
                 />
               </div>
             </div>
