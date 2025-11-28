@@ -28,7 +28,6 @@ type UserFormValues = {
   id?: string;
   firstName: string;
   lastName: string;
-  password: string;
   role: Role | '';
   branchId: string;
 };
@@ -37,7 +36,6 @@ const initialValues: UserFormValues = {
   id: '',
   firstName: '',
   lastName: '',
-  password: '',
   role: '',
   branchId: '',
 };
@@ -77,15 +75,6 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
       lastName: {
         validate: (value) => (!String(value ?? '').trim() ? 'adminUsers.lastNameEmpty' : null),
       },
-      password: {
-        validate: (value) => {
-          if (isEdit) return null;
-          const v = String(value ?? '').trim();
-          if (!v) return 'adminUsers.passwordEmpty';
-          if (v.length < 8) return 'adminUsers.passwordTooShort';
-          return null;
-        },
-      },
     },
     onSubmit: async (formValues) => {
       if (!isEdit && !formValues.role) {
@@ -117,7 +106,6 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
             data: {
               firstName: formValues.firstName,
               lastName: formValues.lastName,
-              password: formValues.password,
               roles: formValues.role ? [formValues.role as Role] : [],
               branchId: formValues.role === Role.inspector ? formValues.branchId : undefined,
             },
@@ -138,7 +126,6 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
       setFieldValue('id', selectedUser.id ?? '');
       setFieldValue('firstName', selectedUser.firstName ?? '');
       setFieldValue('lastName', selectedUser.lastName ?? '');
-      setFieldValue('password', '');
       setFieldValue('role', (selectedUser.roles?.[0] as Role) ?? '');
       setFieldValue('branchId', selectedUser.activeBranch?.id ?? '');
       setGeneratedUsername(selectedUser.username);
@@ -146,7 +133,6 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
       setFieldValue('id', '');
       setFieldValue('firstName', '');
       setFieldValue('lastName', '');
-      setFieldValue('password', '');
       setFieldValue('role', '');
       setFieldValue('branchId', '');
       setGeneratedUsername('');
@@ -233,13 +219,9 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
         </div>
 
         {!isEdit && (
-          <CustomInput
-            type="password"
-            label={t('password')}
-            {...register('password')}
-            error={errors.password && t(errors.password)}
-            placeholder={t('adminUsers.minLength8')}
-          />
+          <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
+            <p className="text-sm text-blue-800">📱 {t('adminUsers.passwordWillBeSentViaSMS')}</p>
+          </div>
         )}
 
         {!isEdit && (

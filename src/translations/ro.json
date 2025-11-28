@@ -479,7 +479,8 @@
       "usernameWillBeGenerated": "Numele de utilizator va fi generat automat",
       "generatingUsername": "Se generează...",
       "owner": "Proprietar",
-      "inspector": "Inspector"
+      "inspector": "Inspector",
+      "passwordWillBeSentViaSMS": "Parola va fi generată automat și trimisă prin SMS pe numărul de telefon al companiei."
     },
     "smsBanner": {
       "warningTitle": "Credit SMS aproape epuizat",
