@@ -8,7 +8,6 @@ import { CreateBranchRequest, UpdateBranchRequest } from './branch-service';
 export interface CreateUserDTO {
   firstName: string;
   lastName: string;
-  password: string;
   roles: string[];
   branchId?: string;
 }

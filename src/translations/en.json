@@ -481,7 +481,8 @@
     "usernameWillBeGenerated": "Username will be generated automatically",
     "generatingUsername": "Generating...",
     "owner": "Owner",
-    "inspector": "Inspector"
+    "inspector": "Inspector",
+    "passwordWillBeSentViaSMS": "Password will be automatically generated and sent via SMS to the company phone number."
   },
   "smsBanner": {
     "warningTitle": "SMS credits almost used",
