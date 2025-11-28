@@ -220,11 +220,14 @@
     "loginButton": "Login",
     "adminButton": "Administration",
     "hero": {
+      "badge": "✨ #1 Platform for ITP",
       "title": "Manage Your ITP Inspections Efficiently",
       "subtitle": "Complete management system for ITP stations. Track inspections, manage clients, and never miss an expiration date.",
       "cta": "Get Started"
     },
     "features": {
+      "title": "Everything You Need",
+      "subtitle": "Efficiently manage all aspects of your ITP station",
       "stations": {
         "title": "Station Management",
         "description": "Complete control over your ITP stations. View statistics, manage packages, and monitor performance."
@@ -237,6 +240,28 @@
         "title": "Automatic Notifications",
         "description": "Clients receive automatic reminders when their inspection is about to expire. Never lose a customer again."
       }
+    },
+    "howItWorks": {
+      "title": "How It Works",
+      "subtitle": "Get started in 3 simple steps",
+      "step1": {
+        "title": "Create Account",
+        "description": "Register your ITP station on the platform in minutes"
+      },
+      "step2": {
+        "title": "Add Inspections",
+        "description": "Record inspections with all client and vehicle details"
+      },
+      "step3": {
+        "title": "Relax",
+        "description": "Clients automatically receive notifications when their ITP is about to expire"
+      }
+    },
+    "stats": {
+      "stations": "ITP Stations",
+      "inspections": "Inspections",
+      "sms": "SMS Sent",
+      "satisfaction": "Satisfaction"
     },
     "contact": {
       "title": "Want to Collaborate?",

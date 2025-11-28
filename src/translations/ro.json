@@ -218,11 +218,14 @@
       "loginButton": "Autentificare",
       "adminButton": "Administrare Companie",
       "hero": {
+        "badge": "✨ Platforma #1 pentru ITP",
         "title": "Gestionează Eficient Inspecțiile ITP",
         "subtitle": "Sistem complet de management pentru stații ITP. Urmărește inspecții, gestionează clienți și nu rata nicio expirare.",
         "cta": "Începe Acum"
       },
       "features": {
+        "title": "Tot ce ai nevoie",
+        "subtitle": "Gestionează eficient toate aspectele stației tale ITP",
         "stations": {
           "title": "Gestionare Stații",
           "description": "Control complet asupra stațiilor ITP. Vezi statistici, gestionează pachete și monitorizează performanța."
@@ -235,6 +238,28 @@
           "title": "Notificări Automate",
           "description": "Clienții primesc memento-uri automate când inspectia lor urmează să expire. Nu mai pierzi niciun client."
         }
+      },
+      "howItWorks": {
+        "title": "Cum Funcționează",
+        "subtitle": "În 3 pași simpli ești gata să pornești",
+        "step1": {
+          "title": "Creează Cont",
+          "description": "Înregistrează-ți stația ITP în platformă în câteva minute"
+        },
+        "step2": {
+          "title": "Adaugă Inspecții",
+          "description": "Înregistrează inspecțiile cu toate detaliile despre clienți și vehicule"
+        },
+        "step3": {
+          "title": "Relaxează-te",
+          "description": "Clienții primesc automat notificări când ITP-ul urmează să expire"
+        }
+      },
+      "stats": {
+        "stations": "Stații ITP",
+        "inspections": "Inspecții",
+        "sms": "SMS-uri Trimise",
+        "satisfaction": "Satisfacție"
       },
       "contact": {
         "title": "Vrei să Colaborăm?",
