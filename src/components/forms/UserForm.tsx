@@ -220,9 +220,7 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
 
         {!isEdit && (
           <div className="bg-blue-50 border border-blue-200 rounded-lg p-3">
-            <p className="text-sm text-blue-800">
-              📱 {t('adminUsers.passwordWillBeSentViaSMS')}
-            </p>
+            <p className="text-sm text-blue-800">📱 {t('adminUsers.passwordWillBeSentViaSMS')}</p>
           </div>
         )}
 
