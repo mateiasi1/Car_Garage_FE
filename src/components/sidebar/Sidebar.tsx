@@ -91,7 +91,13 @@ const Sidebar: FC = () => {
             {menuOpen && (
               <div className="absolute bottom-12 right-0 z-50">
                 <div className="bg-surface text-text rounded-xl px-4 py-3 flex items-center gap-4 border border-border">
-                  <SidebarNav navItems={navItems} userRoles={userRoles} variant="bottom" colorMode="onCard" />
+                  <SidebarNav
+                    navItems={navItems}
+                    userRoles={userRoles}
+                    variant="bottom"
+                    colorMode="onCard"
+                    onItemClick={() => setMenuOpen(false)}
+                  />
 
                   <IconButton
                     onClick={logout}

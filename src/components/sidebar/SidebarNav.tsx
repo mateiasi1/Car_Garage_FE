@@ -13,14 +13,16 @@ interface SidebarNavProps {
   navItems: NavItem[];
   userRoles: string[];
   variant: 'vertical' | 'bottom';
-  colorMode?: 'onPrimary' | 'onCard'; // 👈 nou
+  colorMode?: 'onPrimary' | 'onCard';
+  onItemClick?: () => void;
 }
 
 const SidebarNav: FC<SidebarNavProps> = ({
   navItems,
   userRoles,
   variant,
-  colorMode = 'onPrimary', // default = alb (pentru bara de jos)
+  colorMode = 'onPrimary',
+  onItemClick,
 }) => {
   const location = useLocation();
 
@@ -38,7 +40,12 @@ const SidebarNav: FC<SidebarNavProps> = ({
           const active = isActive(item.to);
 
           return (
-            <Link key={item.to} to={item.to} className="w-12 h-12 flex items-center justify-center relative">
+            <Link
+              key={item.to}
+              to={item.to}
+              onClick={onItemClick}
+              className="w-12 h-12 flex items-center justify-center relative"
+            >
               {active && (
                 <div className="absolute left-0 w-1 h-8 bg-primary-text rounded-r-full" />
               )}
@@ -67,7 +74,12 @@ const SidebarNav: FC<SidebarNavProps> = ({
         const active = isActive(item.to);
 
         return (
-          <Link key={item.to} to={item.to} className="w-9 h-9 flex items-center justify-center">
+          <Link
+            key={item.to}
+            to={item.to}
+            onClick={onItemClick}
+            className="w-9 h-9 flex items-center justify-center"
+          >
             <div
               className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${
                 active ? `${activeBg} ${activeColor}` : `bg-transparent ${inactiveColor} hover:${activeColor}`
