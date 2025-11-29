@@ -173,30 +173,30 @@ export const CustomDatePicker: FC<CustomDatePickerProps> = ({
         onClick={() => !disabled && setIsOpen(!isOpen)}
         disabled={disabled}
         className={clsx(
-          'w-full px-4 py-3 rounded-2xl border bg-card font-body shadow-sm',
+          'w-full px-4 py-3 rounded-lg border bg-surface font-body',
           'flex items-center justify-between gap-2',
           'focus:outline-none focus:ring-2 transition-colors',
           disabled
-            ? 'border-text/10 text-text/40 bg-background cursor-not-allowed'
-            : 'border-text/20 text-text hover:border-text/30 focus:ring-primary',
+            ? 'border-border/50 text-muted/70 bg-background cursor-not-allowed opacity-60'
+            : 'border-border text-text bg-surface hover:border-primary/50 focus:ring-primary focus:border-primary',
           error && !disabled && 'border-error focus:ring-error'
         )}
       >
-        <span className={selected ? 'text-text' : 'text-text/50'}>
+        <span className={selected ? 'text-text' : 'text-muted'}>
           {selected ? formatDate(selected) : (placeholder || t('datePicker.selectDate'))}
         </span>
-        <Calendar className="w-5 h-5 text-text/50" />
+        <Calendar className="w-5 h-5 text-muted" />
       </button>
 
       {/* Calendar Dropdown - Opens Upward */}
       {isOpen && (
-        <div className="absolute left-0 right-0 bottom-full mb-2 bg-card rounded-xl shadow-2xl border border-text/10 z-[999] overflow-hidden">
+        <div className="absolute left-0 right-0 bottom-full mb-2 bg-surface rounded-lg border border-border z-[999] overflow-hidden">
           {/* Header with Month/Year Selectors */}
-          <div className="flex items-center justify-between px-2 py-2 bg-background/60 border-b border-text/10">
+          <div className="flex items-center justify-between px-2 py-2 bg-primary-light/50 border-b border-border">
             <button
               type="button"
               onClick={handlePrevMonth}
-              className="p-1.5 rounded-lg hover:bg-card transition-colors text-text/60 hover:text-text"
+              className="p-1.5 rounded-lg hover:bg-surface transition-colors text-muted hover:text-text"
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
@@ -210,21 +210,21 @@ export const CustomDatePicker: FC<CustomDatePickerProps> = ({
                     setShowMonthSelect(!showMonthSelect);
                     setShowYearSelect(false);
                   }}
-                  className="flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-card transition-colors text-sm font-medium text-text"
+                  className="flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-surface transition-colors text-sm font-medium text-text"
                 >
                   {MONTHS[viewDate.getMonth()].slice(0, 3)}
                   <ChevronDown className="w-3 h-3" />
                 </button>
                 
                 {showMonthSelect && (
-                  <div className="absolute top-full left-0 mt-1 bg-card rounded-lg shadow-lg border border-text/10 z-10 max-h-40 overflow-y-auto">
+                  <div className="absolute top-full left-0 mt-1 bg-surface rounded-lg border border-border z-10 max-h-40 overflow-y-auto">
                     {MONTHS.map((month, index) => (
                       <button
                         key={month}
                         type="button"
                         onClick={() => handleMonthSelect(index)}
                         className={clsx(
-                          'block w-full px-3 py-1.5 text-left text-sm hover:bg-background transition-colors',
+                          'block w-full px-3 py-1.5 text-left text-sm hover:bg-primary-light transition-colors',
                           viewDate.getMonth() === index ? 'bg-primary/10 text-primary font-medium' : 'text-text'
                         )}
                       >
@@ -243,21 +243,21 @@ export const CustomDatePicker: FC<CustomDatePickerProps> = ({
                     setShowYearSelect(!showYearSelect);
                     setShowMonthSelect(false);
                   }}
-                  className="flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-card transition-colors text-sm font-medium text-text"
+                  className="flex items-center gap-1 px-2 py-1 rounded-lg hover:bg-surface transition-colors text-sm font-medium text-text"
                 >
                   {viewDate.getFullYear()}
                   <ChevronDown className="w-3 h-3" />
                 </button>
                 
                 {showYearSelect && (
-                  <div className="absolute top-full right-0 mt-1 bg-card rounded-lg shadow-lg border border-text/10 z-10 max-h-40 overflow-y-auto">
+                  <div className="absolute top-full right-0 mt-1 bg-surface rounded-lg border border-border z-10 max-h-40 overflow-y-auto">
                     {years.map((year) => (
                       <button
                         key={year}
                         type="button"
                         onClick={() => handleYearSelect(year)}
                         className={clsx(
-                          'block w-full px-3 py-1.5 text-left text-sm hover:bg-background transition-colors',
+                          'block w-full px-3 py-1.5 text-left text-sm hover:bg-primary-light transition-colors',
                           viewDate.getFullYear() === year ? 'bg-primary/10 text-primary font-medium' : 'text-text'
                         )}
                       >
@@ -272,7 +272,7 @@ export const CustomDatePicker: FC<CustomDatePickerProps> = ({
             <button
               type="button"
               onClick={handleNextMonth}
-              className="p-1.5 rounded-lg hover:bg-card transition-colors text-text/60 hover:text-text"
+              className="p-1.5 rounded-lg hover:bg-surface transition-colors text-muted hover:text-text"
             >
               <ChevronRight className="w-4 h-4" />
             </button>
@@ -281,7 +281,7 @@ export const CustomDatePicker: FC<CustomDatePickerProps> = ({
           {/* Days of Week */}
           <div className="grid grid-cols-7 px-2 pt-2">
             {DAYS.map((day) => (
-              <div key={day} className="text-center text-xs font-medium text-text/50 py-1">
+              <div key={day} className="text-center text-xs font-medium text-muted py-1">
                 {day}
               </div>
             ))}
@@ -300,8 +300,8 @@ export const CustomDatePicker: FC<CustomDatePickerProps> = ({
                       'w-8 h-8 rounded-lg text-xs font-medium transition-all mx-auto',
                       'flex items-center justify-center',
                       isDateDisabled(date)
-                        ? 'text-text/20 cursor-not-allowed'
-                        : 'hover:bg-background cursor-pointer',
+                        ? 'text-muted/50 cursor-not-allowed'
+                        : 'hover:bg-primary-light cursor-pointer',
                       isSelected(date) && 'bg-primary text-primary-text hover:bg-primary-hover',
                       isToday(date) && !isSelected(date) && 'ring-1 ring-primary ring-inset',
                       !isSelected(date) && !isDateDisabled(date) && 'text-text'
@@ -317,14 +317,14 @@ export const CustomDatePicker: FC<CustomDatePickerProps> = ({
           </div>
 
           {/* Footer - Compact */}
-          <div className="flex items-center justify-between px-3 py-2 border-t border-text/10 bg-background/40">
+          <div className="flex items-center justify-between px-3 py-2 border-t border-border bg-primary-light/30">
             <button
               type="button"
               onClick={() => {
                 onChange(null);
                 setIsOpen(false);
               }}
-              className="text-xs text-text/60 hover:text-text transition-colors"
+              className="text-xs text-muted hover:text-text transition-colors"
             >
               {t('datePicker.clear')}
             </button>
@@ -340,7 +340,7 @@ export const CustomDatePicker: FC<CustomDatePickerProps> = ({
               className={clsx(
                 'text-xs font-medium transition-colors',
                 minDate && new Date() < minDate
-                  ? 'text-text/30 cursor-not-allowed'
+                  ? 'text-muted/50 cursor-not-allowed'
                   : 'text-primary hover:text-primary-hover'
               )}
             >

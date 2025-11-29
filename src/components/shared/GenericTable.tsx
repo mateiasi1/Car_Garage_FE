@@ -143,7 +143,7 @@ const GenericTable = <T extends { id: string }>({
         className={
           embedded
             ? 'w-full flex flex-col h-full'
-            : 'w-full bg-card rounded-3xl flex flex-col h-full overflow-visible shadow-2xl border border-card/40'
+            : 'w-full bg-surface rounded-xl flex flex-col h-full overflow-visible border border-border'
         }
       >
         {showToolbar && (
@@ -187,25 +187,28 @@ const GenericTable = <T extends { id: string }>({
                   filtersVisible ? 'max-h-40 opacity-100' : 'max-h-0 opacity-0'
                 }`}
               >
-                <div className="flex flex-wrap items-center gap-4 md:gap-6 p-4 bg-background/60 rounded-2xl">
-                  <span className="text-sm font-medium text-text/80">{t('table.searchBy')}:</span>
-
-                  {searchableColumns.map((col) => (
-                    <label key={col.key} className="flex items-center gap-2 cursor-pointer">
-                      <input
-                        type="checkbox"
-                        checked={filterConfig[col.key] ?? false}
-                        onChange={() => {
-                          setFilterConfig((prev) => ({
-                            ...prev,
-                            [col.key]: !prev[col.key],
-                          }));
-                        }}
-                        className="w-4 h-4 text-primary border-text/20 rounded focus:ring-primary"
-                      />
-                      <span className="text-sm text-text/80">{col.label}</span>
-                    </label>
-                  ))}
+                <div className="p-4 bg-primary-light/50 rounded-lg border border-border/50">
+                  <div className="flex items-center gap-3 mb-3">
+                    <span className="text-sm font-medium text-text">{t('table.searchBy')}:</span>
+                  </div>
+                  <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
+                    {searchableColumns.map((col) => (
+                      <label key={col.key} className="flex items-center gap-2 cursor-pointer">
+                        <input
+                          type="checkbox"
+                          checked={filterConfig[col.key] ?? false}
+                          onChange={() => {
+                            setFilterConfig((prev) => ({
+                              ...prev,
+                              [col.key]: !prev[col.key],
+                            }));
+                          }}
+                          className="w-4 h-4 text-primary border-border rounded focus:ring-primary"
+                        />
+                        <span className="text-sm text-text">{col.label}</span>
+                      </label>
+                    ))}
+                  </div>
                 </div>
               </div>
             )}
@@ -215,7 +218,7 @@ const GenericTable = <T extends { id: string }>({
         <div className="flex flex-col flex-1 min-h-0 w-full">
           <div className="hidden md:block w-full overflow-x-auto">
             <div
-              className={`grid min-w-full border-t border-b border-card/40 font-semibold text-sm text-text/80 flex-shrink-0 bg-background/60 ${
+              className={`grid min-w-full border-b border-border font-semibold text-sm text-muted flex-shrink-0 bg-primary-light/30 ${
                 showScrollbarGutter ? 'pr-[16px]' : ''
               }`}
               style={{ gridTemplateColumns }}
@@ -235,14 +238,14 @@ const GenericTable = <T extends { id: string }>({
           <div ref={bodyRef} className={embedded ? 'flex-1 min-h-0 w-full' : 'flex-1 min-h-0 overflow-y-auto w-full'}>
             <div className="hidden md:block overflow-x-auto">
               {isLoading ? (
-                <div className="py-8 text-center text-text/40 font-body">{t('table.loading')}</div>
+                <div className="py-8 text-center text-muted font-body">{t('table.loading')}</div>
               ) : filteredData.length === 0 ? (
-                <div className="py-8 text-center text-text/40 font-body">{t('table.noDataFound')}</div>
+                <div className="py-8 text-center text-muted font-body">{t('table.noDataFound')}</div>
               ) : (
                 filteredData.map((item, idx) => {
-                  const defaultRowClass = `group grid border-b border-card/30 last:border-b-0 text-sm ${
-                    idx % 2 === 0 ? 'bg-card' : 'bg-background/60'
-                  } hover:bg-activeMenu/40 transition-colors ${onRowClick ? 'cursor-pointer' : ''}`;
+                  const defaultRowClass = `group grid border-b border-border last:border-b-0 text-sm ${
+                    idx % 2 === 0 ? 'bg-surface' : 'bg-primary-light/20'
+                  } hover:bg-primary-light/50 transition-colors ${onRowClick ? 'cursor-pointer' : ''}`;
 
                   const customRowClass = rowClassName ? rowClassName(item, idx) : '';
 
@@ -254,7 +257,7 @@ const GenericTable = <T extends { id: string }>({
                       onClick={() => onRowClick?.(item)}
                     >
                       {showNumberColumn && (
-                        <div className="py-2 px-4 text-left font-body text-text/80">
+                        <div className="py-2 px-4 text-left font-body text-muted">
                           {(page - 1) * itemsPerPage + (idx + 1)}
                         </div>
                       )}
@@ -305,27 +308,27 @@ const GenericTable = <T extends { id: string }>({
 
             <div className="md:hidden space-y-4 p-4">
               {isLoading ? (
-                <div className="py-8 text-center text-text/40 font-body">{t('table.loading')}</div>
+                <div className="py-8 text-center text-muted font-body">{t('table.loading')}</div>
               ) : filteredData.length === 0 ? (
-                <div className="py-8 text-center text-text/40 font-body">{t('table.noDataFound')}</div>
+                <div className="py-8 text-center text-muted font-body">{t('table.noDataFound')}</div>
               ) : (
                 filteredData.map((item, idx) => (
                   <div
                     key={`${item.id}-${idx}`}
-                    className="bg-card border border-card/40 rounded-2xl p-4 space-y-2 hover:bg-activeMenu/20 transition-colors shadow-sm"
+                    className="bg-surface border border-border rounded-lg p-4 space-y-2 hover:bg-primary-light/30 transition-colors"
                     onClick={() => onRowClick?.(item)}
                   >
                     {showNumberColumn && (
-                      <div className="flex justify-between border-b border-card/40 pb-2 mb-2">
-                        <span className="font-semibold text-text/80 font-body">{t('table.number')}:</span>
-                        <span className="text-text/80 font-body">{(page - 1) * itemsPerPage + (idx + 1)}</span>
+                      <div className="flex justify-between border-b border-border pb-2 mb-2">
+                        <span className="font-semibold text-muted font-body">{t('table.number')}:</span>
+                        <span className="text-muted font-body">{(page - 1) * itemsPerPage + (idx + 1)}</span>
                       </div>
                     )}
 
                     {columns.map((col) => (
                       <div key={col.key} className="flex justify-between gap-4">
-                        <span className="font-semibold text-text/80 font-body">{col.label}:</span>
-                        <span className="text-text/80 text-right font-body">
+                        <span className="font-semibold text-muted font-body">{col.label}:</span>
+                        <span className="text-text text-right font-body">
                           {col.render
                             ? col.render(item, idx)
                             : String((item as Record<string, unknown>)[col.key] ?? '')}
@@ -334,7 +337,7 @@ const GenericTable = <T extends { id: string }>({
                     ))}
 
                     {actions && actions.length > 0 && (
-                      <div className="flex justify-end items-center gap-2 pt-2 border-t border-card/40 mt-2">
+                      <div className="flex justify-end items-center gap-2 pt-2 border-t border-border mt-2">
                         {actions.map((action, actionIdx) => {
                           if (action.show && !action.show(item)) {
                             return null;
@@ -374,7 +377,7 @@ const GenericTable = <T extends { id: string }>({
           <div className="flex items-center justify-start flex-wrap gap-2 p-4 flex-shrink-0">
             {getPaginationNumbers(page, totalPages).map((p, i) =>
               p === '...' ? (
-                <span key={i} className="mx-1 text-text/40 font-body">
+                <span key={i} className="mx-1 text-muted font-body">
                   ...
                 </span>
               ) : (
@@ -390,7 +393,7 @@ const GenericTable = <T extends { id: string }>({
                     w-9 h-9 sm:w-10 sm:h-10
                     flex items-center justify-center
                     text-sm font-body
-                    ${p === page ? 'bg-primary text-primary-text' : 'bg-background/80 text-text/80 hover:bg-background'}
+                    ${p === page ? 'bg-primary text-primary-text' : 'bg-primary-light text-text hover:bg-primary-light/70'}
                   `}
                   onClick={() => onPageChange(Number(p))}
                 >

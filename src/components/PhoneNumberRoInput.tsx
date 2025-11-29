@@ -32,14 +32,14 @@ export const PhoneNumberRoInput: FC<PhoneNumberRoInputProps> = ({
       <div
         className={`
           w-full flex items-center
-          rounded-2xl border bg-white font-body shadow-sm
+          rounded-lg border bg-surface font-body
           px-4 py-3
           focus-within:outline-none focus-within:ring-2 focus-within:ring-primary
-          ${error ? 'border-error focus-within:ring-error' : 'border-gray-300 focus-within:border-primary'}
+          ${error ? 'border-error focus-within:ring-error' : 'border-border focus-within:border-primary'}
         `}
       >
         <img src={flagRo} alt="RO" className="w-5 h-5 mr-2 rounded-sm object-cover" />
-        <span className="mr-2 text-sm text-gray-700 font-medium">+40</span>
+        <span className="mr-2 text-sm text-muted font-medium">+40</span>
 
         <input
           type="tel"
@@ -47,7 +47,7 @@ export const PhoneNumberRoInput: FC<PhoneNumberRoInputProps> = ({
           pattern="[0-9]*"
           value={localPart}
           onChange={handleChange}
-          className="flex-1 outline-none border-0 bg-transparent text-text text-sm sm:text-base placeholder:text-gray-400"
+          className="flex-1 outline-none border-0 bg-transparent text-text text-sm sm:text-base placeholder:text-muted"
           placeholder={placeholder}
         />
       </div>

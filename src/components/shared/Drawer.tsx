@@ -26,20 +26,20 @@ const Drawer: FC<DrawerProps> = ({ isOpen, onClose, title, children }) => {
         isOpen ? 'opacity-100 pointer-events-auto' : 'opacity-0 pointer-events-none'
       }`}
     >
-      <div className="absolute inset-0 bg-text/40 backdrop-blur-sm" onClick={onClose} />
+      <div className="absolute inset-0 bg-text/30 backdrop-blur-sm" onClick={onClose} />
 
       <div
         className={`
-          fixed bg-card text-text border border-card/40 shadow-2xl flex flex-col
-          bottom-0 left-0 right-0 h-[80%] rounded-t-3xl
+          fixed bg-surface text-text border-l border-border flex flex-col
+          bottom-0 left-0 right-0 h-[80%] rounded-t-xl
           md:top-0 md:bottom-0 md:right-0 md:left-auto
           md:h-full md:w-[35%] md:max-w-lg
-          md:rounded-tl-3xl md:rounded-bl-3xl md:rounded-tr-none md:rounded-br-none
+          md:rounded-tl-xl md:rounded-bl-xl md:rounded-tr-none md:rounded-br-none
           transition-transform duration-300
           ${isOpen ? 'translate-y-0 md:translate-x-0' : 'translate-y-full md:translate-x-full'}
         `}
       >
-        <div className="flex items-center justify-between px-5 py-4 border-b border-card/40">
+        <div className="flex items-center justify-between px-5 py-4 border-b border-border">
           {title && (
             <CustomText variant="h3" className="m-0">
               {title}

@@ -128,11 +128,11 @@ const BranchDetails: FC = () => {
         />
       </div>
 
-      <div className="mt-0 p-4 sm:p-5 lg:p-6 w-full rounded-2xl bg-white">
+      <div className="p-4 sm:p-5 lg:p-6">
         {rows.map((row, index) => (
-          <div key={index} className="flex items-center justify-between py-4 border-b border-gray-200 last:border-none">
-            <span className="text-sm text-text/60 font-body">{row.label}</span>
-            <span className="text-text font-body">{row.value}</span>
+          <div key={index} className="flex items-center justify-between py-3 border-b border-border last:border-none">
+            <span className="text-sm text-muted font-body">{row.label}</span>
+            <span className="text-text font-body font-medium">{row.value}</span>
           </div>
         ))}
       </div>
@@ -141,16 +141,16 @@ const BranchDetails: FC = () => {
         <div className="space-y-4">
           <PageHeader title={t('packages.activePackage')} icon={Store} />
 
-          <div className="p-4 sm:p-5 lg:p-6 w-full rounded-2xl bg-white">
+          <div className="p-4 sm:p-5 lg:p-6">
             {activePackage ? (
               <>
-                <div className="flex items-center justify-between py-4 border-b border-gray-200">
-                  <span className="text-sm text-text/60">{t('packages.packageName')}</span>
+                <div className="flex items-center justify-between py-3 border-b border-border">
+                  <span className="text-sm text-muted font-body">{t('packages.packageName')}</span>
                   <span className="text-text font-heading font-semibold">{activePackage.package?.name || 'N/A'}</span>
                 </div>
 
-                <div className="flex items-center justify-between py-4 border-b border-gray-200">
-                  <span className="text-sm text-text/60">{t('packages.totalMessages')}</span>
+                <div className="flex items-center justify-between py-3 border-b border-border">
+                  <span className="text-sm text-muted font-body">{t('packages.totalMessages')}</span>
                   <span className="text-text font-heading font-semibold">
                     {activePackage.usage?.sms?.limit === -1
                       ? t('packages.unlimited')
@@ -158,13 +158,13 @@ const BranchDetails: FC = () => {
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between py-4 border-b border-gray-200">
-                  <span className="text-sm text-text/60">{t('packages.usedMessages')}</span>
+                <div className="flex items-center justify-between py-3 border-b border-border">
+                  <span className="text-sm text-muted font-body">{t('packages.usedMessages')}</span>
                   <span className="text-text font-heading font-semibold">{activePackage.usage?.sms?.used || 0}</span>
                 </div>
 
-                <div className="flex items-center justify-between py-4 border-b border-gray-200 last:border-none">
-                  <span className="text-sm text-text/60">{t('packages.expiryDate')}</span>
+                <div className="flex items-center justify-between py-3 border-b border-border last:border-none">
+                  <span className="text-sm text-muted font-body">{t('packages.expiryDate')}</span>
                   <span className="text-text font-heading font-semibold">
                     {activePackage.expiringAt
                       ? new Date(activePackage.expiringAt).toLocaleDateString('ro-RO', {
@@ -179,9 +179,9 @@ const BranchDetails: FC = () => {
             ) : (
               <Link
                 to="/packages"
-                className="block text-center px-4 py-3 bg-primary text-primary-text font-heading font-semibold rounded-xl hover:bg-primary-hover transition"
+                className="inline-flex items-center gap-2 px-4 py-3 bg-primary text-primary-text font-heading font-semibold rounded-lg hover:bg-primary-hover transition"
               >
-                <Store className="w-6 h-6 text-primary" />
+                <Store className="w-5 h-5" />
                 {t('packages.viewAllPackages')}
               </Link>
             )}

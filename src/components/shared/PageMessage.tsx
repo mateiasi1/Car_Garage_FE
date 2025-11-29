@@ -4,8 +4,7 @@ import { AuthContext } from '../../contexts/authContext';
 import { Role } from '../../utils/enums/Role';
 import { useGetBranchSmsUsageQuery } from '../../rtk/services/branch-service';
 
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTriangleExclamation, faCircleXmark } from '@fortawesome/free-solid-svg-icons';
+import { TriangleAlert, XCircle } from 'lucide-react';
 
 const PageMessage: FC = () => {
   const { t } = useTranslation();
@@ -29,8 +28,8 @@ const PageMessage: FC = () => {
 
   const isErrorState = status === 'empty';
 
-  const wrapperBg = isErrorState ? 'bg-red-500' : 'bg-amber-400';
-  const icon = isErrorState ? faCircleXmark : faTriangleExclamation;
+  const wrapperBg = isErrorState ? 'bg-error' : 'bg-warning';
+  const Icon = isErrorState ? XCircle : TriangleAlert;
 
   return (
     <>
@@ -41,10 +40,10 @@ const PageMessage: FC = () => {
             w-full
             flex items-center gap-3
             px-4 sm:px-6 py-3
-            shadow-[0_4px_12px_rgba(0,0,0,0.18)]
+            border-b border-border
           `}
         >
-          <FontAwesomeIcon icon={icon} className="h-6 w-6 text-text" />
+          <Icon className="h-6 w-6 text-text flex-shrink-0" />
 
           <div className="flex flex-col gap-0.5">
             <div className="font-heading font-semibold text-base sm:text-lg text-text">

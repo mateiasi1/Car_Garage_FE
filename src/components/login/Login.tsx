@@ -9,7 +9,6 @@ import { showToast } from '../../utils/showToast';
 import { Button } from '../shared/Button';
 import { CustomInput } from '../shared/CustomInput';
 import { CustomSelect } from '../shared/CustomSelect';
-import { PageContainer } from '../shared/PageContainer';
 import { FormContainer } from '../shared/FormContainer';
 import { useForm } from '../../hooks/useForm';
 import LoginBranchForm from './LoginBranchForm';
@@ -130,90 +129,88 @@ const Login: FC = () => {
   const shouldHandleLoginSubmit = !isCreateBranchView && (!selectBranch || branches.length > 0);
 
   return (
-    <PageContainer>
-      <FormContainer onSubmit={shouldHandleLoginSubmit ? onSubmit : undefined} noValidate>
-        <div className="flex flex-col">
-          <div className="flex items-center justify-center mb-8 cursor-pointer" onClick={() => navigate(routes.HOME)}>
-            <img src={logo} alt="RoadReady Logo" className="h-14 w-14 mr-3" />
-            <span className="text-2xl font-bold font-heading text-primary">RoadReady</span>
-          </div>
-
-          {!isCreateBranchView ? (
-            <>
-              <div className="space-y-6 pb-4 flex-1">
-                {!selectBranch && (
-                  <>
-                    <CustomInput
-                      label={`${t('usernameTitle')} *`}
-                      {...register('username')}
-                      error={errors.username && t(errors.username)}
-                      placeholder="john@example.com"
-                      autoComplete="username"
-                    />
-
-                    <CustomInput
-                      label={`${t('passwordTitle')} *`}
-                      type="password"
-                      {...register('password')}
-                      error={errors.password && t(errors.password)}
-                      placeholder="•••••••"
-                      autoComplete="current-password"
-                    />
-                  </>
-                )}
-
-                {selectBranch && branches.length > 0 && (
-                  <CustomSelect
-                    label={t('branch.selectBranch')}
-                    value={selectedBranchId}
-                    onChange={(val) => setSelectedBranchId(val)}
-                    options={branches.map((branch) => ({
-                      value: branch.id,
-                      label: branch.name,
-                    }))}
-                  />
-                )}
-
-                {showNoBranchError && (
-                  <p className="mt-4 text-sm font-body text-error text-center">
-                    {t('branch.noBranchesForLoginNoPermission')}
-                  </p>
-                )}
-              </div>
-
-              <div className="mt-4 space-y-4">
-                <Button
-                  type="submit"
-                  fullWidth
-                  variant="primary"
-                  disabled={selectBranch ? !selectedBranchId : !canSubmit}
-                >
-                  {t('loginButton')}
-                </Button>
-
-                <div className="mt-2 text-center text-sm text-text/70 font-body">
-                  {t('login.termsInfo.prefix')}{' '}
-                  <Link
-                    to="/terms"
-                    target="_blank"
-                    className="text-primary hover:text-primary-hover font-medium underline"
-                  >
-                    {t('login.termsInfo.link')}
-                  </Link>
-                </div>
-
-                <div className="mt-1 text-center text-sm text-text/70 font-body">{t('registerButton')}</div>
-              </div>
-            </>
-          ) : (
-            <div className="space-y-4 pb-4 flex-1">
-              <p className="text-sm font-body text-text/80">{t('branch.noBranchesForLoginCanCreate')}</p>
-              <LoginBranchForm onBranchCreated={handleBranchCreated} />
-            </div>
-          )}
+    <FormContainer onSubmit={shouldHandleLoginSubmit ? onSubmit : undefined} noValidate>
+      <div className="flex flex-col">
+        <div className="flex items-center justify-center mb-8 cursor-pointer" onClick={() => navigate(routes.HOME)}>
+          <img src={logo} alt="RoadReady Logo" className="h-14 w-14 mr-3" />
+          <span className="text-2xl font-bold font-heading text-primary">RoadReady</span>
         </div>
-      </FormContainer>
-    </PageContainer>
+
+        {!isCreateBranchView ? (
+          <>
+            <div className="space-y-6 pb-4 flex-1">
+              {!selectBranch && (
+                <>
+                  <CustomInput
+                    label={`${t('usernameTitle')} *`}
+                    {...register('username')}
+                    error={errors.username && t(errors.username)}
+                    placeholder="john@example.com"
+                    autoComplete="username"
+                  />
+
+                  <CustomInput
+                    label={`${t('passwordTitle')} *`}
+                    type="password"
+                    {...register('password')}
+                    error={errors.password && t(errors.password)}
+                    placeholder="•••••••"
+                    autoComplete="current-password"
+                  />
+                </>
+              )}
+
+              {selectBranch && branches.length > 0 && (
+                <CustomSelect
+                  label={t('branch.selectBranch')}
+                  value={selectedBranchId}
+                  onChange={(val) => setSelectedBranchId(val)}
+                  options={branches.map((branch) => ({
+                    value: branch.id,
+                    label: branch.name,
+                  }))}
+                />
+              )}
+
+              {showNoBranchError && (
+                <p className="mt-4 text-sm font-body text-error text-center">
+                  {t('branch.noBranchesForLoginNoPermission')}
+                </p>
+              )}
+            </div>
+
+            <div className="mt-4 space-y-4">
+              <Button
+                type="submit"
+                fullWidth
+                variant="primary"
+                disabled={selectBranch ? !selectedBranchId : !canSubmit}
+              >
+                {t('loginButton')}
+              </Button>
+
+              <div className="mt-2 text-center text-sm text-text/70 font-body">
+                {t('login.termsInfo.prefix')}{' '}
+                <Link
+                  to="/terms"
+                  target="_blank"
+                  className="text-primary hover:text-primary-hover font-medium underline"
+                >
+                  {t('login.termsInfo.link')}
+                </Link>
+              </div>
+
+              <div className="mt-1 text-center text-sm text-text/70 font-body">{t('registerButton')}</div>
+            </div>
+          </>
+        ) : (
+          <div className="space-y-4 pb-4 flex-1">
+            <p className="text-sm font-body text-text/80">{t('branch.noBranchesForLoginCanCreate')}</p>
+            <LoginBranchForm onBranchCreated={handleBranchCreated} />
+          </div>
+        )}
+      </div>
+    </FormContainer>
   );
 };
 

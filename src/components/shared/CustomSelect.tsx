@@ -1,6 +1,5 @@
 import { FC, useEffect, useRef, useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faChevronDown } from '@fortawesome/free-solid-svg-icons';
+import { ChevronDown } from 'lucide-react';
 
 interface SelectOption {
   value: string | number;
@@ -33,28 +32,29 @@ export const CustomSelect: FC<CustomSelectProps> = ({ label, value, onChange, op
 
   return (
     <div className="relative mb-6" ref={ref}>
-      {label && <label className="block text-text text-sm font-bold font-body mb-2">{label}</label>}
+      {label && <label className="block text-text text-sm font-semibold font-body mb-2">{label}</label>}
 
       <button
         type="button"
         onClick={() => setOpen((prev) => !prev)}
         className="
-          w-full px-4 py-3 rounded-2xl bg-card
-          border border-text/10
-          text-text shadow-sm
+          w-full px-4 py-3 rounded-lg bg-surface
+          border border-border
+          text-text
           font-body flex items-center justify-between
-          focus:outline-none focus:ring-2 focus:ring-primary
+          focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary
+          transition-colors
         "
       >
-        <span>{selectedLabel || '—'}</span>
-        <FontAwesomeIcon icon={faChevronDown} className={`transition-transform ${open ? 'rotate-180' : ''}`} />
+        <span className={selectedLabel ? '' : 'text-muted'}>{selectedLabel || '—'}</span>
+        <ChevronDown className={`w-4 h-4 text-muted transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
 
       {open && (
         <div
           className="
             absolute left-0 right-0 mt-2
-            bg-card rounded-2xl shadow-lg border border-text/10
+            bg-surface rounded-lg border border-border
             max-h-60 overflow-y-auto z-[999]
           "
         >
@@ -70,8 +70,8 @@ export const CustomSelect: FC<CustomSelectProps> = ({ label, value, onChange, op
                 }}
                 className={`
                   px-4 py-2 cursor-pointer font-body text-text
-                  hover:bg-background transition
-                  ${isActive ? 'bg-background font-semibold' : ''}
+                  hover:bg-primary-light transition
+                  ${isActive ? 'bg-primary-light font-semibold' : ''}
                 `}
               >
                 {opt.label}

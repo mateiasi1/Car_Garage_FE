@@ -22,7 +22,7 @@ export const Button: FC<ButtonProps> = ({
   ...props
 }) => {
   const baseClasses =
-    'rounded-2xl font-heading font-semibold transition-all duration-200 flex items-center justify-center gap-2 active:scale-[0.98]';
+    'rounded-lg font-heading font-semibold transition-all duration-200 flex items-center justify-center gap-2 active:scale-[0.98]';
 
   const variantClasses: Record<ButtonVariant, string> = {
     primary: 'bg-primary text-primary-text hover:bg-primary-hover disabled:bg-primary-disabled',

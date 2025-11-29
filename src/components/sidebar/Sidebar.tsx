@@ -35,8 +35,8 @@ const Sidebar: FC = () => {
 
   return (
     <>
-      <div className="hidden md:flex fixed top-0 left-0 h-screen w-16 flex-col items-center bg-primary text-primary-text py-4 z-20 shadow-2xl shadow-black/20">
-        <div className="w-10 h-10 rounded-full bg-card text-primary flex items-center justify-center font-bold text-lg shadow-md">
+      <div className="hidden md:flex fixed top-0 left-0 h-screen w-16 flex-col items-center bg-primary text-primary-text py-4 z-20 border-r border-primary-hover">
+        <div className="w-10 h-10 rounded-lg bg-primary-text/20 text-primary-text flex items-center justify-center font-bold text-lg">
           {initials}
         </div>
 
@@ -53,9 +53,9 @@ const Sidebar: FC = () => {
         </div>
       </div>
 
-      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-primary text-primary-text flex items-center px-4 py-3 z-50 shadow-2xl shadow-black/25">
+      <div className="md:hidden fixed bottom-0 left-0 right-0 bg-primary text-primary-text flex items-center px-4 py-3 z-50 border-t border-primary-hover">
         <div className="flex items-center gap-3">
-          <div className="w-8 h-8 rounded-full bg-card text-primary flex items-center justify-center font-bold text-sm shadow-md">
+          <div className="w-8 h-8 rounded-lg bg-primary-text/20 text-primary-text flex items-center justify-center font-bold text-sm">
             {initials}
           </div>
           <div className="scale-90">
@@ -90,7 +90,7 @@ const Sidebar: FC = () => {
 
             {menuOpen && (
               <div className="absolute bottom-12 right-0 z-50">
-                <div className="bg-card text-text rounded-2xl shadow-2xl px-4 py-3 flex items-center gap-4 border border-card/40">
+                <div className="bg-surface text-text rounded-xl px-4 py-3 flex items-center gap-4 border border-border">
                   <SidebarNav navItems={navItems} userRoles={userRoles} variant="bottom" colorMode="onCard" />
 
                   <IconButton

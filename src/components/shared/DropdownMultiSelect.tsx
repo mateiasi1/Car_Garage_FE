@@ -66,35 +66,36 @@ const DropdownMultiSelect = <T,>({
 
   return (
     <div className={`relative mb-6 ${className}`} ref={ref}>
-      {label && <label className="block text-text text-sm font-bold font-body mb-2">{label}</label>}
+      {label && <label className="block text-text text-sm font-semibold font-body mb-2">{label}</label>}
 
       <button
         type="button"
         disabled={disabled}
         onClick={() => !disabled && setOpen((prev) => !prev)}
         className={`
-          w-full px-4 py-3 rounded-2xl
-          bg-card border border-text/10
-          text-text shadow-sm font-body
+          w-full px-4 py-3 rounded-lg
+          bg-surface border border-border
+          text-text font-body
           flex items-center justify-between
-          focus:outline-none focus:ring-2 focus:ring-primary
+          focus:outline-none focus:ring-2 focus:ring-primary focus:border-primary
+          transition-colors
           ${disabled ? 'opacity-60 cursor-not-allowed' : ''}
         `}
       >
-        <span className={isPlaceholder ? 'text-text/50' : ''}>{displayText || '—'}</span>
-        <ChevronDown className={`w-4 h-4 transition-transform ${open ? 'rotate-180' : ''}`} />
+        <span className={isPlaceholder ? 'text-muted' : ''}>{displayText || '—'}</span>
+        <ChevronDown className={`w-4 h-4 text-muted transition-transform ${open ? 'rotate-180' : ''}`} />
       </button>
 
       {open && (
         <div
           className="
             absolute left-0 right-0 mt-2
-            bg-card rounded-2xl shadow-lg border border-text/10
+            bg-surface rounded-lg border border-border
             max-h-60 overflow-y-auto z-[999]
           "
         >
           {options.length === 0 ? (
-            <div className="px-4 py-3 text-sm font-body text-text/60">{emptyMessage}</div>
+            <div className="px-4 py-3 text-sm font-body text-muted">{emptyMessage}</div>
           ) : (
             options.map((option) => {
               const optionId = getOptionId(option);
@@ -106,7 +107,7 @@ const DropdownMultiSelect = <T,>({
                   className="
                     flex items-center gap-3 px-4 py-2
                     cursor-pointer font-body text-text
-                    hover:bg-background transition
+                    hover:bg-primary-light transition
                   "
                   onClick={() => handleToggle(optionId)}
                 >
@@ -114,7 +115,7 @@ const DropdownMultiSelect = <T,>({
                     type="checkbox"
                     checked={checked}
                     onChange={() => handleToggle(optionId)}
-                    className="w-4 h-4 rounded border-text/30 text-primary focus:ring-primary"
+                    className="w-4 h-4 rounded border-border text-primary focus:ring-primary"
                   />
                   <span>{getOptionLabel(option)}</span>
                 </div>

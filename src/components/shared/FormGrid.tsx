@@ -16,8 +16,8 @@ interface FormSectionProps {
 }
 
 export const FormSection: FC<FormSectionProps> = ({ title, children }) => (
-  <section className="bg-card/80 rounded-2xl shadow-sm border border-card/40">
-    <h3 className="text-base sm:text-lg font-heading font-semibold mb-3 sm:mb-4 border-b border-card/40 pb-2 text-text">
+  <section className="bg-surface rounded-xl border border-border p-4 sm:p-6">
+    <h3 className="text-base sm:text-lg font-heading font-semibold mb-3 sm:mb-4 pb-2 text-text">
       {title}
     </h3>
     <div>{children}</div>
