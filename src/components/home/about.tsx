@@ -30,7 +30,6 @@ const fadeInUp = {
   },
 };
 
-
 // Animated Section wrapper
 const AnimatedSection = ({
   children,
@@ -153,7 +152,6 @@ const StepCard = ({
   );
 };
 
-
 const About = () => {
   const { t } = useTranslation();
   const { isAuthenticated } = useContext(AuthContext);
@@ -208,7 +206,6 @@ const About = () => {
     },
   ];
 
-
   return (
     <div className="min-h-screen bg-background text-text overflow-x-hidden">
       {/* HERO SECTION - Full screen with background image */}
@@ -216,7 +213,7 @@ const About = () => {
         {/* Multi-layer gradient background */}
         <div className="absolute inset-0 bg-gradient-to-br from-primary/20 via-background to-primary/10 z-0" />
         <div className="absolute inset-0 bg-gradient-to-t from-background via-transparent to-primary/5 z-0" />
-        
+
         {/* Background Image with Parallax */}
         <motion.div className="absolute inset-0 z-0" style={{ y: heroY }}>
           <div className="absolute inset-0 bg-gradient-to-b from-primary/40 via-background/80 to-background z-10" />
@@ -350,7 +347,6 @@ const About = () => {
         </motion.div>
       </section>
 
-
       {/* FEATURES SECTION */}
       <section className="py-24 relative bg-gradient-to-b from-background via-primary/5 to-background">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -448,11 +444,11 @@ const About = () => {
             className="absolute right-0 top-1/2 -translate-y-1/2 w-1/2 h-auto opacity-[0.07] object-contain pointer-events-none"
           />
         </div>
-        
+
         {/* Decorative gradient orbs */}
         <div className="absolute bottom-0 left-0 w-80 h-80 bg-primary/15 rounded-full blur-[80px] translate-y-1/2 -translate-x-1/2" />
         <div className="absolute top-0 right-0 w-64 h-64 bg-primary/10 rounded-full blur-[60px] -translate-y-1/2 translate-x-1/2" />
-        
+
         <div className="max-w-4xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10">
           <AnimatedSection className="text-center mb-12">
             <motion.span
@@ -511,7 +507,11 @@ const About = () => {
 
           <AnimatedSection className="text-center mt-12">
             <Link to={primaryCtaLink}>
-              <Button size="lg" variant="primary" className="rounded-full px-10 py-5 group shadow-xl shadow-primary/30 hover:scale-105 active:scale-[0.98] transition-transform">
+              <Button
+                size="lg"
+                variant="primary"
+                className="rounded-full px-10 py-5 group shadow-xl shadow-primary/30 hover:scale-105 active:scale-[0.98] transition-transform"
+              >
                 {t('home.hero.cta')}
                 <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
@@ -524,10 +524,10 @@ const About = () => {
       <section className="py-32 relative overflow-hidden">
         {/* Subtle background gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
-        
+
         <div className="max-w-3xl mx-auto px-4 sm:px-6 lg:px-8 relative z-10 text-center">
           <AnimatedSection>
-            <motion.h2 
+            <motion.h2
               className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-text mb-6"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}
@@ -535,8 +535,8 @@ const About = () => {
             >
               {t('home.contact.title')}
             </motion.h2>
-            
-            <motion.p 
+
+            <motion.p
               className="text-lg text-text/60 font-body max-w-xl mx-auto mb-10"
               initial={{ opacity: 0, y: 20 }}
               whileInView={{ opacity: 1, y: 0 }}

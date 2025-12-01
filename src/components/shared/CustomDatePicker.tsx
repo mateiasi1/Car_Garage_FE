@@ -86,20 +86,20 @@ export const CustomDatePicker: FC<CustomDatePickerProps> = ({
     const firstDay = new Date(year, month, 1);
     const lastDay = new Date(year, month + 1, 0);
     const daysInMonth = lastDay.getDate();
-    
+
     let startDay = firstDay.getDay() - 1;
     if (startDay < 0) startDay = 6;
-    
+
     const days: (Date | null)[] = [];
-    
+
     for (let i = 0; i < startDay; i++) {
       days.push(null);
     }
-    
+
     for (let i = 1; i <= daysInMonth; i++) {
       days.push(new Date(year, month, i));
     }
-    
+
     return days;
   };
 
@@ -183,7 +183,7 @@ export const CustomDatePicker: FC<CustomDatePickerProps> = ({
         )}
       >
         <span className={selected ? 'text-text' : 'text-text/50'}>
-          {selected ? formatDate(selected) : (placeholder || t('datePicker.selectDate'))}
+          {selected ? formatDate(selected) : placeholder || t('datePicker.selectDate')}
         </span>
         <Calendar className="w-5 h-5 text-text/50" />
       </button>
@@ -200,7 +200,7 @@ export const CustomDatePicker: FC<CustomDatePickerProps> = ({
             >
               <ChevronLeft className="w-4 h-4" />
             </button>
-            
+
             <div className="flex items-center gap-1">
               {/* Month Selector */}
               <div className="relative">
@@ -215,7 +215,7 @@ export const CustomDatePicker: FC<CustomDatePickerProps> = ({
                   {MONTHS[viewDate.getMonth()].slice(0, 3)}
                   <ChevronDown className="w-3 h-3" />
                 </button>
-                
+
                 {showMonthSelect && (
                   <div className="absolute top-full left-0 mt-1 bg-card rounded-lg shadow-lg border border-text/10 z-10 max-h-40 overflow-y-auto">
                     {MONTHS.map((month, index) => (
@@ -248,7 +248,7 @@ export const CustomDatePicker: FC<CustomDatePickerProps> = ({
                   {viewDate.getFullYear()}
                   <ChevronDown className="w-3 h-3" />
                 </button>
-                
+
                 {showYearSelect && (
                   <div className="absolute top-full right-0 mt-1 bg-card rounded-lg shadow-lg border border-text/10 z-10 max-h-40 overflow-y-auto">
                     {years.map((year) => (
@@ -268,7 +268,7 @@ export const CustomDatePicker: FC<CustomDatePickerProps> = ({
                 )}
               </div>
             </div>
-            
+
             <button
               type="button"
               onClick={handleNextMonth}
@@ -299,9 +299,7 @@ export const CustomDatePicker: FC<CustomDatePickerProps> = ({
                     className={clsx(
                       'w-8 h-8 rounded-lg text-xs font-medium transition-all mx-auto',
                       'flex items-center justify-center',
-                      isDateDisabled(date)
-                        ? 'text-text/20 cursor-not-allowed'
-                        : 'hover:bg-background cursor-pointer',
+                      isDateDisabled(date) ? 'text-text/20 cursor-not-allowed' : 'hover:bg-background cursor-pointer',
                       isSelected(date) && 'bg-primary text-primary-text hover:bg-primary-hover',
                       isToday(date) && !isSelected(date) && 'ring-1 ring-primary ring-inset',
                       !isSelected(date) && !isDateDisabled(date) && 'text-text'

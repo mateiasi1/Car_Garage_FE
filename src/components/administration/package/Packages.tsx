@@ -15,10 +15,7 @@ const PackagesPage: FC = () => {
   const packageIds = useMemo(() => packages?.map((pkg) => pkg.id) || [], [packages]);
 
   // Fetch discounts for all packages (Owner has branchId in token, so no need to pass it)
-  const { data: discounts = {} } = useFetchBranchDiscountsQuery(
-    { packageIds },
-    { skip: packageIds.length === 0 }
-  );
+  const { data: discounts = {} } = useFetchBranchDiscountsQuery({ packageIds }, { skip: packageIds.length === 0 });
 
   if (isLoading)
     return (
@@ -74,8 +71,7 @@ const PackagesPage: FC = () => {
                 {hasDiscount && (
                   <div className="absolute top-4 left-4">
                     <span className="bg-green-500 text-white text-xs font-heading px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
-                      <Percent className="w-3 h-3" />
-                      -{discountInfo.percentage}%
+                      <Percent className="w-3 h-3" />-{discountInfo.percentage}%
                     </span>
                   </div>
                 )}
@@ -96,7 +92,9 @@ const PackagesPage: FC = () => {
                   {hasDiscount ? (
                     <>
                       <span className="text-lg text-text/40 line-through font-heading mr-2">{pkg.price}</span>
-                      <span className="text-3xl font-bold font-heading text-green-600">{discountedPrice.toFixed(0)}</span>
+                      <span className="text-3xl font-bold font-heading text-green-600">
+                        {discountedPrice.toFixed(0)}
+                      </span>
                     </>
                   ) : (
                     <span className="text-3xl font-bold font-heading text-primary">{pkg.price}</span>

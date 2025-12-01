@@ -162,8 +162,7 @@ const PackageSubscribeDrawer: FC<PackageDialogProps> = ({ isOpen, onClose, curre
                 <h3 className="font-semibold font-heading text-text">{selectedPackage.name}</h3>
                 {hasDiscount && (
                   <span className="bg-green-500 text-white text-xs font-heading px-2 py-1 rounded-full flex items-center gap-1">
-                    <Percent className="w-3 h-3" />
-                    -{currentDiscountInfo.percentage}%
+                    <Percent className="w-3 h-3" />-{currentDiscountInfo.percentage}%
                   </span>
                 )}
               </div>
