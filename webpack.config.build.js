@@ -9,7 +9,7 @@ export default {
 	output: {
 		filename: 'bundle.js',
 		path: path.resolve('./dist'),
-		clean: true,            // curăţă dist înainte de build
+		clean: false,           // NU șterge dist - Vite a pus deja index.html
 	},
 
 	module: {
