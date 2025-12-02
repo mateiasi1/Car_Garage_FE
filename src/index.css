@@ -2,6 +2,17 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Global gradient - schimbă aici pentru a modifica pe toate paginile */
+  --gradient-from: #94A3B8;
+  --gradient-to: #1B2845;
+}
+
 body {
-  @apply font-body text-text bg-background;
+  @apply font-body text-text;
+}
+
+/* Background gradient global - folosit pe toate paginile */
+.bg-page-gradient {
+  background: linear-gradient(to bottom, var(--gradient-from), var(--gradient-to));
 }
