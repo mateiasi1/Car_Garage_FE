@@ -205,15 +205,15 @@ const AdminDiscounts: FC = () => {
                   </label>
                 </div>
 
-            {!allCompanies && (
-              <CustomSelect
-                label={t('discounts.selectCompany')}
-                value={selectedCompanyId}
-                onChange={setSelectedCompanyId}
-                options={[{ value: '', label: t('discounts.chooseCompany') }, ...companyOptions]}
-                error={errors.company}
-              />
-            )}
+                {!allCompanies && (
+                  <CustomSelect
+                    label={t('discounts.selectCompany')}
+                    value={selectedCompanyId}
+                    onChange={setSelectedCompanyId}
+                    options={[{ value: '', label: t('discounts.chooseCompany') }, ...companyOptions]}
+                    error={errors.company}
+                  />
+                )}
               </div>
 
               {/* Branches Section */}

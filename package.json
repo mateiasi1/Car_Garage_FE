@@ -4,8 +4,8 @@
   "version": "0.0.0",
   "type": "module",
   "scripts": {
-    "start:dev": "vite && webpack --env ENVIRONMENT=development --config webpack.config.dev.js",
-    "build": "tsc --noEmit && vite build && webpack --env ENVIRONMENT=production --config webpack.config.build.js",
+    "dev": "vite",
+    "build": "tsc --noEmit && vite build",
     "lint": "eslint \"src/**/*.{ts,tsx,js,jsx}\"",
     "lint:fix": "eslint \"src/**/*.{ts,tsx,js,jsx}\" --fix",
     "preview": "vite preview"
@@ -45,7 +45,6 @@
     "@typescript-eslint/parser": "^7.2.0",
     "@vitejs/plugin-react-swc": "^3.5.0",
     "autoprefixer": "^10.4.22",
-    "css-loader": "^7.1.2",
     "dotenv": "^16.4.5",
     "eslint": "^8.57.0",
     "eslint-config-prettier": "^10.1.8",
@@ -55,14 +54,9 @@
     "eslint-plugin-react-hooks": "^4.6.0",
     "eslint-plugin-react-refresh": "^0.4.6",
     "postcss": "^8.5.6",
-    "postcss-loader": "^8.2.0",
     "sass": "^1.77.8",
-    "style-loader": "^4.0.0",
     "tailwindcss": "^3.4.18",
-    "ts-loader": "^9.5.4",
     "typescript": "^5.9.3",
-    "vite": "^6.1.6",
-    "webpack": "^5.103.0",
-    "webpack-cli": "^5.1.4"
+    "vite": "^6.1.6"
   }
 }

@@ -29,6 +29,7 @@ export default defineConfig({
             },
         },
     ],
+    base: '/',
     server: {
         port: 3030,
         host: true,

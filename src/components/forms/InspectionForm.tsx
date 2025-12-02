@@ -1,9 +1,10 @@
-import { FC, useContext, useEffect, useState } from 'react';
+import { FC, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { routes } from '../../constants/routes';
 import { AuthContext } from '../../contexts/authContext';
 import { useAppSelector } from '../../hooks/reduxHooks';
+import { useForm } from '../../hooks/useForm';
 import { useCreateInspectionMutation, useUpdateInspectionMutation } from '../../rtk/services/inspections-service';
 import { useFetchLicensePlatePatternsQuery } from '../../rtk/services/licensePlatePattern-service';
 import { CarCategories } from '../../utils/enums/CarCategories';
@@ -32,28 +33,80 @@ const InspectionForm: FC = () => {
   const { user } = useContext(AuthContext);
   const { data: patterns = [] } = useFetchLicensePlatePatternsQuery();
   const navigate = useNavigate();
+
   const [createInspection] = useCreateInspectionMutation();
   const [updateInspection] = useUpdateInspectionMutation();
   const selectedInspection = useAppSelector((state) => state.inspection.selectedInspection);
 
+  const isEdit = Boolean(selectedInspection?.id);
   const isDeleted = selectedInspection?.deletedAt !== null && selectedInspection?.deletedAt !== undefined;
 
-  const [form, setForm] = useState<FormData>({
-    licensePlate: '',
-    phoneNumber: '',
-    firstName: '',
-    lastName: '',
-    carCategory: CarCategories.B,
-    inspectionType: InspectionType.twoYears,
-    inspectedAt: new Date(),
-    branchId: '',
+  // Form setup using useForm hook
+  const { values, errors, register, handleSubmit, setFieldValue, setValues, isSubmitting } = useForm<FormData>({
+    initialValues: {
+      licensePlate: '',
+      phoneNumber: '',
+      firstName: '',
+      lastName: '',
+      carCategory: CarCategories.B,
+      inspectionType: InspectionType.twoYears,
+      inspectedAt: new Date(),
+      branchId: '',
+    },
+
+    // Validation configuration for each field
+    fields: {
+      licensePlate: {
+        required: true,
+        validate: (value) => {
+          // Check if license plate is valid according to patterns
+          const isValid = patterns.some((pattern) => new RegExp(pattern.regexPattern).test(String(value)));
+          return isValid ? null : 'fieldInvalid';
+        },
+      },
+      phoneNumber: { required: true },
+      firstName: { required: true },
+      lastName: { required: true },
+      carCategory: { required: true },
+      inspectionType: { required: true },
+      inspectedAt: { required: true },
+    },
+
+    // Called on submit after validation passes
+    onSubmit: async (formValues) => {
+      try {
+        const payload = {
+          licensePlate: formValues.licensePlate,
+          phoneNumber: formValues.phoneNumber,
+          firstName: formValues.firstName,
+          lastName: formValues.lastName,
+          carCategory: formValues.carCategory,
+          inspectedBy: user?.id,
+          inspectionType: formValues.inspectionType,
+          inspectedAt: formValues.inspectedAt
+            ? formatInspectionDate(formValues.inspectedAt.toISOString().split('T')[0])
+            : '',
+          branchId: formValues.branchId,
+        };
+
+        if (selectedInspection?.id) {
+          await updateInspection({ id: selectedInspection.id, ...payload }).unwrap();
+        } else {
+          await createInspection(payload).unwrap();
+        }
+
+        showToast(t('inspectionCreated'), 'success');
+        navigate(routes.INSPECTIONS);
+      } catch {
+        showToast(t('internalError'), 'error');
+      }
+    },
   });
 
-  const [errors, setErrors] = useState<Partial<Record<keyof FormData, string>>>({});
-
+  // Populate form when editing an existing inspection
   useEffect(() => {
     if (selectedInspection) {
-      setForm({
+      setValues({
         licensePlate: selectedInspection.car.licensePlate,
         phoneNumber: selectedInspection.car.customer.phoneNumber,
         firstName: selectedInspection.car.customer.firstName,
@@ -64,72 +117,13 @@ const InspectionForm: FC = () => {
         branchId: selectedInspection.branchId,
       });
     }
-  }, [selectedInspection]);
-
-  const updateField = <K extends keyof FormData>(field: K, value: FormData[K]) => {
-    setForm((prev) => ({ ...prev, [field]: value }));
-    setErrors((prev) => {
-      const next = { ...prev };
-      delete next[field];
-      return next;
-    });
-  };
-
-  const validate = (): boolean => {
-    const newErrors: Partial<Record<keyof FormData, string>> = {};
-
-    if (!form.licensePlate) {
-      newErrors.licensePlate = 'fieldRequired';
-    } else if (!patterns.some((pattern) => new RegExp(pattern.regexPattern).test(form.licensePlate))) {
-      newErrors.licensePlate = 'fieldInvalid';
-    }
-
-    if (!form.phoneNumber) newErrors.phoneNumber = 'fieldRequired';
-    if (!form.firstName) newErrors.firstName = 'fieldRequired';
-    if (!form.lastName) newErrors.lastName = 'fieldRequired';
-    if (!form.carCategory) newErrors.carCategory = 'fieldRequired';
-    if (!form.inspectionType) newErrors.inspectionType = 'fieldRequired';
-    if (!form.inspectedAt) newErrors.inspectedAt = 'fieldRequired';
-
-    setErrors(newErrors);
-    return Object.keys(newErrors).length === 0;
-  };
-
-  const handleSubmit = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!validate()) return;
-
-    try {
-      const payload = {
-        licensePlate: form.licensePlate,
-        phoneNumber: form.phoneNumber,
-        firstName: form.firstName,
-        lastName: form.lastName,
-        carCategory: form.carCategory,
-        inspectedBy: user?.id,
-        inspectionType: form.inspectionType,
-        inspectedAt: form.inspectedAt ? formatInspectionDate(form.inspectedAt.toISOString().split('T')[0]) : '',
-        branchId: form.branchId,
-      };
-
-      if (selectedInspection?.id) {
-        await updateInspection({ id: selectedInspection.id, ...payload }).unwrap();
-      } else {
-        await createInspection(payload).unwrap();
-      }
-
-      showToast(t('inspectionCreated'), 'success');
-      navigate(routes.INSPECTIONS);
-    } catch {
-      showToast(t('internalError'), 'error');
-    }
-  };
+  }, [selectedInspection, setValues]);
 
   return (
     <div className="p-6 pt-10 w-full">
       <div className="flex flex-col h-[calc(100vh-14rem)] w-full max-w-6xl mx-auto">
         <form
-          onSubmit={handleSubmit}
+          onSubmit={handleSubmit()}
           className="
             w-full h-full bg-surface rounded-xl border border-border
             flex flex-col overflow-hidden
@@ -138,30 +132,32 @@ const InspectionForm: FC = () => {
           {/* Header */}
           <div className="px-4 sm:px-6 pt-4 pb-2 border-b border-border">
             <h1 className="text-xl sm:text-2xl font-heading font-semibold text-primary text-center sm:text-left">
-              {t('addNewInspection')}
+              {isEdit ? t('editInspection') : t('addNewInspection')}
             </h1>
           </div>
 
           {/* Content (scrollable) */}
           <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 space-y-6">
-            {/* Car info */}
+            {/* Car Info */}
             <div className="bg-background rounded-lg p-4 sm:p-5 border border-border">
               <h3 className="text-lg font-heading font-semibold text-text mb-4">{t('carInformation')}</h3>
 
               <div className="space-y-4">
+                {/* License Plate - uses register() for standard input */}
                 <CustomInput
                   label={t('licensePlate')}
-                  value={form.licensePlate}
-                  onChange={(e) => updateField('licensePlate', e.target.value.toUpperCase())}
+                  {...register('licensePlate')}
+                  onChange={(e) => setFieldValue('licensePlate', e.target.value.toUpperCase())}
                   placeholder="DJ-51-ABC"
                   autoComplete="off"
                   error={errors.licensePlate && t(errors.licensePlate)}
                 />
 
+                {/* Car Category - uses setFieldValue for custom select */}
                 <CustomSelect
                   label={t('carCategory')}
-                  value={form.carCategory}
-                  onChange={(val) => updateField('carCategory', val)}
+                  value={values.carCategory}
+                  onChange={(val) => setFieldValue('carCategory', val as CarCategories)}
                   options={[CarCategories.A, CarCategories.B, CarCategories.C, CarCategories.D, CarCategories.E].map(
                     (cat) => ({
                       value: cat,
@@ -173,46 +169,45 @@ const InspectionForm: FC = () => {
               </div>
             </div>
 
-            {/* Customer info */}
+            {/* Customer Info */}
             <div className="bg-background rounded-lg p-4 sm:p-5 border border-border">
               <h3 className="text-lg font-heading font-semibold text-text mb-4">{t('customerInformation')}</h3>
 
               <div className="space-y-4">
                 <CustomInput
                   label={t('firstName')}
-                  value={form.firstName}
-                  onChange={(e) => updateField('firstName', e.target.value)}
-                  placeholder={t('firstName')} // ex. "Ion"
+                  {...register('firstName')}
+                  placeholder={t('firstName')}
                   error={errors.firstName && t(errors.firstName)}
                 />
 
                 <CustomInput
                   label={t('lastName')}
-                  value={form.lastName}
-                  onChange={(e) => updateField('lastName', e.target.value)}
+                  {...register('lastName')}
                   placeholder={t('lastName')}
                   error={errors.lastName && t(errors.lastName)}
                 />
 
+                {/* Phone - uses setFieldValue for custom component */}
                 <PhoneNumberRoInput
                   label={t('phoneNumber')}
-                  value={form.phoneNumber}
-                  onChange={(val) => updateField('phoneNumber', val)}
+                  value={values.phoneNumber}
+                  onChange={(val) => setFieldValue('phoneNumber', val)}
                   placeholder="712345678"
                   error={errors.phoneNumber && t(errors.phoneNumber)}
                 />
               </div>
             </div>
 
-            {/* Inspection info */}
+            {/* Inspection Info */}
             <div className="bg-background rounded-lg p-4 sm:p-5 border border-border">
               <h3 className="text-lg font-heading font-semibold text-text mb-4">{t('inspectionInformation')}</h3>
 
               <div className="space-y-4">
                 <CustomSelect
                   label={t('inspectionDuration')}
-                  value={form.inspectionType}
-                  onChange={(val) => updateField('inspectionType', val)}
+                  value={values.inspectionType}
+                  onChange={(val) => setFieldValue('inspectionType', val as InspectionType)}
                   options={[
                     { value: InspectionType.halfYear, label: t('halfYear') },
                     { value: InspectionType.oneYear, label: t('yearly') },
@@ -223,8 +218,8 @@ const InspectionForm: FC = () => {
 
                 <CustomDatePicker
                   label={t('inspectionDate')}
-                  selected={form.inspectedAt}
-                  onChange={(date) => updateField('inspectedAt', date)}
+                  selected={values.inspectedAt}
+                  onChange={(date) => setFieldValue('inspectedAt', date)}
                   maxDate={new Date()}
                   placeholder={t('inspectionDatePlaceholder')}
                   error={errors.inspectedAt && t(errors.inspectedAt)}
@@ -233,6 +228,7 @@ const InspectionForm: FC = () => {
             </div>
           </div>
 
+          {/* Footer */}
           <div className="px-4 sm:px-6 py-4 border-t border-border bg-surface">
             {isDeleted && (
               <div className="mb-4 bg-amber-50 border border-amber-200 rounded-lg p-3">
@@ -248,6 +244,7 @@ const InspectionForm: FC = () => {
                 fullWidth={false}
                 className="w-full md:w-auto"
                 disabled={isDeleted}
+                loading={isSubmitting}
               >
                 {t('submit')}
               </Button>
