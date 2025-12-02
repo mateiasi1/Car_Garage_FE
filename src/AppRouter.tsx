@@ -13,8 +13,8 @@ import HomePage from './pages/home/homePage';
 import TermsPage from './pages/terms/TermsPage';
 
 const AppRouter = () => {
-  const authenticatedRoles = [Role.admin, Role.owner, Role.inspector];
-  const inspectorRoles = [Role.owner, Role.inspector];
+  const authenticatedRoles = [Role.admin, Role.owner, Role.inspector, Role.demo];
+  const inspectorRoles = [Role.owner, Role.inspector, Role.demo];
 
   return (
     <Router>

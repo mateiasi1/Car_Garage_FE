@@ -15,6 +15,7 @@ import { Button } from '../shared/Button';
 import { PageHeader } from '../shared/PageHeader';
 import BranchForm from '../forms/BranchForm';
 import { IconButton } from '../shared/IconButton';
+import { useDemo } from '../../hooks/useDemo';
 
 const BranchDetails: FC = () => {
   const { t } = useTranslation();
@@ -27,6 +28,7 @@ const BranchDetails: FC = () => {
 
   const { user, login } = useContext(AuthContext);
   const isOwner = user?.roles?.some((r) => r.name === Role.owner);
+  const { isDemo } = useDemo();
 
   const [selectedBranchId, setSelectedBranchId] = useState<string>('');
 
@@ -104,25 +106,29 @@ const BranchDetails: FC = () => {
           icon={Building}
           action={
             <div className="flex items-center gap-3">
-              {isOwner && (
+              {(isOwner || isDemo) && (
                 <IconButton
                   type="button"
                   variant="secondary"
                   size="md"
-                  onClick={() => setEditDrawerOpen(true)}
+                  onClick={() => !isDemo && setEditDrawerOpen(true)}
                   className="flex items-center gap-2"
+                  disabled={isDemo}
+                  title={isDemo ? t('demo.featureDisabled') : undefined}
                 >
                   <Pencil className="w-4 h-4" />
                 </IconButton>
               )}
 
-              {branches.length > 1 && (
+              {(branches.length > 1 || isDemo) && (
                 <IconButton
                   type="button"
                   variant="primary"
                   size="md"
-                  onClick={() => setSwitchDrawerOpen(true)}
+                  onClick={() => !isDemo && setSwitchDrawerOpen(true)}
                   className="flex items-center gap-2"
+                  disabled={isDemo}
+                  title={isDemo ? t('demo.featureDisabled') : undefined}
                 >
                   <ArrowLeftRight className="w-4 h-4" />
                 </IconButton>
@@ -141,7 +147,7 @@ const BranchDetails: FC = () => {
         ))}
       </div>
 
-      {isOwner && (
+      {(isOwner || isDemo) && (
         <div className="space-y-4">
           <PageHeader title={t('packages.activePackage')} icon={Store} />
 
@@ -218,7 +224,7 @@ const BranchDetails: FC = () => {
         </div>
       </Drawer>
 
-      {isOwner && (
+      {(isOwner || isDemo) && (
         <Drawer isOpen={editDrawerOpen} onClose={() => setEditDrawerOpen(false)} title={t('adminBranches.editBranch')}>
           <BranchForm
             selectedBranch={branch}

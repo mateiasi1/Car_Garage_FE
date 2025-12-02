@@ -6,6 +6,7 @@ import { PageHeader } from '../shared/PageHeader';
 import Drawer from '../shared/Drawer';
 import BranchForm from '../forms/BranchForm';
 import { IconButton } from '../shared/IconButton';
+import { useDemo } from '../../hooks/useDemo';
 
 interface Row {
   label: string;
@@ -16,6 +17,7 @@ const CompanyDetails: FC = () => {
   const { data: company, error, isLoading } = useFetchCompanyQuery();
   const { t } = useTranslation();
   const [createBranchOpen, setCreateBranchOpen] = useState(false);
+  const { isDemo } = useDemo();
 
   if (isLoading) return <div className="p-8 text-text font-body">{t('company.loading')}</div>;
 
@@ -42,7 +44,14 @@ const CompanyDetails: FC = () => {
           title={t('companyData')}
           icon={Building2}
           action={
-            <IconButton type="button" variant="primary" size="md" onClick={() => setCreateBranchOpen(true)}>
+            <IconButton
+              type="button"
+              variant="primary"
+              size="md"
+              onClick={() => setCreateBranchOpen(true)}
+              disabled={isDemo}
+              title={isDemo ? t('demo.featureDisabled') : undefined}
+            >
               <Plus className="w-4 h-4" />
             </IconButton>
           }

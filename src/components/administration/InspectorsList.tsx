@@ -9,6 +9,7 @@ import InspectorForm from '../forms/InspectorForm';
 import { Button } from '../shared/Button';
 import { CustomText } from '../shared/CustomText';
 import { PageHeader } from '../shared/PageHeader';
+import { useDemo } from '../../hooks/useDemo';
 
 interface InspectorRow {
   id: string;
@@ -21,6 +22,7 @@ interface InspectorRow {
 const InspectorsList: FC = () => {
   const { t } = useTranslation();
   const { data: inspectors, isLoading, error } = useFetchInspectorsQuery();
+  const { isDemo } = useDemo();
 
   const [search, setSearch] = useState('');
   const [drawerOpen, setDrawerOpen] = useState(false);
@@ -63,15 +65,17 @@ const InspectorsList: FC = () => {
   const actions: TableAction<InspectorRow>[] = useMemo(
     () => [
       {
-        icon: <Pencil className="w-5 h-5 text-primary hover:text-primary-hover" />,
+        icon: <Pencil className={`w-5 h-5 ${isDemo ? 'text-muted' : 'text-primary hover:text-primary-hover'}`} />,
         label: t('edit'),
         onClick: (item) => {
+          if (isDemo) return;
           setSelectedInspector(item);
           setDrawerOpen(true);
         },
+        isDisabled: () => isDemo,
       },
     ],
-    [t]
+    [t, isDemo]
   );
 
   const toolbarActions = (
@@ -81,7 +85,10 @@ const InspectorsList: FC = () => {
       size="md"
       fullWidth={false}
       className="whitespace-nowrap"
+      disabled={isDemo}
+      title={isDemo ? t('demo.featureDisabled') : undefined}
       onClick={() => {
+        if (isDemo) return;
         setSelectedInspector(null);
         setDrawerOpen(true);
       }}

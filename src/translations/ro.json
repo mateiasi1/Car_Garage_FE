@@ -596,6 +596,21 @@
       "discountCreateError": "A apărut o eroare la crearea reducerii",
       "discountDeleted": "Reducerea a fost ștearsă cu succes",
       "discountDeleteError": "A apărut o eroare la ștergerea reducerii"
+    },
+    "demo": {
+      "title": "Cont DEMO",
+      "limitedFeatures": "Funcționalități limitate",
+      "daysRemaining": "zile rămase",
+      "inspections": "inspecții",
+      "customers": "clienți",
+      "inspectionsLimitReached": "Ai atins limita de inspecții.",
+      "customersLimitReached": "Ai atins limita de clienți.",
+      "expiringSoon": "Contul tău demo expiră în curând.",
+      "expired": "Contul tău demo a expirat.",
+      "contactUs": "Contactează-ne pentru un cont complet!",
+      "featureDisabled": "Funcție dezactivată în cont DEMO",
+      "profileEditDisabled": "Editarea profilului este dezactivată în contul DEMO.",
+      "passwordChangeDisabled": "Schimbarea parolei este dezactivată în contul DEMO."
     }
   }
 }

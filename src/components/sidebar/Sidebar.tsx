@@ -14,13 +14,13 @@ const navItems: NavItem[] = [
     to: routes.INSPECTIONS,
     icon: ClipboardList,
     labelKey: 'inspections',
-    roles: [RoleEnum.inspector, RoleEnum.owner],
+    roles: [RoleEnum.inspector, RoleEnum.owner, RoleEnum.demo],
   },
   {
     to: routes.ADMINISTRATION_SHORT,
     icon: Settings,
     labelKey: 'administration',
-    roles: [RoleEnum.admin, RoleEnum.owner, RoleEnum.inspector],
+    roles: [RoleEnum.admin, RoleEnum.owner, RoleEnum.inspector, RoleEnum.demo],
   },
 ];
 
