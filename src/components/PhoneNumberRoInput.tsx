@@ -47,7 +47,7 @@ export const PhoneNumberRoInput: FC<PhoneNumberRoInputProps> = ({
           pattern="[0-9]*"
           value={localPart}
           onChange={handleChange}
-          className="flex-1 outline-none border-0 bg-transparent text-text text-sm sm:text-base placeholder:text-muted"
+          className="flex-1 outline-none border-0 bg-transparent text-text text-sm sm:text-base placeholder:text-muted/50"
           placeholder={placeholder}
         />
       </div>

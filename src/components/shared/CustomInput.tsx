@@ -42,7 +42,7 @@ export const CustomInput: FC<InputProps> = ({
             'focus:outline-none focus:ring-2',
             disabled
               ? 'border-border/50 text-muted/70 bg-background cursor-not-allowed focus:ring-0 opacity-60'
-              : 'border-border text-text bg-surface placeholder:text-muted focus:ring-primary focus:border-primary',
+              : 'border-border text-text bg-surface placeholder:text-muted/50 focus:ring-primary focus:border-primary',
             !disabled && error && 'border-error focus:ring-error text-error placeholder:text-error/70',
             className
           )}

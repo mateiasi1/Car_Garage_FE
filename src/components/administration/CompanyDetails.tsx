@@ -26,8 +26,8 @@ const CompanyDetails: FC = () => {
   const rows: Row[] = [
     { label: t('name'), value: company.name },
     { label: t('shortName'), value: company.shortName },
-    { label: t('country'), value: company.country },
-    { label: t('city'), value: company.city },
+    company.cityRef?.county && { label: t('county'), value: company.cityRef.county.name },
+    company.cityRef && { label: t('city'), value: company.cityRef.name },
     company.zipcode && { label: t('zipcode'), value: company.zipcode },
     { label: t('street'), value: company.street },
     company.streetNumber && { label: t('streetNumber'), value: company.streetNumber },

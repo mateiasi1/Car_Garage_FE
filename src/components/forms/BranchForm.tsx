@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   useCreateAdminBranchMutation,
@@ -10,6 +10,7 @@ import {
   useUpdateBranchMutation as useOwnerUpdateBranchMutation,
   useDeleteBranchMutation as useOwnerDeleteBranchMutation,
 } from '../../rtk/services/branch-service';
+import { useGetCountiesQuery, useGetCitiesByCountyQuery } from '../../rtk/services/location-service';
 import { Branch } from '../../models/Branch';
 import { Error } from '../../interfaces/error';
 import { showToast } from '../../utils/showToast';
@@ -18,6 +19,7 @@ import { Button } from '../shared/Button';
 import { useForm } from '../../hooks/useForm';
 import { CustomInput } from '../shared/CustomInput';
 import { PhoneNumberRoInput } from '../PhoneNumberRoInput';
+import { CustomSelect } from '../shared/CustomSelect';
 
 interface BranchFormProps {
   selectedBranch: Branch | null;
@@ -31,7 +33,8 @@ type BranchFormValues = {
   name: string;
   phoneNumber: string;
   country: string;
-  city: string;
+  countyId: string;
+  cityId: string;
   street: string;
   streetNumber?: string;
   houseNumber?: string;
@@ -42,8 +45,9 @@ const initialValues: BranchFormValues = {
   id: '',
   name: '',
   phoneNumber: '',
-  country: '',
-  city: '',
+  country: 'România',
+  countyId: '',
+  cityId: '',
   street: '',
   streetNumber: '',
   houseNumber: '',
@@ -67,14 +71,19 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
   const [updateOwnerBranch, { isLoading: isUpdatingOwner }] = useOwnerUpdateBranchMutation();
   const [deleteOwnerBranch] = useOwnerDeleteBranchMutation();
 
+  // Extract countyId and cityId from selectedBranch.cityRef
+  const initialCountyId = selectedBranch?.cityRef?.county?.id ?? '';
+  const initialCityId = selectedBranch?.cityId ?? '';
+
   const { values, errors, register, handleSubmit, isSubmitting, setFieldValue } = useForm<BranchFormValues>({
     initialValues: selectedBranch
       ? {
           id: selectedBranch.id,
           name: selectedBranch.name,
           phoneNumber: selectedBranch.phoneNumber ?? '',
-          country: selectedBranch.country,
-          city: selectedBranch.city,
+          country: selectedBranch.country || 'România',
+          countyId: initialCountyId,
+          cityId: initialCityId,
           street: selectedBranch.street,
           streetNumber: selectedBranch.streetNumber ?? '',
           houseNumber: selectedBranch.houseNumber ?? '',
@@ -96,19 +105,22 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
           return null;
         },
       },
-      country: {
+      countyId: {
         validate: (value) => {
           const v = String(value ?? '').trim();
-          if (!v) return 'countryEmpty';
+          if (!v) return 'countyEmpty';
           return null;
         },
       },
-      city: {
+      cityId: {
         validate: (value) => {
           const v = String(value ?? '').trim();
           if (!v) return 'cityEmpty';
           return null;
         },
+      },
+      country: {
+        validate: () => null,
       },
       street: {
         validate: (value) => {
@@ -123,7 +135,7 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
         name: formValues.name,
         phoneNumber: formValues.phoneNumber,
         country: formValues.country,
-        city: formValues.city,
+        cityId: formValues.cityId,
         street: formValues.street,
         streetNumber: formValues.streetNumber,
         houseNumber: formValues.houseNumber,
@@ -171,6 +183,32 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
   const onSubmit = handleSubmit();
   const isSaving = isSubmitting || (isOwner ? isCreatingOwner || isUpdatingOwner : isCreatingAdmin || isUpdatingAdmin);
 
+  // Fetch counties from API
+  const { data: counties = [], isLoading: isLoadingCounties } = useGetCountiesQuery();
+
+  // Fetch cities for selected county
+  const { data: cities = [], isLoading: isLoadingCities } = useGetCitiesByCountyQuery(values.countyId, {
+    skip: !values.countyId,
+  });
+
+  // County options for dropdown
+  const countyOptions = useMemo(
+    () => counties.map((c) => ({ value: c.id, label: c.name })),
+    [counties]
+  );
+
+  // City options for dropdown
+  const cityOptions = useMemo(
+    () => cities.map((c) => ({ value: c.id, label: c.name })),
+    [cities]
+  );
+
+  // Reset city when county changes
+  const handleCountyChange = (countyId: string) => {
+    setFieldValue('countyId', countyId);
+    setFieldValue('cityId', '');
+  };
+
   const handleDelete = async () => {
     if (!values.id) return;
 
@@ -213,15 +251,38 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <CustomInput
             label={t('country')}
-            {...register('country')}
-            error={errors.country && t(errors.country)}
+            value={values.country}
+            disabled
             wrapperClassName="mb-0"
           />
 
-          <CustomInput
+          <CustomSelect
+            label={t('county')}
+            value={values.countyId}
+            onChange={handleCountyChange}
+            options={countyOptions}
+            searchable
+            placeholder={isLoadingCounties ? t('loading') : t('selectCounty')}
+            disabled={isLoadingCounties}
+            error={errors.countyId && t(errors.countyId)}
+            wrapperClassName="mb-0"
+          />
+
+          <CustomSelect
             label={t('city')}
-            {...register('city')}
-            error={errors.city && t(errors.city)}
+            value={values.cityId}
+            onChange={(val) => setFieldValue('cityId', val)}
+            options={cityOptions}
+            searchable
+            placeholder={
+              !values.countyId
+                ? t('selectCountyFirst')
+                : isLoadingCities
+                  ? t('loading')
+                  : t('selectCity')
+            }
+            disabled={!values.countyId || isLoadingCities}
+            error={errors.cityId && t(errors.cityId)}
             wrapperClassName="mb-0"
           />
 
@@ -229,7 +290,7 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
             label={t('street')}
             {...register('street')}
             error={errors.street && t(errors.street)}
-            wrapperClassName="mb-0 md:col-span-2"
+            wrapperClassName="mb-0"
           />
 
           <CustomInput label={t('streetNumber')} {...register('streetNumber')} wrapperClassName="mb-0" />

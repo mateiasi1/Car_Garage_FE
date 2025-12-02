@@ -1,10 +1,21 @@
+export interface CityRef {
+  id: string;
+  name: string;
+  county?: {
+    id: string;
+    code: string;
+    name: string;
+  };
+}
+
 export interface Company {
   id: string;
   name: string;
   shortName: string;
   email: string;
   country: string;
-  city: string;
+  cityId: string;
+  cityRef?: CityRef;
   zipcode?: string;
   street: string;
   streetNumber?: string;

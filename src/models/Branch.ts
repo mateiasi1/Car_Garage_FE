@@ -45,12 +45,23 @@ export interface BranchPackage {
   package?: Package; // Populated from backend
 }
 
+export interface CityRef {
+  id: string;
+  name: string;
+  county?: {
+    id: string;
+    code: string;
+    name: string;
+  };
+}
+
 export interface Branch {
   id: string;
   name: string;
   email: string;
   country: string;
-  city: string;
+  cityId: string;
+  cityRef?: CityRef;
   zipcode?: string;
   street: string;
   streetNumber?: string;

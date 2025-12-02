@@ -79,15 +79,19 @@ const BranchDetails: FC = () => {
       </div>
     );
 
+  const locationParts = [
+    branch.cityRef?.name,
+    branch.cityRef?.county?.name,
+  ].filter(Boolean).join(', ');
+
   const rows = [
     { label: t('branch.name'), value: branch.name },
-    { label: t('branch.country'), value: branch.country },
-    { label: t('branch.city'), value: branch.city },
-    branch.zipcode && { label: t('branch.zipcode'), value: branch.zipcode },
-    { label: t('branch.street'), value: branch.street },
-    branch.streetNumber && { label: t('branch.streetNumber'), value: branch.streetNumber },
-    branch.houseNumber && { label: t('branch.houseNumber'), value: branch.houseNumber },
-    branch.phoneNumber && { label: t('branch.phoneNumber'), value: branch.phoneNumber },
+    { label: t('phoneNumber'), value: branch.phoneNumber },
+    { label: t('adminBranches.location'), value: locationParts },
+    branch.street && { label: t('street'), value: branch.street },
+    branch.streetNumber && { label: t('streetNumber'), value: branch.streetNumber },
+    branch.houseNumber && { label: t('houseNumber'), value: branch.houseNumber },
+    branch.zipcode && { label: t('zipcode'), value: branch.zipcode },
   ].filter(Boolean) as { label: string; value: string | number }[];
 
   const activePackage = branch.activePackage;
@@ -197,7 +201,7 @@ const BranchDetails: FC = () => {
             onChange={setSelectedBranchId}
             options={branches.map((b: Branch) => ({
               value: b.id,
-              label: `${b.name} – ${b.city}`,
+              label: `${b.name} – ${b.cityRef?.name || ''}`,
             }))}
           />
           <Button
