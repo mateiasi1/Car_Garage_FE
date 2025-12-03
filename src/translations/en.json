@@ -518,6 +518,7 @@
     "generatingUsername": "Generating...",
     "owner": "Owner",
     "inspector": "Inspector",
+    "demo": "Demo",
     "passwordWillBeSentViaSMS": "Password will be automatically generated and sent via SMS to the company phone number."
   },
   "smsBanner": {

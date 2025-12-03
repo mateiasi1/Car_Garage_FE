@@ -150,7 +150,11 @@ const AdminCompanies: FC = () => {
         onClose={handleCloseDrawer}
         title={selectedCompany ? t('adminCompanies.editCompany') : t('adminCompanies.addCompany')}
       >
-        <CompanyForm selectedCompany={selectedCompany} onCloseDrawer={handleCloseDrawer} />
+        <CompanyForm
+          key={selectedCompany?.id ?? 'new'}
+          selectedCompany={selectedCompany}
+          onCloseDrawer={handleCloseDrawer}
+        />
       </Drawer>
     </div>
   );

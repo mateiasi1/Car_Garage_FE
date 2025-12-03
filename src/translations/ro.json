@@ -516,6 +516,7 @@
       "generatingUsername": "Se generează...",
       "owner": "Proprietar",
       "inspector": "Inspector",
+      "demo": "Demo",
       "passwordWillBeSentViaSMS": "Parola va fi generată automat și trimisă prin SMS pe numărul de telefon al companiei."
     },
     "smsBanner": {

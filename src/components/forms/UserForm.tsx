@@ -233,6 +233,7 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
               { value: '', label: t('adminUsers.chooseRole') },
               { value: Role.owner, label: t('adminUsers.owner') },
               { value: Role.inspector, label: t('adminUsers.inspector') },
+              { value: Role.demo, label: t('adminUsers.demo') },
             ]}
           />
         )}

@@ -159,7 +159,12 @@ const AdminUsers: FC = () => {
         onClose={handleCloseDrawer}
         title={selectedUser ? t('adminUsers.editUser') : t('adminUsers.addUser')}
       >
-        <UserForm selectedUser={selectedUser} companyId={companyId} onCloseDrawer={handleCloseDrawer} />
+        <UserForm
+          key={selectedUser?.id ?? 'new'}
+          selectedUser={selectedUser}
+          companyId={companyId}
+          onCloseDrawer={handleCloseDrawer}
+        />
       </Drawer>
     </div>
   );
