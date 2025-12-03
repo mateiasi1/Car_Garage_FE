@@ -1,11 +1,13 @@
 import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { useDispatch } from 'react-redux';
 import { CreateCustomerDTO, UpdateCustomerDTO } from '../../interfaces/customer.payload';
 import {
   useCreateCustomerMutation,
   useUpdateCustomerMutation,
   useDeleteCustomerMutation,
 } from '../../rtk/services/customer-service';
+import { userApi } from '../../rtk/services/user-service';
 import { showToast } from '../../utils/showToast';
 import ConfirmationModal from '../shared/ConfirmationModal';
 import { getErrorMessage } from '../../interfaces/error';
@@ -33,6 +35,7 @@ type CustomerFormValues = {
 
 const CustomerForm: FC<CustomerFormProps> = ({ selectedCustomer, onCloseDrawer }) => {
   const { t } = useTranslation();
+  const dispatch = useDispatch();
   const [createCustomer, { isLoading: isCreating }] = useCreateCustomerMutation();
   const [updateCustomer, { isLoading: isUpdating }] = useUpdateCustomerMutation();
   const [deleteCustomer] = useDeleteCustomerMutation();
@@ -77,6 +80,8 @@ const CustomerForm: FC<CustomerFormProps> = ({ selectedCustomer, onCloseDrawer }
           };
           await createCustomer(payload).unwrap();
           showToast(t('customerCreateSuccess'), 'success');
+          // Refresh user profile to update demo limits
+          dispatch(userApi.util.invalidateTags(['User']));
         }
         onCloseDrawer();
       } catch (error) {

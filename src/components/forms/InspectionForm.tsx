@@ -1,12 +1,14 @@
 import { FC, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
+import { useDispatch } from 'react-redux';
 import { routes } from '../../constants/routes';
 import { AuthContext } from '../../contexts/authContext';
 import { useAppSelector } from '../../hooks/reduxHooks';
 import { useForm } from '../../hooks/useForm';
 import { useCreateInspectionMutation, useUpdateInspectionMutation } from '../../rtk/services/inspections-service';
 import { useFetchLicensePlatePatternsQuery } from '../../rtk/services/licensePlatePattern-service';
+import { userApi } from '../../rtk/services/user-service';
 import { CarCategories } from '../../utils/enums/CarCategories';
 import { InspectionType } from '../../utils/enums/InspectionTypes';
 import { formatInspectionDate } from '../../utils/formatInspectionDate';
@@ -33,6 +35,7 @@ const InspectionForm: FC = () => {
   const { user } = useContext(AuthContext);
   const { data: patterns = [] } = useFetchLicensePlatePatternsQuery();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   const [createInspection] = useCreateInspectionMutation();
   const [updateInspection] = useUpdateInspectionMutation();
@@ -93,6 +96,8 @@ const InspectionForm: FC = () => {
           await updateInspection({ id: selectedInspection.id, ...payload }).unwrap();
         } else {
           await createInspection(payload).unwrap();
+          // Refresh user profile to update demo limits
+          dispatch(userApi.util.invalidateTags(['User']));
         }
 
         showToast(t('inspectionCreated'), 'success');

@@ -38,6 +38,7 @@ export const inspectionsApi = createApi({
         method: 'POST',
         body: inspection,
       }),
+      invalidatesTags: ['Inspections'],
     }),
     updateInspection: builder.mutation({
       query: ({ id, ...inspection }) => ({
@@ -45,6 +46,7 @@ export const inspectionsApi = createApi({
         method: 'PUT',
         body: inspection,
       }),
+      invalidatesTags: ['Inspections'],
     }),
     deleteInspection: builder.mutation<void, string>({
       query: (id) => ({

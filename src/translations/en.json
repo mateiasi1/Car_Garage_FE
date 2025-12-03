@@ -39,7 +39,12 @@
     "errorOccurred": "An error occurred",
     "unknownError": "An unknown error occurred",
     "addNewUser": "Add new user",
-    "company": "Company",
+    "company": {
+      "name": "Company",
+      "loading": "Loading company data...",
+      "error": "Error loading company data",
+      "noData": "No company data available"
+    },
     "smsSentToday": "SMS sent today",
     "smsSentThisMonth": "SMS sent this month",
     "upcomingInspections": "Upcoming inspections",
@@ -187,6 +192,7 @@
     },
     "packages": {
       "name": "Packages",
+      "loading": "Loading packages...",
       "activePackage": "Active Package",
       "packageName": "Package Name",
       "totalMessages": "Total Messages",

@@ -38,7 +38,12 @@
     "errorOccurred": "A apărut o eroare",
     "unknownError": "A apărut o eroare necunoscută",
     "addNewUser": "Adăugă un utilizator nou",
-    "company": "Companie",
+    "company": {
+      "name": "Companie",
+      "loading": "Se încarcă datele companiei...",
+      "error": "Eroare la încărcarea datelor companiei",
+      "noData": "Nu există date despre companie"
+    },
     "smsSentToday": "SMS-uri trimise astăzi",
     "smsSentThisMonth": "SMS-uri trimise în acest lună",
     "upcomingInspections": "Inspecții viitoare",
@@ -186,6 +191,7 @@
     },
     "packages": {
       "name": "Pachete",
+      "loading": "Se încarcă pachetele...",
       "activePackage": "Pachet Activ",
       "packageName": "Nume Pachet",
       "totalMessages": "Total Mesaje",
