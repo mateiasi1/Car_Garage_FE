@@ -95,6 +95,7 @@ const CustomerForm: FC<CustomerFormProps> = ({ selectedCustomer, onCloseDrawer }
     try {
       await deleteCustomer(values.id).unwrap();
       showToast(t('customerDeleteSuccess'), 'success');
+      dispatch(userApi.util.invalidateTags(['User']));
       setShowDeleteModal(false);
       onCloseDrawer();
     } catch (error) {

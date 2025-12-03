@@ -10,6 +10,7 @@ import {
   useDeleteInspectionMutation,
 } from '../../rtk/services/inspections-service';
 import { useSendInspectionReminderMutation } from '../../rtk/services/sms-service';
+import { userApi } from '../../rtk/services/user-service';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
 import { useDemo } from '../../hooks/useDemo';
 import { setSelectedInspection } from '../../slices/inspectionSlice';
@@ -133,6 +134,7 @@ const InspectionsPage: FC = () => {
     try {
       await deleteInspection(selectedInspection.id).unwrap();
       showToast(t('inspectionDeleted'), 'success');
+      dispatch(userApi.util.invalidateTags(['User']));
     } catch {
       showToast(t('inspectionDeletedError'), 'error');
     } finally {

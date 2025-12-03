@@ -39,7 +39,7 @@ export const customerApi = createApi({
         method: 'DELETE',
         body: {},
       }),
-      invalidatesTags: ['Customer', 'User'],
+      invalidatesTags: ['Customer'],
     }),
     unsubscribe: builder.mutation<UnsubscribeResponse, UnsubscribeRequest>({
       query: (data) => ({
