@@ -4,7 +4,7 @@
     "usernameTitle": "Username",
     "passwordTitle": "Password",
     "loginButton": "Login",
-    "registerButton": "If you run an authorised ITP station and don’t yet have an account but would like to collaborate with us, feel free to get in touch at contact@bytedracula.ro\n",
+    "registerButton": "If you run an authorised ITP station and don't yet have an account but would like to collaborate with us, feel free to get in touch at {{email}} or call us at {{phone}}",
     "passwordEmpty": "Password is required",
     "emailTitle": "Email",
     "recaptchaTitle": "Recaptcha is required",
@@ -225,7 +225,7 @@
     "loginButton": "Login",
     "adminButton": "Administration",
     "hero": {
-      "badge": "✨ #1 Platform for ITP",
+      "badge": "✨ Modern ITP Management",
       "title": "Manage Your ITP Inspections Efficiently",
       "subtitle": "Complete management system for ITP stations. Track inspections, manage clients, and never miss an expiration date.",
       "cta": "Get Started"
@@ -375,6 +375,7 @@
         "title": "9. Contact Information",
         "content": "For questions about these Terms and Conditions, GDPR requests, or any other concerns, please contact us:",
         "email": "Email",
+        "phone": "Phone",
         "address": "Address"
       }
     }

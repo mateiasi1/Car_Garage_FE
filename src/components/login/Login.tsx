@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Link, useNavigate } from 'react-router-dom';
 import logo from '../../assets/logo.png';
 import { routes } from '../../constants/routes';
+import { contactEmail, contactPhone } from '../../constants/constants';
 import { AuthContext } from '../../contexts/authContext';
 import { useLoginMutation, LoginResponse } from '../../rtk/services/auth-service';
 import { showToast } from '../../utils/showToast';
@@ -189,18 +190,24 @@ const Login: FC = () => {
                 {t('loginButton')}
               </Button>
 
-              <div className="mt-2 text-center text-sm text-text/70 font-body">
-                {t('login.termsInfo.prefix')}{' '}
-                <Link
-                  to="/terms"
-                  target="_blank"
-                  className="text-primary hover:text-primary-hover font-medium underline"
-                >
-                  {t('login.termsInfo.link')}
-                </Link>
-              </div>
+              {!selectBranch && (
+                <>
+                  <div className="mt-2 text-center text-sm text-text/70 font-body">
+                    {t('login.termsInfo.prefix')}{' '}
+                    <Link
+                      to="/terms"
+                      target="_blank"
+                      className="text-primary hover:text-primary-hover font-medium underline"
+                    >
+                      {t('login.termsInfo.link')}
+                    </Link>
+                  </div>
 
-              <div className="mt-1 text-center text-sm text-text/70 font-body">{t('registerButton')}</div>
+                  <div className="mt-1 text-center text-sm text-text/70 font-body">
+                    {t('registerButton', { email: contactEmail, phone: contactPhone })}
+                  </div>
+                </>
+              )}
             </div>
           </>
         ) : (

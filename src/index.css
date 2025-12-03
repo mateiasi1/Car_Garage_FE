@@ -3,16 +3,17 @@
 @tailwind utilities;
 
 :root {
-  /* Global gradient - schimbă aici pentru a modifica pe toate paginile */
+  /* Global gradient - dark blue theme */
   --gradient-from: #94A3B8;
-  --gradient-to: #1B2845;
+  --gradient-via: #5A6E8A;
+  --gradient-to: #2D3E55;
 }
 
 body {
   @apply font-body text-text;
 }
 
-/* Background gradient global - folosit pe toate paginile */
+
 .bg-page-gradient {
-  background: linear-gradient(to bottom, var(--gradient-from), var(--gradient-to));
+  background: linear-gradient(160deg, var(--gradient-from) 0%, var(--gradient-via) 50%, var(--gradient-to) 100%);
 }

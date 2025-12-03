@@ -4,7 +4,7 @@
     "usernameTitle": "Nume de utilizator",
     "passwordTitle": "Parolă",
     "loginButton": "Autentificare",
-    "registerButton": "Dacă deții o stație ITP autorizată și nu ai încă un cont, dar ai dori să colaborăm, ne poți scrie la contact@bytedracula.ro\n",
+    "registerButton": "Dacă deții o stație ITP autorizată și nu ai încă un cont, dar ai dori să colaborăm, ne poți scrie la {{email}} sau ne poți suna la {{phone}}",
     "passwordEmpty": "Câmpul parolă nu poate fi gol",
     "emailTitle": "Email",
     "recaptchaTitle": "Recaptcha este necesară",
@@ -223,7 +223,7 @@
       "loginButton": "Autentificare",
       "adminButton": "Administrare Companie",
       "hero": {
-        "badge": "✨ Platforma #1 pentru ITP",
+        "badge": "✨ Management ITP Modern",
         "title": "Gestionează Eficient Inspecțiile ITP",
         "subtitle": "Sistem complet de management pentru stații ITP. Urmărește inspecții, gestionează clienți și nu rata nicio expirare.",
         "cta": "Începe Acum"
@@ -373,6 +373,7 @@
           "title": "9. Informații de Contact",
           "content": "Pentru întrebări despre acești Termeni și Condiții, cereri GDPR sau alte preocupări, vă rugăm să ne contactați:",
           "email": "Email",
+          "phone": "Telefon",
           "address": "Adresă"
         }
       }

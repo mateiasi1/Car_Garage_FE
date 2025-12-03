@@ -1,5 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
+import { contactEmail, contactPhone, contactPhoneRaw, contactAddress } from '../../constants/constants';
 
 const TermsAndConditions = () => {
   const { t } = useTranslation();
@@ -152,11 +153,17 @@ const TermsAndConditions = () => {
               <div className="space-y-2 text-text font-body">
                 <p>
                   <i className="fas fa-envelope text-primary mr-2" />
-                  <strong>{t('terms.sections.contact.email')}:</strong> contact@bytedracula.ro
+                  <strong>{t('terms.sections.contact.email')}:</strong>{' '}
+                  <a href={`mailto:${contactEmail}`} className="text-primary hover:underline">{contactEmail}</a>
+                </p>
+                <p>
+                  <i className="fas fa-phone text-primary mr-2" />
+                  <strong>{t('terms.sections.contact.phone')}:</strong>{' '}
+                  <a href={`tel:${contactPhoneRaw}`} className="text-primary hover:underline">{contactPhone}</a>
                 </p>
                 <p>
                   <i className="fas fa-map-marker-alt text-primary mr-2" />
-                  <strong>{t('terms.sections.contact.address')}:</strong> Craiova, Dolj, România
+                  <strong>{t('terms.sections.contact.address')}:</strong> {contactAddress}
                 </p>
               </div>
             </section>

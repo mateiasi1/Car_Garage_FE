@@ -46,6 +46,7 @@ export const createBaseQueryWithReAuth = (baseUrl: string = config.baseUrl) => {
     credentials: 'include',
     prepareHeaders: (headers) => {
       headers.set('Accept', 'application/json');
+      headers.set('Accept-Language', 'ro');
 
       if (!headers.has('Content-Type')) {
         headers.set('Content-Type', 'application/json');

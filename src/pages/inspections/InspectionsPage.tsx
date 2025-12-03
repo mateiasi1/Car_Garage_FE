@@ -11,6 +11,7 @@ import {
 } from '../../rtk/services/inspections-service';
 import { useSendInspectionReminderMutation } from '../../rtk/services/sms-service';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { useDemo } from '../../hooks/useDemo';
 import { setSelectedInspection } from '../../slices/inspectionSlice';
 import { Inspection } from '../../models/Inspection';
 import { InspectionType } from '../../utils/enums/InspectionTypes';
@@ -24,6 +25,7 @@ const InspectionsPage: FC = () => {
   const { i18n, t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { isDemo } = useDemo();
 
   const [search, setSearch] = useState('');
   const [filters, setFilters] = useState<ApiFilters>({
@@ -202,10 +204,10 @@ const InspectionsPage: FC = () => {
 
   const actions: TableAction<Inspection>[] = [
     {
-      icon: <MessageCircle className="w-5 h-5 text-green-600 hover:text-green-700" />,
+      icon: <MessageCircle className={`w-5 h-5 ${isDemo ? 'text-muted' : 'text-green-600 hover:text-green-700'}`} />,
       label: t('sendReminder'),
       onClick: handleMessageClick,
-      isDisabled: (inspection) => !!inspection.deletedAt,
+      isDisabled: (inspection) => isDemo || !!inspection.deletedAt,
     },
     {
       icon: <Pencil className="w-5 h-5 text-primary hover:text-primary-hover" />,
