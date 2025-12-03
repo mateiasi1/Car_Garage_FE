@@ -1,6 +1,6 @@
 import { FC, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Error } from '../../interfaces/error';
+import { getErrorMessage } from '../../interfaces/error';
 import {
   useCreateAdminCompanyMutation,
   useDeleteAdminCompanyMutation,
@@ -150,7 +150,7 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
         }
         onCloseDrawer();
       } catch (error) {
-        showToast((error as Error).data?.message ?? t('companySaveError'), 'error');
+        showToast(getErrorMessage(error, t('companySaveError')), 'error');
       }
     },
   });
@@ -186,7 +186,7 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
       setShowDeleteModal(false);
       onCloseDrawer();
     } catch (error) {
-      showToast((error as Error).data?.message ?? t('companyDeleteError'), 'error');
+      showToast(getErrorMessage(error, t('companyDeleteError')), 'error');
     }
   };
 

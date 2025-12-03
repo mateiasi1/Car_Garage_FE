@@ -8,7 +8,7 @@ import {
 } from '../../rtk/services/customer-service';
 import { showToast } from '../../utils/showToast';
 import ConfirmationModal from '../shared/ConfirmationModal';
-import { Error } from '../../interfaces/error';
+import { getErrorMessage } from '../../interfaces/error';
 import { PhoneNumberRoInput } from '../PhoneNumberRoInput';
 import { Button } from '../shared/Button';
 import { useForm } from '../../hooks/useForm';
@@ -80,12 +80,7 @@ const CustomerForm: FC<CustomerFormProps> = ({ selectedCustomer, onCloseDrawer }
         }
         onCloseDrawer();
       } catch (error) {
-        const err = error as Error;
-        if (err?.data?.message) {
-          showToast(err.data.message, 'error');
-        } else {
-          showToast(t('unknownError'), 'error');
-        }
+        showToast(getErrorMessage(error, t('unknownError')), 'error');
       }
     },
   });
@@ -98,12 +93,7 @@ const CustomerForm: FC<CustomerFormProps> = ({ selectedCustomer, onCloseDrawer }
       setShowDeleteModal(false);
       onCloseDrawer();
     } catch (error) {
-      const err = error as Error;
-      if (err?.data?.message) {
-        showToast(err.data.message, 'error');
-      } else {
-        showToast(t('unknownError'), 'error');
-      }
+      showToast(getErrorMessage(error, t('unknownError')), 'error');
     }
   };
 

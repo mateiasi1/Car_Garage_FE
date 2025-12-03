@@ -6,7 +6,7 @@ import { useForm } from '../../hooks/useForm';
 import { CustomInput } from '../shared/CustomInput';
 import { CustomSelect } from '../shared/CustomSelect';
 import { Button } from '../shared/Button';
-import { Error } from '../../interfaces/error';
+import { getErrorMessage } from '../../interfaces/error';
 import { showToast } from '../../utils/showToast';
 import { Branch } from '../../models/Branch';
 import { PhoneNumberRoInput } from '../PhoneNumberRoInput';
@@ -102,7 +102,7 @@ const LoginBranchForm: FC<LoginBranchFormProps> = ({ onBranchCreated }) => {
         showToast(t('branch.branchCreateSuccess'), 'success');
         onBranchCreated(created.id);
       } catch (error) {
-        showToast((error as Error).data?.message ?? t('branch.branchSaveError'), 'error');
+        showToast(getErrorMessage(error, t('branch.branchSaveError')), 'error');
       }
     },
   });

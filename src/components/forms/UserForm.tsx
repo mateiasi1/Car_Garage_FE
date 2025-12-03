@@ -9,7 +9,7 @@ import {
   useFetchAdminCompanyBranchesQuery,
 } from '../../rtk/services/admin-service';
 import { useGenerateUsernameMutation } from '../../rtk/services/user-service';
-import { Error } from '../../interfaces/error';
+import { getErrorMessage } from '../../interfaces/error';
 import { showToast } from '../../utils/showToast';
 import ConfirmationModal from '../shared/ConfirmationModal';
 import { Button } from '../shared/Button';
@@ -116,7 +116,7 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
 
         onCloseDrawer();
       } catch (error) {
-        showToast((error as Error).data?.message ?? t('adminUsers.userSaveError'), 'error');
+        showToast(getErrorMessage(error, t('adminUsers.userSaveError')), 'error');
       }
     },
   });
@@ -179,7 +179,7 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
       setShowDeleteModal(false);
       onCloseDrawer();
     } catch (error) {
-      showToast((error as Error).data?.message ?? t('adminUsers.userDeleteError'), 'error');
+      showToast(getErrorMessage(error, t('adminUsers.userDeleteError')), 'error');
     }
   };
 

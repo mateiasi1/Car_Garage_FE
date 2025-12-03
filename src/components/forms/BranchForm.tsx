@@ -12,7 +12,7 @@ import {
 } from '../../rtk/services/branch-service';
 import { useGetCountiesQuery, useGetCitiesByCountyQuery } from '../../rtk/services/location-service';
 import { Branch } from '../../models/Branch';
-import { Error } from '../../interfaces/error';
+import { getErrorMessage } from '../../interfaces/error';
 import { showToast } from '../../utils/showToast';
 import ConfirmationModal from '../shared/ConfirmationModal';
 import { Button } from '../shared/Button';
@@ -180,7 +180,7 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
 
         onCloseDrawer();
       } catch (error) {
-        showToast((error as Error).data?.message ?? t('branch.branchSaveError'), 'error');
+        showToast(getErrorMessage(error, t('branch.branchSaveError')), 'error');
       }
     },
   });
@@ -222,7 +222,7 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
       setShowDeleteModal(false);
       onCloseDrawer();
     } catch (error) {
-      showToast((error as Error).data?.message ?? t('branch.branchDeleteError'), 'error');
+      showToast(getErrorMessage(error, t('branch.branchDeleteError')), 'error');
     }
   };
 
