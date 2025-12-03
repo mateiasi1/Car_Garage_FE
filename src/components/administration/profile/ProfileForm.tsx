@@ -46,11 +46,7 @@ export const ProfileForm: FC = () => {
 
   return (
     <FormSection title={t('profileInformation')}>
-      {isDemo && (
-        <p className="text-amber-600 text-sm font-body mb-4">
-          {t('demo.profileEditDisabled')}
-        </p>
-      )}
+      {isDemo && <p className="text-amber-600 text-sm font-body mb-4">{t('demo.profileEditDisabled')}</p>}
       <form onSubmit={handleSubmit()} className="space-y-6">
         <CustomInput
           label={t('username')}
@@ -80,13 +76,7 @@ export const ProfileForm: FC = () => {
         {submitError && <p className="text-error text-sm font-body">{submitError}</p>}
 
         <div className="pt-2">
-          <Button
-            type="submit"
-            variant="primary"
-            size="md"
-            disabled={!canSubmit || isDemo}
-            loading={isSubmitting}
-          >
+          <Button type="submit" variant="primary" size="md" disabled={!canSubmit || isDemo} loading={isSubmitting}>
             {t('saveProfile')}
           </Button>
         </div>

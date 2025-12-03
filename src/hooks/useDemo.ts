@@ -59,4 +59,3 @@ export function useDemo(): UseDemoReturn {
 }
 
 export default useDemo;
-

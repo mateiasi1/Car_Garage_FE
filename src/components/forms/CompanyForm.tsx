@@ -163,16 +163,10 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
   });
 
   // County options for dropdown
-  const countyOptions = useMemo(
-    () => counties.map((c) => ({ value: c.id, label: c.name })),
-    [counties]
-  );
+  const countyOptions = useMemo(() => counties.map((c) => ({ value: c.id, label: c.name })), [counties]);
 
   // City options for dropdown
-  const cityOptions = useMemo(
-    () => cities.map((c) => ({ value: c.id, label: c.name })),
-    [cities]
-  );
+  const cityOptions = useMemo(() => cities.map((c) => ({ value: c.id, label: c.name })), [cities]);
 
   // Reset city when county changes
   const handleCountyChange = (countyId: string) => {
@@ -236,12 +230,7 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <CustomInput
-            label={t('country')}
-            value={values.country}
-            disabled
-            wrapperClassName="mb-0"
-          />
+          <CustomInput label={t('country')} value={values.country} disabled wrapperClassName="mb-0" />
 
           <CustomSelect
             label={t('county')}
@@ -261,13 +250,7 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
             onChange={(val) => setFieldValue('cityId', val)}
             options={cityOptions}
             searchable
-            placeholder={
-              !values.countyId
-                ? t('selectCountyFirst')
-                : isLoadingCities
-                  ? t('loading')
-                  : t('selectCity')
-            }
+            placeholder={!values.countyId ? t('selectCountyFirst') : isLoadingCities ? t('loading') : t('selectCity')}
             disabled={!values.countyId || isLoadingCities}
             error={errors.cityId && t(errors.cityId)}
             wrapperClassName="mb-0"

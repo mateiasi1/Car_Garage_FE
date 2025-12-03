@@ -243,7 +243,7 @@ const InspectionsPage: FC = () => {
     <div className="p-6 pt-8 w-full">
       <div className="w-full max-w-6xl mx-auto">
         <PageHeader title={t('inspections')} icon={ClipboardCheck} />
-        
+
         <GenericTable
           data={inspections}
           columns={columns}

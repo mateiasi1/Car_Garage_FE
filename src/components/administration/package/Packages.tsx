@@ -92,9 +92,7 @@ const PackagesPage: FC = () => {
                   {hasDiscount ? (
                     <>
                       <span className="text-lg text-muted line-through font-heading mr-2">{pkg.price}</span>
-                      <span className="text-3xl font-bold font-heading text-success">
-                        {discountedPrice.toFixed(0)}
-                      </span>
+                      <span className="text-3xl font-bold font-heading text-success">{discountedPrice.toFixed(0)}</span>
                     </>
                   ) : (
                     <span className="text-3xl font-bold font-heading text-primary">{pkg.price}</span>

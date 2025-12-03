@@ -92,10 +92,7 @@ export const CustomSelect: FC<CustomSelectProps> = ({
         <span className={`truncate ${selectedLabel ? '' : 'text-muted'}`}>{selectedLabel || placeholder}</span>
         <div className="flex items-center gap-1">
           {value && !disabled && (
-            <X
-              className="w-4 h-4 text-muted hover:text-text transition-colors"
-              onClick={handleClear}
-            />
+            <X className="w-4 h-4 text-muted hover:text-text transition-colors" onClick={handleClear} />
           )}
           <ChevronDown className={`w-4 h-4 text-muted transition-transform ${open ? 'rotate-180' : ''}`} />
         </div>
@@ -133,9 +130,7 @@ export const CustomSelect: FC<CustomSelectProps> = ({
 
           <div className="max-h-60 overflow-y-auto">
             {filteredOptions.length === 0 ? (
-              <div className="px-4 py-3 text-muted text-sm font-body text-center">
-                Nicio opțiune găsită
-              </div>
+              <div className="px-4 py-3 text-muted text-sm font-body text-center">Nicio opțiune găsită</div>
             ) : (
               filteredOptions.map((opt) => {
                 const isActive = opt.value.toString() === value;

@@ -68,11 +68,7 @@ export const PasswordForm: FC = () => {
 
   return (
     <FormSection title={t('changePassword')}>
-      {isDemo && (
-        <p className="text-amber-600 text-sm font-body mb-4">
-          {t('demo.passwordChangeDisabled')}
-        </p>
-      )}
+      {isDemo && <p className="text-amber-600 text-sm font-body mb-4">{t('demo.passwordChangeDisabled')}</p>}
       <form onSubmit={handleSubmit()} className="space-y-6">
         <CustomInput
           type="password"
@@ -104,13 +100,7 @@ export const PasswordForm: FC = () => {
         {submitError && <p className="text-error text-sm font-body">{submitError}</p>}
 
         <div className="pt-2">
-          <Button
-            type="submit"
-            variant="primary"
-            size="md"
-            disabled={!canSubmit || isDemo}
-            loading={isSubmitting}
-          >
+          <Button type="submit" variant="primary" size="md" disabled={!canSubmit || isDemo} loading={isSubmitting}>
             {t('changePassword')}
           </Button>
         </div>

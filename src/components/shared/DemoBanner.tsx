@@ -24,9 +24,7 @@ export const DemoBanner: FC = () => {
           <div>
             <span className="font-semibold text-amber-800">{t('demo.title')}</span>
             <span className="text-amber-700 ml-2">—</span>
-            <span className="text-amber-700 ml-2 text-sm">
-              {t('demo.limitedFeatures')}
-            </span>
+            <span className="text-amber-700 ml-2 text-sm">{t('demo.limitedFeatures')}</span>
           </div>
         </div>
 
@@ -61,19 +59,11 @@ export const DemoBanner: FC = () => {
       {/* Warning if limits are close */}
       {(inspectionsUsed >= inspectionsMax || customersUsed >= customersMax || daysRemaining <= 5) && (
         <div className="mt-2 pt-2 border-t border-amber-200 text-sm text-amber-700">
-          {inspectionsUsed >= inspectionsMax && (
-            <p>{t('demo.inspectionsLimitReached')}</p>
-          )}
-          {customersUsed >= customersMax && (
-            <p>{t('demo.customersLimitReached')}</p>
-          )}
-          {daysRemaining <= 5 && daysRemaining > 0 && (
-            <p>{t('demo.expiringSoon')}</p>
-          )}
+          {inspectionsUsed >= inspectionsMax && <p>{t('demo.inspectionsLimitReached')}</p>}
+          {customersUsed >= customersMax && <p>{t('demo.customersLimitReached')}</p>}
+          {daysRemaining <= 5 && daysRemaining > 0 && <p>{t('demo.expiringSoon')}</p>}
           {daysRemaining <= 0 && <p>{t('demo.expired')}</p>}
-          <p className="mt-1 font-medium">
-            {t('demo.contactUs')}
-          </p>
+          <p className="mt-1 font-medium">{t('demo.contactUs')}</p>
         </div>
       )}
     </div>
@@ -81,4 +71,3 @@ export const DemoBanner: FC = () => {
 };
 
 export default DemoBanner;
-

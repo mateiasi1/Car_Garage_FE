@@ -81,10 +81,7 @@ const BranchDetails: FC = () => {
       </div>
     );
 
-  const locationParts = [
-    branch.cityRef?.name,
-    branch.cityRef?.county?.name,
-  ].filter(Boolean).join(', ');
+  const locationParts = [branch.cityRef?.name, branch.cityRef?.county?.name].filter(Boolean).join(', ');
 
   const rows = [
     { label: t('branch.name'), value: branch.name },

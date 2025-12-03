@@ -154,12 +154,16 @@ const TermsAndConditions = () => {
                 <p>
                   <i className="fas fa-envelope text-primary mr-2" />
                   <strong>{t('terms.sections.contact.email')}:</strong>{' '}
-                  <a href={`mailto:${contactEmail}`} className="text-primary hover:underline">{contactEmail}</a>
+                  <a href={`mailto:${contactEmail}`} className="text-primary hover:underline">
+                    {contactEmail}
+                  </a>
                 </p>
                 <p>
                   <i className="fas fa-phone text-primary mr-2" />
                   <strong>{t('terms.sections.contact.phone')}:</strong>{' '}
-                  <a href={`tel:${contactPhoneRaw}`} className="text-primary hover:underline">{contactPhone}</a>
+                  <a href={`tel:${contactPhoneRaw}`} className="text-primary hover:underline">
+                    {contactPhone}
+                  </a>
                 </p>
                 <p>
                   <i className="fas fa-map-marker-alt text-primary mr-2" />

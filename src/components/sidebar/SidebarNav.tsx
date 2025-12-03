@@ -17,13 +17,7 @@ interface SidebarNavProps {
   onItemClick?: () => void;
 }
 
-const SidebarNav: FC<SidebarNavProps> = ({
-  navItems,
-  userRoles,
-  variant,
-  colorMode = 'onPrimary',
-  onItemClick,
-}) => {
+const SidebarNav: FC<SidebarNavProps> = ({ navItems, userRoles, variant, colorMode = 'onPrimary', onItemClick }) => {
   const location = useLocation();
 
   const filtered = navItems.filter(
@@ -46,12 +40,12 @@ const SidebarNav: FC<SidebarNavProps> = ({
               onClick={onItemClick}
               className="w-12 h-12 flex items-center justify-center relative"
             >
-              {active && (
-                <div className="absolute left-0 w-1 h-8 bg-primary-text rounded-r-full" />
-              )}
+              {active && <div className="absolute left-0 w-1 h-8 bg-primary-text rounded-r-full" />}
               <div
                 className={`w-10 h-10 rounded-lg flex items-center justify-center transition-colors ${
-                  active ? 'bg-primary-text/20 text-primary-text' : 'bg-transparent text-primary-text/70 hover:text-primary-text hover:bg-primary-text/10'
+                  active
+                    ? 'bg-primary-text/20 text-primary-text'
+                    : 'bg-transparent text-primary-text/70 hover:text-primary-text hover:bg-primary-text/10'
                 }`}
               >
                 <Icon className="w-5 h-5" />
@@ -74,12 +68,7 @@ const SidebarNav: FC<SidebarNavProps> = ({
         const active = isActive(item.to);
 
         return (
-          <Link
-            key={item.to}
-            to={item.to}
-            onClick={onItemClick}
-            className="w-9 h-9 flex items-center justify-center"
-          >
+          <Link key={item.to} to={item.to} onClick={onItemClick} className="w-9 h-9 flex items-center justify-center">
             <div
               className={`w-9 h-9 rounded-lg flex items-center justify-center transition-colors ${
                 active ? `${activeBg} ${activeColor}` : `bg-transparent ${inactiveColor} hover:${activeColor}`

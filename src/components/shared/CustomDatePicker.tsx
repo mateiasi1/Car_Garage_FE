@@ -299,7 +299,9 @@ export const CustomDatePicker: FC<CustomDatePickerProps> = ({
                     className={clsx(
                       'w-8 h-8 rounded-lg text-xs font-medium transition-all mx-auto',
                       'flex items-center justify-center',
-                      isDateDisabled(date) ? 'text-muted/50 cursor-not-allowed' : 'hover:bg-primary-light cursor-pointer',
+                      isDateDisabled(date)
+                        ? 'text-muted/50 cursor-not-allowed'
+                        : 'hover:bg-primary-light cursor-pointer',
                       isSelected(date) && 'bg-primary text-primary-text hover:bg-primary-hover',
                       isToday(date) && !isSelected(date) && 'ring-1 ring-primary ring-inset',
                       !isSelected(date) && !isDateDisabled(date) && 'text-text'

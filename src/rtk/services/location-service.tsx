@@ -31,4 +31,3 @@ export const locationApi = createApi({
 });
 
 export const { useGetCountiesQuery, useGetCitiesByCountyQuery } = locationApi;
-
