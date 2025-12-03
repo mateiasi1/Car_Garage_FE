@@ -185,7 +185,7 @@ const BranchDetails: FC = () => {
               </>
             ) : (
               <Link
-                to="/packages"
+                to="/administration/packages"
                 className="inline-flex items-center gap-2 px-4 py-3 bg-primary text-primary-text font-heading font-semibold rounded-lg hover:bg-primary-hover transition"
               >
                 <Store className="w-5 h-5" />
