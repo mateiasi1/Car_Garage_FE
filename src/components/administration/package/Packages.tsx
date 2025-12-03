@@ -47,7 +47,7 @@ const PackagesPage: FC = () => {
         <PageHeader title={t('packages.availablePackages')} icon={Store} className="mb-4" />
 
         {/* Description sub-title */}
-        <p className="px-6 mb-4 text-text/60 font-body max-w-lg">{t('packages.choosePackageDescription')}</p>
+        <p className="px-6 mb-4 text-muted font-body max-w-lg">{t('packages.choosePackageDescription')}</p>
 
         {/* Packages grid */}
         <div className="px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
@@ -61,16 +61,16 @@ const PackagesPage: FC = () => {
               <div
                 key={pkg.id}
                 className={`
-                  relative rounded-3xl p-6 flex flex-col gap-5
+                  relative rounded-xl p-6 flex flex-col gap-5
                   transition-all duration-200
-                  bg-card border
-                  ${isActive ? 'border-primary bg-primary/5' : 'border-text/10 hover:border-primary/50 hover:shadow-sm'}
+                  bg-surface border
+                  ${isActive ? 'border-primary bg-primary-light' : 'border-border hover:border-primary/50'}
                 `}
               >
                 {/* Discount badge */}
                 {hasDiscount && (
                   <div className="absolute top-4 left-4">
-                    <span className="bg-green-500 text-white text-xs font-heading px-3 py-1 rounded-full shadow-sm flex items-center gap-1">
+                    <span className="bg-success text-white text-xs font-heading px-3 py-1 rounded-full flex items-center gap-1">
                       <Percent className="w-3 h-3" />-{discountInfo.percentage}%
                     </span>
                   </div>
@@ -78,7 +78,7 @@ const PackagesPage: FC = () => {
 
                 {isActive && (
                   <div className={`absolute top-4 ${hasDiscount ? 'right-4' : 'right-4'}`}>
-                    <span className="bg-primary text-primary-text text-xs font-heading px-3 py-1 rounded-full shadow-sm">
+                    <span className="bg-primary text-primary-text text-xs font-heading px-3 py-1 rounded-full">
                       {t('packages.activeBadge')}
                     </span>
                   </div>
@@ -91,20 +91,18 @@ const PackagesPage: FC = () => {
                 <div>
                   {hasDiscount ? (
                     <>
-                      <span className="text-lg text-text/40 line-through font-heading mr-2">{pkg.price}</span>
-                      <span className="text-3xl font-bold font-heading text-green-600">
-                        {discountedPrice.toFixed(0)}
-                      </span>
+                      <span className="text-lg text-muted line-through font-heading mr-2">{pkg.price}</span>
+                      <span className="text-3xl font-bold font-heading text-success">{discountedPrice.toFixed(0)}</span>
                     </>
                   ) : (
                     <span className="text-3xl font-bold font-heading text-primary">{pkg.price}</span>
                   )}
-                  <span className="ml-1 text-text/60 font-body">RON</span>
+                  <span className="ml-1 text-muted font-body">RON</span>
                 </div>
 
                 {/* Discount expiry */}
                 {hasDiscount && discountInfo.expiresAt && (
-                  <div className="flex items-center gap-2 text-xs text-text/60 font-body">
+                  <div className="flex items-center gap-2 text-xs text-muted font-body">
                     <Clock className="w-3 h-3" />
                     <span>
                       {t('packages.discountExpires')} {new Date(discountInfo.expiresAt).toLocaleDateString()}
@@ -113,7 +111,7 @@ const PackagesPage: FC = () => {
                 )}
 
                 {/* Description */}
-                {pkg.description && <p className="text-sm text-text/70 font-body leading-relaxed">{pkg.description}</p>}
+                {pkg.description && <p className="text-sm text-muted font-body leading-relaxed">{pkg.description}</p>}
 
                 {/* Features */}
                 <div className="space-y-3">
@@ -129,7 +127,7 @@ const PackagesPage: FC = () => {
 
                 {/* Active badge bottom */}
                 {isActive && (
-                  <div className="mt-4 py-2 px-4 bg-background/60 text-text rounded-xl text-center font-body text-sm">
+                  <div className="mt-4 py-2 px-4 bg-primary-light text-text rounded-lg text-center font-body text-sm">
                     {t('packages.currentPackage')}
                   </div>
                 )}
@@ -139,7 +137,7 @@ const PackagesPage: FC = () => {
         </div>
 
         {/* Info note */}
-        <div className="mx-6 mt-6 p-6 rounded-2xl bg-background/60 border border-text/10 flex items-center gap-3">
+        <div className="mx-6 mt-6 p-4 rounded-xl bg-primary-light border border-border flex items-center gap-3">
           <Store className="w-6 h-6 text-primary" />
           <p className="text-sm text-text font-body">{t('packages.purchaseNote')}</p>
         </div>

@@ -17,10 +17,10 @@ const ConfirmationModal: FC<ConfirmationModalProps> = ({ open, title, message, o
   if (!open) return null;
 
   return createPortal(
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-text/40 backdrop-blur-sm">
-      <div className="bg-card rounded-3xl shadow-2xl max-w-md w-full mx-4 p-6 border border-card/40">
+    <div className="fixed inset-0 z-50 flex items-center justify-center bg-text/30 backdrop-blur-sm">
+      <div className="bg-surface rounded-xl max-w-md w-full mx-4 p-6 border border-border">
         <h2 className="text-lg font-heading font-semibold mb-2 text-text">{title}</h2>
-        <p className="text-sm font-body text-text/80 mb-6">{message}</p>
+        <p className="text-sm font-body text-muted mb-6">{message}</p>
         <div className="flex justify-end gap-3">
           <Button type="button" variant="secondary" size="sm" onClick={onCancel}>
             {t('cancel')}

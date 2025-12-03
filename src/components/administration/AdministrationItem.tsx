@@ -2,7 +2,6 @@ import { FC } from 'react';
 import { useTranslation } from 'react-i18next';
 import type { LucideIcon } from 'lucide-react';
 import clsx from 'clsx';
-import { Button } from '../shared/Button';
 
 export interface AdministrationItemProps {
   icon: LucideIcon;
@@ -16,54 +15,52 @@ export const AdministrationItem: FC<AdministrationItemProps> = ({ icon: Icon, na
   const { t } = useTranslation();
 
   return (
-    <Button
+    <button
       type="button"
-      variant="ghost"
       onClick={onSelect}
       className={clsx(
-        'group flex items-center justify-center lg:justify-start gap-3',
-        'rounded-full lg:rounded-2xl',
-        'h-14 lg:h-14',
-        'px-1 lg:px-4',
+        'group relative flex items-center justify-center lg:justify-start gap-3',
+        'rounded-lg',
+        'h-12 lg:h-11',
+        'px-2 lg:px-3',
         'w-auto lg:w-full',
-        'transition-colors duration-200',
-        // desktop hover
-        'hover:bg-transparent hover:text-text',
-        !isSelected && 'bg-transparent text-text lg:hover:bg-primary lg:hover:text-primary-text',
-        isSelected &&
-          'bg-transparent text-text lg:bg-primary lg:text-primary-text lg:hover:bg-primary lg:hover:text-primary-text'
+        'transition-all duration-200',
+        !isSelected && 'bg-transparent hover:bg-primary-light',
+        isSelected && 'bg-primary-light'
       )}
     >
+      {/* Left indicator for selected state on desktop */}
+      {isSelected && (
+        <div className="hidden lg:block absolute left-0 top-1/2 -translate-y-1/2 w-1 h-6 bg-primary rounded-r-full" />
+      )}
+
       <span
         className={clsx(
-          'inline-flex items-center justify-center rounded-full w-12 h-12 flex-shrink-0',
+          'inline-flex items-center justify-center rounded-lg w-10 h-10 lg:w-8 lg:h-8 flex-shrink-0',
           'transition-colors duration-200',
-          // neselctat – exact ca înainte
-          !isSelected && 'bg-primary/5 group-hover:bg-primary/20',
-          // selectat – pe mobil cerc plin cu icon alb, pe desktop rămâne stilul vechi
-          isSelected && 'bg-primary text-primary-text shadow-md lg:bg-primary-text/15 lg:shadow-none'
+          !isSelected && 'bg-primary/10 group-hover:bg-primary/15',
+          isSelected && 'bg-primary'
         )}
       >
         <Icon
           className={clsx(
-            'w-5 h-5 transition-colors duration-200',
-            !isSelected && 'text-primary group-hover:text-primary-text',
-            // pe mobil icon alb în cercul plin, pe desktop rămâne albastru în cerc deschis
-            isSelected && 'text-primary-text lg:text-primary'
+            'w-5 h-5 lg:w-4 lg:h-4 transition-colors duration-200',
+            !isSelected && 'text-primary',
+            isSelected && 'text-primary-text'
           )}
         />
       </span>
 
       <span
         className={clsx(
-          'hidden lg:inline truncate whitespace-nowrap text-sm font-body',
+          'hidden lg:inline truncate whitespace-nowrap text-sm font-body font-medium',
           'transition-colors duration-200',
-          !isSelected && 'text-text group-hover:text-primary-text',
-          isSelected && 'text-primary-text'
+          !isSelected && 'text-text',
+          isSelected && 'text-primary'
         )}
       >
         {t(name)}
       </span>
-    </Button>
+    </button>
   );
 };

@@ -29,7 +29,7 @@ const NotFoundPage: FC = () => {
 
   return (
     <PageContainer>
-      <div className="w-full max-w-md mx-auto bg-card rounded-3xl shadow-lg border border-text/10 px-8 py-10 text-center space-y-6">
+      <div className="w-full max-w-md mx-auto bg-surface rounded-xl border border-border px-8 py-10 text-center space-y-6">
         <Logo />
 
         <div className="space-y-2">
@@ -37,9 +37,9 @@ const NotFoundPage: FC = () => {
           <h2 className="text-2xl font-heading text-text">{t('pageNotFound')}</h2>
         </div>
 
-        <p className="text-sm text-text/70 font-body">{t('pageNotFoundDescription')}</p>
+        <p className="text-sm text-muted font-body">{t('pageNotFoundDescription')}</p>
 
-        <p className="text-xs text-text/60 font-body">
+        <p className="text-xs text-muted font-body">
           {t('backToInspections')} <span className="font-semibold text-primary">({secondsLeft}s)</span>
         </p>
 

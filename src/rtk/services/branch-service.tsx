@@ -6,7 +6,7 @@ import { baseQueryWithReAuth } from '../baseQuery';
 export interface CreateBranchRequest {
   name: string;
   country: string;
-  city: string;
+  cityId: string;
   street: string;
   streetNumber?: string;
   houseNumber?: string;

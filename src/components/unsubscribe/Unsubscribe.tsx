@@ -56,7 +56,7 @@ const Unsubscribe: FC = () => {
           <CustomText variant="h3" className="text-text">
             {t('unsubscribe.processing')}
           </CustomText>
-          <CustomText variant="body" className="text-text/70">
+          <CustomText variant="body" className="text-muted">
             {t('unsubscribe.pleaseWait')}
           </CustomText>
         </div>
@@ -81,7 +81,7 @@ const Unsubscribe: FC = () => {
             {t('unsubscribe.successTitle')}
           </CustomText>
 
-          <CustomText variant="body" className="text-text/70">
+          <CustomText variant="body" className="text-muted">
             {t('unsubscribe.successMessage')}
           </CustomText>
 
@@ -108,7 +108,7 @@ const Unsubscribe: FC = () => {
             {t('unsubscribe.alreadyUnsubscribedTitle')}
           </CustomText>
 
-          <CustomText variant="body" className="text-text/70">
+          <CustomText variant="body" className="text-muted">
             {t('unsubscribe.alreadyUnsubscribedMessage')}
           </CustomText>
         </div>
@@ -133,7 +133,7 @@ const Unsubscribe: FC = () => {
           {t('unsubscribe.errorTitle')}
         </CustomText>
 
-        <CustomText variant="body" className="text-text/70">
+        <CustomText variant="body" className="text-muted">
           {errorMessage}
         </CustomText>
 
@@ -144,7 +144,7 @@ const Unsubscribe: FC = () => {
 
   return (
     <PageContainer>
-      <div className="w-full max-w-xl mx-auto bg-card rounded-3xl shadow-lg border border-text/10 px-8 py-10 space-y-8">
+      <div className="w-full max-w-xl mx-auto bg-surface rounded-xl border border-border px-8 py-10 space-y-8">
         <Logo />
         {renderContent()}
       </div>

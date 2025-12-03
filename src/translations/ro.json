@@ -4,7 +4,7 @@
     "usernameTitle": "Nume de utilizator",
     "passwordTitle": "Parolă",
     "loginButton": "Autentificare",
-    "registerButton": "Dacă deții o stație ITP autorizată și nu ai încă un cont, dar ai dori să colaborăm, ne poți scrie la contact@bytedracula.ro\n",
+    "registerButton": "Dacă deții o stație ITP autorizată și nu ai încă un cont, dar ai dori să colaborăm, ne poți scrie la {{email}} sau ne poți suna la {{phone}}",
     "passwordEmpty": "Câmpul parolă nu poate fi gol",
     "emailTitle": "Email",
     "recaptchaTitle": "Recaptcha este necesară",
@@ -128,7 +128,12 @@
     "name": "Nume",
     "shortName": "Denumire brand",
     "country": "Țară",
+    "county": "Județ",
     "city": "Oraș",
+    "selectCounty": "Selectează județul",
+    "selectCity": "Selectează orașul",
+    "selectCountyFirst": "Selectează mai întâi județul",
+    "countyEmpty": "Câmpul Județ nu poate fi gol",
     "zipcode": "Cod poștal",
     "street": "Stradă",
     "streetNumber": "Număr stradă",
@@ -218,7 +223,7 @@
       "loginButton": "Autentificare",
       "adminButton": "Administrare Companie",
       "hero": {
-        "badge": "✨ Platforma #1 pentru ITP",
+        "badge": "✨ Management ITP Modern",
         "title": "Gestionează Eficient Inspecțiile ITP",
         "subtitle": "Sistem complet de management pentru stații ITP. Urmărește inspecții, gestionează clienți și nu rata nicio expirare.",
         "cta": "Începe Acum"
@@ -368,6 +373,7 @@
           "title": "9. Informații de Contact",
           "content": "Pentru întrebări despre acești Termeni și Condiții, cereri GDPR sau alte preocupări, vă rugăm să ne contactați:",
           "email": "Email",
+          "phone": "Telefon",
           "address": "Adresă"
         }
       }
@@ -591,6 +597,21 @@
       "discountCreateError": "A apărut o eroare la crearea reducerii",
       "discountDeleted": "Reducerea a fost ștearsă cu succes",
       "discountDeleteError": "A apărut o eroare la ștergerea reducerii"
+    },
+    "demo": {
+      "title": "Cont DEMO",
+      "limitedFeatures": "Funcționalități limitate",
+      "daysRemaining": "zile rămase",
+      "inspections": "inspecții",
+      "customers": "clienți",
+      "inspectionsLimitReached": "Ai atins limita de inspecții.",
+      "customersLimitReached": "Ai atins limita de clienți.",
+      "expiringSoon": "Contul tău demo expiră în curând.",
+      "expired": "Contul tău demo a expirat.",
+      "contactUs": "Contactează-ne pentru un cont complet!",
+      "featureDisabled": "Funcție dezactivată în cont DEMO",
+      "profileEditDisabled": "Editarea profilului este dezactivată în contul DEMO.",
+      "passwordChangeDisabled": "Schimbarea parolei este dezactivată în contul DEMO."
     }
   }
 }

@@ -93,7 +93,16 @@ const AdminBranches: FC = () => {
       key: 'location',
       label: t('adminBranches.location'),
       width: '2fr',
-      render: (branch) => `${branch.city}, ${branch.country}`,
+      render: (branch) => {
+        const cityName = branch.cityRef?.name || '';
+        const countyName = branch.cityRef?.county?.name || '';
+        return [cityName, countyName].filter(Boolean).join(', ') || '—';
+      },
+      getSearchValue: (branch) => {
+        const cityName = branch.cityRef?.name || '';
+        const countyName = branch.cityRef?.county?.name || '';
+        return `${cityName} ${countyName}`;
+      },
       searchable: true,
     },
     {

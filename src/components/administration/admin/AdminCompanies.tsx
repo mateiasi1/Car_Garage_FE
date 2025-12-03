@@ -69,8 +69,16 @@ const AdminCompanies: FC = () => {
       key: 'location',
       label: t('adminCompanies.location'),
       width: '2fr',
-      render: (company) => `${company.city}, ${company.country}`,
-      getSearchValue: (company) => `${company.city} ${company.country}`,
+      render: (company) => {
+        const cityName = company.cityRef?.name || '';
+        const countyName = company.cityRef?.county?.name || '';
+        return [cityName, countyName].filter(Boolean).join(', ') || '—';
+      },
+      getSearchValue: (company) => {
+        const cityName = company.cityRef?.name || '';
+        const countyName = company.cityRef?.county?.name || '';
+        return `${cityName} ${countyName}`;
+      },
       searchable: true,
     },
   ];

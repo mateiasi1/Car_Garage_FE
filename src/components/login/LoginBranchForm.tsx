@@ -1,8 +1,10 @@
-import { FC, FormEvent } from 'react';
+import { FC, FormEvent, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useCreateBranchMutation as useOwnerCreateBranchMutation } from '../../rtk/services/branch-service';
+import { useGetCountiesQuery, useGetCitiesByCountyQuery } from '../../rtk/services/location-service';
 import { useForm } from '../../hooks/useForm';
 import { CustomInput } from '../shared/CustomInput';
+import { CustomSelect } from '../shared/CustomSelect';
 import { Button } from '../shared/Button';
 import { Error } from '../../interfaces/error';
 import { showToast } from '../../utils/showToast';
@@ -17,7 +19,8 @@ type LoginBranchFormValues = {
   name: string;
   phoneNumber: string;
   country: string;
-  city: string;
+  countyId: string;
+  cityId: string;
   street: string;
   streetNumber?: string;
   houseNumber?: string;
@@ -27,8 +30,9 @@ type LoginBranchFormValues = {
 const initialValues: LoginBranchFormValues = {
   name: '',
   phoneNumber: '',
-  country: '',
-  city: '',
+  country: 'România',
+  countyId: '',
+  cityId: '',
   street: '',
   streetNumber: '',
   houseNumber: '',
@@ -56,19 +60,22 @@ const LoginBranchForm: FC<LoginBranchFormProps> = ({ onBranchCreated }) => {
           return null;
         },
       },
-      country: {
+      countyId: {
         validate: (value) => {
           const v = String(value ?? '').trim();
-          if (!v) return 'countryEmpty';
+          if (!v) return 'countyEmpty';
           return null;
         },
       },
-      city: {
+      cityId: {
         validate: (value) => {
           const v = String(value ?? '').trim();
           if (!v) return 'cityEmpty';
           return null;
         },
+      },
+      country: {
+        validate: () => null,
       },
       street: {
         validate: (value) => {
@@ -83,7 +90,7 @@ const LoginBranchForm: FC<LoginBranchFormProps> = ({ onBranchCreated }) => {
         name: formValues.name,
         phoneNumber: formValues.phoneNumber,
         country: formValues.country,
-        city: formValues.city,
+        cityId: formValues.cityId,
         street: formValues.street,
         streetNumber: formValues.streetNumber,
         houseNumber: formValues.houseNumber,
@@ -111,6 +118,26 @@ const LoginBranchForm: FC<LoginBranchFormProps> = ({ onBranchCreated }) => {
     void submitHandler(fakeEvent);
   };
 
+  // Fetch counties from API
+  const { data: counties = [], isLoading: isLoadingCounties } = useGetCountiesQuery();
+
+  // Fetch cities for selected county
+  const { data: cities = [], isLoading: isLoadingCities } = useGetCitiesByCountyQuery(values.countyId, {
+    skip: !values.countyId,
+  });
+
+  // County options for dropdown
+  const countyOptions = useMemo(() => counties.map((c) => ({ value: c.id, label: c.name })), [counties]);
+
+  // City options for dropdown
+  const cityOptions = useMemo(() => cities.map((c) => ({ value: c.id, label: c.name })), [cities]);
+
+  // Reset city when county changes
+  const handleCountyChange = (countyId: string) => {
+    setFieldValue('countyId', countyId);
+    setFieldValue('cityId', '');
+  };
+
   const isSaving = isSubmitting || isCreatingOwner;
 
   return (
@@ -132,17 +159,29 @@ const LoginBranchForm: FC<LoginBranchFormProps> = ({ onBranchCreated }) => {
           />
         </div>
 
-        <CustomInput
-          label={t('country')}
-          {...register('country')}
-          error={errors.country && t(errors.country)}
+        <CustomInput label={t('country')} value={values.country} disabled wrapperClassName="mb-0" />
+
+        <CustomSelect
+          label={t('county')}
+          value={values.countyId}
+          onChange={handleCountyChange}
+          options={countyOptions}
+          searchable
+          placeholder={isLoadingCounties ? t('loading') : t('selectCounty')}
+          disabled={isLoadingCounties}
+          error={errors.countyId && t(errors.countyId)}
           wrapperClassName="mb-0"
         />
 
-        <CustomInput
+        <CustomSelect
           label={t('city')}
-          {...register('city')}
-          error={errors.city && t(errors.city)}
+          value={values.cityId}
+          onChange={(val) => setFieldValue('cityId', val)}
+          options={cityOptions}
+          searchable
+          placeholder={!values.countyId ? t('selectCountyFirst') : isLoadingCities ? t('loading') : t('selectCity')}
+          disabled={!values.countyId || isLoadingCities}
+          error={errors.cityId && t(errors.cityId)}
           wrapperClassName="mb-0"
         />
 
@@ -150,7 +189,7 @@ const LoginBranchForm: FC<LoginBranchFormProps> = ({ onBranchCreated }) => {
           label={t('street')}
           {...register('street')}
           error={errors.street && t(errors.street)}
-          wrapperClassName="mb-0 md:col-span-2"
+          wrapperClassName="mb-0"
         />
 
         <CustomInput label={t('streetNumber')} {...register('streetNumber')} wrapperClassName="mb-0" />

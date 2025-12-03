@@ -1,7 +1,7 @@
 import { FC, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
-import { MessageCircle, Pencil, Trash2 } from 'lucide-react';
+import { ClipboardCheck, MessageCircle, Pencil, Trash2 } from 'lucide-react';
 
 import GenericTable, { TableAction, TableColumn } from '../../components/shared/GenericTable';
 import {
@@ -11,6 +11,7 @@ import {
 } from '../../rtk/services/inspections-service';
 import { useSendInspectionReminderMutation } from '../../rtk/services/sms-service';
 import { useAppDispatch, useAppSelector } from '../../hooks/reduxHooks';
+import { useDemo } from '../../hooks/useDemo';
 import { setSelectedInspection } from '../../slices/inspectionSlice';
 import { Inspection } from '../../models/Inspection';
 import { InspectionType } from '../../utils/enums/InspectionTypes';
@@ -18,12 +19,13 @@ import { showToast } from '../../utils/showToast';
 import ConfirmationModal from '../../components/shared/ConfirmationModal';
 import { Button } from '../../components/shared/Button';
 import { routes } from '../../constants/routes';
-import { PageContainer } from '../../components/shared/PageContainer';
+import { PageHeader } from '../../components/shared/PageHeader';
 
 const InspectionsPage: FC = () => {
   const { i18n, t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
+  const { isDemo } = useDemo();
 
   const [search, setSearch] = useState('');
   const [filters, setFilters] = useState<ApiFilters>({
@@ -163,7 +165,7 @@ const InspectionsPage: FC = () => {
         <span className="flex items-center gap-2">
           {inspection.car?.licensePlate ?? ''}
           {inspection.deletedAt && (
-            <span className="text-xs bg-gray-200 text-gray-600 px-2 py-0.5 rounded-full">{t('archived')}</span>
+            <span className="text-xs bg-border text-muted px-2 py-0.5 rounded-full">{t('archived')}</span>
           )}
         </span>
       ),
@@ -202,10 +204,10 @@ const InspectionsPage: FC = () => {
 
   const actions: TableAction<Inspection>[] = [
     {
-      icon: <MessageCircle className="w-5 h-5 text-green-600 hover:text-green-700" />,
+      icon: <MessageCircle className={`w-5 h-5 ${isDemo ? 'text-muted' : 'text-green-600 hover:text-green-700'}`} />,
       label: t('sendReminder'),
       onClick: handleMessageClick,
-      isDisabled: (inspection) => !!inspection.deletedAt,
+      isDisabled: (inspection) => isDemo || !!inspection.deletedAt,
     },
     {
       icon: <Pencil className="w-5 h-5 text-primary hover:text-primary-hover" />,
@@ -238,8 +240,10 @@ const InspectionsPage: FC = () => {
   );
 
   return (
-    <PageContainer className="items-start justify-center">
+    <div className="p-6 pt-8 w-full">
       <div className="w-full max-w-6xl mx-auto">
+        <PageHeader title={t('inspections')} icon={ClipboardCheck} />
+
         <GenericTable
           data={inspections}
           columns={columns}
@@ -254,7 +258,7 @@ const InspectionsPage: FC = () => {
           page={filters.page}
           totalPages={totalPages}
           onPageChange={handlePageChange}
-          rowClassName={(inspection) => (inspection.deletedAt ? 'opacity-50 bg-gray-100' : '')}
+          rowClassName={(inspection) => (inspection.deletedAt ? 'opacity-50' : '')}
         />
       </div>
 
@@ -265,7 +269,7 @@ const InspectionsPage: FC = () => {
         onConfirm={handleDeleteConfirm}
         onCancel={handleDeleteCancel}
       />
-    </PageContainer>
+    </div>
   );
 };
 

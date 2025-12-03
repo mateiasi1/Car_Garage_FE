@@ -6,6 +6,7 @@ import { PageHeader } from '../shared/PageHeader';
 import Drawer from '../shared/Drawer';
 import BranchForm from '../forms/BranchForm';
 import { IconButton } from '../shared/IconButton';
+import { useDemo } from '../../hooks/useDemo';
 
 interface Row {
   label: string;
@@ -16,6 +17,7 @@ const CompanyDetails: FC = () => {
   const { data: company, error, isLoading } = useFetchCompanyQuery();
   const { t } = useTranslation();
   const [createBranchOpen, setCreateBranchOpen] = useState(false);
+  const { isDemo } = useDemo();
 
   if (isLoading) return <div className="p-8 text-text font-body">{t('company.loading')}</div>;
 
@@ -26,8 +28,8 @@ const CompanyDetails: FC = () => {
   const rows: Row[] = [
     { label: t('name'), value: company.name },
     { label: t('shortName'), value: company.shortName },
-    { label: t('country'), value: company.country },
-    { label: t('city'), value: company.city },
+    company.cityRef?.county && { label: t('county'), value: company.cityRef.county.name },
+    company.cityRef && { label: t('city'), value: company.cityRef.name },
     company.zipcode && { label: t('zipcode'), value: company.zipcode },
     { label: t('street'), value: company.street },
     company.streetNumber && { label: t('streetNumber'), value: company.streetNumber },
@@ -42,17 +44,24 @@ const CompanyDetails: FC = () => {
           title={t('companyData')}
           icon={Building2}
           action={
-            <IconButton type="button" variant="primary" size="md" onClick={() => setCreateBranchOpen(true)}>
+            <IconButton
+              type="button"
+              variant="primary"
+              size="md"
+              onClick={() => setCreateBranchOpen(true)}
+              disabled={isDemo}
+              title={isDemo ? t('demo.featureDisabled') : undefined}
+            >
               <Plus className="w-4 h-4" />
             </IconButton>
           }
         />
       </div>
 
-      <div className="p-4 sm:p-5 lg:p-6 divide-y divide-gray-200">
+      <div className="p-4 sm:p-5 lg:p-6">
         {rows.map((row, idx) => (
-          <div key={idx} className="flex items-center justify-between py-4">
-            <span className="text-text/70 font-body">{row.label}</span>
+          <div key={idx} className="flex items-center justify-between py-3 border-b border-border last:border-none">
+            <span className="text-sm text-muted font-body">{row.label}</span>
             <span className="text-text font-body font-medium">{row.value}</span>
           </div>
         ))}

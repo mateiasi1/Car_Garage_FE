@@ -4,7 +4,7 @@
     "usernameTitle": "Username",
     "passwordTitle": "Password",
     "loginButton": "Login",
-    "registerButton": "If you run an authorised ITP station and don’t yet have an account but would like to collaborate with us, feel free to get in touch at contact@bytedracula.ro\n",
+    "registerButton": "If you run an authorised ITP station and don't yet have an account but would like to collaborate with us, feel free to get in touch at {{email}} or call us at {{phone}}",
     "passwordEmpty": "Password is required",
     "emailTitle": "Email",
     "recaptchaTitle": "Recaptcha is required",
@@ -129,7 +129,12 @@
     "name": "Name",
     "shortName": "Company brand",
     "country": "Country",
+    "county": "County",
     "city": "City",
+    "selectCounty": "Select county",
+    "selectCity": "Select city",
+    "selectCountyFirst": "Select county first",
+    "countyEmpty": "County is required",
     "zipcode": "Zip Code",
     "street": "Street",
     "streetNumber": "Street Number",
@@ -220,7 +225,7 @@
     "loginButton": "Login",
     "adminButton": "Administration",
     "hero": {
-      "badge": "✨ #1 Platform for ITP",
+      "badge": "✨ Modern ITP Management",
       "title": "Manage Your ITP Inspections Efficiently",
       "subtitle": "Complete management system for ITP stations. Track inspections, manage clients, and never miss an expiration date.",
       "cta": "Get Started"
@@ -370,6 +375,7 @@
         "title": "9. Contact Information",
         "content": "For questions about these Terms and Conditions, GDPR requests, or any other concerns, please contact us:",
         "email": "Email",
+        "phone": "Phone",
         "address": "Address"
       }
     }
@@ -592,6 +598,21 @@
     "discountCreated": "Discount created successfully",
     "discountCreateError": "Failed to create discount",
     "discountDeleted": "Discount deleted successfully",
-    "discountDeleteError": "Failed to delete discount"
+    "discountDeleteError": "Failed to delete discount",
+    "demo": {
+      "title": "DEMO Account",
+      "limitedFeatures": "Limited features",
+      "daysRemaining": "days remaining",
+      "inspections": "inspections",
+      "customers": "customers",
+      "inspectionsLimitReached": "You have reached the inspection limit.",
+      "customersLimitReached": "You have reached the customer limit.",
+      "expiringSoon": "Your demo account is expiring soon.",
+      "expired": "Your demo account has expired.",
+      "contactUs": "Contact us for a full account!",
+      "featureDisabled": "Feature disabled in DEMO account",
+      "profileEditDisabled": "Profile editing is disabled in DEMO account.",
+      "passwordChangeDisabled": "Password change is disabled in DEMO account."
+    }
   }
 }

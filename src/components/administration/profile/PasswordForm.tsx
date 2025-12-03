@@ -5,6 +5,7 @@ import { useForm } from '../../../hooks/useForm';
 import { FormSection } from '../../shared/FormGrid';
 import { CustomInput } from '../../shared/CustomInput';
 import { Button } from '../../shared/Button';
+import { useDemo } from '../../../hooks/useDemo';
 
 type PasswordFormValues = {
   currentPassword: string;
@@ -16,6 +17,7 @@ export const PasswordForm: FC = () => {
   const { t } = useTranslation();
   const [changePassword] = useChangePasswordMutation();
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const { isDemo } = useDemo();
 
   const onSubmit = async (values: PasswordFormValues) => {
     try {
@@ -66,11 +68,13 @@ export const PasswordForm: FC = () => {
 
   return (
     <FormSection title={t('changePassword')}>
+      {isDemo && <p className="text-amber-600 text-sm font-body mb-4">{t('demo.passwordChangeDisabled')}</p>}
       <form onSubmit={handleSubmit()} className="space-y-6">
         <CustomInput
           type="password"
           label={t('currentPassword')}
           error={errors.currentPassword ? t(errors.currentPassword) : undefined}
+          disabled={isDemo}
           {...register('currentPassword')}
         />
 
@@ -80,6 +84,7 @@ export const PasswordForm: FC = () => {
             label={t('newPassword')}
             wrapperClassName="mb-0"
             error={errors.newPassword ? t(errors.newPassword) : undefined}
+            disabled={isDemo}
             {...register('newPassword')}
           />
           <CustomInput
@@ -87,6 +92,7 @@ export const PasswordForm: FC = () => {
             label={t('confirmPassword')}
             wrapperClassName="mb-0"
             error={errors.confirmNewPassword ? t(errors.confirmNewPassword) : undefined}
+            disabled={isDemo}
             {...register('confirmNewPassword')}
           />
         </div>
@@ -94,7 +100,7 @@ export const PasswordForm: FC = () => {
         {submitError && <p className="text-error text-sm font-body">{submitError}</p>}
 
         <div className="pt-2">
-          <Button type="submit" variant="primary" size="md" disabled={!canSubmit} loading={isSubmitting}>
+          <Button type="submit" variant="primary" size="md" disabled={!canSubmit || isDemo} loading={isSubmitting}>
             {t('changePassword')}
           </Button>
         </div>

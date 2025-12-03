@@ -11,7 +11,6 @@ import { CarCategories } from '../../utils/enums/CarCategories';
 import { InspectionType } from '../../utils/enums/InspectionTypes';
 import { formatInspectionDate } from '../../utils/formatInspectionDate';
 import { showToast } from '../../utils/showToast';
-import { PageContainer } from '../shared/PageContainer';
 import { CustomInput } from '../shared/CustomInput';
 import { CustomSelect } from '../shared/CustomSelect';
 import { CustomDatePicker } from '../shared/CustomDatePicker';
@@ -121,26 +120,26 @@ const InspectionForm: FC = () => {
   }, [selectedInspection, setValues]);
 
   return (
-    <PageContainer className="items-start justify-center">
-      <div className="flex flex-col h-[calc(100vh-12rem)] w-full max-w-6xl mx-auto">
+    <div className="p-6 pt-10 w-full">
+      <div className="flex flex-col h-[calc(100vh-14rem)] w-full max-w-6xl mx-auto">
         <form
           onSubmit={handleSubmit()}
           className="
-            w-full h-full bg-card rounded-3xl shadow-2xl border border-card/40
+            w-full h-full bg-surface rounded-xl border border-border
             flex flex-col overflow-hidden
           "
         >
           {/* Header */}
-          <div className="px-4 sm:px-6 pt-4 pb-2 border-b border-card/40">
+          <div className="px-4 sm:px-6 pt-4 pb-2 border-b border-border">
             <h1 className="text-xl sm:text-2xl font-heading font-semibold text-primary text-center sm:text-left">
               {isEdit ? t('editInspection') : t('addNewInspection')}
             </h1>
           </div>
 
           {/* Content (scrollable) */}
-          <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 space-y-6 bg-background/40">
+          <div className="flex-1 overflow-y-auto px-4 sm:px-6 py-4 space-y-6">
             {/* Car Info */}
-            <div className="bg-card rounded-2xl p-4 sm:p-5 border border-card/40">
+            <div className="bg-background rounded-lg p-4 sm:p-5 border border-border">
               <h3 className="text-lg font-heading font-semibold text-text mb-4">{t('carInformation')}</h3>
 
               <div className="space-y-4">
@@ -171,7 +170,7 @@ const InspectionForm: FC = () => {
             </div>
 
             {/* Customer Info */}
-            <div className="bg-card rounded-2xl p-4 sm:p-5 border border-card/40">
+            <div className="bg-background rounded-lg p-4 sm:p-5 border border-border">
               <h3 className="text-lg font-heading font-semibold text-text mb-4">{t('customerInformation')}</h3>
 
               <div className="space-y-4">
@@ -201,7 +200,7 @@ const InspectionForm: FC = () => {
             </div>
 
             {/* Inspection Info */}
-            <div className="bg-card rounded-2xl p-4 sm:p-5 border border-card/40">
+            <div className="bg-background rounded-lg p-4 sm:p-5 border border-border">
               <h3 className="text-lg font-heading font-semibold text-text mb-4">{t('inspectionInformation')}</h3>
 
               <div className="space-y-4">
@@ -230,7 +229,7 @@ const InspectionForm: FC = () => {
           </div>
 
           {/* Footer */}
-          <div className="px-4 sm:px-6 py-4 border-t border-card/40 bg-card">
+          <div className="px-4 sm:px-6 py-4 border-t border-border bg-surface">
             {isDeleted && (
               <div className="mb-4 bg-amber-50 border border-amber-200 rounded-lg p-3">
                 <p className="text-sm text-amber-800">
@@ -253,7 +252,7 @@ const InspectionForm: FC = () => {
           </div>
         </form>
       </div>
-    </PageContainer>
+    </div>
   );
 };
 

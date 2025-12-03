@@ -6,6 +6,7 @@ import { useForm } from '../../../hooks/useForm';
 import { FormSection } from '../../shared/FormGrid';
 import { CustomInput } from '../../shared/CustomInput';
 import { Button } from '../../shared/Button';
+import { useDemo } from '../../../hooks/useDemo';
 
 type ProfileFormValues = {
   username: string;
@@ -18,6 +19,7 @@ export const ProfileForm: FC = () => {
   const { user } = useAuth();
   const [updateProfile] = useUpdateUserProfileMutation();
   const [submitError, setSubmitError] = useState<string | null>(null);
+  const { isDemo } = useDemo();
 
   const onSubmit = async (values: ProfileFormValues) => {
     try {
@@ -44,6 +46,7 @@ export const ProfileForm: FC = () => {
 
   return (
     <FormSection title={t('profileInformation')}>
+      {isDemo && <p className="text-amber-600 text-sm font-body mb-4">{t('demo.profileEditDisabled')}</p>}
       <form onSubmit={handleSubmit()} className="space-y-6">
         <CustomInput
           label={t('username')}
@@ -58,12 +61,14 @@ export const ProfileForm: FC = () => {
             label={t('firstName')}
             wrapperClassName="mb-0"
             error={errors.firstName ? t(errors.firstName) : undefined}
+            disabled={isDemo}
             {...register('firstName')}
           />
           <CustomInput
             label={t('lastName')}
             wrapperClassName="mb-0"
             error={errors.lastName ? t(errors.lastName) : undefined}
+            disabled={isDemo}
             {...register('lastName')}
           />
         </div>
@@ -71,7 +76,7 @@ export const ProfileForm: FC = () => {
         {submitError && <p className="text-error text-sm font-body">{submitError}</p>}
 
         <div className="pt-2">
-          <Button type="submit" variant="primary" size="md" disabled={!canSubmit} loading={isSubmitting}>
+          <Button type="submit" variant="primary" size="md" disabled={!canSubmit || isDemo} loading={isSubmitting}>
             {t('saveProfile')}
           </Button>
         </div>

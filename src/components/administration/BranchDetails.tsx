@@ -15,6 +15,7 @@ import { Button } from '../shared/Button';
 import { PageHeader } from '../shared/PageHeader';
 import BranchForm from '../forms/BranchForm';
 import { IconButton } from '../shared/IconButton';
+import { useDemo } from '../../hooks/useDemo';
 
 const BranchDetails: FC = () => {
   const { t } = useTranslation();
@@ -27,6 +28,7 @@ const BranchDetails: FC = () => {
 
   const { user, login } = useContext(AuthContext);
   const isOwner = user?.roles?.some((r) => r.name === Role.owner);
+  const { isDemo } = useDemo();
 
   const [selectedBranchId, setSelectedBranchId] = useState<string>('');
 
@@ -79,15 +81,16 @@ const BranchDetails: FC = () => {
       </div>
     );
 
+  const locationParts = [branch.cityRef?.name, branch.cityRef?.county?.name].filter(Boolean).join(', ');
+
   const rows = [
     { label: t('branch.name'), value: branch.name },
-    { label: t('branch.country'), value: branch.country },
-    { label: t('branch.city'), value: branch.city },
-    branch.zipcode && { label: t('branch.zipcode'), value: branch.zipcode },
-    { label: t('branch.street'), value: branch.street },
-    branch.streetNumber && { label: t('branch.streetNumber'), value: branch.streetNumber },
-    branch.houseNumber && { label: t('branch.houseNumber'), value: branch.houseNumber },
-    branch.phoneNumber && { label: t('branch.phoneNumber'), value: branch.phoneNumber },
+    { label: t('phoneNumber'), value: branch.phoneNumber },
+    { label: t('adminBranches.location'), value: locationParts },
+    branch.street && { label: t('street'), value: branch.street },
+    branch.streetNumber && { label: t('streetNumber'), value: branch.streetNumber },
+    branch.houseNumber && { label: t('houseNumber'), value: branch.houseNumber },
+    branch.zipcode && { label: t('zipcode'), value: branch.zipcode },
   ].filter(Boolean) as { label: string; value: string | number }[];
 
   const activePackage = branch.activePackage;
@@ -100,25 +103,29 @@ const BranchDetails: FC = () => {
           icon={Building}
           action={
             <div className="flex items-center gap-3">
-              {isOwner && (
+              {(isOwner || isDemo) && (
                 <IconButton
                   type="button"
                   variant="secondary"
                   size="md"
-                  onClick={() => setEditDrawerOpen(true)}
+                  onClick={() => !isDemo && setEditDrawerOpen(true)}
                   className="flex items-center gap-2"
+                  disabled={isDemo}
+                  title={isDemo ? t('demo.featureDisabled') : undefined}
                 >
                   <Pencil className="w-4 h-4" />
                 </IconButton>
               )}
 
-              {branches.length > 1 && (
+              {(branches.length > 1 || isDemo) && (
                 <IconButton
                   type="button"
                   variant="primary"
                   size="md"
-                  onClick={() => setSwitchDrawerOpen(true)}
+                  onClick={() => !isDemo && setSwitchDrawerOpen(true)}
                   className="flex items-center gap-2"
+                  disabled={isDemo}
+                  title={isDemo ? t('demo.featureDisabled') : undefined}
                 >
                   <ArrowLeftRight className="w-4 h-4" />
                 </IconButton>
@@ -128,29 +135,29 @@ const BranchDetails: FC = () => {
         />
       </div>
 
-      <div className="mt-0 p-4 sm:p-5 lg:p-6 w-full rounded-2xl bg-white">
+      <div className="p-4 sm:p-5 lg:p-6">
         {rows.map((row, index) => (
-          <div key={index} className="flex items-center justify-between py-4 border-b border-gray-200 last:border-none">
-            <span className="text-sm text-text/60 font-body">{row.label}</span>
-            <span className="text-text font-body">{row.value}</span>
+          <div key={index} className="flex items-center justify-between py-3 border-b border-border last:border-none">
+            <span className="text-sm text-muted font-body">{row.label}</span>
+            <span className="text-text font-body font-medium">{row.value}</span>
           </div>
         ))}
       </div>
 
-      {isOwner && (
+      {(isOwner || isDemo) && (
         <div className="space-y-4">
           <PageHeader title={t('packages.activePackage')} icon={Store} />
 
-          <div className="p-4 sm:p-5 lg:p-6 w-full rounded-2xl bg-white">
+          <div className="p-4 sm:p-5 lg:p-6">
             {activePackage ? (
               <>
-                <div className="flex items-center justify-between py-4 border-b border-gray-200">
-                  <span className="text-sm text-text/60">{t('packages.packageName')}</span>
+                <div className="flex items-center justify-between py-3 border-b border-border">
+                  <span className="text-sm text-muted font-body">{t('packages.packageName')}</span>
                   <span className="text-text font-heading font-semibold">{activePackage.package?.name || 'N/A'}</span>
                 </div>
 
-                <div className="flex items-center justify-between py-4 border-b border-gray-200">
-                  <span className="text-sm text-text/60">{t('packages.totalMessages')}</span>
+                <div className="flex items-center justify-between py-3 border-b border-border">
+                  <span className="text-sm text-muted font-body">{t('packages.totalMessages')}</span>
                   <span className="text-text font-heading font-semibold">
                     {activePackage.usage?.sms?.limit === -1
                       ? t('packages.unlimited')
@@ -158,13 +165,13 @@ const BranchDetails: FC = () => {
                   </span>
                 </div>
 
-                <div className="flex items-center justify-between py-4 border-b border-gray-200">
-                  <span className="text-sm text-text/60">{t('packages.usedMessages')}</span>
+                <div className="flex items-center justify-between py-3 border-b border-border">
+                  <span className="text-sm text-muted font-body">{t('packages.usedMessages')}</span>
                   <span className="text-text font-heading font-semibold">{activePackage.usage?.sms?.used || 0}</span>
                 </div>
 
-                <div className="flex items-center justify-between py-4 border-b border-gray-200 last:border-none">
-                  <span className="text-sm text-text/60">{t('packages.expiryDate')}</span>
+                <div className="flex items-center justify-between py-3 border-b border-border last:border-none">
+                  <span className="text-sm text-muted font-body">{t('packages.expiryDate')}</span>
                   <span className="text-text font-heading font-semibold">
                     {activePackage.expiringAt
                       ? new Date(activePackage.expiringAt).toLocaleDateString('ro-RO', {
@@ -179,9 +186,9 @@ const BranchDetails: FC = () => {
             ) : (
               <Link
                 to="/packages"
-                className="block text-center px-4 py-3 bg-primary text-primary-text font-heading font-semibold rounded-xl hover:bg-primary-hover transition"
+                className="inline-flex items-center gap-2 px-4 py-3 bg-primary text-primary-text font-heading font-semibold rounded-lg hover:bg-primary-hover transition"
               >
-                <Store className="w-6 h-6 text-primary" />
+                <Store className="w-5 h-5" />
                 {t('packages.viewAllPackages')}
               </Link>
             )}
@@ -197,7 +204,7 @@ const BranchDetails: FC = () => {
             onChange={setSelectedBranchId}
             options={branches.map((b: Branch) => ({
               value: b.id,
-              label: `${b.name} – ${b.city}`,
+              label: `${b.name} – ${b.cityRef?.name || ''}`,
             }))}
           />
           <Button
@@ -214,7 +221,7 @@ const BranchDetails: FC = () => {
         </div>
       </Drawer>
 
-      {isOwner && (
+      {(isOwner || isDemo) && (
         <Drawer isOpen={editDrawerOpen} onClose={() => setEditDrawerOpen(false)} title={t('adminBranches.editBranch')}>
           <BranchForm
             selectedBranch={branch}

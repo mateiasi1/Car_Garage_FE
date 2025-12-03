@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Error } from '../../interfaces/error';
 import {
@@ -6,15 +6,18 @@ import {
   useDeleteAdminCompanyMutation,
   useUpdateAdminCompanyMutation,
 } from '../../rtk/services/admin-service';
+import { useGetCountiesQuery, useGetCitiesByCountyQuery } from '../../rtk/services/location-service';
 import { showToast } from '../../utils/showToast';
 import ConfirmationModal from '../shared/ConfirmationModal';
 import { Button } from '../shared/Button';
 import { useForm } from '../../hooks/useForm';
 import { CustomInput } from '../shared/CustomInput';
 import { PhoneNumberRoInput } from '../PhoneNumberRoInput';
+import { CustomSelect } from '../shared/CustomSelect';
+import { Company } from '../../models/Company';
 
 interface CompanyFormProps {
-  selectedCompany: Partial<CompanyFormValues> | null;
+  selectedCompany: Partial<Company> | null;
   onCloseDrawer: () => void;
 }
 
@@ -25,25 +28,12 @@ type CompanyFormValues = {
   email: string;
   phoneNumber: string;
   country: string;
-  city: string;
+  countyId: string;
+  cityId: string;
   street: string;
   streetNumber?: string;
   houseNumber?: string;
   zipcode?: string;
-};
-
-const initialValues: CompanyFormValues = {
-  id: '',
-  name: '',
-  shortName: '',
-  email: '',
-  phoneNumber: '',
-  country: '',
-  city: '',
-  street: '',
-  streetNumber: '',
-  houseNumber: '',
-  zipcode: '',
 };
 
 const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) => {
@@ -57,11 +47,24 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
 
   const isEdit = Boolean(selectedCompany?.id);
 
+  // Extract countyId and cityId from selectedCompany.cityRef
+  const initialCountyId = selectedCompany?.cityRef?.county?.id ?? '';
+  const initialCityId = selectedCompany?.cityId ?? '';
+
   const { values, errors, register, handleSubmit, isSubmitting, setFieldValue } = useForm<CompanyFormValues>({
     initialValues: {
-      ...initialValues,
-      ...(selectedCompany || {}),
       id: selectedCompany?.id ?? '',
+      name: selectedCompany?.name ?? '',
+      shortName: selectedCompany?.shortName ?? '',
+      email: selectedCompany?.email ?? '',
+      phoneNumber: selectedCompany?.phoneNumber ?? '',
+      country: selectedCompany?.country ?? 'România',
+      countyId: initialCountyId,
+      cityId: initialCityId,
+      street: selectedCompany?.street ?? '',
+      streetNumber: selectedCompany?.streetNumber ?? '',
+      houseNumber: selectedCompany?.houseNumber ?? '',
+      zipcode: selectedCompany?.zipcode ?? '',
     },
     fields: {
       name: {
@@ -95,19 +98,22 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
           return null;
         },
       },
-      country: {
+      countyId: {
         validate: (value) => {
           const v = String(value ?? '').trim();
-          if (!v) return 'countryEmpty';
+          if (!v) return 'countyEmpty';
           return null;
         },
       },
-      city: {
+      cityId: {
         validate: (value) => {
           const v = String(value ?? '').trim();
           if (!v) return 'cityEmpty';
           return null;
         },
+      },
+      country: {
+        validate: () => null,
       },
       street: {
         validate: (value) => {
@@ -124,7 +130,7 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
         email: formValues.email,
         phoneNumber: formValues.phoneNumber,
         country: formValues.country,
-        city: formValues.city,
+        cityId: formValues.cityId,
         street: formValues.street,
         streetNumber: formValues.streetNumber,
         houseNumber: formValues.houseNumber,
@@ -147,6 +153,26 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
   });
 
   const onSubmit = handleSubmit();
+
+  // Fetch counties from API
+  const { data: counties = [], isLoading: isLoadingCounties } = useGetCountiesQuery();
+
+  // Fetch cities for selected county
+  const { data: cities = [], isLoading: isLoadingCities } = useGetCitiesByCountyQuery(values.countyId, {
+    skip: !values.countyId,
+  });
+
+  // County options for dropdown
+  const countyOptions = useMemo(() => counties.map((c) => ({ value: c.id, label: c.name })), [counties]);
+
+  // City options for dropdown
+  const cityOptions = useMemo(() => cities.map((c) => ({ value: c.id, label: c.name })), [cities]);
+
+  // Reset city when county changes
+  const handleCountyChange = (countyId: string) => {
+    setFieldValue('countyId', countyId);
+    setFieldValue('cityId', '');
+  };
 
   const handleDelete = async () => {
     if (!values.id) return;
@@ -204,17 +230,29 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <CustomInput
-            label={t('country')}
-            {...register('country')}
-            error={errors.country && t(errors.country)}
+          <CustomInput label={t('country')} value={values.country} disabled wrapperClassName="mb-0" />
+
+          <CustomSelect
+            label={t('county')}
+            value={values.countyId}
+            onChange={handleCountyChange}
+            options={countyOptions}
+            searchable
+            placeholder={isLoadingCounties ? t('loading') : t('selectCounty')}
+            disabled={isLoadingCounties}
+            error={errors.countyId && t(errors.countyId)}
             wrapperClassName="mb-0"
           />
 
-          <CustomInput
+          <CustomSelect
             label={t('city')}
-            {...register('city')}
-            error={errors.city && t(errors.city)}
+            value={values.cityId}
+            onChange={(val) => setFieldValue('cityId', val)}
+            options={cityOptions}
+            searchable
+            placeholder={!values.countyId ? t('selectCountyFirst') : isLoadingCities ? t('loading') : t('selectCity')}
+            disabled={!values.countyId || isLoadingCities}
+            error={errors.cityId && t(errors.cityId)}
             wrapperClassName="mb-0"
           />
 
@@ -222,7 +260,7 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
             label={t('street')}
             {...register('street')}
             error={errors.street && t(errors.street)}
-            wrapperClassName="mb-0 md:col-span-2"
+            wrapperClassName="mb-0"
           />
 
           <CustomInput label={t('streetNumber')} {...register('streetNumber')} wrapperClassName="mb-0" />

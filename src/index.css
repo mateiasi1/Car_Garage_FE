@@ -2,6 +2,18 @@
 @tailwind components;
 @tailwind utilities;
 
+:root {
+  /* Global gradient - dark blue theme */
+  --gradient-from: #94A3B8;
+  --gradient-via: #5A6E8A;
+  --gradient-to: #2D3E55;
+}
+
 body {
-  @apply font-body text-text bg-background;
+  @apply font-body text-text;
+}
+
+
+.bg-page-gradient {
+  background: linear-gradient(160deg, var(--gradient-from) 0%, var(--gradient-via) 50%, var(--gradient-to) 100%);
 }

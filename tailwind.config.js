@@ -4,16 +4,21 @@ export default {
   theme: {
     extend: {
       colors: {
-        background: '#D8D6D4',
+        background: '#F1F5F9',
+        surface: '#FFFFFF',
+        border: '#CBD5E1',
         sidebar: '#1B2845',
         card: '#FFFFFF',
-        text: '#1A1A1A',
+        'card-alt': '#F8FAFC',
+        text: '#1E293B',
+        muted: '#334155',
         activeMenu: '#BFDBFE',
         orange: '#FFA500',
         primary: {
           DEFAULT: '#2E3B61',
           hover: '#3F4D7A',
-          disabled: '#A1A7BA',
+          light: '#EEF2FF',
+          disabled: '#94A3B8',
           text: '#FFFFFF',
         },
         error: '#E02424',

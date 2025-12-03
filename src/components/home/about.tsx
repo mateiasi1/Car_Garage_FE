@@ -7,12 +7,13 @@ import { routes } from '../../constants/routes';
 import logo from '../../assets/logo.png';
 import carHome from '../../assets/car_home.png';
 import { Button } from '../shared/Button';
-import { brandName } from '../../constants/constants';
+import { brandName, contactEmail, contactPhone, contactPhoneRaw } from '../../constants/constants';
 import {
   Building2,
   ClipboardCheck,
   Bell,
   Mail,
+  Phone,
   ArrowRight,
   UserPlus,
   FileCheck,
@@ -319,30 +320,14 @@ const About = () => {
           >
             <Link to={primaryCtaLink}>
               <Button
-                size="lg"
+                size="md"
                 variant="primary"
-                className="rounded-full shadow-2xl shadow-primary/40 px-10 py-5 text-lg font-semibold group hover:scale-105 active:scale-[0.98] transition-transform"
+                className="rounded-full shadow-lg shadow-primary/30 px-6 py-2.5 font-medium group hover:scale-105 active:scale-[0.98] transition-transform"
               >
                 {t('home.hero.cta')}
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
-          </motion.div>
-
-          {/* Scroll indicator */}
-          <motion.div
-            className="absolute bottom-8 left-1/2 -translate-x-1/2"
-            initial={{ opacity: 0 }}
-            animate={{ opacity: 1 }}
-            transition={{ delay: 1.5 }}
-          >
-            <motion.div
-              animate={{ y: [0, 10, 0] }}
-              transition={{ duration: 2, repeat: Infinity }}
-              className="w-6 h-10 rounded-full border-2 border-text/30 flex justify-center pt-2"
-            >
-              <motion.div className="w-1.5 h-1.5 rounded-full bg-primary" />
-            </motion.div>
           </motion.div>
         </motion.div>
       </section>
@@ -508,12 +493,12 @@ const About = () => {
           <AnimatedSection className="text-center mt-12">
             <Link to={primaryCtaLink}>
               <Button
-                size="lg"
+                size="md"
                 variant="primary"
-                className="rounded-full px-10 py-5 group shadow-xl shadow-primary/30 hover:scale-105 active:scale-[0.98] transition-transform"
+                className="rounded-full px-6 py-2.5 group shadow-lg shadow-primary/30 hover:scale-105 active:scale-[0.98] transition-transform"
               >
                 {t('home.hero.cta')}
-                <ArrowRight className="w-5 h-5 ml-2 group-hover:translate-x-1 transition-transform" />
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
           </AnimatedSection>
@@ -546,19 +531,34 @@ const About = () => {
               {t('home.contact.description')}
             </motion.p>
 
-            <motion.a
-              href="mailto:contact@bytedracula.ro"
-              className="inline-flex items-center gap-2 text-primary font-semibold font-body text-lg group hover:gap-3 transition-all"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-              whileHover={{ scale: 1.02 }}
-            >
-              <Mail className="w-5 h-5" />
-              {t('home.contact.button')}
-              <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
-            </motion.a>
+            <div className="flex flex-col sm:flex-row justify-center gap-4 sm:gap-8">
+              <motion.a
+                href={`mailto:${contactEmail}`}
+                className="inline-flex items-center justify-center gap-2 text-primary font-semibold font-body text-lg group hover:gap-3 transition-all"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.2 }}
+                whileHover={{ scale: 1.02 }}
+              >
+                <Mail className="w-5 h-5" />
+                {t('home.contact.button')}
+                <ArrowRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
+              </motion.a>
+
+              <motion.a
+                href={`tel:${contactPhoneRaw}`}
+                className="inline-flex items-center justify-center gap-2 text-primary font-semibold font-body text-lg group hover:gap-3 transition-all"
+                initial={{ opacity: 0, y: 20 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ delay: 0.3 }}
+                whileHover={{ scale: 1.02 }}
+              >
+                <Phone className="w-5 h-5" />
+                {contactPhone}
+              </motion.a>
+            </div>
           </AnimatedSection>
         </div>
       </section>
@@ -596,11 +596,18 @@ const About = () => {
                 {t('home.footer.terms')}
               </Link>
               <a
-                href="mailto:contact@bytedracula.ro"
+                href={`mailto:${contactEmail}`}
                 className="text-text/60 hover:text-primary transition-colors flex items-center gap-1"
               >
                 <Mail className="w-4 h-4" />
                 {t('home.footer.contact')}
+              </a>
+              <a
+                href={`tel:${contactPhoneRaw}`}
+                className="text-text/60 hover:text-primary transition-colors flex items-center gap-1"
+              >
+                <Phone className="w-4 h-4" />
+                {contactPhone}
               </a>
             </div>
           </motion.div>

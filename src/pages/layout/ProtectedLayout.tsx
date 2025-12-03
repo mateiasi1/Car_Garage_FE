@@ -1,13 +1,17 @@
 import { Outlet } from 'react-router-dom';
 import Sidebar from '../../components/sidebar/Sidebar';
+import DemoBanner from '../../components/shared/DemoBanner';
 
 const ProtectedLayout = () => {
   return (
-    <div className="min-h-screen w-full bg-gradient-to-br from-background via-primary to-sidebar flex">
+    <div className="min-h-screen w-full bg-page-gradient flex">
       <Sidebar />
 
-      <div className="flex-1 min-h-screen pb-20 md:pb-0 md:ml-16 flex">
-        <main className="flex-1 bg-background/90 md:bg-background rounded-tl-3xl md:rounded-none overflow-x-auto">
+      <div className="flex-1 min-h-screen pb-20 md:pb-0 md:ml-16 flex flex-col">
+        <div className="px-4 pt-4">
+          <DemoBanner />
+        </div>
+        <main className="flex-1 overflow-x-auto">
           <Outlet />
         </main>
       </div>

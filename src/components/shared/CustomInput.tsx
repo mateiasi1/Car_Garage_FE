@@ -38,11 +38,11 @@ export const CustomInput: FC<InputProps> = ({
           type={actualType}
           disabled={disabled}
           className={clsx(
-            'w-full px-4 py-3 rounded-2xl border bg-card font-body shadow-sm',
+            'w-full px-4 py-3 rounded-lg border font-body',
             'focus:outline-none focus:ring-2',
             disabled
-              ? 'border-text/10 text-text/40 bg-background placeholder:text-text/30 cursor-not-allowed focus:ring-0'
-              : 'border-text/20 text-text placeholder:text-text/50 focus:ring-primary',
+              ? 'border-border/50 text-muted/70 bg-background cursor-not-allowed focus:ring-0 opacity-60'
+              : 'border-border text-text bg-surface placeholder:text-muted/50 focus:ring-primary focus:border-primary',
             !disabled && error && 'border-error focus:ring-error text-error placeholder:text-error/70',
             className
           )}
