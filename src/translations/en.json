@@ -209,7 +209,7 @@
       "smsPerMonth": "SMS/month",
       "currentPackage": "Current Package",
       "selectPackage": "Select Package",
-      "purchaseNote": "To purchase a package, please contact support or send an email to contact@bytedracula.ro",
+      "purchaseNote": "To purchase a package, you can contact us at {{email}} or at {{phone}}.",
       "selectPackageTitle": "Select Package",
       "choosePackage": "Choose Package",
       "selectPeriod": "Select Period",

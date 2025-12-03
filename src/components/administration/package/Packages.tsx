@@ -5,6 +5,7 @@ import { useTranslation } from 'react-i18next';
 import { useFetchBranchQuery } from '../../../rtk/services/branch-service';
 import { Check, Store, Percent, Clock } from 'lucide-react';
 import { PageHeader } from '../../shared/PageHeader';
+import { contactEmail, contactPhone } from '../../../constants/constants';
 
 const PackagesPage: FC = () => {
   const { data: branch } = useFetchBranchQuery();
@@ -139,7 +140,7 @@ const PackagesPage: FC = () => {
         {/* Info note */}
         <div className="mx-6 mt-6 p-4 rounded-xl bg-primary-light border border-border flex items-center gap-3">
           <Store className="w-6 h-6 text-primary" />
-          <p className="text-sm text-text font-body">{t('packages.purchaseNote')}</p>
+          <p className="text-sm text-text font-body">{t('packages.purchaseNote', { email: contactEmail, phone: contactPhone })}</p>
         </div>
       </div>
     </div>

@@ -208,7 +208,7 @@
       "smsPerMonth": "SMS/lună",
       "currentPackage": "Pachet Curent",
       "selectPackage": "Selectează Pachetul",
-      "purchaseNote": "Pentru a achiziționa un pachet, vă rugăm să contactați suportul sau trimiteți un email la contact@bytedracula.ro",
+      "purchaseNote": "Pentru a achiziționa un pachet, ne puteți contacta la {{email}} sau la {{phone}}.",
       "selectPackageTitle": "Selectează Pachet",
       "choosePackage": "Alege Pachetul",
       "selectPeriod": "Selectează Perioada",
