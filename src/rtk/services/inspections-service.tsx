@@ -54,7 +54,7 @@ export const inspectionsApi = createApi({
         method: 'DELETE',
         body: {},
       }),
-      invalidatesTags: ['Inspections'],
+      invalidatesTags: ['Inspections', 'User'],
     }),
   }),
 });
