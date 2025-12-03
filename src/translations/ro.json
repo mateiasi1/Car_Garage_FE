@@ -135,6 +135,7 @@
     "selectCountyFirst": "Selectează mai întâi județul",
     "countyEmpty": "Câmpul Județ nu poate fi gol",
     "zipcode": "Cod poștal",
+    "isDemo": "Cont demo (se va șterge automat după expirare)",
     "street": "Stradă",
     "streetNumber": "Număr stradă",
     "houseNumber": "Număr clădire",

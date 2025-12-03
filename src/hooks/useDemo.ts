@@ -1,6 +1,7 @@
 import { useMemo, useContext } from 'react';
 import { AuthContext } from '../contexts/authContext';
 import { DemoInfo } from '../models/User';
+import { Role } from '../utils/enums/Role';
 
 export interface UseDemoReturn {
   isDemo: boolean;
@@ -16,16 +17,19 @@ export interface UseDemoReturn {
 
 /**
  * Hook to check demo status and limitations
- * Uses the demo info from the user profile API response stored in AuthContext
+ * Checks both user roles AND demo info from API
  */
 export function useDemo(): UseDemoReturn {
   const { user } = useContext(AuthContext);
 
   return useMemo(() => {
     const demoInfo = user?.demo;
-    const isDemo = !!demoInfo?.isDemo;
+    // Check both: role-based AND demo info from API
+    const hasRoleDemo = user?.roles?.some((role) => role.name === Role.demo) ?? false;
+    const isDemo = hasRoleDemo || !!demoInfo?.isDemo;
 
-    if (!isDemo || !demoInfo) {
+    // If not demo at all, return non-demo defaults
+    if (!isDemo) {
       return {
         isDemo: false,
         demoInfo: null,
@@ -39,15 +43,16 @@ export function useDemo(): UseDemoReturn {
       };
     }
 
-    const inspectionsUsed = demoInfo.limits.inspections.used;
-    const inspectionsMax = demoInfo.maxLimits.inspections;
-    const customersUsed = demoInfo.limits.customers.used;
-    const customersMax = demoInfo.maxLimits.customers;
+    // Demo user - use demoInfo if available, otherwise use defaults
+    const inspectionsUsed = demoInfo?.limits?.inspections?.used ?? 0;
+    const inspectionsMax = demoInfo?.maxLimits?.inspections ?? 5;
+    const customersUsed = demoInfo?.limits?.customers?.used ?? 0;
+    const customersMax = demoInfo?.maxLimits?.customers ?? 5;
 
     return {
       isDemo: true,
-      demoInfo,
-      daysRemaining: demoInfo.daysRemaining,
+      demoInfo: demoInfo ?? null,
+      daysRemaining: demoInfo?.daysRemaining ?? 30,
       canAddInspection: inspectionsUsed < inspectionsMax,
       canAddCustomer: customersUsed < customersMax,
       inspectionsUsed,

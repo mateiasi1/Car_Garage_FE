@@ -136,6 +136,7 @@
     "selectCountyFirst": "Select county first",
     "countyEmpty": "County is required",
     "zipcode": "Zip Code",
+    "isDemo": "Demo account (will be auto-deleted after expiration)",
     "street": "Street",
     "streetNumber": "Street Number",
     "houseNumber": "House Number",

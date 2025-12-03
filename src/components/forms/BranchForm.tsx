@@ -39,6 +39,7 @@ type BranchFormValues = {
   streetNumber?: string;
   houseNumber?: string;
   zipcode?: string;
+  isDemo: boolean;
 };
 
 const initialValues: BranchFormValues = {
@@ -52,6 +53,7 @@ const initialValues: BranchFormValues = {
   streetNumber: '',
   houseNumber: '',
   zipcode: '',
+  isDemo: false,
 };
 
 const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDrawer, isOwnerMode }) => {
@@ -88,6 +90,7 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
           streetNumber: selectedBranch.streetNumber ?? '',
           houseNumber: selectedBranch.houseNumber ?? '',
           zipcode: selectedBranch.zipcode ?? '',
+          isDemo: (selectedBranch as Partial<Branch> & { isDemo?: boolean })?.isDemo ?? false,
         }
       : initialValues,
     fields: {
@@ -140,6 +143,8 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
         streetNumber: formValues.streetNumber,
         houseNumber: formValues.houseNumber,
         zipcode: formValues.zipcode,
+        // Only include isDemo for admin mode
+        ...(!isOwner && { isDemo: formValues.isDemo }),
       };
 
       try {
@@ -282,6 +287,22 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
 
           <CustomInput label={t('zipcode')} {...register('zipcode')} wrapperClassName="mb-0 md:col-span-2" />
         </div>
+
+        {/* Demo checkbox - only for admin mode */}
+        {!isOwner && (
+          <div className="flex items-center gap-3 pt-2">
+            <input
+              type="checkbox"
+              id="isDemo"
+              checked={values.isDemo}
+              onChange={(e) => setFieldValue('isDemo', e.target.checked)}
+              className="w-4 h-4 text-primary border-border rounded focus:ring-primary"
+            />
+            <label htmlFor="isDemo" className="text-sm font-body text-text">
+              {t('isDemo')}
+            </label>
+          </div>
+        )}
 
         <div className="flex justify-end gap-3 pt-2">
           {isEdit && (

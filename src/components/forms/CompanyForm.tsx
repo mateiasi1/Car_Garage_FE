@@ -34,6 +34,7 @@ type CompanyFormValues = {
   streetNumber?: string;
   houseNumber?: string;
   zipcode?: string;
+  isDemo: boolean;
 };
 
 const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) => {
@@ -65,6 +66,7 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
       streetNumber: selectedCompany?.streetNumber ?? '',
       houseNumber: selectedCompany?.houseNumber ?? '',
       zipcode: selectedCompany?.zipcode ?? '',
+      isDemo: (selectedCompany as Partial<Company> & { isDemo?: boolean })?.isDemo ?? false,
     },
     fields: {
       name: {
@@ -135,6 +137,7 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
         streetNumber: formValues.streetNumber,
         houseNumber: formValues.houseNumber,
         zipcode: formValues.zipcode,
+        isDemo: formValues.isDemo,
       };
 
       try {
@@ -268,6 +271,20 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
           <CustomInput label={t('houseNumber')} {...register('houseNumber')} wrapperClassName="mb-0" />
 
           <CustomInput label={t('zipcode')} {...register('zipcode')} wrapperClassName="mb-0 md:col-span-2" />
+        </div>
+
+        {/* Demo checkbox - only for admin */}
+        <div className="flex items-center gap-3 pt-2">
+          <input
+            type="checkbox"
+            id="isDemo"
+            checked={values.isDemo}
+            onChange={(e) => setFieldValue('isDemo', e.target.checked)}
+            className="w-4 h-4 text-primary border-border rounded focus:ring-primary"
+          />
+          <label htmlFor="isDemo" className="text-sm font-body text-text">
+            {t('isDemo')}
+          </label>
         </div>
 
         <div className="flex justify-end gap-3 pt-2">
