@@ -140,7 +140,9 @@ const PackagesPage: FC = () => {
         {/* Info note */}
         <div className="mx-6 mt-6 p-4 rounded-xl bg-primary-light border border-border flex items-center gap-3">
           <Store className="w-6 h-6 text-primary" />
-          <p className="text-sm text-text font-body">{t('packages.purchaseNote', { email: contactEmail, phone: contactPhone })}</p>
+          <p className="text-sm text-text font-body">
+            {t('packages.purchaseNote', { email: contactEmail, phone: contactPhone })}
+          </p>
         </div>
       </div>
     </div>

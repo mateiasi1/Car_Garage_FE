@@ -1,5 +1,5 @@
 import { FC, useState } from 'react';
-import { ClipboardList, Settings, Power, Menu } from 'lucide-react';
+import { ClipboardList, Settings, Power, Menu, BarChart3 } from 'lucide-react';
 import { Role as RoleEnum } from '../../utils/enums/Role';
 import SidebarNav, { NavItem } from './SidebarNav';
 import LanguageSelector from './LanguageSelector';
@@ -10,6 +10,12 @@ import { useUserRoles } from '../../hooks/useUserRoles';
 import { useMediaQuery } from '../../hooks/useMediaQuery';
 
 const navItems: NavItem[] = [
+  {
+    to: routes.DASHBOARD,
+    icon: BarChart3,
+    labelKey: 'statistics.title',
+    roles: [RoleEnum.admin, RoleEnum.owner, RoleEnum.demo],
+  },
   {
     to: routes.INSPECTIONS,
     icon: ClipboardList,

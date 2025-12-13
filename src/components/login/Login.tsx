@@ -82,8 +82,10 @@ const Login: FC = () => {
   useEffect(() => {
     if (!isAuthenticated || !user) return;
 
-    const isAdmin = user.roles?.some((r) => r.name === 'ADMIN');
-    navigate(isAdmin ? routes.ADMINISTRATION : routes.INSPECTIONS);
+    const isInspectorOnly = user.roles?.some((r) => r.name === 'INSPECTOR');
+
+    // Dashboard for admin/owner/demo, Inspections for inspector-only
+    navigate(isInspectorOnly ? routes.INSPECTIONS : routes.DASHBOARD);
   }, [isAuthenticated, user, navigate]);
 
   useEffect(() => {

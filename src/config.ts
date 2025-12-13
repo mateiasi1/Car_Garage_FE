@@ -23,4 +23,5 @@ export default {
   companyUrl: '/company',
   companiesUrl: '/companies',
   branchUrl: '/branch',
+  statisticsUrl: '/statistics',
 };

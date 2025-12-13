@@ -12,6 +12,7 @@ import { packagesApi } from './rtk/services/package-service';
 import { branchApi } from './rtk/services/branch-service';
 import { discountApi } from './rtk/services/discount-service';
 import { locationApi } from './rtk/services/location-service';
+import { statisticsApi } from './rtk/services/statistics-service';
 
 export const store = configureStore({
   reducer: {
@@ -27,6 +28,7 @@ export const store = configureStore({
     [packagesApi.reducerPath]: packagesApi.reducer,
     [discountApi.reducerPath]: discountApi.reducer,
     [locationApi.reducerPath]: locationApi.reducer,
+    [statisticsApi.reducerPath]: statisticsApi.reducer,
     inspection: inspectionReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -42,7 +44,8 @@ export const store = configureStore({
       branchApi.middleware,
       packagesApi.middleware,
       discountApi.middleware,
-      locationApi.middleware
+      locationApi.middleware,
+      statisticsApi.middleware
     ),
 });
 
