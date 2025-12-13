@@ -90,6 +90,8 @@ const InspectionForm: FC = () => {
             ? formatInspectionDate(formValues.inspectedAt.toISOString().split('T')[0])
             : '',
           branchId: formValues.branchId,
+          ...(selectedInspection?.car?.customer?.id && { customerId: selectedInspection.car.customer.id }),
+          ...(selectedInspection?.car?.id && { carId: selectedInspection.car.id }),
         };
 
         if (selectedInspection?.id) {

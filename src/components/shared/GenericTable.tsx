@@ -79,25 +79,38 @@ const GenericTable = <T extends { id: string }>({
     }
   };
 
-  const searchableColumns = columns.filter((col) => col.searchable !== false);
-
   const [filterConfig, setFilterConfig] = useState<Record<string, boolean>>(() => {
     const config: Record<string, boolean> = {};
-    searchableColumns.forEach((col) => {
-      config[col.key] = true;
-    });
+    columns
+      .filter((col) => col.searchable !== false)
+      .forEach((col) => {
+        config[col.key] = true;
+      });
     return config;
   });
 
+  // Memoize searchable columns to prevent infinite loops
+  const searchableColumns = columns.filter((col) => col.searchable !== false);
+
+  // Update filterConfig when columns change (only check column keys)
   useEffect(() => {
+    const columnKeys = columns.filter((col) => col.searchable !== false).map((col) => col.key);
+
     setFilterConfig((prev) => {
       const next: Record<string, boolean> = {};
-      searchableColumns.forEach((col) => {
-        next[col.key] = prev[col.key] ?? true;
+      columnKeys.forEach((key) => {
+        next[key] = prev[key] ?? true;
       });
+      // Only update if keys changed
+      const prevKeys = Object.keys(prev).sort().join(',');
+      const nextKeys = Object.keys(next).sort().join(',');
+      if (prevKeys === nextKeys) {
+        return prev; // Return same reference to prevent re-render
+      }
       return next;
     });
-  }, [columns, searchableColumns]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [columns.map((c) => c.key).join(',')]);
 
   const filteredData = data.filter((item) => {
     if (!effectiveSearch) return true;
@@ -377,12 +390,12 @@ const GenericTable = <T extends { id: string }>({
           <div className="flex items-center justify-start flex-wrap gap-2 p-4 flex-shrink-0">
             {getPaginationNumbers(page, totalPages).map((p, i) =>
               p === '...' ? (
-                <span key={i} className="mx-1 text-muted font-body">
+                <span key={`ellipsis-${i}`} className="mx-1 text-muted font-body">
                   ...
                 </span>
               ) : (
                 <IconButton
-                  key={p}
+                  key={`page-${p}`}
                   type="button"
                   size="sm"
                   variant={p === page ? 'primary' : 'ghost'}
