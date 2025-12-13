@@ -2,6 +2,7 @@ import { ReactNode, useLayoutEffect, useRef, useState, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { IconButton } from './IconButton';
 import { CustomInput } from './CustomInput';
+import { CustomCheckbox } from './CustomCheckbox';
 import { ListFilter as ListFilterIcon } from 'lucide-react';
 
 export interface TableColumn<T> {
@@ -206,20 +207,19 @@ const GenericTable = <T extends { id: string }>({
                   </div>
                   <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-5 gap-3">
                     {searchableColumns.map((col) => (
-                      <label key={col.key} className="flex items-center gap-2 cursor-pointer">
-                        <input
-                          type="checkbox"
-                          checked={filterConfig[col.key] ?? false}
-                          onChange={() => {
-                            setFilterConfig((prev) => ({
-                              ...prev,
-                              [col.key]: !prev[col.key],
-                            }));
-                          }}
-                          className="w-4 h-4 text-primary border-border rounded focus:ring-primary"
-                        />
-                        <span className="text-sm text-text">{col.label}</span>
-                      </label>
+                      <CustomCheckbox
+                        key={col.key}
+                        id={`filter-${col.key}`}
+                        name={`filter-${col.key}`}
+                        label={col.label}
+                        checked={filterConfig[col.key] ?? false}
+                        onChange={() => {
+                          setFilterConfig((prev) => ({
+                            ...prev,
+                            [col.key]: !prev[col.key],
+                          }));
+                        }}
+                      />
                     ))}
                   </div>
                 </div>

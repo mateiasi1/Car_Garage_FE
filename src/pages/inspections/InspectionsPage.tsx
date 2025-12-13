@@ -1,4 +1,4 @@
-import { FC, useState } from 'react';
+import { FC, useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { ClipboardCheck, MessageCircle, Pencil, Trash2 } from 'lucide-react';
@@ -19,6 +19,7 @@ import { InspectionType } from '../../utils/enums/InspectionTypes';
 import { showToast } from '../../utils/showToast';
 import ConfirmationModal from '../../components/shared/ConfirmationModal';
 import { Button } from '../../components/shared/Button';
+import { CustomCheckbox } from '../../components/shared/CustomCheckbox'; // Used in toolbarActions
 import { routes } from '../../constants/routes';
 import { PageHeader } from '../../components/shared/PageHeader';
 
@@ -29,6 +30,7 @@ const InspectionsPage: FC = () => {
   const { isDemo } = useDemo();
 
   const [search, setSearch] = useState('');
+  const [showArchived, setShowArchived] = useState(false);
   const [filters, setFilters] = useState<ApiFilters>({
     page: 1,
     licensePlate: '',
@@ -38,8 +40,14 @@ const InspectionsPage: FC = () => {
   });
 
   const { data, isLoading } = useFetchInspectionsQuery(filters);
-  const inspections = data?.results || [];
+  const allInspections = data?.results || [];
   const totalPages = data?.totalPages || 1;
+
+  // Filter out archived inspections unless showArchived is true
+  const inspections = useMemo(() => {
+    if (showArchived) return allInspections;
+    return allInspections.filter((inspection) => !inspection.deletedAt);
+  }, [allInspections, showArchived]);
 
   const selectedInspection = useAppSelector((state) => state.inspection.selectedInspection);
   const [isDeleteModalOpen, setIsDeleteModalOpen] = useState(false);
@@ -226,19 +234,28 @@ const InspectionsPage: FC = () => {
   ];
 
   const toolbarActions = (
-    <Button
-      type="button"
-      variant="primary"
-      size="md"
-      fullWidth={false}
-      className="whitespace-nowrap"
-      onClick={() => {
-        dispatch(setSelectedInspection(null));
-        navigate(routes.ADD_INSPECTION);
-      }}
-    >
-      {t('addNewInspection')}
-    </Button>
+    <div className="flex items-center gap-4 flex-wrap">
+      <CustomCheckbox
+        id="showArchived"
+        name="showArchived"
+        label={t('showArchived')}
+        checked={showArchived}
+        onChange={(e) => setShowArchived(e.target.checked)}
+      />
+      <Button
+        type="button"
+        variant="primary"
+        size="md"
+        fullWidth={false}
+        className="whitespace-nowrap"
+        onClick={() => {
+          dispatch(setSelectedInspection(null));
+          navigate(routes.ADD_INSPECTION);
+        }}
+      >
+        {t('addNewInspection')}
+      </Button>
+    </div>
   );
 
   return (

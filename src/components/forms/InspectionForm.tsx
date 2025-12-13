@@ -2,6 +2,7 @@ import { FC, useContext, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
+import { ArrowLeft } from 'lucide-react';
 import { routes } from '../../constants/routes';
 import { AuthContext } from '../../contexts/authContext';
 import { useAppSelector } from '../../hooks/reduxHooks';
@@ -17,6 +18,7 @@ import { CustomInput } from '../shared/CustomInput';
 import { CustomSelect } from '../shared/CustomSelect';
 import { CustomDatePicker } from '../shared/CustomDatePicker';
 import { Button } from '../shared/Button';
+import { IconButton } from '../shared/IconButton';
 import { PhoneNumberRoInput } from '../PhoneNumberRoInput';
 
 type FormData = {
@@ -138,9 +140,21 @@ const InspectionForm: FC = () => {
         >
           {/* Header */}
           <div className="px-4 sm:px-6 pt-4 pb-2 border-b border-border">
-            <h1 className="text-xl sm:text-2xl font-heading font-semibold text-primary text-center sm:text-left">
-              {isEdit ? t('editInspection') : t('addNewInspection')}
-            </h1>
+            <div className="flex items-center gap-3">
+              <IconButton
+                type="button"
+                variant="ghost"
+                size="md"
+                onClick={() => navigate(routes.INSPECTIONS)}
+                aria-label={t('back')}
+                className="text-text/70 hover:text-primary"
+              >
+                <ArrowLeft className="w-5 h-5" />
+              </IconButton>
+              <h1 className="text-xl sm:text-2xl font-heading font-semibold text-primary">
+                {isEdit ? t('editInspection') : t('addNewInspection')}
+              </h1>
+            </div>
           </div>
 
           {/* Content (scrollable) */}
