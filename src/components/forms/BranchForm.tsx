@@ -231,7 +231,7 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
       <form onSubmit={onSubmit} className="space-y-6" noValidate>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <CustomInput
-            label={t('branch.branchName')}
+            label={`${t('branch.branchName')} *`}
             {...register('name')}
             error={errors.name && t(errors.name)}
             wrapperClassName="mb-0 md:col-span-2"
@@ -242,7 +242,7 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
               label={t('phoneNumber')}
               value={values.phoneNumber}
               onChange={(val) => setFieldValue('phoneNumber', val)}
-              error={errors.phoneNumber && t(errors.phoneNumber)}
+              error={errors.phoneNumber ? t(errors.phoneNumber) : undefined}
             />
           </div>
         </div>

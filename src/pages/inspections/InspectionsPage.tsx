@@ -27,7 +27,7 @@ const InspectionsPage: FC = () => {
   const { i18n, t } = useTranslation();
   const navigate = useNavigate();
   const dispatch = useAppDispatch();
-  const { isDemo } = useDemo();
+  const { isDemo, canSendSms } = useDemo();
 
   const [search, setSearch] = useState('');
   const [showArchived, setShowArchived] = useState(false);
@@ -212,12 +212,16 @@ const InspectionsPage: FC = () => {
     },
   ];
 
+  const isSmsDisabled = isDemo || !canSendSms;
+
   const actions: TableAction<Inspection>[] = [
     {
-      icon: <MessageCircle className={`w-5 h-5 ${isDemo ? 'text-muted' : 'text-green-600 hover:text-green-700'}`} />,
+      icon: (
+        <MessageCircle className={`w-5 h-5 ${isSmsDisabled ? 'text-muted' : 'text-green-600 hover:text-green-700'}`} />
+      ),
       label: t('sendReminder'),
       onClick: handleMessageClick,
-      isDisabled: (inspection) => isDemo || !!inspection.deletedAt,
+      isDisabled: (inspection) => isSmsDisabled || !!inspection.deletedAt,
     },
     {
       icon: <Pencil className="w-5 h-5 text-primary hover:text-primary-hover" />,

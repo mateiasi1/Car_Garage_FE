@@ -23,9 +23,11 @@ export const userApi = createApi({
     }),
     fetchUserById: builder.query({
       query: (id) => `${config.usersUrl}/${id}`,
+      providesTags: ['User'],
     }),
     fetchAllUsers: builder.query({
       query: () => config.usersUrl,
+      providesTags: ['User'],
     }),
     createUser: builder.mutation({
       query: (user) => ({
@@ -33,6 +35,7 @@ export const userApi = createApi({
         method: 'POST',
         body: user,
       }),
+      invalidatesTags: ['User'],
     }),
     changePassword: builder.mutation<void, ChangePasswordDTO>({
       query: (passwordData) => ({
@@ -57,6 +60,7 @@ export const userApi = createApi({
         method: 'POST',
         body,
       }),
+      invalidatesTags: ['User'],
     }),
   }),
 });

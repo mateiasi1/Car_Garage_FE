@@ -3,6 +3,7 @@ export interface CreateInspectorDTO {
   lastName: string;
   password: string;
   branchId: string;
+  canSendSms?: boolean;
 }
 
 export interface UpdateInspectorDTO {
@@ -10,4 +11,5 @@ export interface UpdateInspectorDTO {
   firstName: string;
   lastName: string;
   branchId?: string;
+  canSendSms?: boolean;
 }

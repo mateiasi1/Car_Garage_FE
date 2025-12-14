@@ -16,6 +16,7 @@ interface InspectorRow {
   firstName: string;
   lastName: string;
   username: string;
+  canSendSms?: boolean;
   activeBranch?: { id: string; name: string };
 }
 
