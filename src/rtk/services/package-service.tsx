@@ -5,12 +5,14 @@ import { Package } from '../../models/Branch';
 export const packagesApi = createApi({
   reducerPath: 'packagesApi',
   baseQuery: baseQueryWithReAuth,
+  tagTypes: ['Package'],
   endpoints: (builder) => ({
     fetchPackages: builder.query<Package[], void>({
       query: () => ({
         url: '/packages',
         method: 'GET',
       }),
+      providesTags: ['Package'],
     }),
   }),
 });

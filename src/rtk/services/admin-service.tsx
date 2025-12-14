@@ -10,12 +10,14 @@ export interface CreateUserDTO {
   lastName: string;
   roles: string[];
   branchId?: string;
+  canSendSms?: boolean;
 }
 
 export interface UpdateUserDTO {
   firstName?: string;
   lastName?: string;
   branchId?: string;
+  canSendSms?: boolean;
 }
 
 export interface AdminUser {
@@ -23,6 +25,7 @@ export interface AdminUser {
   username: string;
   firstName: string;
   lastName: string;
+  canSendSms?: boolean;
   roles: string[];
   activeBranch?: {
     id: string;
@@ -72,6 +75,7 @@ export const adminApi = createApi({
         url: `${config.companiesUrl}/${companyId}/branches`,
         method: 'GET',
       }),
+      providesTags: ['Admin'],
     }),
     createAdminBranch: builder.mutation<Branch, { companyId: string; data: CreateBranchRequest }>({
       query: ({ companyId, data }) => ({

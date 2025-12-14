@@ -23,6 +23,7 @@ export interface User {
   username: string;
   firstName: string;
   lastName: string;
+  canSendSms?: boolean;
   createdAt: string;
   updatedAt: string;
   deletedAt: string;

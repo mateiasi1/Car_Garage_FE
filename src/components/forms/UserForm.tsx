@@ -16,6 +16,7 @@ import { Button } from '../shared/Button';
 import { useForm } from '../../hooks/useForm';
 import { CustomInput } from '../shared/CustomInput';
 import { CustomSelect } from '../shared/CustomSelect';
+import { CustomCheckbox } from '../shared/CustomCheckbox';
 import { Role } from '../../utils/enums/Role';
 
 interface UserFormProps {
@@ -30,6 +31,7 @@ type UserFormValues = {
   lastName: string;
   role: Role | '';
   branchId: string;
+  canSendSms: boolean;
 };
 
 const initialValues: UserFormValues = {
@@ -38,6 +40,7 @@ const initialValues: UserFormValues = {
   lastName: '',
   role: '',
   branchId: '',
+  canSendSms: true, // Default to true (will be adjusted based on role)
 };
 
 const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer }) => {
@@ -65,6 +68,7 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
             lastName: selectedUser.lastName,
             role: (selectedUser.roles?.[0] as Role) ?? '',
             branchId: selectedUser.activeBranch?.id ?? '',
+            canSendSms: selectedUser.canSendSms ?? true,
           }
         : {}),
     },
@@ -96,6 +100,7 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
               firstName: formValues.firstName,
               lastName: formValues.lastName,
               branchId: formValues.role === Role.inspector ? formValues.branchId : undefined,
+              canSendSms: formValues.canSendSms,
             },
           }).unwrap();
 
@@ -108,6 +113,7 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
               lastName: formValues.lastName,
               roles: formValues.role ? [formValues.role as Role] : [],
               branchId: formValues.role === Role.inspector ? formValues.branchId : undefined,
+              canSendSms: formValues.canSendSms,
             },
           }).unwrap();
 
@@ -128,6 +134,7 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
       setFieldValue('lastName', selectedUser.lastName ?? '');
       setFieldValue('role', (selectedUser.roles?.[0] as Role) ?? '');
       setFieldValue('branchId', selectedUser.activeBranch?.id ?? '');
+      setFieldValue('canSendSms', selectedUser.canSendSms ?? true);
       setGeneratedUsername(selectedUser.username);
     } else {
       setFieldValue('id', '');
@@ -135,6 +142,7 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
       setFieldValue('lastName', '');
       setFieldValue('role', '');
       setFieldValue('branchId', '');
+      setFieldValue('canSendSms', true);
       setGeneratedUsername('');
     }
   }, [selectedUser]);
@@ -168,6 +176,14 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
 
     if (role !== Role.inspector) {
       setFieldValue('branchId', '');
+    }
+
+    // Set default canSendSms based on role
+    // Owner gets true by default, Inspector gets false
+    if (role === Role.owner || role === Role.demo) {
+      setFieldValue('canSendSms', true);
+    } else if (role === Role.inspector) {
+      setFieldValue('canSendSms', false);
     }
   };
 
@@ -258,6 +274,18 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
             <p className="text-sm text-blue-800">ℹ️ {t('adminUsers.ownerNote')}</p>
           </div>
         )}
+
+        <div>
+          <CustomCheckbox
+            id="canSendSms"
+            label={t('adminUsers.canSendSms')}
+            checked={values.canSendSms}
+            onChange={(e) => setFieldValue('canSendSms', e.target.checked)}
+          />
+          <p className="text-xs text-text/60 mt-1 ml-6">
+            ℹ️ {t('adminUsers.canSendSmsInfo')}
+          </p>
+        </div>
 
         <div className="flex justify-end gap-3 pt-2">
           {isEdit && (

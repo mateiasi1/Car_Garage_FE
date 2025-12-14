@@ -11,6 +11,7 @@ import { useGenerateUsernameMutation } from '../../rtk/services/user-service';
 import { showToast } from '../../utils/showToast';
 import { CustomInput } from '../shared/CustomInput';
 import { CustomSelect } from '../shared/CustomSelect';
+import { CustomCheckbox } from '../shared/CustomCheckbox';
 import { Button } from '../shared/Button';
 import ConfirmationModal from '../shared/ConfirmationModal';
 import { useForm } from '../../hooks/useForm';
@@ -21,6 +22,7 @@ interface InspectorFormProps {
     firstName?: string;
     lastName?: string;
     username?: string;
+    canSendSms?: boolean;
     activeBranch?: { id: string; name: string };
   } | null;
   onCloseDrawer: () => void;
@@ -33,6 +35,7 @@ type InspectorFormValues = {
   username: string;
   password: string;
   branchId: string;
+  canSendSms: boolean;
 };
 
 const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawer }) => {
@@ -55,6 +58,7 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
       username: selectedInspector?.username ?? '',
       password: '',
       branchId: selectedInspector?.activeBranch?.id ?? '',
+      canSendSms: selectedInspector?.canSendSms ?? false,
     },
     fields: {
       firstName: { required: true },
@@ -83,6 +87,7 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
             firstName: formValues.firstName,
             lastName: formValues.lastName,
             branchId: formValues.branchId,
+            canSendSms: formValues.canSendSms,
           };
           await updateInspector(payload).unwrap();
           showToast(t('inspectorUpdateSuccess'), 'success');
@@ -92,6 +97,7 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
             lastName: formValues.lastName,
             password: formValues.password,
             branchId: formValues.branchId,
+            canSendSms: formValues.canSendSms,
           };
           await createInspector(payload).unwrap();
           showToast(t('inspectorCreateSuccess'), 'success');
@@ -189,6 +195,18 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
             error={errors.password && t(errors.password)}
           />
         )}
+
+        <div>
+          <CustomCheckbox
+            id="canSendSms"
+            label={t('adminUsers.canSendSms')}
+            checked={values.canSendSms}
+            onChange={(e) => setFieldValue('canSendSms', e.target.checked)}
+          />
+          <p className="text-xs text-text/60 mt-1 ml-6">
+            ℹ️ {t('adminUsers.canSendSmsInfo')}
+          </p>
+        </div>
 
         <div className="flex justify-end gap-3 pt-2">
           {isEdit && (

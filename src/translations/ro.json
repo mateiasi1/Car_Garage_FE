@@ -520,6 +520,8 @@
       "branchesSelected": "sedii selectate",
       "noBranchesAvailable": "Nu există sedii disponibile",
       "ownerNote": "Proprietarii au acces la toate sediile companiei",
+      "canSendSms": "Poate trimite SMS",
+      "canSendSmsInfo": "Permite utilizatorului să trimită manual SMS de reamintire clienților că le expiră ITP-ul.",
       "minLength8": "Minim 8 caractere",
       "usernameWillBeGenerated": "Numele de utilizator va fi generat automat",
       "generatingUsername": "Se generează...",

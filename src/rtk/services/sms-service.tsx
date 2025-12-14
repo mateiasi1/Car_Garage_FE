@@ -13,6 +13,7 @@ export const smsApi = createApi({
         method: 'POST',
         body: {},
       }),
+      invalidatesTags: ['SMS'],
     }),
   }),
 });

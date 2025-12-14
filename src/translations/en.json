@@ -522,6 +522,8 @@
     "branchesSelected": "branches selected",
     "noBranchesAvailable": "No branches available",
     "ownerNote": "Owners have access to all company branches",
+    "canSendSms": "Can send SMS",
+    "canSendSmsInfo": "Allows the user to manually send SMS reminders to customers that their ITP is expiring.",
     "minLength8": "Minimum 8 characters",
     "usernameWillBeGenerated": "Username will be generated automatically",
     "generatingUsername": "Generating...",

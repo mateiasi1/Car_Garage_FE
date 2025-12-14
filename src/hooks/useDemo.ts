@@ -9,6 +9,7 @@ export interface UseDemoReturn {
   daysRemaining: number;
   canAddInspection: boolean;
   canAddCustomer: boolean;
+  canSendSms: boolean;
   inspectionsUsed: number;
   inspectionsMax: number;
   customersUsed: number;
@@ -28,6 +29,9 @@ export function useDemo(): UseDemoReturn {
     const hasRoleDemo = user?.roles?.some((role) => role.name === Role.demo) ?? false;
     const isDemo = hasRoleDemo || !!demoInfo?.isDemo;
 
+    // canSendSms from user (defaults to true if not set)
+    const canSendSms = user?.canSendSms ?? true;
+
     // If not demo at all, return non-demo defaults
     if (!isDemo) {
       return {
@@ -36,6 +40,7 @@ export function useDemo(): UseDemoReturn {
         daysRemaining: 0,
         canAddInspection: true,
         canAddCustomer: true,
+        canSendSms,
         inspectionsUsed: 0,
         inspectionsMax: 0,
         customersUsed: 0,
@@ -55,6 +60,7 @@ export function useDemo(): UseDemoReturn {
       daysRemaining: demoInfo?.daysRemaining ?? 30,
       canAddInspection: inspectionsUsed < inspectionsMax,
       canAddCustomer: customersUsed < customersMax,
+      canSendSms: false, // Demo users cannot send SMS
       inspectionsUsed,
       inspectionsMax,
       customersUsed,
