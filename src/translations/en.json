@@ -112,6 +112,7 @@
     "confirmPassword": "Confirm New Password",
     "saveProfile": "Save Profile",
     "emailEmpty": "Email cannot be empty",
+    "phoneNumberEmpty": "Phone number cannot be empty",
     "usernameEmpty": "Username cannot be empty",
     "firstNameEmpty": "First name cannot be empty",
     "lastNameEmpty": "Last name cannot be empty",

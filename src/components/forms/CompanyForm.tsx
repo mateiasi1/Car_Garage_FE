@@ -195,7 +195,7 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
       <form onSubmit={onSubmit} className="space-y-6" noValidate>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <CustomInput
-            label={t('companyName')}
+            label={`${t('companyName')} *`}
             {...register('name')}
             error={errors.name && t(errors.name)}
             wrapperClassName="mb-0 md:col-span-2"
@@ -216,7 +216,7 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
           )}
 
           <CustomInput
-            label={t('email')}
+            label={`${t('email')} *`}
             {...register('email')}
             error={errors.email && t(errors.email)}
             wrapperClassName="mb-0"
@@ -224,10 +224,10 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
 
           <div className="mb-0">
             <PhoneNumberRoInput
-              label={t('phoneNumber')}
+              label={`${t('phoneNumber')} *`}
               value={values.phoneNumber}
               onChange={(val) => setFieldValue('phoneNumber', val)}
-              error={errors.phoneNumber && t(errors.phoneNumber)}
+              error={errors.phoneNumber ? t(errors.phoneNumber) : undefined}
             />
           </div>
         </div>

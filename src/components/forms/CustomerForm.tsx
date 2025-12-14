@@ -57,6 +57,10 @@ const CustomerForm: FC<CustomerFormProps> = ({ selectedCustomer, onCloseDrawer }
         validate: (value) => {
           const val = String(value ?? '').trim();
           if (!val) return 'phoneNumberEmpty';
+          // Check if phone number has at least 9 digits after +40
+          if (val.startsWith('+40') && val.length < 12) return 'phoneNumberEmpty';
+          // Check if phone number starts with 7 after +40 (Romanian numbers)
+          if (val.startsWith('+40') && !val.startsWith('+407')) return 'fieldInvalid';
           return null;
         },
       },
@@ -110,23 +114,26 @@ const CustomerForm: FC<CustomerFormProps> = ({ selectedCustomer, onCloseDrawer }
       <form onSubmit={onSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <CustomInput
-            label={t('lastName')}
-            {...register('lastName')}
-            error={errors.lastName && t(errors.lastName)}
+            label={`${t('firstName')} *`}
+            {...register('firstName')}
+            error={errors.firstName && t(errors.firstName)}
             wrapperClassName="mb-0"
           />
           <CustomInput
-            label={t('firstName')}
-            {...register('firstName')}
-            error={errors.firstName && t(errors.firstName)}
+            label={`${t('lastName')} *`}
+            {...register('lastName')}
+            error={errors.lastName && t(errors.lastName)}
             wrapperClassName="mb-0"
           />
         </div>
 
         <div>
-          <label className="block text-text text-sm font-semibold font-body mb-2">{t('phoneNumber')}</label>
-          <PhoneNumberRoInput value={values.phoneNumber} onChange={(val) => setFieldValue('phoneNumber', val)} />
-          {errors.phoneNumber && <p className="text-error text-sm mt-1 font-body">{t(errors.phoneNumber)}</p>}
+          <label className="block text-text text-sm font-semibold font-body mb-2">{t('phoneNumber')} *</label>
+          <PhoneNumberRoInput
+            value={values.phoneNumber}
+            onChange={(val) => setFieldValue('phoneNumber', val)}
+            error={errors.phoneNumber ? t(errors.phoneNumber) : undefined}
+          />
         </div>
 
         <div className="flex justify-end gap-3 pt-2">

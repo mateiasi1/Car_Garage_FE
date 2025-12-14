@@ -152,15 +152,15 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
       <form onSubmit={onSubmit} className="space-y-6">
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <CustomInput
-            label={t('lastName')}
-            {...register('lastName')}
-            error={errors.lastName && t(errors.lastName)}
+            label={`${t('firstName')} *`}
+            {...register('firstName')}
+            error={errors.firstName && t(errors.firstName)}
             wrapperClassName="mb-0"
           />
           <CustomInput
-            label={t('firstName')}
-            {...register('firstName')}
-            error={errors.firstName && t(errors.firstName)}
+            label={`${t('lastName')} *`}
+            {...register('lastName')}
+            error={errors.lastName && t(errors.lastName)}
             wrapperClassName="mb-0"
           />
 
@@ -177,7 +177,7 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
         </div>
 
         <CustomSelect
-          label={t('assignedBranches')}
+          label={`${t('assignedBranches')} *`}
           value={values.branchId}
           onChange={(val) => setFieldValue('branchId', val)}
           options={branches.map((branch) => ({
@@ -190,7 +190,7 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
         {!isEdit && (
           <CustomInput
             type="password"
-            label={t('password')}
+            label={`${t('password')} *`}
             {...register('password')}
             error={errors.password && t(errors.password)}
           />
@@ -203,9 +203,7 @@ const InspectorForm: FC<InspectorFormProps> = ({ selectedInspector, onCloseDrawe
             checked={values.canSendSms}
             onChange={(e) => setFieldValue('canSendSms', e.target.checked)}
           />
-          <p className="text-xs text-text/60 mt-1 ml-6">
-            ℹ️ {t('adminUsers.canSendSmsInfo')}
-          </p>
+          <p className="text-xs text-text/60 mt-1 ml-6">ℹ️ {t('adminUsers.canSendSmsInfo')}</p>
         </div>
 
         <div className="flex justify-end gap-3 pt-2">

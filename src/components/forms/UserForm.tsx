@@ -207,13 +207,13 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
       <form onSubmit={onSubmit} className="space-y-6" noValidate>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <CustomInput
-            label={t('firstName')}
+            label={`${t('firstName')} *`}
             {...register('firstName')}
             error={errors.firstName && t(errors.firstName)}
             wrapperClassName="mb-0"
           />
           <CustomInput
-            label={t('lastName')}
+            label={`${t('lastName')} *`}
             {...register('lastName')}
             error={errors.lastName && t(errors.lastName)}
             wrapperClassName="mb-0"
@@ -242,7 +242,7 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
 
         {!isEdit && (
           <CustomSelect
-            label={t('adminUsers.selectRole')}
+            label={`${t('adminUsers.selectRole')} *`}
             value={values.role || ''}
             onChange={handleRoleChange}
             options={[
@@ -256,7 +256,7 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
 
         {isInspector && (
           <CustomSelect
-            label={t('adminUsers.selectBranches')}
+            label={`${t('adminUsers.selectBranches')} *`}
             value={values.branchId}
             onChange={(val) => setFieldValue('branchId', val)}
             options={[
@@ -282,9 +282,7 @@ const UserForm: FC<UserFormProps> = ({ selectedUser, companyId, onCloseDrawer })
             checked={values.canSendSms}
             onChange={(e) => setFieldValue('canSendSms', e.target.checked)}
           />
-          <p className="text-xs text-text/60 mt-1 ml-6">
-            ℹ️ {t('adminUsers.canSendSmsInfo')}
-          </p>
+          <p className="text-xs text-text/60 mt-1 ml-6">ℹ️ {t('adminUsers.canSendSmsInfo')}</p>
         </div>
 
         <div className="flex justify-end gap-3 pt-2">

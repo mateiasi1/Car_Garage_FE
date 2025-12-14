@@ -111,6 +111,7 @@
     "confirmPassword": "Confirmă parola nouă",
     "saveProfile": "Salvează profil",
     "emailEmpty": "Emailul nu poate fi gol",
+    "phoneNumberEmpty": "Numărul de telefon nu poate fi gol",
     "usernameEmpty": "Numele de utilizator nu poate fi gol",
     "firstNameEmpty": "Prenumele nu poate fi gol",
     "lastNameEmpty": "Numele nu poate fi gol",

@@ -17,10 +17,34 @@ export const PhoneNumberRoInput: FC<PhoneNumberRoInputProps> = ({
   error,
   placeholder = '712345678',
 }) => {
-  const localPart = value.startsWith('+40') ? value.slice(3) : value;
+  // Extract local part, handling various formats
+  let localPart = value;
+  if (localPart.startsWith('+40')) {
+    localPart = localPart.slice(3);
+  } else if (localPart.startsWith('0040')) {
+    localPart = localPart.slice(4);
+  } else if (localPart.startsWith('40') && localPart.length > 2) {
+    // Only remove '40' prefix if followed by valid Romanian number (7xx)
+    const afterPrefix = localPart.slice(2);
+    if (afterPrefix.startsWith('7')) {
+      localPart = afterPrefix;
+    }
+  }
+  // Remove leading 0 if present (Romanian numbers start with 7)
+  if (localPart.startsWith('0') && localPart.length > 1) {
+    localPart = localPart.slice(1);
+  }
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const onlyDigits = e.target.value.replace(/\D/g, '').slice(0, 9);
+    let inputValue = e.target.value.replace(/\D/g, ''); // Only digits
+
+    // Remove leading 0 if present
+    if (inputValue.startsWith('0') && inputValue.length > 1) {
+      inputValue = inputValue.slice(1);
+    }
+
+    // Limit to 9 digits
+    const onlyDigits = inputValue.slice(0, 9);
     const fullValue = onlyDigits ? `+40${onlyDigits}` : '';
     onChange(fullValue);
   };

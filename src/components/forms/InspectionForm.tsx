@@ -69,7 +69,17 @@ const InspectionForm: FC = () => {
           return isValid ? null : 'fieldInvalid';
         },
       },
-      phoneNumber: { required: true },
+      phoneNumber: {
+        validate: (value) => {
+          const val = String(value ?? '').trim();
+          if (!val) return 'phoneNumberEmpty';
+          // Check if phone number has at least 9 digits after +40
+          if (val.startsWith('+40') && val.length < 12) return 'phoneNumberEmpty';
+          // Check if phone number starts with 7 after +40 (Romanian numbers)
+          if (val.startsWith('+40') && !val.startsWith('+407')) return 'fieldInvalid';
+          return null;
+        },
+      },
       firstName: { required: true },
       lastName: { required: true },
       carCategory: { required: true },
@@ -166,7 +176,7 @@ const InspectionForm: FC = () => {
               <div className="space-y-4">
                 {/* License Plate - uses register() for standard input */}
                 <CustomInput
-                  label={t('licensePlate')}
+                  label={`${t('licensePlate')} *`}
                   {...register('licensePlate')}
                   onChange={(e) => setFieldValue('licensePlate', e.target.value.toUpperCase())}
                   placeholder="DJ-51-ABC"
@@ -176,7 +186,7 @@ const InspectionForm: FC = () => {
 
                 {/* Car Category - uses setFieldValue for custom select */}
                 <CustomSelect
-                  label={t('carCategory')}
+                  label={`${t('carCategory')} *`}
                   value={values.carCategory}
                   onChange={(val) => setFieldValue('carCategory', val as CarCategories)}
                   options={[CarCategories.A, CarCategories.B, CarCategories.C, CarCategories.D, CarCategories.E].map(
@@ -196,14 +206,14 @@ const InspectionForm: FC = () => {
 
               <div className="space-y-4">
                 <CustomInput
-                  label={t('firstName')}
+                  label={`${t('firstName')} *`}
                   {...register('firstName')}
                   placeholder={t('firstName')}
                   error={errors.firstName && t(errors.firstName)}
                 />
 
                 <CustomInput
-                  label={t('lastName')}
+                  label={`${t('lastName')} *`}
                   {...register('lastName')}
                   placeholder={t('lastName')}
                   error={errors.lastName && t(errors.lastName)}
@@ -211,11 +221,11 @@ const InspectionForm: FC = () => {
 
                 {/* Phone - uses setFieldValue for custom component */}
                 <PhoneNumberRoInput
-                  label={t('phoneNumber')}
+                  label={`${t('phoneNumber')} *`}
                   value={values.phoneNumber}
                   onChange={(val) => setFieldValue('phoneNumber', val)}
                   placeholder="712345678"
-                  error={errors.phoneNumber && t(errors.phoneNumber)}
+                  error={errors.phoneNumber ? t(errors.phoneNumber) : undefined}
                 />
               </div>
             </div>
@@ -226,7 +236,7 @@ const InspectionForm: FC = () => {
 
               <div className="space-y-4">
                 <CustomSelect
-                  label={t('inspectionDuration')}
+                  label={`${t('inspectionDuration')} *`}
                   value={values.inspectionType}
                   onChange={(val) => setFieldValue('inspectionType', val as InspectionType)}
                   options={[
@@ -238,7 +248,7 @@ const InspectionForm: FC = () => {
                 />
 
                 <CustomDatePicker
-                  label={t('inspectionDate')}
+                  label={`${t('inspectionDate')} *`}
                   selected={values.inspectedAt}
                   onChange={(date) => setFieldValue('inspectedAt', date)}
                   maxDate={new Date()}
