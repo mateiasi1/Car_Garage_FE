@@ -231,10 +231,11 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
       <form onSubmit={onSubmit} className="space-y-6" noValidate>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <CustomInput
-            label={`${t('branch.branchName')} *`}
+            label={`${t('branch.branchName')}`}
             {...register('name')}
             error={errors.name && t(errors.name)}
             wrapperClassName="mb-0 md:col-span-2"
+            isRequired
           />
 
           <div className="mb-0 md:col-span-2">
@@ -243,12 +244,13 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
               value={values.phoneNumber}
               onChange={(val) => setFieldValue('phoneNumber', val)}
               error={errors.phoneNumber ? t(errors.phoneNumber) : undefined}
+              isRequired
             />
           </div>
         </div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <CustomInput label={t('country')} value={values.country} disabled wrapperClassName="mb-0" />
+          <CustomInput label={t('country')} value={values.country} disabled wrapperClassName="mb-0" isRequired/>
 
           <CustomSelect
             label={t('county')}
@@ -260,6 +262,7 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
             disabled={isLoadingCounties}
             error={errors.countyId && t(errors.countyId)}
             wrapperClassName="mb-0"
+            isRequired
           />
 
           <CustomSelect
@@ -272,6 +275,7 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
             disabled={!values.countyId || isLoadingCities}
             error={errors.cityId && t(errors.cityId)}
             wrapperClassName="mb-0"
+            isRequired
           />
 
           <CustomInput
@@ -279,6 +283,7 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
             {...register('street')}
             error={errors.street && t(errors.street)}
             wrapperClassName="mb-0"
+            isRequired
           />
 
           <CustomInput label={t('streetNumber')} {...register('streetNumber')} wrapperClassName="mb-0" />
