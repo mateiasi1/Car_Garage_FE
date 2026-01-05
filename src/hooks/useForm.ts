@@ -214,6 +214,15 @@ export const useForm = <TValues extends Record<string, any>>({
   });
 
   const isValid = Object.keys(errors).length === 0 && !hasEmptyRequired;
+
+  const normalize = (v: unknown) => (v === undefined || v === null ? '' : v);
+
+  const isDirty = useMemo(() => {
+    return (Object.keys(initialValues) as (keyof TValues)[]).some((key) => {
+     return normalize(values[key]) !== normalize(initialValues[key]);
+    });
+  }, [values, initialValues]);
+
   const canSubmit = isValid && !isSubmitting;
 
   return {
@@ -226,6 +235,7 @@ export const useForm = <TValues extends Record<string, any>>({
 
     // Computed
     isValid,
+    isDirty,
     canSubmit,
 
     // Actions

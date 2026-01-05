@@ -7,6 +7,7 @@ interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   error?: string;
   fullWidth?: boolean;
   wrapperClassName?: string;
+  isRequired?: boolean;
 }
 
 export const CustomInput: FC<InputProps> = ({
@@ -17,6 +18,7 @@ export const CustomInput: FC<InputProps> = ({
   className,
   wrapperClassName,
   disabled,
+  isRequired,
   ...props
 }) => {
   const [showPassword, setShowPassword] = useState(false);
@@ -29,6 +31,7 @@ export const CustomInput: FC<InputProps> = ({
       {label && (
         <label className={clsx('block text-sm font-semibold font-body mb-2', disabled ? 'text-text/40' : 'text-text')}>
           {label}
+          {isRequired && <span className="text-red-500">*</span>}
         </label>
       )}
 

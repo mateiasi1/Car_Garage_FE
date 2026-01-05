@@ -52,7 +52,7 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
   const initialCountyId = selectedCompany?.cityRef?.county?.id ?? '';
   const initialCityId = selectedCompany?.cityId ?? '';
 
-  const { values, errors, register, handleSubmit, isSubmitting, setFieldValue } = useForm<CompanyFormValues>({
+  const { values, errors, register, handleSubmit, isSubmitting, setFieldValue, isDirty } = useForm<CompanyFormValues>({
     initialValues: {
       id: selectedCompany?.id ?? '',
       name: selectedCompany?.name ?? '',
@@ -195,10 +195,11 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
       <form onSubmit={onSubmit} className="space-y-6" noValidate>
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <CustomInput
-            label={`${t('companyName')} *`}
+            label={`${t('companyName')}`}
             {...register('name')}
             error={errors.name && t(errors.name)}
             wrapperClassName="mb-0 md:col-span-2"
+            isRequired
           />
 
           <CustomInput
@@ -210,24 +211,27 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
             className={isEdit ? 'bg-background/60 cursor-not-allowed' : ''}
             wrapperClassName="mb-1 md:col-span-2"
             placeholder={t('companyShortNamePlaceholder')}
+            isRequired
           />
           {isEdit && (
             <p className="text-xs font-body text-text/60 md:col-span-2">{t('companyShortNameCannotBeChanged')}</p>
           )}
 
           <CustomInput
-            label={`${t('email')} *`}
+            label={`${t('email')}`}
             {...register('email')}
             error={errors.email && t(errors.email)}
             wrapperClassName="mb-0"
+            isRequired
           />
 
           <div className="mb-0">
             <PhoneNumberRoInput
-              label={`${t('phoneNumber')} *`}
+              label={`${t('phoneNumber')}`}
               value={values.phoneNumber}
               onChange={(val) => setFieldValue('phoneNumber', val)}
               error={errors.phoneNumber ? t(errors.phoneNumber) : undefined}
+              isRequired
             />
           </div>
         </div>
@@ -245,6 +249,7 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
             disabled={isLoadingCounties}
             error={errors.countyId && t(errors.countyId)}
             wrapperClassName="mb-0"
+            isRequired
           />
 
           <CustomSelect
@@ -257,6 +262,7 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
             disabled={!values.countyId || isLoadingCities}
             error={errors.cityId && t(errors.cityId)}
             wrapperClassName="mb-0"
+            isRequired
           />
 
           <CustomInput
@@ -264,6 +270,7 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
             {...register('street')}
             error={errors.street && t(errors.street)}
             wrapperClassName="mb-0"
+            isRequired
           />
 
           <CustomInput label={t('streetNumber')} {...register('streetNumber')} wrapperClassName="mb-0" />
@@ -299,6 +306,7 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
             size="md"
             className={isEdit ? 'w-2/3' : 'w-full'}
             loading={isCreating || isUpdating || isSubmitting}
+             disabled={!isDirty}
           >
             {t('submit')}
           </Button>

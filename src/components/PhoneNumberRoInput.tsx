@@ -8,6 +8,7 @@ interface PhoneNumberRoInputProps {
   label?: string;
   error?: string;
   placeholder?: string;
+  isRequired?: boolean;
 }
 
 export const PhoneNumberRoInput: FC<PhoneNumberRoInputProps> = ({
@@ -15,6 +16,7 @@ export const PhoneNumberRoInput: FC<PhoneNumberRoInputProps> = ({
   onChange,
   label,
   error,
+  isRequired,
   placeholder = '712345678',
 }) => {
   // Extract local part, handling various formats
@@ -51,7 +53,7 @@ export const PhoneNumberRoInput: FC<PhoneNumberRoInputProps> = ({
 
   return (
     <div className="w-full">
-      {label && <label className="block text-text text-sm font-semibold font-body mb-2">{label}</label>}
+      {label && <label className="block text-text text-sm font-semibold font-body mb-2">{label} {isRequired && <span className="text-red-500">*</span>}</label>}
 
       <div
         className={`
