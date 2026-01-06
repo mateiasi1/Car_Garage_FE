@@ -1,4 +1,4 @@
-import { FC, useState, useMemo } from 'react';
+import { FC, useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import {
   useCreateAdminBranchMutation,
@@ -20,6 +20,7 @@ import { useForm } from '../../hooks/useForm';
 import { CustomInput } from '../shared/CustomInput';
 import { PhoneNumberRoInput } from '../PhoneNumberRoInput';
 import { CustomSelect } from '../shared/CustomSelect';
+import { MapPicker, AddressComponents, geocodeAddress } from '../shared/MapPicker';
 
 interface BranchFormProps {
   selectedBranch: Branch | null;
@@ -39,6 +40,8 @@ type BranchFormValues = {
   streetNumber?: string;
   houseNumber?: string;
   zipcode?: string;
+  latitude?: number;
+  longitude?: number;
   isDemo: boolean;
 };
 
@@ -53,27 +56,31 @@ const initialValues: BranchFormValues = {
   streetNumber: '',
   houseNumber: '',
   zipcode: '',
+  latitude: undefined,
+  longitude: undefined,
   isDemo: false,
 };
 
 const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDrawer, isOwnerMode }) => {
   const { t } = useTranslation();
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isGeocoding, setIsGeocoding] = useState(false);
+  const [geocodingWarning, setGeocodingWarning] = useState<string | null>(null);
+  const [pendingCityName, setPendingCityName] = useState<string | null>(null);
 
   const isEdit = Boolean(selectedBranch?.id);
   const isOwner = Boolean(isOwnerMode);
 
-  // --- Mutations ADMIN ---
+  // Mutations ADMIN
   const [createAdminBranch, { isLoading: isCreatingAdmin }] = useCreateAdminBranchMutation();
   const [updateAdminBranch, { isLoading: isUpdatingAdmin }] = useUpdateAdminBranchMutation();
   const [deleteAdminBranch] = useDeleteAdminBranchMutation();
 
-  // --- Mutations OWNER (branch-service) ---
+  // Mutations OWNER
   const [createOwnerBranch, { isLoading: isCreatingOwner }] = useOwnerCreateBranchMutation();
   const [updateOwnerBranch, { isLoading: isUpdatingOwner }] = useOwnerUpdateBranchMutation();
   const [deleteOwnerBranch] = useOwnerDeleteBranchMutation();
 
-  // Extract countyId and cityId from selectedBranch.cityRef
   const initialCountyId = selectedBranch?.cityRef?.county?.id ?? '';
   const initialCityId = selectedBranch?.cityId ?? '';
 
@@ -90,47 +97,27 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
           streetNumber: selectedBranch.streetNumber ?? '',
           houseNumber: selectedBranch.houseNumber ?? '',
           zipcode: selectedBranch.zipcode ?? '',
+          latitude: selectedBranch.latitude,
+          longitude: selectedBranch.longitude,
           isDemo: (selectedBranch as Partial<Branch> & { isDemo?: boolean })?.isDemo ?? false,
         }
       : initialValues,
     fields: {
       name: {
-        validate: (value) => {
-          const v = String(value ?? '').trim();
-          if (!v) return 'branch.branchNameEmpty';
-          return null;
-        },
+        validate: (v) => (!String(v ?? '').trim() ? 'branch.branchNameEmpty' : null),
       },
       phoneNumber: {
-        validate: (value) => {
-          const v = String(value ?? '').trim();
-          if (!v) return 'branch.branchPhoneEmpty';
-          return null;
-        },
+        validate: (v) => (!String(v ?? '').trim() ? 'branch.branchPhoneEmpty' : null),
       },
       countyId: {
-        validate: (value) => {
-          const v = String(value ?? '').trim();
-          if (!v) return 'countyEmpty';
-          return null;
-        },
+        validate: (v) => (!String(v ?? '').trim() ? 'countyEmpty' : null),
       },
       cityId: {
-        validate: (value) => {
-          const v = String(value ?? '').trim();
-          if (!v) return 'cityEmpty';
-          return null;
-        },
+        validate: (v) => (!String(v ?? '').trim() ? 'cityEmpty' : null),
       },
-      country: {
-        validate: () => null,
-      },
+      country: { validate: () => null },
       street: {
-        validate: (value) => {
-          const v = String(value ?? '').trim();
-          if (!v) return 'streetEmpty';
-          return null;
-        },
+        validate: (v) => (!String(v ?? '').trim() ? 'streetEmpty' : null),
       },
     },
     onSubmit: async (formValues) => {
@@ -143,41 +130,26 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
         streetNumber: formValues.streetNumber,
         houseNumber: formValues.houseNumber,
         zipcode: formValues.zipcode,
-        // Only include isDemo for admin mode
+        latitude: formValues.latitude,
+        longitude: formValues.longitude,
         ...(!isOwner && { isDemo: formValues.isDemo }),
       };
 
       try {
-        // OWNER MODE: branch-service
         if (isOwner) {
           if (isEdit && formValues.id) {
-            await updateOwnerBranch({
-              branchId: formValues.id,
-              ...payload,
-            }).unwrap();
-            showToast(t('branch.branchUpdateSuccess'), 'success');
+            await updateOwnerBranch({ branchId: formValues.id, ...payload }).unwrap();
           } else {
             await createOwnerBranch(payload).unwrap();
-            showToast(t('branch.branchCreateSuccess'), 'success');
           }
         } else {
-          // ADMIN MODE: admin-service (ca înainte)
           if (isEdit && formValues.id) {
-            await updateAdminBranch({
-              companyId: companyId as string,
-              branchId: formValues.id,
-              ...payload,
-            }).unwrap();
-            showToast(t('branch.branchUpdateSuccess'), 'success');
+            await updateAdminBranch({ companyId: companyId as string, branchId: formValues.id, ...payload }).unwrap();
           } else {
-            await createAdminBranch({
-              companyId: companyId as string,
-              data: payload,
-            }).unwrap();
-            showToast(t('branch.branchCreateSuccess'), 'success');
+            await createAdminBranch({ companyId: companyId as string, data: payload }).unwrap();
           }
         }
-
+        showToast(t(isEdit ? 'branch.branchUpdateSuccess' : 'branch.branchCreateSuccess'), 'success');
         onCloseDrawer();
       } catch (error) {
         showToast(getErrorMessage(error, t('branch.branchSaveError')), 'error');
@@ -188,24 +160,105 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
   const onSubmit = handleSubmit();
   const isSaving = isSubmitting || (isOwner ? isCreatingOwner || isUpdatingOwner : isCreatingAdmin || isUpdatingAdmin);
 
-  // Fetch counties from API
+  // Location data
   const { data: counties = [], isLoading: isLoadingCounties } = useGetCountiesQuery();
-
-  // Fetch cities for selected county
   const { data: cities = [], isLoading: isLoadingCities } = useGetCitiesByCountyQuery(values.countyId, {
     skip: !values.countyId,
   });
 
-  // County options for dropdown
   const countyOptions = useMemo(() => counties.map((c) => ({ value: c.id, label: c.name })), [counties]);
-
-  // City options for dropdown
   const cityOptions = useMemo(() => cities.map((c) => ({ value: c.id, label: c.name })), [cities]);
 
-  // Reset city when county changes
+  // Auto-set city after cities list loads (when county was set from map)
+  useEffect(() => {
+    if (pendingCityName && cities.length > 0 && !values.cityId) {
+      const city = cities.find((c) => c.name.toLowerCase() === pendingCityName.toLowerCase());
+      if (city) {
+        setFieldValue('cityId', city.id);
+        setPendingCityName(null); // Clear pending state
+      }
+    }
+  }, [cities, pendingCityName, values.cityId, setFieldValue]);
+
+  // Handlers
   const handleCountyChange = (countyId: string) => {
     setFieldValue('countyId', countyId);
     setFieldValue('cityId', '');
+  };
+
+  const handleFindOnMap = async () => {
+    const county = counties.find((c) => c.id === values.countyId);
+    const city = cities.find((c) => c.id === values.cityId);
+
+    if (!city) {
+      showToast(t('cityEmpty'), 'error');
+      return;
+    }
+
+    setIsGeocoding(true);
+    setGeocodingWarning(null);
+
+    try {
+      const result = await geocodeAddress(county?.name, city.name, values.street, values.streetNumber, values.zipcode);
+
+      if (result) {
+        setFieldValue('latitude', result.lat);
+        setFieldValue('longitude', result.lon);
+
+        if (result.accuracy === 'exact') {
+          showToast(t('geocodingSuccessExact'), 'success');
+          setGeocodingWarning(null);
+        } else if (result.accuracy === 'street') {
+          showToast(t('geocodingSuccessStreet'), 'success');
+          setGeocodingWarning(t('geocodingWarningStreet'));
+        } else {
+          showToast(t('geocodingWarningCity'), 'info');
+          setGeocodingWarning(t('geocodingWarningCityShort'));
+        }
+      } else {
+        showToast(t('geocodingNotFound'), 'info');
+        setGeocodingWarning(t('geocodingWarningNotFound'));
+      }
+    } catch {
+      showToast(t('geocodingError'), 'error');
+    } finally {
+      setIsGeocoding(false);
+    }
+  };
+
+  const handleMapChange = (lat: number, lng: number, address?: AddressComponents) => {
+    setFieldValue('latitude', lat);
+    setFieldValue('longitude', lng);
+
+    if (!address) return;
+
+    // Fill only empty fields
+    if (!values.countyId && address.county) {
+      const county = counties.find((c) => c.name.toLowerCase() === address.county?.toLowerCase());
+      if (county) {
+        setFieldValue('countyId', county.id);
+        // Save city name to be set after cities load
+        if (address.city) {
+          setPendingCityName(address.city);
+        }
+      }
+    }
+
+    // Keep the city lookup for when county is already set
+    if (values.countyId && !values.cityId && address.city) {
+      const city = cities.find((c) => c.name.toLowerCase() === address.city?.toLowerCase());
+      if (city) {
+        setFieldValue('cityId', city.id);
+      }
+    }
+
+    if (!values.street && address.street) {
+      setFieldValue('street', address.street);
+    }
+
+    if (!values.streetNumber && address.streetNumber) {
+      setFieldValue('streetNumber', address.streetNumber);
+    }
   };
 
   const handleDelete = async () => {
@@ -217,7 +270,6 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
       } else {
         await deleteAdminBranch({ companyId: companyId as string, branchId: values.id }).unwrap();
       }
-
       showToast(t('branch.branchDeleteSuccess'), 'success');
       setShowDeleteModal(false);
       onCloseDrawer();
@@ -229,15 +281,15 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
   return (
     <>
       <form onSubmit={onSubmit} className="space-y-6" noValidate>
+        {/* Name & Phone */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
           <CustomInput
-            label={`${t('branch.branchName')}`}
+            label={t('branch.branchName')}
             {...register('name')}
             error={errors.name && t(errors.name)}
             wrapperClassName="mb-0 md:col-span-2"
             isRequired
           />
-
           <div className="mb-0 md:col-span-2">
             <PhoneNumberRoInput
               label={t('phoneNumber')}
@@ -249,8 +301,9 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
           </div>
         </div>
 
+        {/* Address */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-          <CustomInput label={t('country')} value={values.country} disabled wrapperClassName="mb-0" isRequired/>
+          <CustomInput label={t('country')} value={values.country} disabled wrapperClassName="mb-0" isRequired />
 
           <CustomSelect
             label={t('county')}
@@ -287,13 +340,47 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
           />
 
           <CustomInput label={t('streetNumber')} {...register('streetNumber')} wrapperClassName="mb-0" />
-
           <CustomInput label={t('houseNumber')} {...register('houseNumber')} wrapperClassName="mb-0" />
-
           <CustomInput label={t('zipcode')} {...register('zipcode')} wrapperClassName="mb-0 md:col-span-2" />
         </div>
 
-        {/* Demo checkbox - only for admin mode */}
+        {/* Map */}
+        <div className="space-y-4 pt-2">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-4">
+            <h3 className="text-sm font-semibold text-text">{t('locationCoordinates')}</h3>
+            <Button
+              type="button"
+              variant="primary"
+              size="md"
+              onClick={handleFindOnMap}
+              loading={isGeocoding}
+              disabled={!values.countyId || !values.cityId || !values.street}
+              className="w-full md:w-auto"
+            >
+              📍 {t('findOnMap')}
+            </Button>
+          </div>
+
+          {geocodingWarning && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3">
+              <span className="text-yellow-600 text-sm">{geocodingWarning}</span>
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <CustomInput label={t('latitude')} value={values.latitude?.toString() ?? ''} disabled wrapperClassName="mb-0" placeholder="--" />
+            <CustomInput label={t('longitude')} value={values.longitude?.toString() ?? ''} disabled wrapperClassName="mb-0" placeholder="--" />
+          </div>
+
+          <MapPicker
+            latitude={values.latitude}
+            longitude={values.longitude}
+            onChange={handleMapChange}
+            label={t('mapSelectLocation')}
+          />
+        </div>
+
+        {/* Demo checkbox - admin only */}
         {!isOwner && (
           <div className="flex items-center gap-3 pt-2">
             <input
