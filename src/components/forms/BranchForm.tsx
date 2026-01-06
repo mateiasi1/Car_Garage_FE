@@ -368,8 +368,20 @@ const BranchForm: FC<BranchFormProps> = ({ selectedBranch, companyId, onCloseDra
           )}
 
           <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
-            <CustomInput label={t('latitude')} value={values.latitude?.toString() ?? ''} disabled wrapperClassName="mb-0" placeholder="--" />
-            <CustomInput label={t('longitude')} value={values.longitude?.toString() ?? ''} disabled wrapperClassName="mb-0" placeholder="--" />
+            <CustomInput
+              label={t('latitude')}
+              value={values.latitude?.toString() ?? ''}
+              disabled
+              wrapperClassName="mb-0"
+              placeholder="--"
+            />
+            <CustomInput
+              label={t('longitude')}
+              value={values.longitude?.toString() ?? ''}
+              disabled
+              wrapperClassName="mb-0"
+              placeholder="--"
+            />
           </div>
 
           <MapPicker

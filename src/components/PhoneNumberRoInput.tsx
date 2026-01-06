@@ -53,7 +53,11 @@ export const PhoneNumberRoInput: FC<PhoneNumberRoInputProps> = ({
 
   return (
     <div className="w-full">
-      {label && <label className="block text-text text-sm font-semibold font-body mb-2">{label} {isRequired && <span className="text-red-500">*</span>}</label>}
+      {label && (
+        <label className="block text-text text-sm font-semibold font-body mb-2">
+          {label} {isRequired && <span className="text-red-500">*</span>}
+        </label>
+      )}
 
       <div
         className={`

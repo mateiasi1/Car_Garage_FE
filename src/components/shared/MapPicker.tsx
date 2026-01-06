@@ -16,7 +16,10 @@ interface MapPickerProps {
 }
 
 declare global {
-  interface Window { H: any; }
+  interface Window {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    H: any;
+  }
 }
 
 const HERE_API_KEY = import.meta.env.VITE_HERE_MAPS_API_KEY || '';
@@ -28,13 +31,17 @@ const reverseGeocode = async (lat: number, lng: number): Promise<AddressComponen
     );
     const data = await res.json();
     const addr = data.items?.[0]?.address;
-    return addr ? {
-      county: addr.county,
-      city: addr.city || addr.district,
-      street: addr.street,
-      streetNumber: addr.houseNumber,
-    } : null;
-  } catch { return null; }
+    return addr
+      ? {
+          county: addr.county,
+          city: addr.city || addr.district,
+          street: addr.street,
+          streetNumber: addr.houseNumber,
+        }
+      : null;
+  } catch {
+    return null;
+  }
 };
 
 export const geocodeAddress = async (
@@ -44,7 +51,9 @@ export const geocodeAddress = async (
   streetNumber?: string,
   postalCode?: string
 ): Promise<{ lat: number; lon: number; accuracy: 'exact' | 'street' | 'city' } | null> => {
-  if (!city) return null;
+  if (!city) {
+    return null;
+  }
 
   const tryGeocode = async (query: string): Promise<{ lat: number; lon: number } | null> => {
     try {
@@ -56,7 +65,9 @@ export const geocodeAddress = async (
         return { lat: data.items[0].position.lat, lon: data.items[0].position.lng };
       }
       return null;
-    } catch { return null; }
+    } catch {
+      return null;
+    }
   };
 
   if (street && streetNumber && postalCode) {
@@ -83,8 +94,11 @@ export const geocodeAddress = async (
 export const MapPicker: FC<MapPickerProps> = ({ latitude, longitude, onChange, label }) => {
   const { t } = useTranslation();
   const mapRef = useRef<HTMLDivElement>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const mapInstance = useRef<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const markerRef = useRef<any>(null);
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const behaviorRef = useRef<any>(null);
   const [ready, setReady] = useState(false);
 
@@ -113,36 +127,52 @@ export const MapPicker: FC<MapPickerProps> = ({ latitude, longitude, onChange, l
     window.addEventListener('resize', () => map.getViewPort().resize());
 
     // Drag marker events on MAP (not marker)
-    map.addEventListener('dragstart', (ev: any) => {
-      const target = ev.target;
-      if (target instanceof window.H.map.Marker) {
-        behavior.disable();
-      }
-    }, false);
+    map.addEventListener(
+      'dragstart',
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (ev: any) => {
+        const target = ev.target;
+        if (target instanceof window.H.map.Marker) {
+          behavior.disable();
+        }
+      },
+      false
+    );
 
-    map.addEventListener('drag', (ev: any) => {
-      const target = ev.target;
-      const pointer = ev.currentPointer;
-      if (target instanceof window.H.map.Marker) {
-        target.setGeometry(map.screenToGeo(pointer.viewportX, pointer.viewportY));
-      }
-    }, false);
+    map.addEventListener(
+      'drag',
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      (ev: any) => {
+        const target = ev.target;
+        const pointer = ev.currentPointer;
+        if (target instanceof window.H.map.Marker) {
+          target.setGeometry(map.screenToGeo(pointer.viewportX, pointer.viewportY));
+        }
+      },
+      false
+    );
 
-    map.addEventListener('dragend', async (ev: any) => {
-      const target = ev.target;
-      if (target instanceof window.H.map.Marker) {
-        behavior.enable();
-        const pos = target.getGeometry();
-        const address = await reverseGeocode(pos.lat, pos.lng);
-        onChange(pos.lat, pos.lng, address || undefined);
-      }
-    }, false);
+    map.addEventListener(
+      'dragend',
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      async (ev: any) => {
+        const target = ev.target;
+        if (target instanceof window.H.map.Marker) {
+          behavior.enable();
+          const pos = target.getGeometry();
+          const address = await reverseGeocode(pos.lat, pos.lng);
+          onChange(pos.lat, pos.lng, address || undefined);
+        }
+      },
+      false
+    );
 
     // Click to place marker
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     map.addEventListener('tap', async (e: any) => {
       // Ignore if tapping on marker
       if (e.target instanceof window.H.map.Marker) return;
-      
+
       const coords = map.screenToGeo(e.currentPointer.viewportX, e.currentPointer.viewportY);
       if (coords) {
         setMarker(map, coords.lat, coords.lng);
@@ -154,7 +184,11 @@ export const MapPicker: FC<MapPickerProps> = ({ latitude, longitude, onChange, l
     mapInstance.current = map;
     if (latitude && longitude) setMarker(map, latitude, longitude);
 
-    return () => { map.dispose(); mapInstance.current = null; };
+    return () => {
+      map.dispose();
+      mapInstance.current = null;
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [ready]);
 
   useEffect(() => {
@@ -162,17 +196,16 @@ export const MapPicker: FC<MapPickerProps> = ({ latitude, longitude, onChange, l
       setMarker(mapInstance.current, latitude, longitude);
       mapInstance.current.setCenter({ lat: latitude, lng: longitude });
     }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [latitude, longitude]);
 
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   const setMarker = (map: any, lat: number, lng: number) => {
     if (markerRef.current) {
       map.removeObject(markerRef.current);
     }
 
-    const marker = new window.H.map.Marker(
-      { lat, lng },
-      { volatility: true }
-    );
+    const marker = new window.H.map.Marker({ lat, lng }, { volatility: true });
     marker.draggable = true;
     map.addObject(marker);
     markerRef.current = marker;
@@ -181,7 +214,11 @@ export const MapPicker: FC<MapPickerProps> = ({ latitude, longitude, onChange, l
   return (
     <div className="w-full">
       {label && <label className="block text-text text-sm font-semibold mb-2">{label}</label>}
-      <div ref={mapRef} style={{ width: '100%', height: '400px', background: '#eee' }} className="rounded-lg border border-border" />
+      <div
+        ref={mapRef}
+        style={{ width: '100%', height: '400px', background: '#eee' }}
+        className="rounded-lg border border-border"
+      />
       <p className="text-xs text-text/60 mt-2">{t('mapInstructions')}</p>
     </div>
   );

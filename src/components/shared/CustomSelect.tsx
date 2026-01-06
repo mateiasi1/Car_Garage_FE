@@ -29,7 +29,7 @@ export const CustomSelect: FC<CustomSelectProps> = ({
   placeholder = '—',
   disabled = false,
   wrapperClassName = '',
-  isRequired=false
+  isRequired = false,
 }) => {
   const [open, setOpen] = useState(false);
   const [search, setSearch] = useState('');
@@ -75,7 +75,11 @@ export const CustomSelect: FC<CustomSelectProps> = ({
 
   return (
     <div className={`relative mb-6 ${wrapperClassName}`} ref={ref}>
-      {label && <label className="block text-text text-sm font-semibold font-body mb-2">{label} {isRequired && <span className="text-red-500">*</span>}</label>}
+      {label && (
+        <label className="block text-text text-sm font-semibold font-body mb-2">
+          {label} {isRequired && <span className="text-red-500">*</span>}
+        </label>
+      )}
 
       <button
         type="button"
