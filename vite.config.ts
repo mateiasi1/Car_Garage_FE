@@ -10,12 +10,13 @@ export default defineConfig({
                 if (process.env.NODE_ENV === 'production') {
                     const csp = [
                         "default-src 'self'",
-                        "script-src 'self' https://js.api.here.com",
+                        "script-src 'self' https://js.api.here.com 'unsafe-eval'",
+                        "worker-src 'self' blob:",
+                        "child-src 'self' blob:",
                         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://js.api.here.com",
                         "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:",
-                        "img-src 'self' data: https:",
-                        "connect-src 'self' " + (process.env.VITE_API_URL || 'http://localhost:3000'),
-                        "frame-ancestors 'none'",
+                        "img-src 'self' data: https: blob:",
+                        "connect-src 'self' https://geocode.search.hereapi.com https://revgeocode.search.hereapi.com https://*.base.maps.ls.hereapi.com https://*.aerial.maps.ls.hereapi.com " + (process.env.VITE_API_URL || 'http://localhost:3000'),
                         "base-uri 'self'",
                         "form-action 'self'",
                     ].join('; ');
