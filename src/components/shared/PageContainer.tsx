@@ -10,7 +10,7 @@ export const PageContainer: FC<PageContainerProps> = ({ children, className }) =
   return (
     <div
       className={clsx(
-        'min-h-screen w-full',
+        'w-full lg:min-h-screen',
         'bg-page-gradient',
         'flex items-center justify-center',
         'px-4 py-8',
