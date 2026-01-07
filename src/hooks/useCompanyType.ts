@@ -15,4 +15,3 @@ export const useCompanyType = () => {
     hasCompany: !!user?.companies?.[0],
   };
 };
-

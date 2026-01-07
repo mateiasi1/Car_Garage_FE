@@ -25,7 +25,6 @@ const PackagesPage: FC = () => {
 
     const filtered = packages.filter((pkg) => {
       const pkgIsIndividual = pkg.features?.isIndividual ?? false;
-      console.log(`  Package: ${pkg.name}, pkgIsIndividual: ${pkgIsIndividual}, matches: ${pkgIsIndividual === isIndividual}`);
       return pkgIsIndividual === isIndividual;
     });
 
