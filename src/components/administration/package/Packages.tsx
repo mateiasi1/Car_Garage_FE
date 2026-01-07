@@ -18,17 +18,11 @@ const PackagesPage: FC = () => {
   const filteredPackages = useMemo(() => {
     if (!packages) return [];
 
-    console.log('📦 Packages Debug:', {
-      allPackages: packages,
-      isIndividual,
-    });
-
     const filtered = packages.filter((pkg) => {
       const pkgIsIndividual = pkg.features?.isIndividual ?? false;
       return pkgIsIndividual === isIndividual;
     });
 
-    console.log('  Filtered packages:', filtered);
     return filtered;
   }, [packages, isIndividual]);
 
