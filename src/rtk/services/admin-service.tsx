@@ -53,11 +53,11 @@ export const adminApi = createApi({
       invalidatesTags: ['Admin'],
     }),
     updateAdminCompany: builder.mutation<Company, Partial<Company> & { companyId: string }>({
-      query: (company) => {
+      query: ({ companyId, ...data }) => {
         return {
-          url: `${config.companyUrl}/${company.companyId}`,
+          url: `${config.companyUrl}/${companyId}`,
           method: 'PUT',
-          body: company,
+          body: data,
         };
       },
       invalidatesTags: ['Admin'],
