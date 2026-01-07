@@ -67,6 +67,8 @@ export interface Branch {
   streetNumber?: string;
   houseNumber?: string;
   phoneNumber?: string;
+  latitude?: number;
+  longitude?: number;
   companyId: string;
   createdAt: string;
   updatedAt: string;

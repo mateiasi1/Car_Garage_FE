@@ -6,9 +6,10 @@ import { OwnerStatisticsResponse } from '../../../rtk/services/statistics-servic
 
 interface OwnerStatisticsProps {
   data: OwnerStatisticsResponse;
+  hideInspectorAndBranchStats?: boolean;
 }
 
-export const OwnerStatistics: FC<OwnerStatisticsProps> = ({ data }) => {
+export const OwnerStatistics: FC<OwnerStatisticsProps> = ({ data, hideInspectorAndBranchStats = false }) => {
   const { t } = useTranslation();
 
   const formatDate = (dateStr: string) => {
@@ -36,7 +37,9 @@ export const OwnerStatistics: FC<OwnerStatisticsProps> = ({ data }) => {
   return (
     <div className="space-y-6">
       {/* Summary Cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+      <div
+        className={`grid grid-cols-1 sm:grid-cols-2 ${hideInspectorAndBranchStats ? 'lg:grid-cols-3' : 'lg:grid-cols-4'} gap-4`}
+      >
         <StatCard
           title={t('statistics.totalInspections')}
           value={data.summary.totalInspections}
@@ -52,12 +55,14 @@ export const OwnerStatistics: FC<OwnerStatisticsProps> = ({ data }) => {
           value={data.customerStats.newCustomers}
           icon={<Users className="w-6 h-6" />}
         />
-        <StatCard
-          title={t('statistics.topInspector')}
-          value={data.summary.topInspector?.name || '-'}
-          icon={<Award className="w-6 h-6" />}
-          smallValue
-        />
+        {!hideInspectorAndBranchStats && (
+          <StatCard
+            title={t('statistics.topInspector')}
+            value={data.summary.topInspector?.name || '-'}
+            icon={<Award className="w-6 h-6" />}
+            smallValue
+          />
+        )}
       </div>
 
       {/* Trend Chart - Full Width */}
@@ -70,13 +75,15 @@ export const OwnerStatistics: FC<OwnerStatisticsProps> = ({ data }) => {
       />
 
       {/* Inspector Performance - Full Width */}
-      <BarChart
-        title={t('statistics.byInspector')}
-        subtitle={t('statistics.byInspectorSubtitle')}
-        labels={data.inspectionsByInspector.map((item) => item.name)}
-        data={data.inspectionsByInspector.map((item) => item.count)}
-        label={t('statistics.inspections')}
-      />
+      {!hideInspectorAndBranchStats && (
+        <BarChart
+          title={t('statistics.byInspector')}
+          subtitle={t('statistics.byInspectorSubtitle')}
+          labels={data.inspectionsByInspector.map((item) => item.name)}
+          data={data.inspectionsByInspector.map((item) => item.count)}
+          label={t('statistics.inspections')}
+        />
+      )}
 
       {/* Row 2: Category & Type Distribution */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
@@ -95,7 +102,7 @@ export const OwnerStatistics: FC<OwnerStatisticsProps> = ({ data }) => {
       </div>
 
       {/* Row 3: Day of Week & Branch */}
-      <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+      {hideInspectorAndBranchStats ? (
         <BarChart
           title={t('statistics.byDayOfWeek')}
           subtitle={t('statistics.byDayOfWeekSubtitle')}
@@ -104,16 +111,27 @@ export const OwnerStatistics: FC<OwnerStatisticsProps> = ({ data }) => {
           label={t('statistics.inspections')}
           backgroundColor="rgba(16, 185, 129, 0.8)"
         />
-        <BarChart
-          title={t('statistics.byBranch')}
-          subtitle={t('statistics.byBranchSubtitle')}
-          labels={data.inspectionsByBranch.map((item) => item.name)}
-          data={data.inspectionsByBranch.map((item) => item.count)}
-          label={t('statistics.inspections')}
-          horizontal
-          backgroundColor="rgba(139, 92, 246, 0.8)"
-        />
-      </div>
+      ) : (
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          <BarChart
+            title={t('statistics.byDayOfWeek')}
+            subtitle={t('statistics.byDayOfWeekSubtitle')}
+            labels={data.inspectionsByDayOfWeek.map((item) => dayOfWeekLabels[item.name] || item.name)}
+            data={data.inspectionsByDayOfWeek.map((item) => item.count)}
+            label={t('statistics.inspections')}
+            backgroundColor="rgba(16, 185, 129, 0.8)"
+          />
+          <BarChart
+            title={t('statistics.byBranch')}
+            subtitle={t('statistics.byBranchSubtitle')}
+            labels={data.inspectionsByBranch.map((item) => item.name)}
+            data={data.inspectionsByBranch.map((item) => item.count)}
+            label={t('statistics.inspections')}
+            horizontal
+            backgroundColor="rgba(139, 92, 246, 0.8)"
+          />
+        </div>
+      )}
 
       {/* Row 5: Customer Stats & SMS Usage */}
       <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">

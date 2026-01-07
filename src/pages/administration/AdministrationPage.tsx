@@ -19,6 +19,7 @@ import AdminDiscounts from '../../components/administration/admin/AdminDiscounts
 import { AuthContext } from '../../contexts/authContext';
 import { Role as RoleModel } from '../../models/Role';
 import { Role } from '../../utils/enums/Role';
+import { useCompanyType } from '../../hooks/useCompanyType';
 
 interface AdministrationSetting extends AdministrationItemProps {
   roles: Role[];
@@ -33,6 +34,8 @@ const AdministrationPage: FC = () => {
   const navigate = useNavigate();
   const { tab } = useParams<{ tab: string }>();
   const [selectedItem, setSelectedItem] = useState<AdministrationSetting | null>(null);
+
+  const { isIndividual } = useCompanyType();
 
   const items: AdministrationSetting[] = useMemo(
     () => [
@@ -53,6 +56,7 @@ const AdministrationPage: FC = () => {
         roles: [Role.owner, Role.demo],
         component: <InspectorsList />,
         onSelect: () => {},
+        hidden: isIndividual,
       },
       {
         icon: UserCog,
@@ -80,6 +84,7 @@ const AdministrationPage: FC = () => {
         roles: [Role.owner, Role.inspector, Role.demo],
         component: <BranchDetails />,
         onSelect: () => {},
+        hidden: isIndividual,
       },
       {
         icon: Building2,
@@ -129,7 +134,7 @@ const AdministrationPage: FC = () => {
         hidden: true,
       },
     ],
-    []
+    [isIndividual]
   );
 
   const filteredItems = useMemo(() => {
@@ -157,13 +162,13 @@ const AdministrationPage: FC = () => {
 
   return (
     <PageContainer className="px-4 sm:px-6 lg:px-10 py-4 sm:py-6">
-      <div className="w-full max-w-6xl mx-auto h-[calc(100vh-6rem)] lg:h-[calc(100vh-8rem)] flex flex-col lg:flex-row gap-6">
+      <div className="w-full max-w-6xl mx-auto flex flex-col lg:flex-row gap-6 lg:h-[calc(100vh-8rem)]">
         <div className="w-full lg:w-72 xl:w-80 lg:h-full flex">
-          <AdminCard fullHeight className="flex-1 flex flex-col overflow-hidden">
+          <AdminCard fullHeight className="flex-1 flex flex-col lg:overflow-hidden">
             <CustomText variant="h3" className="p-4 sm:p-5 lg:p-6 hidden lg:block text-primary mb-2">
               {t('administration')}
             </CustomText>
-            <nav className="mt-2 flex-1 flex flex-row flex-wrap justify-center items-center lg:flex-col lg:items-stretch lg:justify-start gap-3 lg:gap-2 lg:overflow-y-auto pr-1">
+            <nav className="mt-2 flex-1 flex flex-row flex-wrap justify-center items-center lg:flex-col lg:items-stretch lg:justify-start gap-3 lg:gap-2 lg:overflow-y-auto lg:pr-1">
               {menuItems.map((item) => (
                 <AdministrationItem
                   key={item.tabKey}
@@ -178,9 +183,9 @@ const AdministrationPage: FC = () => {
           </AdminCard>
         </div>
 
-        <div className="flex-1 h-full flex">
-          <AdminCard fullHeight className="flex-1 flex flex-col overflow-hidden">
-            <div className="flex-1 min-h-0 overflow-y-auto pr-1">{selectedItem?.component}</div>
+        <div className="flex-1 lg:h-full flex">
+          <AdminCard fullHeight className="flex-1 flex flex-col lg:overflow-hidden">
+            <div className="flex-1 p-4 lg:p-0 lg:min-h-0 lg:overflow-y-auto lg:pr-1">{selectedItem?.component}</div>
           </AdminCard>
         </div>
       </div>

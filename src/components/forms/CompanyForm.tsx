@@ -1,4 +1,4 @@
-import { FC, useState, useMemo } from 'react';
+import { FC, useState, useMemo, useEffect } from 'react';
 import { useTranslation } from 'react-i18next';
 import { getErrorMessage } from '../../interfaces/error';
 import {
@@ -15,6 +15,7 @@ import { CustomInput } from '../shared/CustomInput';
 import { PhoneNumberRoInput } from '../PhoneNumberRoInput';
 import { CustomSelect } from '../shared/CustomSelect';
 import { Company } from '../../models/Company';
+import { MapPicker, geocodeAddress, AddressComponents } from '../shared/MapPicker';
 
 interface CompanyFormProps {
   selectedCompany: Partial<Company> | null;
@@ -34,6 +35,8 @@ type CompanyFormValues = {
   streetNumber?: string;
   houseNumber?: string;
   zipcode?: string;
+  latitude?: number;
+  longitude?: number;
   isDemo: boolean;
 };
 
@@ -45,6 +48,9 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
   const [deleteCompany] = useDeleteAdminCompanyMutation();
 
   const [showDeleteModal, setShowDeleteModal] = useState(false);
+  const [isGeocoding, setIsGeocoding] = useState(false);
+  const [geocodingWarning, setGeocodingWarning] = useState<string | null>(null);
+  const [pendingCityName, setPendingCityName] = useState<string | null>(null);
 
   const isEdit = Boolean(selectedCompany?.id);
 
@@ -66,6 +72,8 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
       streetNumber: selectedCompany?.streetNumber ?? '',
       houseNumber: selectedCompany?.houseNumber ?? '',
       zipcode: selectedCompany?.zipcode ?? '',
+      latitude: selectedCompany?.latitude,
+      longitude: selectedCompany?.longitude,
       isDemo: (selectedCompany as Partial<Company> & { isDemo?: boolean })?.isDemo ?? false,
     },
     fields: {
@@ -137,6 +145,8 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
         streetNumber: formValues.streetNumber,
         houseNumber: formValues.houseNumber,
         zipcode: formValues.zipcode,
+        latitude: formValues.latitude,
+        longitude: formValues.longitude,
         isDemo: formValues.isDemo,
       };
 
@@ -171,10 +181,94 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
   // City options for dropdown
   const cityOptions = useMemo(() => cities.map((c) => ({ value: c.id, label: c.name })), [cities]);
 
+  // Auto-set city after cities list loads (when county was set from map)
+  useEffect(() => {
+    if (pendingCityName && cities.length > 0 && !values.cityId) {
+      const city = cities.find((c) => c.name.toLowerCase() === pendingCityName.toLowerCase());
+      if (city) {
+        setFieldValue('cityId', city.id);
+        setPendingCityName(null); // Clear pending state
+      }
+    }
+  }, [cities, pendingCityName, values.cityId, setFieldValue]);
+
   // Reset city when county changes
   const handleCountyChange = (countyId: string) => {
     setFieldValue('countyId', countyId);
     setFieldValue('cityId', '');
+  };
+
+  // Forward geocoding: Find location on map from address
+  const handleFindOnMap = async () => {
+    const county = counties.find((c) => c.id === values.countyId);
+    const city = cities.find((c) => c.id === values.cityId);
+
+    if (!city) {
+      showToast(t('cityEmpty'), 'error');
+      return;
+    }
+
+    setIsGeocoding(true);
+    setGeocodingWarning(null);
+    try {
+      const result = await geocodeAddress(county?.name, city.name, values.street, values.streetNumber, values.zipcode);
+
+      if (result) {
+        setFieldValue('latitude', result.lat);
+        setFieldValue('longitude', result.lon);
+
+        // Show appropriate message based on accuracy
+        if (result.accuracy === 'exact') {
+          showToast(t('geocodingSuccessExact'), 'success');
+          setGeocodingWarning(null);
+        } else if (result.accuracy === 'street') {
+          showToast(t('geocodingSuccessStreetAdjust'), 'success');
+          setGeocodingWarning(t('geocodingWarningStreet'));
+        } else if (result.accuracy === 'city') {
+          showToast(t('geocodingWarningCity'), 'info');
+          setGeocodingWarning(t('geocodingWarningCityLong'));
+        }
+      } else {
+        showToast(t('geocodingNotFound'), 'info');
+        setGeocodingWarning(t('geocodingWarningNotFound'));
+      }
+    } catch (error) {
+      console.error('Geocoding error:', error);
+      showToast(t('geocodingError'), 'error');
+    } finally {
+      setIsGeocoding(false);
+    }
+  };
+
+  // Reverse geocoding: Fill address from map pin
+  const handleAddressChange = (addressComponents: AddressComponents) => {
+    // Only fill empty fields
+    if (!values.countyId && addressComponents.county) {
+      const county = counties.find((c) => c.name.toLowerCase() === addressComponents.county?.toLowerCase());
+      if (county) {
+        setFieldValue('countyId', county.id);
+        // Save city name to be set after cities load
+        if (addressComponents.city) {
+          setPendingCityName(addressComponents.city);
+        }
+      }
+    }
+
+    // Keep the city lookup for when county is already set
+    if (values.countyId && !values.cityId && addressComponents.city) {
+      const city = cities.find((c) => c.name.toLowerCase() === addressComponents.city?.toLowerCase());
+      if (city) {
+        setFieldValue('cityId', city.id);
+      }
+    }
+
+    if (!values.street && addressComponents.street) {
+      setFieldValue('street', addressComponents.street);
+    }
+
+    if (!values.streetNumber && addressComponents.streetNumber) {
+      setFieldValue('streetNumber', addressComponents.streetNumber);
+    }
   };
 
   const handleDelete = async () => {
@@ -230,7 +324,7 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
               label={`${t('phoneNumber')}`}
               value={values.phoneNumber}
               onChange={(val) => setFieldValue('phoneNumber', val)}
-              error={errors.phoneNumber ? t(errors.phoneNumber) : undefined}
+              error={errors.phoneNumber && t(errors.phoneNumber)}
               isRequired
             />
           </div>
@@ -280,6 +374,60 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
           <CustomInput label={t('zipcode')} {...register('zipcode')} wrapperClassName="mb-0 md:col-span-2" />
         </div>
 
+        {/* Map Section */}
+        <div className="space-y-4 pt-2">
+          <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-2 mb-4">
+            <h3 className="text-sm font-semibold font-body text-text">{t('locationCoordinates')}</h3>
+            <Button
+              type="button"
+              variant="primary"
+              size="md"
+              onClick={handleFindOnMap}
+              loading={isGeocoding}
+              disabled={!values.countyId || !values.cityId || !values.street}
+              className="w-full md:w-auto"
+            >
+              📍 {t('findOnMap')}
+            </Button>
+          </div>
+
+          {geocodingWarning && (
+            <div className="bg-yellow-50 border border-yellow-200 rounded-lg p-3 flex items-start gap-2">
+              <span className="text-yellow-600 text-sm font-body">{geocodingWarning}</span>
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <CustomInput
+              label={t('latitude')}
+              value={values.latitude?.toString() ?? ''}
+              disabled
+              wrapperClassName="mb-0"
+              placeholder="--"
+            />
+            <CustomInput
+              label={t('longitude')}
+              value={values.longitude?.toString() ?? ''}
+              disabled
+              wrapperClassName="mb-0"
+              placeholder="--"
+            />
+          </div>
+
+          <MapPicker
+            latitude={values.latitude}
+            longitude={values.longitude}
+            onChange={(lat, lng, address) => {
+              setFieldValue('latitude', lat);
+              setFieldValue('longitude', lng);
+              if (address) {
+                handleAddressChange(address);
+              }
+            }}
+            label={t('mapSelectLocation')}
+          />
+        </div>
+
         {/* Demo checkbox - only for admin */}
         <div className="flex items-center gap-3 pt-2">
           <input
@@ -306,7 +454,7 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
             size="md"
             className={isEdit ? 'w-2/3' : 'w-full'}
             loading={isCreating || isUpdating || isSubmitting}
-             disabled={!isDirty}
+            disabled={!isDirty}
           >
             {t('submit')}
           </Button>

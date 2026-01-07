@@ -219,7 +219,7 @@ export const useForm = <TValues extends Record<string, any>>({
 
   const isDirty = useMemo(() => {
     return (Object.keys(initialValues) as (keyof TValues)[]).some((key) => {
-     return normalize(values[key]) !== normalize(initialValues[key]);
+      return normalize(values[key]) !== normalize(initialValues[key]);
     });
   }, [values, initialValues]);
 

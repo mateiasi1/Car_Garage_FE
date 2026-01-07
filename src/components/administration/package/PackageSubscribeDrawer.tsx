@@ -5,6 +5,7 @@ import { showToast } from '../../../utils/showToast';
 import { useUpdateBranchPackageMutation } from '../../../rtk/services/branch-service';
 import { useFetchPackagesQuery } from '../../../rtk/services/package-service';
 import { useFetchBranchDiscountsQuery } from '../../../rtk/services/discount-service';
+import { useCompanyType } from '../../../hooks/useCompanyType';
 import { Button } from '../../shared/Button';
 import { Percent, Clock } from 'lucide-react';
 
@@ -17,6 +18,7 @@ interface PackageDialogProps {
 
 const PackageSubscribeDrawer: FC<PackageDialogProps> = ({ isOpen, onClose, currentPackageId, branchId }) => {
   const { data: packages } = useFetchPackagesQuery();
+  const { isIndividual } = useCompanyType();
   const [updatePackage, { isLoading }] = useUpdateBranchPackageMutation();
   const { t } = useTranslation();
 
@@ -25,8 +27,18 @@ const PackageSubscribeDrawer: FC<PackageDialogProps> = ({ isOpen, onClose, curre
   const [calculatedPrice, setCalculatedPrice] = useState<number>(0);
   const [originalPrice, setOriginalPrice] = useState<number>(0);
 
+  // Filter packages based on company's isIndividual status
+  const filteredPackages = useMemo(() => {
+    if (!packages) return [];
+
+    return packages.filter((pkg) => {
+      const pkgIsIndividual = pkg.features?.isIndividual ?? false;
+      return pkgIsIndividual === isIndividual;
+    });
+  }, [packages, isIndividual]);
+
   // Get package IDs for discount query
-  const packageIds = useMemo(() => packages?.map((pkg) => pkg.id) || [], [packages]);
+  const packageIds = useMemo(() => filteredPackages?.map((pkg) => pkg.id) || [], [filteredPackages]);
 
   // Fetch discounts for all packages (pass branchId for Admin, Owner has it in token)
   const { data: discounts = {} } = useFetchBranchDiscountsQuery(
@@ -36,15 +48,15 @@ const PackageSubscribeDrawer: FC<PackageDialogProps> = ({ isOpen, onClose, curre
 
   // setează pachetul selectat inițial
   useEffect(() => {
-    if (packages && packages.length > 0 && !selectedPackageId) {
-      setSelectedPackageId(currentPackageId || packages[0].id);
+    if (filteredPackages && filteredPackages.length > 0 && !selectedPackageId) {
+      setSelectedPackageId(currentPackageId || filteredPackages[0].id);
     }
-  }, [packages, currentPackageId, selectedPackageId]);
+  }, [filteredPackages, currentPackageId, selectedPackageId]);
 
   // recalculează prețul când se schimbă pachetul sau perioada
   useEffect(() => {
-    if (selectedPackageId && packages) {
-      const selectedPkg = packages.find((p) => p.id === selectedPackageId);
+    if (selectedPackageId && filteredPackages) {
+      const selectedPkg = filteredPackages.find((p) => p.id === selectedPackageId);
       if (selectedPkg) {
         const multiplier = period === 'yearly' ? 10 : 1;
         const basePrice = selectedPkg.price * multiplier;
@@ -59,7 +71,7 @@ const PackageSubscribeDrawer: FC<PackageDialogProps> = ({ isOpen, onClose, curre
         }
       }
     }
-  }, [selectedPackageId, period, packages, discounts]);
+  }, [selectedPackageId, period, filteredPackages, discounts]);
 
   const handleSubmit = async () => {
     try {
@@ -81,7 +93,7 @@ const PackageSubscribeDrawer: FC<PackageDialogProps> = ({ isOpen, onClose, curre
 
   if (!isOpen) return null;
 
-  const selectedPackage = packages?.find((p) => p.id === selectedPackageId);
+  const selectedPackage = filteredPackages?.find((p) => p.id === selectedPackageId);
   const isSamePackage = selectedPackageId === currentPackageId;
   const currentDiscountInfo = discounts[selectedPackageId];
   const hasDiscount = currentDiscountInfo && currentDiscountInfo.percentage > 0;
@@ -108,7 +120,7 @@ const PackageSubscribeDrawer: FC<PackageDialogProps> = ({ isOpen, onClose, curre
               onChange={(e) => setSelectedPackageId(e.target.value)}
               className="w-full px-4 py-3 rounded-2xl bg-card border border-text/10 text-text font-body focus:outline-none focus:ring-2 focus:ring-primary"
             >
-              {packages?.map((pkg) => {
+              {filteredPackages?.map((pkg) => {
                 const pkgDiscountInfo = discounts[pkg.id];
                 const pkgHasDiscount = pkgDiscountInfo && pkgDiscountInfo.percentage > 0;
                 const discountedPrice = pkgHasDiscount ? pkg.price * (1 - pkgDiscountInfo.percentage / 100) : pkg.price;

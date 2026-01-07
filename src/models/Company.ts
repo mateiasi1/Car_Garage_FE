@@ -21,6 +21,9 @@ export interface Company {
   streetNumber?: string;
   houseNumber?: string;
   phoneNumber?: string;
+  latitude?: number;
+  longitude?: number;
+  isIndividual: boolean;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;

@@ -224,6 +224,7 @@ const BranchDetails: FC = () => {
       {(isOwner || isDemo) && (
         <Drawer isOpen={editDrawerOpen} onClose={() => setEditDrawerOpen(false)} title={t('adminBranches.editBranch')}>
           <BranchForm
+            isOwnerMode={isOwner}
             key={branch?.id || 'edit'}
             selectedBranch={branch}
             companyId={branch.companyId}
