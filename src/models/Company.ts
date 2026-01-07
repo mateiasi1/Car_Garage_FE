@@ -23,6 +23,7 @@ export interface Company {
   phoneNumber?: string;
   latitude?: number;
   longitude?: number;
+  isIndividual: boolean;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;

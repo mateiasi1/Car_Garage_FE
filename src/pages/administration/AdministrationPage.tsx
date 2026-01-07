@@ -19,6 +19,8 @@ import AdminDiscounts from '../../components/administration/admin/AdminDiscounts
 import { AuthContext } from '../../contexts/authContext';
 import { Role as RoleModel } from '../../models/Role';
 import { Role } from '../../utils/enums/Role';
+import { useUserRoles } from '../../hooks/useUserRoles';
+import { useCompanyType } from '../../hooks/useCompanyType';
 
 interface AdministrationSetting extends AdministrationItemProps {
   roles: Role[];
@@ -33,6 +35,8 @@ const AdministrationPage: FC = () => {
   const navigate = useNavigate();
   const { tab } = useParams<{ tab: string }>();
   const [selectedItem, setSelectedItem] = useState<AdministrationSetting | null>(null);
+  const { isIndividual } = useCompanyType();
+
 
   const items: AdministrationSetting[] = useMemo(
     () => [
@@ -53,6 +57,7 @@ const AdministrationPage: FC = () => {
         roles: [Role.owner, Role.demo],
         component: <InspectorsList />,
         onSelect: () => {},
+        hidden: isIndividual,
       },
       {
         icon: UserCog,
@@ -80,6 +85,7 @@ const AdministrationPage: FC = () => {
         roles: [Role.owner, Role.inspector, Role.demo],
         component: <BranchDetails />,
         onSelect: () => {},
+        hidden: isIndividual,
       },
       {
         icon: Building2,

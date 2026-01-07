@@ -11,6 +11,7 @@ import {
   StatisticsPeriod,
 } from '../../rtk/services/statistics-service';
 import { useUserRoles } from '../../hooks/useUserRoles';
+import { useCompanyType } from '../../hooks/useCompanyType';
 import { Role } from '../../utils/enums/Role';
 
 const PERIODS: { value: StatisticsPeriod; labelKey: string }[] = [
@@ -31,6 +32,9 @@ const DashboardPage: FC = () => {
 
   const isAdmin = roles.includes(Role.admin);
   const isOwner = roles.includes(Role.owner) || roles.includes(Role.demo);
+
+  // Check if company is individual
+  const { isIndividual } = useCompanyType();
 
   // Fetch package features to know which periods are allowed
   const { data: packageFeatures } = useFetchPackageFeaturesQuery(undefined, { skip: !isOwner });
@@ -167,7 +171,7 @@ const DashboardPage: FC = () => {
                     {t('statistics.ownerDashboard')}
                   </h2>
                 )}
-                <OwnerStatistics data={ownerData} />
+                <OwnerStatistics data={ownerData} hideInspectorAndBranchStats={isIndividual} />
               </div>
             )}
 
