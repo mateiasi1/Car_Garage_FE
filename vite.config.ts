@@ -14,7 +14,7 @@ export default defineConfig({
                         "worker-src 'self' blob:",
                         "child-src 'self' blob:",
                         "style-src 'self' 'unsafe-inline' https://fonts.googleapis.com https://cdnjs.cloudflare.com https://js.api.here.com",
-                        "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com data:",
+                        "font-src 'self' https://fonts.gstatic.com https://cdnjs.cloudflare.com https://js.api.here.com data:",
                         "img-src 'self' data: https: blob:",
                         "connect-src 'self' blob: https://js.api.here.com https://geocode.search.hereapi.com https://revgeocode.search.hereapi.com https://vector.hereapi.com https://*.base.maps.ls.hereapi.com https://*.base.maps.api.here.com https://*.aerial.maps.ls.hereapi.com https://*.aerial.maps.api.here.com " + (process.env.VITE_API_URL || 'http://localhost:3000'),
                         "base-uri 'self'",
