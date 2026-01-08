@@ -38,6 +38,7 @@ type CompanyFormValues = {
   latitude?: number;
   longitude?: number;
   isDemo: boolean;
+  isIndividual: boolean;
 };
 
 const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) => {
@@ -75,6 +76,7 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
       latitude: selectedCompany?.latitude,
       longitude: selectedCompany?.longitude,
       isDemo: (selectedCompany as Partial<Company> & { isDemo?: boolean })?.isDemo ?? false,
+      isIndividual: selectedCompany?.isIndividual ?? false,
     },
     fields: {
       name: {
@@ -148,6 +150,7 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
         latitude: formValues.latitude,
         longitude: formValues.longitude,
         isDemo: formValues.isDemo,
+        isIndividual: formValues.isIndividual,
       };
 
       try {
@@ -439,6 +442,20 @@ const CompanyForm: FC<CompanyFormProps> = ({ selectedCompany, onCloseDrawer }) =
           />
           <label htmlFor="isDemo" className="text-sm font-body text-text">
             {t('isDemo')}
+          </label>
+        </div>
+
+        {/* Individual checkbox - for individual companies (persoană fizică) */}
+        <div className="flex items-center gap-3 pt-2">
+          <input
+            type="checkbox"
+            id="isIndividual"
+            checked={values.isIndividual}
+            onChange={(e) => setFieldValue('isIndividual', e.target.checked)}
+            className="w-4 h-4 text-primary border-border rounded focus:ring-primary"
+          />
+          <label htmlFor="isIndividual" className="text-sm font-body text-text">
+            {t('individual')}
           </label>
         </div>
 

@@ -3,31 +3,17 @@ import { useFetchPackagesQuery } from '../../../rtk/services/package-service';
 import { useFetchBranchDiscountsQuery } from '../../../rtk/services/discount-service';
 import { useTranslation } from 'react-i18next';
 import { useFetchBranchQuery } from '../../../rtk/services/branch-service';
-import { useCompanyType } from '../../../hooks/useCompanyType';
 import { Check, Store, Percent, Clock } from 'lucide-react';
 import { PageHeader } from '../../shared/PageHeader';
 import { contactEmail, contactPhone } from '../../../constants/constants';
 
 const PackagesPage: FC = () => {
   const { data: branch } = useFetchBranchQuery();
-  const { isIndividual } = useCompanyType();
   const { data: packages, error, isLoading } = useFetchPackagesQuery();
   const { t } = useTranslation();
 
-  // Filter packages based on company's isIndividual status
-  const filteredPackages = useMemo(() => {
-    if (!packages) return [];
-
-    const filtered = packages.filter((pkg) => {
-      const pkgIsIndividual = pkg.features?.isIndividual ?? false;
-      return pkgIsIndividual === isIndividual;
-    });
-
-    return filtered;
-  }, [packages, isIndividual]);
-
   // Get package IDs for discount query
-  const packageIds = useMemo(() => filteredPackages?.map((pkg) => pkg.id) || [], [filteredPackages]);
+  const packageIds = useMemo(() => packages?.map((pkg) => pkg.id) || [], [packages]);
 
   // Fetch discounts for all packages (Owner has branchId in token, so no need to pass it)
   const { data: discounts = {} } = useFetchBranchDiscountsQuery({ packageIds }, { skip: packageIds.length === 0 });
@@ -46,7 +32,7 @@ const PackagesPage: FC = () => {
       </div>
     );
 
-  if (!filteredPackages || filteredPackages.length === 0)
+  if (!packages || packages.length === 0)
     return (
       <div className="flex items-center justify-center min-h-screen">
         <p className="text-text font-body">{t('packages.noPackages')}</p>
@@ -66,7 +52,7 @@ const PackagesPage: FC = () => {
 
         {/* Packages grid */}
         <div className="px-6 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {filteredPackages.map((pkg) => {
+          {packages.map((pkg) => {
             const isActive = pkg.id === activePackageId;
             const discountInfo = discounts[pkg.id];
             const hasDiscount = discountInfo && discountInfo.percentage > 0;
