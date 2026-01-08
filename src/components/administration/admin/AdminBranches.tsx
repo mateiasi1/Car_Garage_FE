@@ -198,6 +198,7 @@ const AdminBranches: FC = () => {
           onClose={handleClosePackageDialog}
           currentPackageId={selectedBranchForPackage.activePackage?.packageId}
           branchId={selectedBranchForPackage.id}
+          companyId={companyId || undefined}
         />
       )}
     </div>

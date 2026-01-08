@@ -7,11 +7,15 @@ export const packagesApi = createApi({
   baseQuery: baseQueryWithReAuth,
   tagTypes: ['Package'],
   endpoints: (builder) => ({
-    fetchPackages: builder.query<Package[], void>({
-      query: () => ({
-        url: '/packages',
-        method: 'GET',
-      }),
+    fetchPackages: builder.query<Package[], { companyId?: string } | void>({
+      query: (arg) => {
+        const companyId = arg && typeof arg === 'object' ? arg.companyId : undefined;
+        return {
+          url: '/packages',
+          method: 'GET',
+          params: companyId ? { companyId } : undefined,
+        };
+      },
       providesTags: ['Package'],
     }),
   }),
