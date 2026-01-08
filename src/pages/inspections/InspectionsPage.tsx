@@ -31,22 +31,52 @@ const InspectionsPage: FC = () => {
 
   const [search, setSearch] = useState('');
   const [showArchived, setShowArchived] = useState(false);
-  const [filters, setFilters] = useState<ApiFilters>({
+  const [currentPage, setCurrentPage] = useState(1);
+  const itemsPerPage = 25;
+
+  // Filters without page (backend returns all data)
+  const filters: ApiFilters = {
     page: 1,
     licensePlate: '',
     inspectionType: '',
     customerName: '',
     inspectorName: '',
-  });
+  };
 
   const { data, isLoading } = useFetchInspectionsQuery(filters);
   const allInspections = data?.results || [];
-  const totalPages = data?.totalPages || 1;
 
-  // Filter out archived inspections unless showArchived is true
+  // Helper: Calculate expiration date
+  const getExpirationDate = (inspectedAt: string, inspectionType: string): Date => {
+    const date = new Date(inspectedAt);
+
+    switch (inspectionType) {
+      case InspectionType.halfYear:
+        date.setMonth(date.getMonth() + 6);
+        break;
+      case InspectionType.oneYear:
+        date.setFullYear(date.getFullYear() + 1);
+        break;
+      case InspectionType.twoYears:
+        date.setFullYear(date.getFullYear() + 2);
+        break;
+      default:
+        break;
+    }
+
+    return date;
+  };
+
+  // Filter archived + SORT by expiration date (closest first)
   const inspections = useMemo(() => {
-    if (showArchived) return allInspections;
-    return allInspections.filter((inspection) => !inspection.deletedAt);
+    const filtered = showArchived ? allInspections : allInspections.filter((inspection) => !inspection.deletedAt);
+
+    // Sort by expiration date (ASC - closest to expire first)
+    return filtered.sort((a, b) => {
+      const dateA = getExpirationDate(a.inspectedAt, a.type);
+      const dateB = getExpirationDate(b.inspectedAt, b.type);
+      return dateA.getTime() - dateB.getTime(); // Smaller first (more urgent)
+    });
   }, [allInspections, showArchived]);
 
   const selectedInspection = useAppSelector((state) => state.inspection.selectedInspection);
@@ -111,10 +141,6 @@ const InspectionsPage: FC = () => {
     if (diffDays < 0) return 'text-error';
     if (diffDays < 7) return 'text-orange';
     return '';
-  };
-
-  const handlePageChange = (page: number) => {
-    setFilters((prev) => ({ ...prev, page }));
   };
 
   const handleMessageClick = async (inspection: Inspection) => {
@@ -278,9 +304,9 @@ const InspectionsPage: FC = () => {
           onSearchChange={setSearch}
           searchPlaceholder={t('searchInspections')}
           showFilters
-          page={filters.page}
-          totalPages={totalPages}
-          onPageChange={handlePageChange}
+          page={currentPage}
+          onPageChange={setCurrentPage}
+          itemsPerPage={itemsPerPage}
           rowClassName={(inspection) => (inspection.deletedAt ? 'opacity-50' : '')}
         />
       </div>

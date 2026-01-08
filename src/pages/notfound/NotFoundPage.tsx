@@ -1,7 +1,6 @@
 import { FC, useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
-import { PageContainer } from '../../components/shared/PageContainer';
 import { Button } from '../../components/shared/Button';
 import { Logo } from '../../components/shared/Logo';
 
@@ -28,7 +27,7 @@ const NotFoundPage: FC = () => {
   }, [navigate]);
 
   return (
-    <PageContainer>
+    <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-md mx-auto bg-surface rounded-xl border border-border px-8 py-10 text-center space-y-6">
         <Logo />
 
@@ -49,7 +48,7 @@ const NotFoundPage: FC = () => {
           </Button>
         </div>
       </div>
-    </PageContainer>
+    </div>
   );
 };
 

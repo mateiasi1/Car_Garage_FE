@@ -2,7 +2,6 @@ import { FC, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useSearchParams } from 'react-router-dom';
 import { useUnsubscribeMutation } from '../../rtk/services/customer-service';
-import { PageContainer } from '../shared/PageContainer';
 import { CustomText } from '../shared/CustomText';
 import { Logo } from '../shared/Logo';
 
@@ -39,7 +38,7 @@ const Unsubscribe: FC = () => {
         } else {
           setState('success');
         }
-      } catch {
+      } catch (error) {
         setState('error');
         setErrorMessage(t('unsubscribe.genericError'));
       }
@@ -143,12 +142,12 @@ const Unsubscribe: FC = () => {
   };
 
   return (
-    <PageContainer>
+    <div className="min-h-screen flex items-center justify-center bg-background p-4">
       <div className="w-full max-w-xl mx-auto bg-surface rounded-xl border border-border px-8 py-10 space-y-8">
         <Logo />
         {renderContent()}
       </div>
-    </PageContainer>
+    </div>
   );
 };
 

@@ -17,16 +17,9 @@ export const inspectionsApi = createApi({
   tagTypes: ['Inspections'],
   endpoints: (builder) => ({
     fetchInspections: builder.query<InspectionsResponse, InspectionsFilters | void>({
-      query: (filters: InspectionsFilters) => {
-        const params = new URLSearchParams();
-        params.append('page', filters.page.toString());
-        params.append('licensePlate', filters.licensePlate);
-        params.append('inspectionType', filters.inspectionType);
-        params.append('customerName', filters.customerName);
-        params.append('inspectorName', filters.inspectorName);
-
+      query: () => {
         return {
-          url: `${config.inspectionsUrl}?${params.toString()}`,
+          url: `${config.inspectionsUrl}`,
           method: 'GET',
         };
       },

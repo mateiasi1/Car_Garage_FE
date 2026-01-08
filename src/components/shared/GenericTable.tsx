@@ -30,7 +30,6 @@ export interface GenericTableProps<T> {
   actions?: TableAction<T>[];
   isLoading?: boolean;
   page?: number;
-  totalPages?: number;
   onPageChange?: (page: number) => void;
   search?: string;
   onSearchChange?: (search: string) => void;
@@ -51,7 +50,6 @@ const GenericTable = <T extends { id: string }>({
   actions,
   isLoading = false,
   page = 1,
-  totalPages = 1,
   onPageChange,
   search,
   onSearchChange,
@@ -77,6 +75,10 @@ const GenericTable = <T extends { id: string }>({
       onSearchChange(value);
     } else {
       setInternalSearch(value);
+    }
+    // Reset to first page when searching
+    if (onPageChange && page !== 1) {
+      onPageChange(1);
     }
   };
 
@@ -113,7 +115,8 @@ const GenericTable = <T extends { id: string }>({
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [columns.map((c) => c.key).join(',')]);
 
-  const filteredData = data.filter((item) => {
+  // Step 1: Search in all data
+  const searchedData = data.filter((item) => {
     if (!effectiveSearch) return true;
 
     const searchLower = effectiveSearch.toLowerCase();
@@ -133,6 +136,12 @@ const GenericTable = <T extends { id: string }>({
       return value.toLowerCase().includes(searchLower);
     });
   });
+
+  // Step 2: Paginate the searched results
+  const filteredData = searchedData.slice((page - 1) * itemsPerPage, page * itemsPerPage);
+
+  // Calculate total pages based on search results (not all data)
+  const calculatedTotalPages = Math.ceil(searchedData.length / itemsPerPage) || 1;
 
   useLayoutEffect(() => {
     const el = bodyRef.current;
@@ -386,9 +395,9 @@ const GenericTable = <T extends { id: string }>({
           </div>
         </div>
 
-        {totalPages > 1 && onPageChange && (
+        {calculatedTotalPages > 1 && onPageChange && (
           <div className="flex items-center justify-start flex-wrap gap-2 p-4 flex-shrink-0">
-            {getPaginationNumbers(page, totalPages).map((p, i) =>
+            {getPaginationNumbers(page, calculatedTotalPages).map((p, i) =>
               p === '...' ? (
                 <span key={`ellipsis-${i}`} className="mx-1 text-muted font-body">
                   ...
