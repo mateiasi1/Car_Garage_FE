@@ -72,7 +72,7 @@ const InspectionsPage: FC = () => {
     const filtered = showArchived ? allInspections : allInspections.filter((inspection) => !inspection.deletedAt);
 
     // Sort by expiration date (ASC - closest to expire first)
-    return filtered.sort((a, b) => {
+    return [...filtered].sort((a, b) => {
       const dateA = getExpirationDate(a.inspectedAt, a.type);
       const dateB = getExpirationDate(b.inspectedAt, b.type);
       return dateA.getTime() - dateB.getTime(); // Smaller first (more urgent)
@@ -270,7 +270,10 @@ const InspectionsPage: FC = () => {
         name="showArchived"
         label={t('showArchived')}
         checked={showArchived}
-        onChange={(e) => setShowArchived(e.target.checked)}
+        onChange={(e) => {
+          setShowArchived(e.target.checked);
+          setCurrentPage(1);
+        }}
       />
       <Button
         type="button"
