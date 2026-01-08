@@ -85,15 +85,12 @@ const AdminCompanies: FC = () => {
       key: 'isIndividual',
       label: t('adminCompanies.type'),
       width: '1fr',
-      render: (company) => company.isIndividual ? (
-        <span className="px-2 py-1 rounded text-xs font-medium bg-blue-100 text-blue-800">
-          {t('individual')}
-        </span>
-      ) : (
-        <span className="px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">
-          {t('legalEntity')}
-        </span>
-      ),
+      render: (company) =>
+        company.isIndividual ? (
+          <span className="px-2 py-1 rounded text-xs font-medium bg-blue-100 text-blue-800">{t('individual')}</span>
+        ) : (
+          <span className="px-2 py-1 rounded text-xs font-medium bg-green-100 text-green-800">{t('legalEntity')}</span>
+        ),
     },
   ];
 
