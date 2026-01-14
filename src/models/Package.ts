@@ -15,6 +15,7 @@ export interface Package {
   description?: string;
   price: number;
   features: PackageFeatures;
+  discountPrice?: number;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;
