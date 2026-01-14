@@ -542,13 +542,9 @@ const About = () => {
             </motion.p>
           </AnimatedSection>
 
-          {packagesLoading && (
-            <div className="text-center text-text/70 font-body">{t('packages.loading')}</div>
-          )}
+          {packagesLoading && <div className="text-center text-text/70 font-body">{t('packages.loading')}</div>}
 
-          {packagesError && (
-            <div className="text-center text-error font-body">{t('packages.error')}</div>
-          )}
+          {packagesError && <div className="text-center text-error font-body">{t('packages.error')}</div>}
 
           {!packagesLoading && !packagesError && (!packages || packages.length === 0) && (
             <div className="text-center text-text/70 font-body">{t('packages.noPackages')}</div>
@@ -571,9 +567,7 @@ const About = () => {
                       {pkg.name}
                     </h3>
                     <div className="text-right">
-                      <span className="text-3xl font-bold font-heading text-primary">
-                        {formatPrice(pkg.price)}
-                      </span>
+                      <span className="text-3xl font-bold font-heading text-primary">{formatPrice(pkg.price)}</span>
                       <span className="ml-1 text-text/60 font-body">{t('packages.currency')}</span>
                     </div>
                   </div>
