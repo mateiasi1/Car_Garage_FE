@@ -178,39 +178,39 @@ const About = () => {
 
   const offerEndDate = new Date(2026, 1, 14, 0, 0, 0);
 
-const [timeLeft, setTimeLeft] = useState({
-  days: 0,
-  hours: 0,
-  minutes: 0,
-  seconds: 0,
-});
+  const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0,
+  });
 
-useEffect(() => {
-  const calculateTimeLeft = () => {
-    const now = new Date(); // ✅ MOVE HERE
+  useEffect(() => {
+    const calculateTimeLeft = () => {
+      const now = new Date(); // ✅ MOVE HERE
 
-    const difference = offerEndDate.getTime() - now.getTime();
+      const difference = offerEndDate.getTime() - now.getTime();
 
-    if (difference <= 0) {
-      return { days: 0, hours: 0, minutes: 0, seconds: 0 };
-    }
+      if (difference <= 0) {
+        return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+      }
 
-    return {
-      days: Math.floor(difference / (1000 * 60 * 60 * 24)),
-      hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
-      minutes: Math.floor((difference / (1000 * 60)) % 60),
-      seconds: Math.floor((difference / 1000) % 60),
+      return {
+        days: Math.floor(difference / (1000 * 60 * 60 * 24)),
+        hours: Math.floor((difference / (1000 * 60 * 60)) % 24),
+        minutes: Math.floor((difference / (1000 * 60)) % 60),
+        seconds: Math.floor((difference / 1000) % 60),
+      };
     };
-  };
 
-  setTimeLeft(calculateTimeLeft());
-
-  const timer = setInterval(() => {
     setTimeLeft(calculateTimeLeft());
-  }, 1000);
 
-  return () => clearInterval(timer);
-}, []);
+    const timer = setInterval(() => {
+      setTimeLeft(calculateTimeLeft());
+    }, 1000);
+
+    return () => clearInterval(timer);
+  }, []);
 
   const formatPrice = (price: number) => {
     return new Intl.NumberFormat('en-US').format(price);
@@ -254,7 +254,7 @@ useEffect(() => {
       description: t('home.howItWorks.step3.description'),
     },
   ];
-  
+
   return (
     <div className="min-h-screen bg-background text-text overflow-x-hidden">
       {/* HERO SECTION - Full screen with background image */}
@@ -563,185 +563,179 @@ useEffect(() => {
       </section>
 
       {/* PACKAGES SECTION */}
-    <section className="py-24 relative bg-gradient-to-b from-background via-primary/5 to-background">
-      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-        <AnimatedSection className="text-center mb-16">
-          <motion.span
-            className="inline-block text-primary font-semibold text-sm uppercase tracking-wider mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-          >
-            {t('packages.name')}
-          </motion.span>
-          <motion.h2
-            className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-text mb-4"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.1 }}
-          >
-            {t('packages.availablePackages')}
-          </motion.h2>
-          <motion.p
-            className="text-text/60 font-body text-lg max-w-2xl mx-auto"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.2 }}
-          >
-            {t('packages.choosePackageDescription')}
-          </motion.p>
-        </AnimatedSection>
-
-        {packagesLoading && <div className="text-center text-text/70 font-body">{t('packages.loading')}</div>}
-
-        {packagesError && <div className="text-center text-error font-body">{t('packages.error')}</div>}
-
-        {!packagesLoading && !packagesError && (!packages || packages.length === 0) && (
-          <div className="text-center text-text/70 font-body">{t('packages.noPackages')}</div>
-        )}
-
-        {/* Limited Time Offer Banner */}
-        <motion.div
-          className="mb-12 relative"
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          transition={{ duration: 0.6 }}
-        >
-          <div className="relative bg-gradient-to-r from-primary/20 via-primary/10 to-primary/20 rounded-2xl p-6 border border-primary/30 shadow-lg backdrop-blur-sm overflow-hidden">
-            {/* Decorative background elements */}
-            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
-            <div className="absolute bottom-0 left-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
-            
-          <div className="relative z-10 flex items-start gap-4">
-  <div className="flex-shrink-0 mt-1">
-    <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
-      <Tag className="w-6 h-6 text-primary" />
-    </div>
-  </div>
-
-  <div className="flex-1">
-    <h3 className="text-xl font-heading font-bold text-primary mb-2 flex items-center gap-2">
-      {t('discounts.limitedTimeOffer_Title')}
-    </h3>
-    <p className="text-text/80 font-body leading-relaxed">
-      {t('discounts.limitedTimeOffer_Text')}
-    </p>
-  </div>
-</div>
-
-{offerEndDate.getTime() > Date.now() && (
-  <div className="mt-6 flex flex-col items-center justify-center text-center">
-    <span className="text-sm font-semibold text-text/60 uppercase tracking-wide mb-3">
-      {t('endsIn')}
-    </span>
-
-    <div className="flex gap-2 justify-center flex-wrap">
-      <div className="bg-primary/20 rounded-lg px-3 py-2 min-w-[60px] text-center border border-primary/30">
-        <div className="text-2xl font-bold font-heading text-primary">{timeLeft.days}</div>
-        <div className="text-xs text-text/60 uppercase">{t('days')}</div>
-      </div>
-
-      <div className="bg-primary/20 rounded-lg px-3 py-2 min-w-[60px] text-center border border-primary/30">
-        <div className="text-2xl font-bold font-heading text-primary">{timeLeft.hours}</div>
-        <div className="text-xs text-text/60 uppercase">{t('hours')}</div>
-      </div>
-
-      <div className="bg-primary/20 rounded-lg px-3 py-2 min-w-[60px] text-center border border-primary/30">
-        <div className="text-2xl font-bold font-heading text-primary">{timeLeft.minutes}</div>
-        <div className="text-xs text-text/60 uppercase">{t('min')}</div>
-      </div>
-
-      <div className="bg-primary/20 rounded-lg px-3 py-2 min-w-[60px] text-center border border-primary/30">
-        <div className="text-2xl font-bold font-heading text-primary">{timeLeft.seconds}</div>
-        <div className="text-xs text-text/60 uppercase">{t('sec')}</div>
-      </div>
-    </div>
-  </div>
-)}  
-        <div className="mt-6 flex flex-col items-center justify-center text-center">
-         <Button
-              size="md"
-              variant="primary"
-              onClick={scrollToContact}
-              className="rounded-full shadow-lg shadow-primary/30 px-6 py-2.5 font-medium group hover:scale-105 active:scale-[0.98] transition-transform"
+      <section className="py-24 relative bg-gradient-to-b from-background via-primary/5 to-background">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AnimatedSection className="text-center mb-16">
+            <motion.span
+              className="inline-block text-primary font-semibold text-sm uppercase tracking-wider mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
             >
-              {t('getTheOffer')}
-              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-          </Button>
-        </div>
-   </div>
-        </motion.div>
+              {t('packages.name')}
+            </motion.span>
+            <motion.h2
+              className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-text mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+            >
+              {t('packages.availablePackages')}
+            </motion.h2>
+            <motion.p
+              className="text-text/60 font-body text-lg max-w-2xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              {t('packages.choosePackageDescription')}
+            </motion.p>
+          </AnimatedSection>
 
-        {!!packages?.length && (
-          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-            {packages.map((pkg, index) => (
-              <motion.div
-                key={pkg.id}
-                className="group relative bg-card/90 backdrop-blur-md rounded-3xl p-8 border border-white/10 shadow-xl hover:shadow-2xl transition-shadow duration-500 overflow-hidden"
-                initial={{ opacity: 0, y: 40 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.6, delay: index * 0.1 }}
-                whileHover={{ y: -8, transition: { duration: 0.3 } }}
-              >
-                {/* Offer Badge */}
-                {(pkg.discountPrice != null && pkg.discountPrice !== undefined) && (
-                  <div className="absolute top-4 right-4 bg-gradient-to-r from-primary to-primary/80 text-white px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide flex items-center gap-1.5 shadow-lg">
-                    <Tag className="w-3 h-3" />
-                    {t('discounts.offer')}
+          {packagesLoading && <div className="text-center text-text/70 font-body">{t('packages.loading')}</div>}
+
+          {packagesError && <div className="text-center text-error font-body">{t('packages.error')}</div>}
+
+          {!packagesLoading && !packagesError && (!packages || packages.length === 0) && (
+            <div className="text-center text-text/70 font-body">{t('packages.noPackages')}</div>
+          )}
+
+          {/* Limited Time Offer Banner */}
+          <motion.div
+            className="mb-12 relative"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+          >
+            <div className="relative bg-gradient-to-r from-primary/20 via-primary/10 to-primary/20 rounded-2xl p-6 border border-primary/30 shadow-lg backdrop-blur-sm overflow-hidden">
+              {/* Decorative background elements */}
+              <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
+              <div className="absolute bottom-0 left-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
+
+              <div className="relative z-10 flex items-start gap-4">
+                <div className="flex-shrink-0 mt-1">
+                  <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                    <Tag className="w-6 h-6 text-primary" />
                   </div>
-                )}
+                </div>
 
-                <div className="mb-6 mt-4">
-                  <h3 className="text-2xl font-heading font-bold text-text group-hover:text-primary transition-colors duration-300 mb-4">
-                    {pkg.name}
+                <div className="flex-1">
+                  <h3 className="text-xl font-heading font-bold text-primary mb-2 flex items-center gap-2">
+                    {t('discounts.limitedTimeOffer_Title')}
                   </h3>
-                  
-                  <div className="flex items-baseline gap-2">
-                    {/* Show original price with strikethrough if discount exists */}
-                    {(pkg.discountPrice != null && pkg.discountPrice !== undefined) && (
-                      <span className="text-xl font-semibold text-muted line-through">
-                        {formatPrice(pkg.price)}
-                      </span>
-                    )}
-                    
-                    {/* Show discount price if it exists, otherwise show regular price */}
-                    <div className="flex items-baseline">
-                      <span className="text-3xl font-bold font-heading text-primary">
-                        {formatPrice(pkg.discountPrice ?? pkg.price)}
-                      </span>
-                      <span className="ml-1 text-text/60 font-body">{t('packages.currency')}</span>
+                  <p className="text-text/80 font-body leading-relaxed">{t('discounts.limitedTimeOffer_Text')}</p>
+                </div>
+              </div>
+
+              {offerEndDate.getTime() > Date.now() && (
+                <div className="mt-6 flex flex-col items-center justify-center text-center">
+                  <span className="text-sm font-semibold text-text/60 uppercase tracking-wide mb-3">{t('endsIn')}</span>
+
+                  <div className="flex gap-2 justify-center flex-wrap">
+                    <div className="bg-primary/20 rounded-lg px-3 py-2 min-w-[60px] text-center border border-primary/30">
+                      <div className="text-2xl font-bold font-heading text-primary">{timeLeft.days}</div>
+                      <div className="text-xs text-text/60 uppercase">{t('days')}</div>
+                    </div>
+
+                    <div className="bg-primary/20 rounded-lg px-3 py-2 min-w-[60px] text-center border border-primary/30">
+                      <div className="text-2xl font-bold font-heading text-primary">{timeLeft.hours}</div>
+                      <div className="text-xs text-text/60 uppercase">{t('hours')}</div>
+                    </div>
+
+                    <div className="bg-primary/20 rounded-lg px-3 py-2 min-w-[60px] text-center border border-primary/30">
+                      <div className="text-2xl font-bold font-heading text-primary">{timeLeft.minutes}</div>
+                      <div className="text-xs text-text/60 uppercase">{t('min')}</div>
+                    </div>
+
+                    <div className="bg-primary/20 rounded-lg px-3 py-2 min-w-[60px] text-center border border-primary/30">
+                      <div className="text-2xl font-bold font-heading text-primary">{timeLeft.seconds}</div>
+                      <div className="text-xs text-text/60 uppercase">{t('sec')}</div>
                     </div>
                   </div>
                 </div>
+              )}
+              <div className="mt-6 flex flex-col items-center justify-center text-center">
+                <Button
+                  size="md"
+                  variant="primary"
+                  onClick={scrollToContact}
+                  className="rounded-full shadow-lg shadow-primary/30 px-6 py-2.5 font-medium group hover:scale-105 active:scale-[0.98] transition-transform"
+                >
+                  {t('getTheOffer')}
+                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </div>
+            </div>
+          </motion.div>
 
-                {pkg.description && (
-                  <p className="text-sm text-muted font-body leading-relaxed mb-6">{pkg.description}</p>
-                )}
-
-                <div className="space-y-3">
-                  <div className="flex items-center gap-3">
-                    <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center">
-                      <Check className="w-5 h-5 text-primary" />
+          {!!packages?.length && (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {packages.map((pkg, index) => (
+                <motion.div
+                  key={pkg.id}
+                  className="group relative bg-card/90 backdrop-blur-md rounded-3xl p-8 border border-white/10 shadow-xl hover:shadow-2xl transition-shadow duration-500 overflow-hidden"
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  whileHover={{ y: -8, transition: { duration: 0.3 } }}
+                >
+                  {/* Offer Badge */}
+                  {pkg.discountPrice != null && pkg.discountPrice !== undefined && (
+                    <div className="absolute top-4 right-4 bg-gradient-to-r from-primary to-primary/80 text-white px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide flex items-center gap-1.5 shadow-lg">
+                      <Tag className="w-3 h-3" />
+                      {t('discounts.offer')}
                     </div>
-                    <span className="text-sm font-body text-text">
-                      {pkg.features.sms.limit > 0
-                        ? `${pkg.features.sms.limit} ${t('packages.smsPerMonth')}`
-                        : t('packages.unlimitedSMS')}
-                    </span>
-                  </div>
-                </div>
+                  )}
 
-                <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-              </motion.div>
-            ))}
-          </div>
-        )}
-      </div>
-    </section>
+                  <div className="mb-6 mt-4">
+                    <h3 className="text-2xl font-heading font-bold text-text group-hover:text-primary transition-colors duration-300 mb-4">
+                      {pkg.name}
+                    </h3>
+
+                    <div className="flex items-baseline gap-2">
+                      {/* Show original price with strikethrough if discount exists */}
+                      {pkg.discountPrice != null && pkg.discountPrice !== undefined && (
+                        <span className="text-xl font-semibold text-muted line-through">{formatPrice(pkg.price)}</span>
+                      )}
+
+                      {/* Show discount price if it exists, otherwise show regular price */}
+                      <div className="flex items-baseline">
+                        <span className="text-3xl font-bold font-heading text-primary">
+                          {formatPrice(pkg.discountPrice ?? pkg.price)}
+                        </span>
+                        <span className="ml-1 text-text/60 font-body">{t('packages.currency')}</span>
+                      </div>
+                    </div>
+                  </div>
+
+                  {pkg.description && (
+                    <p className="text-sm text-muted font-body leading-relaxed mb-6">{pkg.description}</p>
+                  )}
+
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center">
+                        <Check className="w-5 h-5 text-primary" />
+                      </div>
+                      <span className="text-sm font-body text-text">
+                        {pkg.features.sms.limit > 0
+                          ? `${pkg.features.sms.limit} ${t('packages.smsPerMonth')}`
+                          : t('packages.unlimitedSMS')}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                </motion.div>
+              ))}
+            </div>
+          )}
+        </div>
+      </section>
 
       {/* CTA SECTION */}
       <section ref={contactRef} className="py-32 relative overflow-hidden">

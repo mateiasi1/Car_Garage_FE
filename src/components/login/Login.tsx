@@ -68,7 +68,7 @@ const Login: FC = () => {
 
         if (data.accessToken) {
           login({ accessToken: data.accessToken, hasBranchRestriction: data.hasBranchRestriction });
-          
+
           if (data.hasBranchRestriction) {
             setSelectBranch(true);
             setBranches([]);
@@ -117,7 +117,7 @@ const Login: FC = () => {
 
       if (data.accessToken) {
         login({ accessToken: data.accessToken, hasBranchRestriction: data.hasBranchRestriction });
-        
+
         if (!data.hasBranchRestriction) {
           // Clear branch selection UI if no restriction
           setSelectBranch(false);
