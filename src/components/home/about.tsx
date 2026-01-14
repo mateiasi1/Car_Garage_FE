@@ -660,8 +660,19 @@ useEffect(() => {
       </div>
     </div>
   </div>
-)}
-          </div>
+)}  
+        <div className="mt-6 flex flex-col items-center justify-center text-center">
+         <Button
+              size="md"
+              variant="primary"
+              onClick={scrollToContact}
+              className="rounded-full shadow-lg shadow-primary/30 px-6 py-2.5 font-medium group hover:scale-105 active:scale-[0.98] transition-transform"
+            >
+              {t('getTheOffer')}
+              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+          </Button>
+        </div>
+   </div>
         </motion.div>
 
         {!!packages?.length && (
