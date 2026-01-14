@@ -159,7 +159,7 @@ const About = () => {
   const { t, i18n } = useTranslation();
   const { isAuthenticated } = useContext(AuthContext);
   const heroRef = useRef<HTMLDivElement>(null);
- const contactRef = useRef<HTMLDivElement>(null);
+  const contactRef = useRef<HTMLDivElement>(null);
   const { data: packages, isLoading: packagesLoading, error: packagesError } = useFetchPublicPackagesQuery();
 
   // Parallax effect for hero background
@@ -337,7 +337,7 @@ const About = () => {
               <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
             </Button>
 
-             <Link to={primaryCtaLink}>
+            <Link to={primaryCtaLink}>
               <Button
                 size="md"
                 variant="primary"
@@ -665,24 +665,24 @@ const About = () => {
               </motion.a>
             </div>
 
-           <motion.div
-            className="mt-12 pt-8 border-t border-primary/20 flex justify-center"
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            transition={{ delay: 0.4 }}
-          >
-            <Link to={primaryCtaLink}>
-              <Button
-                size="md"
-                variant="primary"
-                className="rounded-full shadow-lg shadow-primary/30 px-6 py-2.5 font-medium group hover:scale-105 active:scale-[0.98] transition-transform"
-              >
-                {t('loginButton')}
-                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
-          </motion.div>
+            <motion.div
+              className="mt-12 pt-8 border-t border-primary/20 flex justify-center"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.4 }}
+            >
+              <Link to={primaryCtaLink}>
+                <Button
+                  size="md"
+                  variant="primary"
+                  className="rounded-full shadow-lg shadow-primary/30 px-6 py-2.5 font-medium group hover:scale-105 active:scale-[0.98] transition-transform"
+                >
+                  {t('loginButton')}
+                  <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+                </Button>
+              </Link>
+            </motion.div>
           </AnimatedSection>
         </div>
       </section>
