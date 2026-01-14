@@ -4,4 +4,5 @@ export enum CarCategories {
   C = 'C',
   D = 'D',
   E = 'E',
+  O = 'O',
 }
