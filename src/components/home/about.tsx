@@ -8,6 +8,7 @@ import logo from '../../assets/logo.png';
 import carHome from '../../assets/car_home.png';
 import { Button } from '../shared/Button';
 import { brandName, contactEmail, contactPhone, contactPhoneRaw } from '../../constants/constants';
+import { useFetchPublicPackagesQuery } from '../../rtk/services/package-service';
 import {
   Building2,
   ClipboardCheck,
@@ -19,6 +20,7 @@ import {
   FileCheck,
   Sparkles,
   CheckCircle2,
+  Check,
 } from 'lucide-react';
 
 // Animation variants
@@ -154,9 +156,10 @@ const StepCard = ({
 };
 
 const About = () => {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const { isAuthenticated } = useContext(AuthContext);
   const heroRef = useRef<HTMLDivElement>(null);
+  const { data: packages, isLoading: packagesLoading, error: packagesError } = useFetchPublicPackagesQuery();
 
   // Parallax effect for hero background
   const { scrollYProgress } = useScroll({
@@ -167,6 +170,8 @@ const About = () => {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   const primaryCtaLink = isAuthenticated ? routes.ADMINISTRATION : routes.LOGIN;
+  const formatPrice = (price: number) =>
+    new Intl.NumberFormat(i18n.language, { maximumFractionDigits: 0 }).format(price);
 
   const features = [
     {
@@ -502,6 +507,99 @@ const About = () => {
               </Button>
             </Link>
           </AnimatedSection>
+        </div>
+      </section>
+
+      {/* PACKAGES SECTION */}
+      <section className="py-24 relative bg-gradient-to-b from-background via-primary/5 to-background">
+        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+          <AnimatedSection className="text-center mb-16">
+            <motion.span
+              className="inline-block text-primary font-semibold text-sm uppercase tracking-wider mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+            >
+              {t('packages.name')}
+            </motion.span>
+            <motion.h2
+              className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-text mb-4"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.1 }}
+            >
+              {t('packages.availablePackages')}
+            </motion.h2>
+            <motion.p
+              className="text-text/60 font-body text-lg max-w-2xl mx-auto"
+              initial={{ opacity: 0, y: 20 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ delay: 0.2 }}
+            >
+              {t('packages.choosePackageDescription')}
+            </motion.p>
+          </AnimatedSection>
+
+          {packagesLoading && (
+            <div className="text-center text-text/70 font-body">{t('packages.loading')}</div>
+          )}
+
+          {packagesError && (
+            <div className="text-center text-error font-body">{t('packages.error')}</div>
+          )}
+
+          {!packagesLoading && !packagesError && (!packages || packages.length === 0) && (
+            <div className="text-center text-text/70 font-body">{t('packages.noPackages')}</div>
+          )}
+
+          {!!packages?.length && (
+            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+              {packages.map((pkg, index) => (
+                <motion.div
+                  key={pkg.id}
+                  className="group relative bg-card/90 backdrop-blur-md rounded-3xl p-8 border border-white/10 shadow-xl hover:shadow-2xl transition-shadow duration-500"
+                  initial={{ opacity: 0, y: 40 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.6, delay: index * 0.1 }}
+                  whileHover={{ y: -8, transition: { duration: 0.3 } }}
+                >
+                  <div className="flex items-start justify-between gap-6 mb-4">
+                    <h3 className="text-2xl font-heading font-bold text-text group-hover:text-primary transition-colors duration-300">
+                      {pkg.name}
+                    </h3>
+                    <div className="text-right">
+                      <span className="text-3xl font-bold font-heading text-primary">
+                        {formatPrice(pkg.price)}
+                      </span>
+                      <span className="ml-1 text-text/60 font-body">{t('packages.currency')}</span>
+                    </div>
+                  </div>
+
+                  {pkg.description && (
+                    <p className="text-sm text-muted font-body leading-relaxed mb-6">{pkg.description}</p>
+                  )}
+
+                  <div className="space-y-3">
+                    <div className="flex items-center gap-3">
+                      <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center">
+                        <Check className="w-5 h-5 text-primary" />
+                      </div>
+                      <span className="text-sm font-body text-text">
+                        {pkg.features.sms.limit > 0
+                          ? `${pkg.features.sms.limit} ${t('packages.smsPerMonth')}`
+                          : t('packages.unlimitedSMS')}
+                      </span>
+                    </div>
+                  </div>
+
+                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+                </motion.div>
+              ))}
+            </div>
+          )}
         </div>
       </section>
 

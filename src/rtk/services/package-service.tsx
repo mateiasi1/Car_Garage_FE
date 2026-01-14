@@ -18,7 +18,14 @@ export const packagesApi = createApi({
       },
       providesTags: ['Package'],
     }),
+    fetchPublicPackages: builder.query<Package[], void>({
+      query: () => ({
+        url: '/packages/public',
+        method: 'GET',
+      }),
+      providesTags: ['Package'],
+    }),
   }),
 });
 
-export const { useFetchPackagesQuery } = packagesApi;
+export const { useFetchPackagesQuery, useFetchPublicPackagesQuery } = packagesApi;
