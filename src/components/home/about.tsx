@@ -18,9 +18,7 @@ import {
   UserPlus,
   FileCheck,
   Sparkles,
-  CheckCircle2,
-  Check,
-  Percent,
+  CheckCircle2
 } from 'lucide-react';
 
 // Animation variants
