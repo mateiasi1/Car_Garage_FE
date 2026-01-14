@@ -733,6 +733,7 @@
      "months": "luni",
      "hours": "ore",
      "min":"min",
-     "sec": "sec"
+     "sec": "sec",
+     "getTheOffer": "Vreau oferta!"
   }
 }

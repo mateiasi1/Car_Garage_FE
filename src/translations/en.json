@@ -733,6 +733,7 @@
     "months": "months",
     "hours": "hours",
     "min":"min",
-    "sec": "sec"
+    "sec": "sec",
+    "getTheOffer": "Get the offer!"
   }
 }
