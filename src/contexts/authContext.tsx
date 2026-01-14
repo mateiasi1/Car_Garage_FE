@@ -20,6 +20,7 @@ interface AuthContextType {
   isAuthenticated: boolean;
   user: User | undefined;
   isLoading: boolean;
+  hasBranchRestriction: boolean;
   login: (tokens: AuthTokens) => void;
   logout: () => void;
 }
@@ -28,6 +29,7 @@ const AuthContext = createContext<AuthContextType>({
   isAuthenticated: false,
   user: undefined,
   isLoading: true,
+  hasBranchRestriction: false,
   login: () => {},
   logout: () => {},
 });
@@ -36,11 +38,12 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
   const dispatch = useDispatch();
   const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
   const [authChecked, setAuthChecked] = useState<boolean>(false);
+  const [hasBranchRestriction, setHasBranchRestriction] = useState<boolean>(false);
 
   const [logoutMutation] = useLogoutMutation();
 
   const { data: user, error } = useFetchUserProfileQuery(undefined, {
-    skip: !isAuthenticated || !authChecked,
+    skip: !isAuthenticated || !authChecked || hasBranchRestriction,
   });
 
   const logout = useCallback((): void => {
@@ -51,7 +54,9 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
       })
       .finally(() => {
         localStorage.removeItem('access_token');
+        localStorage.removeItem('has_branch_restriction');
         setIsAuthenticated(false);
+        setHasBranchRestriction(false);
 
         // Reset all API caches on logout
         dispatch(userApi.util.resetApiState());
@@ -67,6 +72,7 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
 
   useEffect(() => {
     setIsAuthenticated(!!localStorage.getItem('access_token'));
+    setHasBranchRestriction(localStorage.getItem('has_branch_restriction') === 'true');
     setAuthChecked(true);
 
     if (localStorage.getItem('refresh_token')) {
@@ -80,16 +86,25 @@ const AuthProvider = ({ children }: AuthProviderProps) => {
     }
   }, [error, logout]);
 
-  const login = ({ accessToken }: { accessToken: string }): void => {
+  const login = ({ accessToken, hasBranchRestriction: restriction }: AuthTokens): void => {
     localStorage.setItem('access_token', accessToken);
+    if (restriction) {
+      localStorage.setItem('has_branch_restriction', 'true');
+      setHasBranchRestriction(true);
+    } else {
+      localStorage.removeItem('has_branch_restriction');
+      setHasBranchRestriction(false);
+    }
     dispatch(userApi.util.invalidateTags(['User']));
     setIsAuthenticated(true);
   };
 
-  const isLoading = !authChecked || (isAuthenticated && !user && !error);
+  const isLoading = !authChecked || (isAuthenticated && !hasBranchRestriction && !user && !error);
 
   return (
-    <AuthContext.Provider value={{ isAuthenticated, login, logout, user, isLoading }}>{children}</AuthContext.Provider>
+    <AuthContext.Provider value={{ isAuthenticated, login, logout, user, isLoading, hasBranchRestriction }}>
+      {children}
+    </AuthContext.Provider>
   );
 };
 

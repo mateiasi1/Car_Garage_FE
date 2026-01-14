@@ -13,6 +13,7 @@ export interface LoginResponse {
   selectBranch?: boolean;
   branches?: { id: string; name: string }[];
   canAddBranch?: boolean;
+  hasBranchRestriction?: boolean;
 }
 
 export interface RefreshTokenResponse {

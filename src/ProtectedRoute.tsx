@@ -9,7 +9,7 @@ interface ProtectedRouteProps {
 }
 
 const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element, roles }) => {
-  const { isAuthenticated, isLoading, user } = useContext(AuthContext);
+  const { isAuthenticated, isLoading, user, hasBranchRestriction } = useContext(AuthContext);
 
   const hasAccess = (userRoles: Role[]) => {
     return userRoles.some((role) => roles.includes(role.name));
@@ -20,6 +20,10 @@ const ProtectedRoute: React.FC<ProtectedRouteProps> = ({ element, roles }) => {
   }
 
   if (!isAuthenticated) {
+    return <Navigate to="/login" replace />;
+  }
+
+  if (hasBranchRestriction) {
     return <Navigate to="/login" replace />;
   }
 
