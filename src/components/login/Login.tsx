@@ -27,7 +27,7 @@ interface BranchOption {
 const Login: FC = () => {
   const { t } = useTranslation();
   const navigate = useNavigate();
-  const { login, isAuthenticated, user } = useContext(AuthContext);
+  const { login, isAuthenticated, user, hasBranchRestriction } = useContext(AuthContext);
   const [loginMutation] = useLoginMutation();
 
   const [selectBranch, setSelectBranch] = useState(false);
@@ -67,7 +67,13 @@ const Login: FC = () => {
         }
 
         if (data.accessToken) {
-          login({ accessToken: data.accessToken });
+          login({ accessToken: data.accessToken, hasBranchRestriction: data.hasBranchRestriction });
+          
+          if (data.hasBranchRestriction) {
+            setSelectBranch(true);
+            setBranches([]);
+            setCanAddBranch(true);
+          }
         } else {
           showToast(t('wrongCredentials'), 'error');
         }
@@ -80,13 +86,13 @@ const Login: FC = () => {
   const onSubmit = handleSubmit();
 
   useEffect(() => {
-    if (!isAuthenticated || !user) return;
+    if (!isAuthenticated || !user || hasBranchRestriction) return;
 
     const isInspectorOnly = user.roles?.some((r) => r.name === 'INSPECTOR');
 
     // Dashboard for admin/owner/demo, Inspections for inspector-only
     navigate(isInspectorOnly ? routes.INSPECTIONS : routes.DASHBOARD);
-  }, [isAuthenticated, user, navigate]);
+  }, [isAuthenticated, user, navigate, hasBranchRestriction]);
 
   useEffect(() => {
     if (selectBranch && branches.length > 0 && !selectedBranchId) {
@@ -110,7 +116,13 @@ const Login: FC = () => {
       }).unwrap();
 
       if (data.accessToken) {
-        login({ accessToken: data.accessToken });
+        login({ accessToken: data.accessToken, hasBranchRestriction: data.hasBranchRestriction });
+        
+        if (!data.hasBranchRestriction) {
+          // Clear branch selection UI if no restriction
+          setSelectBranch(false);
+          setBranches([]);
+        }
       } else if (data.selectBranch && data.branches && data.branches.length > 0) {
         setSelectBranch(true);
         setBranches(
@@ -128,8 +140,7 @@ const Login: FC = () => {
     }
   };
 
-  const isCreateBranchView = showCreateBranch;
-  const shouldHandleLoginSubmit = !isCreateBranchView && (!selectBranch || branches.length > 0);
+  const shouldHandleLoginSubmit = !showCreateBranch && (!selectBranch || branches.length > 0);
 
   return (
     <FormContainer onSubmit={shouldHandleLoginSubmit ? onSubmit : undefined} noValidate>
@@ -139,7 +150,7 @@ const Login: FC = () => {
           <span className="text-2xl font-bold font-heading text-primary">RoadReady</span>
         </div>
 
-        {!isCreateBranchView ? (
+        {!showCreateBranch ? (
           <>
             <div className="space-y-6 pb-4 flex-1">
               {!selectBranch && (
