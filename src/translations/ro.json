@@ -621,7 +621,7 @@
       "reset": "Resetează",
       "offer": "Ofertă",
       "limitedTimeOffer_Title": "🎉 Ofertă limitată",
-      "limitedTimeOffer_Text": "Dacă îți creezi cont în această lună, vei beneficia de primele 3 luni gratuite și următoarele 9 luni cu 30% reducere din prețul integral. Această ofertă limitată se încheie pe 14.02.2025",
+      "limitedTimeOffer_Text": "Dacă îți creezi cont în această lună, vei beneficia de primele 3 luni gratuite și următoarele 9 luni cu 30% reducere din prețul integral. Această ofertă limitată se încheie pe 14.02.2026",
       "companyRequired": "Te rugăm să selectezi o companie",
       "branchRequired": "Te rugăm să selectezi cel puțin un sediu sau bifează 'Toate sediile'",
       "packageRequired": "Te rugăm să selectezi cel puțin un pachet sau bifează 'Toate pachetele'",
@@ -727,6 +727,12 @@
       "smsUsageSubtitle": "SMS-uri folosite vs. limită",
       "companyActivity": "Activitate Companii",
       "companyActivitySubtitle": "Companii cu inspecții în ultimele 90 zile"
-    }
+    },
+     "endsIn": "Expiră în:",
+     "days": "zile",
+     "months": "luni",
+     "hours": "ore",
+     "min":"min",
+     "sec": "sec"
   }
 }
