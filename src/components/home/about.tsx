@@ -1,6 +1,6 @@
 import { useTranslation } from 'react-i18next';
 import { Link } from 'react-router-dom';
-import { useContext, useRef } from 'react';
+import { useContext, useEffect, useRef, useState } from 'react';
 import { motion, useScroll, useTransform, useInView } from 'framer-motion';
 import { AuthContext } from '../../contexts/authContext';
 import { routes } from '../../constants/routes';
@@ -157,7 +157,7 @@ const StepCard = ({
 };
 
 const About = () => {
-  const { t, i18n } = useTranslation();
+  const { t } = useTranslation();
   const { isAuthenticated } = useContext(AuthContext);
   const heroRef = useRef<HTMLDivElement>(null);
   const contactRef = useRef<HTMLDivElement>(null);
@@ -175,8 +175,47 @@ const About = () => {
   const scrollToContact = () => {
     contactRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
   };
-  const formatPrice = (price: number) =>
-    new Intl.NumberFormat(i18n.language, { maximumFractionDigits: 0 }).format(price);
+    const now = new Date();
+   const offerEndDate = new Date(2026, 1, 14, 0, 0, 0);
+
+   const [timeLeft, setTimeLeft] = useState({
+    days: 0,
+    hours: 0,
+    minutes: 0,
+    seconds: 0
+  });
+
+ useEffect(() => {
+  const calculateTimeLeft = () => {
+   
+
+
+    const difference = offerEndDate.getTime() - now.getTime();
+
+    if (difference > 0) {
+      const days = Math.floor(difference / (1000 * 60 * 60 * 24));
+      const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+      const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
+      const seconds = Math.floor((difference % (1000 * 60)) / 1000);
+
+      return { days, hours, minutes, seconds };
+    }
+
+    return { days: 0, hours: 0, minutes: 0, seconds: 0 };
+  };
+
+  setTimeLeft(calculateTimeLeft());
+
+  const timer = setInterval(() => {
+    setTimeLeft(calculateTimeLeft());
+  }, 1000);
+
+  return () => clearInterval(timer);
+}, []);
+
+  const formatPrice = (price: number) => {
+    return new Intl.NumberFormat('en-US').format(price);
+  };
 
   const features = [
     {
@@ -525,8 +564,7 @@ const About = () => {
       </section>
 
       {/* PACKAGES SECTION */}
-     {/* <section className="py-24 relative bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950"> */}
-      <section className="py-24 relative bg-gradient-to-b from-background via-primary/5 to-background">
+    <section className="py-24 relative bg-gradient-to-b from-background via-primary/5 to-background">
       <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
         <AnimatedSection className="text-center mb-16">
           <motion.span
@@ -586,11 +624,35 @@ const About = () => {
               </div>
               <div className="flex-1">
                 <h3 className="text-xl font-heading font-bold text-primary mb-2 flex items-center gap-2">
-                 {t('discounts.limitedTimeOffer_Title')}
+                  {t('discounts.limitedTimeOffer_Title')}
                 </h3>
-                <p className="text-text/80 font-body leading-relaxed">
+                <p className="text-text/80 font-body leading-relaxed mb-4">
                   {t('discounts.limitedTimeOffer_Text')}
                 </p>
+              {/* Countdown Timer */}
+                {offerEndDate > now &&
+                <div className="flex items-center gap-3 flex-wrap">
+                  <span className="text-sm font-semibold text-text/60 uppercase tracking-wide">{t('endsIn')}</span>
+                  <div className="flex gap-2">
+                    <div className="bg-primary/20 rounded-lg px-3 py-2 min-w-[60px] text-center border border-primary/30">
+                      <div className="text-2xl font-bold font-heading text-primary">{timeLeft.days}</div>
+                      <div className="text-xs text-text/60 font-body uppercase">{t('days')}</div>
+                    </div>
+                    <div className="bg-primary/20 rounded-lg px-3 py-2 min-w-[60px] text-center border border-primary/30">
+                      <div className="text-2xl font-bold font-heading text-primary">{timeLeft.hours}</div>
+                      <div className="text-xs text-text/60 font-body uppercase">{t('hours')}</div>
+                    </div>
+                    <div className="bg-primary/20 rounded-lg px-3 py-2 min-w-[60px] text-center border border-primary/30">
+                      <div className="text-2xl font-bold font-heading text-primary">{timeLeft.minutes}</div>
+                      <div className="text-xs text-text/60 font-body uppercase">{t('min')}</div>
+                    </div>
+                    <div className="bg-primary/20 rounded-lg px-3 py-2 min-w-[60px] text-center border border-primary/30">
+                      <div className="text-2xl font-bold font-heading text-primary">{timeLeft.seconds}</div>
+                      <div className="text-xs text-text/60 font-body uppercase">{t('sec')}</div>
+                    </div>
+                  </div>
+                </div>
+                }
               </div>
             </div>
           </div>
