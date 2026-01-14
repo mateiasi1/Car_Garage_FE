@@ -19,6 +19,8 @@ import {
   FileCheck,
   Sparkles,
   CheckCircle2,
+  Check,
+  Percent,
 } from 'lucide-react';
 
 // Animation variants
@@ -157,6 +159,7 @@ const About = () => {
   const { t } = useTranslation();
   const { isAuthenticated } = useContext(AuthContext);
   const heroRef = useRef<HTMLDivElement>(null);
+ const contactRef = useRef<HTMLDivElement>(null);
 
   // Parallax effect for hero background
   const { scrollYProgress } = useScroll({
@@ -167,6 +170,9 @@ const About = () => {
   const heroOpacity = useTransform(scrollYProgress, [0, 0.5], [1, 0]);
 
   const primaryCtaLink = isAuthenticated ? routes.ADMINISTRATION : routes.LOGIN;
+  const scrollToContact = () => {
+    contactRef.current?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  };
 
   const features = [
     {
@@ -313,18 +319,28 @@ const About = () => {
 
           {/* CTA Buttons */}
           <motion.div
-            className="flex flex-col sm:flex-row gap-4 justify-center"
+            className="flex flex-col sm:flex-row gap-4 justify-center items-center"
             initial={{ opacity: 0, y: 30 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ duration: 0.8, delay: 0.7 }}
           >
-            <Link to={primaryCtaLink}>
+            <Button
+              size="md"
+              variant="primary"
+              onClick={scrollToContact}
+              className="rounded-full shadow-lg shadow-primary/30 px-6 py-2.5 font-medium group hover:scale-105 active:scale-[0.98] transition-transform"
+            >
+              {t('home.hero.cta')}
+              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+            </Button>
+            
+             <Link to={primaryCtaLink}>
               <Button
                 size="md"
                 variant="primary"
                 className="rounded-full shadow-lg shadow-primary/30 px-6 py-2.5 font-medium group hover:scale-105 active:scale-[0.98] transition-transform"
               >
-                {t('home.hero.cta')}
+                {t('loginButton')}
                 <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
               </Button>
             </Link>
@@ -491,22 +507,21 @@ const About = () => {
           </div>
 
           <AnimatedSection className="text-center mt-12">
-            <Link to={primaryCtaLink}>
-              <Button
-                size="md"
-                variant="primary"
-                className="rounded-full px-6 py-2.5 group shadow-lg shadow-primary/30 hover:scale-105 active:scale-[0.98] transition-transform"
-              >
-                {t('home.hero.cta')}
-                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
-              </Button>
-            </Link>
+            <Button
+              size="md"
+              variant="primary"
+              onClick={scrollToContact}
+              className="rounded-full px-6 py-2.5 group shadow-lg shadow-primary/30 hover:scale-105 active:scale-[0.98] transition-transform"
+            >
+              {t('home.hero.cta')}
+              <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+            </Button>
           </AnimatedSection>
         </div>
       </section>
 
       {/* CTA SECTION */}
-      <section className="py-32 relative overflow-hidden">
+      <section ref={contactRef} className="py-32 relative overflow-hidden">
         {/* Subtle background gradient */}
         <div className="absolute inset-0 bg-gradient-to-b from-background via-primary/5 to-background" />
 
@@ -559,6 +574,25 @@ const About = () => {
                 {contactPhone}
               </motion.a>
             </div>
+
+           <motion.div
+            className="mt-12 pt-8 border-t border-primary/20 flex justify-center"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.4 }}
+          >
+            <Link to={primaryCtaLink}>
+              <Button
+                size="md"
+                variant="primary"
+                className="rounded-full shadow-lg shadow-primary/30 px-6 py-2.5 font-medium group hover:scale-105 active:scale-[0.98] transition-transform"
+              >
+                {t('loginButton')}
+                <ArrowRight className="w-4 h-4 ml-2 group-hover:translate-x-1 transition-transform" />
+              </Button>
+            </Link>
+          </motion.div>
           </AnimatedSection>
         </div>
       </section>
