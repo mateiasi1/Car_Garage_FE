@@ -37,7 +37,7 @@ const ensureRefreshed = async (
 
 const performLogout = (): void => {
   localStorage.removeItem('access_token');
-  // window.location.href = '/login';
+  window.location.href = '/login';
 };
 
 export const createBaseQueryWithReAuth = (baseUrl: string = config.baseUrl) => {

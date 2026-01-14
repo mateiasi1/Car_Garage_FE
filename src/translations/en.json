@@ -215,6 +215,7 @@
     "packages": {
       "name": "Packages",
       "loading": "Loading packages...",
+      "error": "Unable to load packages.",
       "activePackage": "Active Package",
       "packageName": "Package Name",
       "totalMessages": "Total Messages",
@@ -227,6 +228,7 @@
       "availablePackages": "Available Packages",
       "choosePackageDescription": "Choose the perfect package for your business needs",
       "activeBadge": "Active",
+      "currency": "RON",
       "unlimitedSMS": "Unlimited SMS",
       "smsPerMonth": "SMS/month",
       "currentPackage": "Current Package",
