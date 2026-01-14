@@ -21,6 +21,7 @@ import {
   Sparkles,
   CheckCircle2,
   Check,
+  Tag,
 } from 'lucide-react';
 
 // Animation variants
@@ -215,7 +216,7 @@ const About = () => {
       description: t('home.howItWorks.step3.description'),
     },
   ];
-
+  
   return (
     <div className="min-h-screen bg-background text-text overflow-x-hidden">
       {/* HERO SECTION - Full screen with background image */}
@@ -524,91 +525,144 @@ const About = () => {
       </section>
 
       {/* PACKAGES SECTION */}
+     {/* <section className="py-24 relative bg-gradient-to-b from-slate-950 via-purple-950/20 to-slate-950"> */}
       <section className="py-24 relative bg-gradient-to-b from-background via-primary/5 to-background">
-        <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
-          <AnimatedSection className="text-center mb-16">
-            <motion.span
-              className="inline-block text-primary font-semibold text-sm uppercase tracking-wider mb-4"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-            >
-              {t('packages.name')}
-            </motion.span>
-            <motion.h2
-              className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-text mb-4"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.1 }}
-            >
-              {t('packages.availablePackages')}
-            </motion.h2>
-            <motion.p
-              className="text-text/60 font-body text-lg max-w-2xl mx-auto"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              viewport={{ once: true }}
-              transition={{ delay: 0.2 }}
-            >
-              {t('packages.choosePackageDescription')}
-            </motion.p>
-          </AnimatedSection>
+      <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8">
+        <AnimatedSection className="text-center mb-16">
+          <motion.span
+            className="inline-block text-primary font-semibold text-sm uppercase tracking-wider mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+          >
+            {t('packages.name')}
+          </motion.span>
+          <motion.h2
+            className="text-3xl sm:text-4xl md:text-5xl font-heading font-bold text-text mb-4"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.1 }}
+          >
+            {t('packages.availablePackages')}
+          </motion.h2>
+          <motion.p
+            className="text-text/60 font-body text-lg max-w-2xl mx-auto"
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ delay: 0.2 }}
+          >
+            {t('packages.choosePackageDescription')}
+          </motion.p>
+        </AnimatedSection>
 
-          {packagesLoading && <div className="text-center text-text/70 font-body">{t('packages.loading')}</div>}
+        {packagesLoading && <div className="text-center text-text/70 font-body">{t('packages.loading')}</div>}
 
-          {packagesError && <div className="text-center text-error font-body">{t('packages.error')}</div>}
+        {packagesError && <div className="text-center text-error font-body">{t('packages.error')}</div>}
 
-          {!packagesLoading && !packagesError && (!packages || packages.length === 0) && (
-            <div className="text-center text-text/70 font-body">{t('packages.noPackages')}</div>
-          )}
+        {!packagesLoading && !packagesError && (!packages || packages.length === 0) && (
+          <div className="text-center text-text/70 font-body">{t('packages.noPackages')}</div>
+        )}
 
-          {!!packages?.length && (
-            <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
-              {packages.map((pkg, index) => (
-                <motion.div
-                  key={pkg.id}
-                  className="group relative bg-card/90 backdrop-blur-md rounded-3xl p-8 border border-white/10 shadow-xl hover:shadow-2xl transition-shadow duration-500"
-                  initial={{ opacity: 0, y: 40 }}
-                  whileInView={{ opacity: 1, y: 0 }}
-                  viewport={{ once: true }}
-                  transition={{ duration: 0.6, delay: index * 0.1 }}
-                  whileHover={{ y: -8, transition: { duration: 0.3 } }}
-                >
-                  <div className="flex items-start justify-between gap-6 mb-4">
-                    <h3 className="text-2xl font-heading font-bold text-text group-hover:text-primary transition-colors duration-300">
-                      {pkg.name}
-                    </h3>
-                    <div className="text-right">
-                      <span className="text-3xl font-bold font-heading text-primary">{formatPrice(pkg.price)}</span>
+        {/* Limited Time Offer Banner */}
+        <motion.div
+          className="mb-12 relative"
+          initial={{ opacity: 0, y: 20 }}
+          whileInView={{ opacity: 1, y: 0 }}
+          viewport={{ once: true }}
+          transition={{ duration: 0.6 }}
+        >
+          <div className="relative bg-gradient-to-r from-primary/20 via-primary/10 to-primary/20 rounded-2xl p-6 border border-primary/30 shadow-lg backdrop-blur-sm overflow-hidden">
+            {/* Decorative background elements */}
+            <div className="absolute top-0 right-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
+            <div className="absolute bottom-0 left-0 w-32 h-32 bg-primary/10 rounded-full blur-3xl" />
+            
+            <div className="relative z-10 flex items-start gap-4">
+              <div className="flex-shrink-0 mt-1">
+                <div className="w-12 h-12 rounded-full bg-primary/20 flex items-center justify-center">
+                  <Tag className="w-6 h-6 text-primary" />
+                </div>
+              </div>
+              <div className="flex-1">
+                <h3 className="text-xl font-heading font-bold text-primary mb-2 flex items-center gap-2">
+                 {t('discounts.limitedTimeOffer_Title')}
+                </h3>
+                <p className="text-text/80 font-body leading-relaxed">
+                  {t('discounts.limitedTimeOffer_Text')}
+                </p>
+              </div>
+            </div>
+          </div>
+        </motion.div>
+
+        {!!packages?.length && (
+          <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-8">
+            {packages.map((pkg, index) => (
+              <motion.div
+                key={pkg.id}
+                className="group relative bg-card/90 backdrop-blur-md rounded-3xl p-8 border border-white/10 shadow-xl hover:shadow-2xl transition-shadow duration-500 overflow-hidden"
+                initial={{ opacity: 0, y: 40 }}
+                whileInView={{ opacity: 1, y: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.6, delay: index * 0.1 }}
+                whileHover={{ y: -8, transition: { duration: 0.3 } }}
+              >
+                {/* Offer Badge */}
+                {(pkg.discountPrice != null && pkg.discountPrice !== undefined) && (
+                  <div className="absolute top-4 right-4 bg-gradient-to-r from-primary to-primary/80 text-white px-3 py-1.5 rounded-full text-xs font-bold uppercase tracking-wide flex items-center gap-1.5 shadow-lg">
+                    <Tag className="w-3 h-3" />
+                    {t('discounts.offer')}
+                  </div>
+                )}
+
+                <div className="mb-6 mt-4">
+                  <h3 className="text-2xl font-heading font-bold text-text group-hover:text-primary transition-colors duration-300 mb-4">
+                    {pkg.name}
+                  </h3>
+                  
+                  <div className="flex items-baseline gap-2">
+                    {/* Show original price with strikethrough if discount exists */}
+                    {(pkg.discountPrice != null && pkg.discountPrice !== undefined) && (
+                      <span className="text-xl font-semibold text-muted line-through">
+                        {formatPrice(pkg.price)}
+                      </span>
+                    )}
+                    
+                    {/* Show discount price if it exists, otherwise show regular price */}
+                    <div className="flex items-baseline">
+                      <span className="text-3xl font-bold font-heading text-primary">
+                        {formatPrice(pkg.discountPrice ?? pkg.price)}
+                      </span>
                       <span className="ml-1 text-text/60 font-body">{t('packages.currency')}</span>
                     </div>
                   </div>
+                </div>
 
-                  {pkg.description && (
-                    <p className="text-sm text-muted font-body leading-relaxed mb-6">{pkg.description}</p>
-                  )}
+                {pkg.description && (
+                  <p className="text-sm text-muted font-body leading-relaxed mb-6">{pkg.description}</p>
+                )}
 
-                  <div className="space-y-3">
-                    <div className="flex items-center gap-3">
-                      <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center">
-                        <Check className="w-5 h-5 text-primary" />
-                      </div>
-                      <span className="text-sm font-body text-text">
-                        {pkg.features.sms.limit > 0
-                          ? `${pkg.features.sms.limit} ${t('packages.smsPerMonth')}`
-                          : t('packages.unlimitedSMS')}
-                      </span>
+                <div className="space-y-3">
+                  <div className="flex items-center gap-3">
+                    <div className="w-9 h-9 rounded-full bg-primary/10 flex items-center justify-center">
+                      <Check className="w-5 h-5 text-primary" />
                     </div>
+                    <span className="text-sm font-body text-text">
+                      {pkg.features.sms.limit > 0
+                        ? `${pkg.features.sms.limit} ${t('packages.smsPerMonth')}`
+                        : t('packages.unlimitedSMS')}
+                    </span>
                   </div>
+                </div>
 
-                  <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
-                </motion.div>
-              ))}
-            </div>
-          )}
-        </div>
-      </section>
+                <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-primary/5 via-transparent to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500 pointer-events-none" />
+              </motion.div>
+            ))}
+          </div>
+        )}
+      </div>
+    </section>
 
       {/* CTA SECTION */}
       <section ref={contactRef} className="py-32 relative overflow-hidden">
