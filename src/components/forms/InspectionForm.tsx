@@ -9,6 +9,11 @@ import { useAppSelector } from '../../hooks/reduxHooks';
 import { useForm } from '../../hooks/useForm';
 import { useCreateInspectionMutation, useUpdateInspectionMutation } from '../../rtk/services/inspections-service';
 import { useFetchLicensePlatePatternsQuery } from '../../rtk/services/licensePlatePattern-service';
+import {
+  useFetchMakesQuery,
+  useFetchModelsForMakeQuery,
+  useVoteCarMakeModelMutation,
+} from '../../rtk/services/car-makes-models-service';
 import { userApi } from '../../rtk/services/user-service';
 import { CarCategories } from '../../utils/enums/CarCategories';
 import { InspectionType } from '../../utils/enums/InspectionTypes';
@@ -20,6 +25,7 @@ import { CustomDatePicker } from '../shared/CustomDatePicker';
 import { Button } from '../shared/Button';
 import { IconButton } from '../shared/IconButton';
 import { PhoneNumberRoInput } from '../PhoneNumberRoInput';
+import { ComboboxInput } from '../shared/ComboboxInput';
 
 type FormData = {
   licensePlate: string;
@@ -27,6 +33,8 @@ type FormData = {
   firstName: string;
   lastName: string;
   carCategory: CarCategories;
+  carMake: string;
+  carModel: string;
   inspectionType: InspectionType;
   inspectedAt: Date | null;
   branchId: string;
@@ -41,6 +49,7 @@ const InspectionForm: FC = () => {
 
   const [createInspection] = useCreateInspectionMutation();
   const [updateInspection] = useUpdateInspectionMutation();
+  const [voteCarMakeModel] = useVoteCarMakeModelMutation();
   const selectedInspection = useAppSelector((state) => state.inspection.selectedInspection);
 
   const isEdit = Boolean(selectedInspection?.id);
@@ -54,6 +63,8 @@ const InspectionForm: FC = () => {
       firstName: '',
       lastName: '',
       carCategory: CarCategories.B,
+      carMake: '',
+      carModel: '',
       inspectionType: InspectionType.twoYears,
       inspectedAt: new Date(),
       branchId: '',
@@ -83,6 +94,8 @@ const InspectionForm: FC = () => {
       firstName: { required: true },
       lastName: { required: true },
       carCategory: { required: true },
+      carMake: { required: true },
+      carModel: { required: true },
       inspectionType: { required: true },
       inspectedAt: { required: true },
     },
@@ -96,6 +109,8 @@ const InspectionForm: FC = () => {
           firstName: formValues.firstName,
           lastName: formValues.lastName,
           carCategory: formValues.carCategory,
+          carMake: formValues.carMake,
+          carModel: formValues.carModel,
           inspectedBy: user?.id,
           inspectionType: formValues.inspectionType,
           inspectedAt: formValues.inspectedAt
@@ -106,12 +121,27 @@ const InspectionForm: FC = () => {
           ...(selectedInspection?.car?.id && { carId: selectedInspection.car.id }),
         };
 
+        let result;
         if (selectedInspection?.id) {
-          await updateInspection({ id: selectedInspection.id, ...payload }).unwrap();
+          result = await updateInspection({ id: selectedInspection.id, ...payload }).unwrap();
         } else {
-          await createInspection(payload).unwrap();
+          result = await createInspection(payload).unwrap();
           // Refresh user profile to update demo limits
           dispatch(userApi.util.invalidateTags(['User']));
+        }
+
+        // Vote for the make/model after successful inspection creation/update
+        if (formValues.carMake && formValues.carModel && user?.id) {
+          try {
+            await voteCarMakeModel({
+              make: formValues.carMake,
+              model: formValues.carModel,
+              userId: user.id,
+              inspectionId: result?.id || selectedInspection?.id || '',
+            }).unwrap();
+          } catch {
+            // Silently fail voting - don't block the inspection creation
+          }
         }
 
         showToast(t('inspectionCreated'), 'success');
@@ -120,6 +150,12 @@ const InspectionForm: FC = () => {
         showToast(t('internalError'), 'error');
       }
     },
+  });
+
+  // Fetch car makes and models
+  const { data: makes = [], isLoading: makesLoading } = useFetchMakesQuery();
+  const { data: models = [], isLoading: modelsLoading } = useFetchModelsForMakeQuery(values.carMake, {
+    skip: !values.carMake, // Only fetch when make is selected
   });
 
   // Populate form when editing an existing inspection
@@ -131,6 +167,8 @@ const InspectionForm: FC = () => {
         firstName: selectedInspection.car.customer.firstName,
         lastName: selectedInspection.car.customer.lastName,
         carCategory: selectedInspection.car.category,
+        carMake: selectedInspection.car.make || '',
+        carModel: selectedInspection.car.model || '',
         inspectionType: selectedInspection.type,
         inspectedAt: new Date(selectedInspection.inspectedAt),
         branchId: selectedInspection.branchId,
@@ -197,6 +235,35 @@ const InspectionForm: FC = () => {
                   )}
                   error={errors.carCategory && t(errors.carCategory)}
                 />
+
+                {/* Car Make */}
+                <ComboboxInput
+                  label={`${t('carMake')} *`}
+                  value={values.carMake}
+                  onChange={(val) => {
+                    setFieldValue('carMake', val);
+                    setFieldValue('carModel', ''); // Reset model when make changes
+                  }}
+                  options={makes}
+                  allowCustom={true}
+                  loading={makesLoading}
+                  placeholder={t('selectOrTypeCarMake')}
+                  error={errors.carMake && t(errors.carMake)}
+                />
+
+                {/* Car Model - only show when make is selected */}
+                {values.carMake && (
+                  <ComboboxInput
+                    label={`${t('carModel')} *`}
+                    value={values.carModel}
+                    onChange={(val) => setFieldValue('carModel', val)}
+                    options={models}
+                    allowCustom={true}
+                    loading={modelsLoading}
+                    placeholder={t('selectOrTypeCarModel')}
+                    error={errors.carModel && t(errors.carModel)}
+                  />
+                )}
               </div>
             </div>
 

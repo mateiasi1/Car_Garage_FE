@@ -14,6 +14,7 @@ import { discountApi } from './rtk/services/discount-service';
 import { locationApi } from './rtk/services/location-service';
 import { statisticsApi } from './rtk/services/statistics-service';
 import { smsApi } from './rtk/services/sms-service';
+import { carMakesModelsApi } from './rtk/services/car-makes-models-service';
 
 export const store = configureStore({
   reducer: {
@@ -31,6 +32,7 @@ export const store = configureStore({
     [locationApi.reducerPath]: locationApi.reducer,
     [statisticsApi.reducerPath]: statisticsApi.reducer,
     [smsApi.reducerPath]: smsApi.reducer,
+    [carMakesModelsApi.reducerPath]: carMakesModelsApi.reducer,
     inspection: inspectionReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -48,7 +50,8 @@ export const store = configureStore({
       discountApi.middleware,
       locationApi.middleware,
       statisticsApi.middleware,
-      smsApi.middleware
+      smsApi.middleware,
+      carMakesModelsApi.middleware
     ),
 });
 
