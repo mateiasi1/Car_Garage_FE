@@ -25,6 +25,10 @@ export const carMakesModelsApi = createApi({
     fetchMakes: builder.query<string[], void>({
       query: () => `${config.carMakesModelsUrl}/makes`,
       providesTags: ['CarMakesModels'],
+      transformResponse: (response: string[]) => {
+        // Ensure unique makes (deduplicate in case of caching issues)
+        return [...new Set(response)];
+      },
     }),
     fetchModelsForMake: builder.query<string[], string>({
       query: (make) => `${config.carMakesModelsUrl}/models?make=${encodeURIComponent(make)}`,
