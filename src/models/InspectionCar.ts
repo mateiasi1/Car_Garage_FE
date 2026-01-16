@@ -6,4 +6,6 @@ export interface InspectionCar {
   licensePlate: string;
   customer: CarCustomer;
   category: CarCategories;
+  make?: string;
+  model?: string;
 }
