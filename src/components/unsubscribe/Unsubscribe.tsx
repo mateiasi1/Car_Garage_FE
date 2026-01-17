@@ -4,6 +4,7 @@ import { useSearchParams } from 'react-router-dom';
 import { useUnsubscribeMutation } from '../../rtk/services/customer-service';
 import { CustomText } from '../shared/CustomText';
 import { Logo } from '../shared/Logo';
+import SEO from '../shared/SEO';
 
 type UnsubscribeState = 'loading' | 'success' | 'error' | 'already-unsubscribed';
 
@@ -142,12 +143,21 @@ const Unsubscribe: FC = () => {
   };
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <div className="w-full max-w-xl mx-auto bg-surface rounded-xl border border-border px-8 py-10 space-y-8">
-        <Logo />
-        {renderContent()}
+    <>
+      <SEO
+        title="Dezabonare - RoadReady"
+        description="Pagină pentru dezabonarea de la notificări SMS RoadReady"
+        ogUrl="https://roadready.ro/unsubscribe"
+        canonical="https://roadready.ro/unsubscribe"
+        noIndex={true}
+      />
+      <div className="min-h-screen flex items-center justify-center bg-background p-4">
+        <div className="w-full max-w-xl mx-auto bg-surface rounded-xl border border-border px-8 py-10 space-y-8">
+          <Logo />
+          {renderContent()}
+        </div>
       </div>
-    </div>
+    </>
   );
 };
 
