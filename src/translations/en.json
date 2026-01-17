@@ -93,6 +93,8 @@
     "carInformation": "Car information",
     "customerInformation": "Customer information",
     "inspectionInformation": "Inspection information",
+    "inspectorNotes": "Inspector Notes",
+    "inspectorNotesPlaceholder": "Add notes about the client or car (only visible to inspectors)...",
     "halfYear": "Every 6 months",
     "yearly": "Yearly",
     "twoYears": "Every 2 years",
