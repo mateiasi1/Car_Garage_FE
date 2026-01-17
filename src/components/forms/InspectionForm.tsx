@@ -65,7 +65,7 @@ const InspectionForm: FC = () => {
       carCategory: CarCategories.B,
       carMake: '',
       carModel: '',
-      inspectionType: InspectionType.twoYears,
+      inspectionType: InspectionType.oneYear,
       inspectedAt: new Date(),
       branchId: '',
     },
