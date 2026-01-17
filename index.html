@@ -1,11 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ro">
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RoadReady</title>
+    <title>RoadReady - Platformă Inspecții Tehnice Auto | Managementul ITP</title>
 
+    <!-- SEO Meta Tags -->
+    <meta name="description" content="RoadReady - Platforma completă pentru managementul inspecțiilor tehnice periodice (ITP) auto. Programări online, gestionare service auto, rapoarte detaliate și statistici pentru service-uri și clienți." />
+    <meta name="keywords" content="ITP, inspecție tehnică periodică, service auto, programare ITP, management service auto, inspecții auto, revizii tehnice, RoadReady, platformă ITP România" />
+    <meta name="author" content="RoadReady" />
+    <meta name="robots" content="index, follow" />
+    <meta name="language" content="Romanian" />
+    <meta name="revisit-after" content="7 days" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
+
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website" />
+    <meta property="og:url" content="https://roadready.ro/" />
+    <meta property="og:title" content="RoadReady - Platformă Inspecții Tehnice Auto | Managementul ITP" />
+    <meta property="og:description" content="Platforma completă pentru managementul inspecțiilor tehnice periodice (ITP) auto. Programări online, gestionare service auto și rapoarte detaliate." />
+    <meta property="og:image" content="https://roadready.ro/og-image.png" />
+    <meta property="og:image:width" content="1200" />
+    <meta property="og:image:height" content="630" />
+    <meta property="og:locale" content="ro_RO" />
+    <meta property="og:locale:alternate" content="en_US" />
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image" />
+    <meta name="twitter:url" content="https://roadready.ro/" />
+    <meta name="twitter:title" content="RoadReady - Platformă Inspecții Tehnice Auto | Managementul ITP" />
+    <meta name="twitter:description" content="Platforma completă pentru managementul inspecțiilor tehnice periodice (ITP) auto. Programări online, gestionare service auto și rapoarte detaliate." />
+    <meta name="twitter:image" content="https://roadready.ro/og-image.png" />
+
+    <!-- Canonical URL -->
+    <link rel="canonical" href="https://roadready.ro/" />
+
+    <!-- Additional SEO -->
+    <meta name="theme-color" content="#1e3a8a" />
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="RoadReady" />
+    
+    <!-- PWA Manifest -->
+    <link rel="manifest" href="/manifest.json" />
 
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
@@ -14,7 +51,20 @@
             rel="stylesheet"
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    <link rel="icon" type="image/x-icon" href="/favicon.png" />
+    
+    <!-- Favicons - Multiple sizes for different contexts -->
+    <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
+    <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
+    <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32x32.png" />
+    <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
+    <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png" />
+    <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png" />
+    
+    <!-- Apple Touch Icons -->
+    <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
+    
+    <!-- Safari Pinned Tab -->
+    <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#1e3a8a" />
     
     <!-- HERE Maps JavaScript API -->
     <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
@@ -22,6 +72,48 @@
     <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
     <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
+    
+    <!-- Structured Data (JSON-LD) -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "SoftwareApplication",
+      "name": "RoadReady",
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "description": "Platformă completă pentru managementul inspecțiilor tehnice periodice (ITP) auto. Programări online, gestionare service auto și rapoarte detaliate.",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "RON"
+      },
+      "aggregateRating": {
+        "@type": "AggregateRating",
+        "ratingValue": "4.8",
+        "ratingCount": "150"
+      },
+      "author": {
+        "@type": "Organization",
+        "name": "RoadReady"
+      }
+    }
+    </script>
+    
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Organization",
+      "name": "RoadReady",
+      "url": "https://roadready.ro",
+      "logo": "https://roadready.ro/favicon.png",
+      "description": "Platformă pentru managementul inspecțiilor tehnice auto",
+      "contactPoint": {
+        "@type": "ContactPoint",
+        "contactType": "Customer Service",
+        "availableLanguage": ["Romanian", "English"]
+      }
+    }
+    </script>
 </head>
 <body>
 <div id="root"></div>

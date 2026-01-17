@@ -3,6 +3,7 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Button } from '../../components/shared/Button';
 import { Logo } from '../../components/shared/Logo';
+import SEO from '../../components/shared/SEO';
 
 const REDIRECT_SECONDS = 5;
 
@@ -27,9 +28,15 @@ const NotFoundPage: FC = () => {
   }, [navigate]);
 
   return (
-    <div className="min-h-screen flex items-center justify-center bg-background p-4">
-      <div className="w-full max-w-md mx-auto bg-surface rounded-xl border border-border px-8 py-10 text-center space-y-6">
-        <Logo />
+    <>
+      <SEO
+        title="404 - Pagina nu a fost găsită | RoadReady"
+        description="Pagina pe care o căutați nu există."
+        noIndex={true}
+      />
+      <div className="min-h-screen flex items-center justify-center bg-background p-4">
+        <div className="w-full max-w-md mx-auto bg-surface rounded-xl border border-border px-8 py-10 text-center space-y-6">
+          <Logo />
 
         <div className="space-y-2">
           <h1 className="text-6xl font-heading font-bold text-primary">404</h1>
@@ -49,6 +56,7 @@ const NotFoundPage: FC = () => {
         </div>
       </div>
     </div>
+    </>
   );
 };
 
