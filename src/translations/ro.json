@@ -92,6 +92,8 @@
     "carInformation": "Informații despre mașină",
     "customerInformation": "Informații despre client",
     "inspectionInformation": "Informații despre inspecție",
+    "inspectorNotes": "Notițe Inspector",
+    "inspectorNotesPlaceholder": "Adaugă notițe despre client sau mașină (vizibile doar pentru inspectori)...",
     "halfYear": "La 6 luni",
     "yearly": "Anual",
     "twoYears": "La 2 ani",

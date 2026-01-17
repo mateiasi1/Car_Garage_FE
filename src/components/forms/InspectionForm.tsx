@@ -26,6 +26,7 @@ import { Button } from '../shared/Button';
 import { IconButton } from '../shared/IconButton';
 import { PhoneNumberRoInput } from '../PhoneNumberRoInput';
 import { ComboboxInput } from '../shared/ComboboxInput';
+import { CustomTextarea } from '../shared/CustomTextarea';
 
 type FormData = {
   licensePlate: string;
@@ -38,6 +39,7 @@ type FormData = {
   inspectionType: InspectionType;
   inspectedAt: Date | null;
   branchId: string;
+  notes: string;
 };
 
 const InspectionForm: FC = () => {
@@ -65,9 +67,10 @@ const InspectionForm: FC = () => {
       carCategory: CarCategories.B,
       carMake: '',
       carModel: '',
-      inspectionType: InspectionType.twoYears,
+      inspectionType: InspectionType.oneYear,
       inspectedAt: new Date(),
       branchId: '',
+      notes: '',
     },
 
     // Validation configuration for each field
@@ -117,6 +120,7 @@ const InspectionForm: FC = () => {
             ? formatInspectionDate(formValues.inspectedAt.toISOString().split('T')[0])
             : '',
           branchId: formValues.branchId,
+          notes: formValues.notes,
           ...(selectedInspection?.car?.customer?.id && { customerId: selectedInspection.car.customer.id }),
           ...(selectedInspection?.car?.id && { carId: selectedInspection.car.id }),
         };
@@ -172,6 +176,7 @@ const InspectionForm: FC = () => {
         inspectionType: selectedInspection.type,
         inspectedAt: new Date(selectedInspection.inspectedAt),
         branchId: selectedInspection.branchId,
+        notes: selectedInspection.notes || '',
       });
     }
   }, [selectedInspection, setValues]);
@@ -321,6 +326,14 @@ const InspectionForm: FC = () => {
                   maxDate={new Date()}
                   placeholder={t('inspectionDatePlaceholder')}
                   error={errors.inspectedAt && t(errors.inspectedAt)}
+                />
+
+                <CustomTextarea
+                  label={t('inspectorNotes')}
+                  value={values.notes}
+                  onChange={(e) => setFieldValue('notes', e.target.value)}
+                  placeholder={t('inspectorNotesPlaceholder')}
+                  rows={3}
                 />
               </div>
             </div>
