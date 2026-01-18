@@ -95,6 +95,8 @@
     "inspectionInformation": "Inspection information",
     "inspectorNotes": "Inspector Notes",
     "inspectorNotesPlaceholder": "Add notes about the client or car (only visible to inspectors)...",
+    "preferAfternoon": "Recommend afternoon/Saturday visit",
+    "preferAfternoonDescription": "If checked, the SMS reminder will include a note asking the client to come after 3 PM.",
     "halfYear": "Every 6 months",
     "yearly": "Yearly",
     "twoYears": "Every 2 years",

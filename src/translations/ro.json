@@ -94,6 +94,8 @@
     "inspectionInformation": "Informații despre inspecție",
     "inspectorNotes": "Notițe Inspector",
     "inspectorNotesPlaceholder": "Adaugă notițe despre client sau mașină (vizibile doar pentru inspectori)...",
+    "preferAfternoon": "Recomandă vizită după-amiază/Sâmbătă",
+    "preferAfternoonDescription": "Dacă este bifat, SMS-ul de reamintire va include o notă prin care îi cerem clientului să vină după ora 15:00.",
     "halfYear": "La 6 luni",
     "yearly": "Anual",
     "twoYears": "La 2 ani",

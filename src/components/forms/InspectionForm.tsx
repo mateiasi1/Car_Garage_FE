@@ -27,6 +27,7 @@ import { IconButton } from '../shared/IconButton';
 import { PhoneNumberRoInput } from '../PhoneNumberRoInput';
 import { ComboboxInput } from '../shared/ComboboxInput';
 import { CustomTextarea } from '../shared/CustomTextarea';
+import { CustomCheckbox } from '../shared/CustomCheckbox';
 
 type FormData = {
   licensePlate: string;
@@ -40,6 +41,7 @@ type FormData = {
   inspectedAt: Date | null;
   branchId: string;
   notes: string;
+  preferAfternoon: boolean;
 };
 
 const InspectionForm: FC = () => {
@@ -71,6 +73,7 @@ const InspectionForm: FC = () => {
       inspectedAt: new Date(),
       branchId: '',
       notes: '',
+      preferAfternoon: false,
     },
 
     // Validation configuration for each field
@@ -121,6 +124,7 @@ const InspectionForm: FC = () => {
             : '',
           branchId: formValues.branchId,
           notes: formValues.notes,
+          preferAfternoon: formValues.preferAfternoon,
           ...(selectedInspection?.car?.customer?.id && { customerId: selectedInspection.car.customer.id }),
           ...(selectedInspection?.car?.id && { carId: selectedInspection.car.id }),
         };
@@ -177,6 +181,7 @@ const InspectionForm: FC = () => {
         inspectedAt: new Date(selectedInspection.inspectedAt),
         branchId: selectedInspection.branchId,
         notes: selectedInspection.notes || '',
+        preferAfternoon: selectedInspection.preferAfternoon || false,
       });
     }
   }, [selectedInspection, setValues]);
@@ -335,6 +340,13 @@ const InspectionForm: FC = () => {
                   placeholder={t('inspectorNotesPlaceholder')}
                   rows={3}
                 />
+
+                <CustomCheckbox
+                  label={t('preferAfternoon')}
+                  checked={values.preferAfternoon}
+                  onChange={(e) => setFieldValue('preferAfternoon', e.target.checked)}
+                />
+                <p className="text-xs text-muted -mt-3 ml-8">{t('preferAfternoonDescription')}</p>
               </div>
             </div>
           </div>
