@@ -16,4 +16,5 @@ export interface Inspection {
   inspectedBy: InspectedBy;
   companyId: string;
   notes?: string;
+  preferAfternoon?: boolean;
 }
