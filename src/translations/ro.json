@@ -264,11 +264,29 @@
     "home": {
       "loginButton": "Autentificare",
       "adminButton": "Administrare Companie",
+      "inspectorMode": "Pentru Stații ITP",
+      "inspectorModeShort": "Stații",
+      "client": {
+        "badge": "Găsește ITP lângă tine",
+        "title1": "Găsește",
+        "title2": "Stația ITP Perfectă",
+        "subtitle": "Caută stații ITP autorizate în România. Obține indicații, informații de contact și programează-ți inspecția tehnică periodică.",
+        "benefit1": "Stații autorizate",
+        "benefit2": "Locație precisă",
+        "benefit3": "Contact direct",
+        "benefit4": "Informații verificate",
+        "ownerCta": {
+          "title": "Ești Inspector sau deții o Stație ITP?",
+          "description": "Alătură-te platformei RoadReady și gestionează eficient inspecțiile, clienții și notificările automate.",
+          "button": "Descoperă Platforma"
+        }
+      },
       "hero": {
         "badge": "✨ Management ITP Modern",
         "title": "Gestionează Eficient Inspecțiile ITP",
         "subtitle": "Sistem complet de management pentru stații ITP. Urmărește inspecții, gestionează clienți și nu rata nicio expirare.",
-        "cta": "Începe Acum"
+        "cta": "Începe Acum",
+        "findStation": "Găsește Stație ITP"
       },
       "features": {
         "title": "Tot ce ai nevoie",
@@ -744,6 +762,28 @@
      "hours": "ore",
      "min":"min",
      "sec": "sec",
-     "getTheOffer": "Vreau oferta!"
+     "getTheOffer": "Vreau oferta!",
+     "stations": {
+      "pageTitle": "Găsește Stații ITP",
+      "pageDescription": "Caută stații ITP în apropierea ta. Obține indicații și informații de contact.",
+      "title": "Găsește Cea Mai Apropiată Stație ITP",
+      "subtitle": "Caută stații ITP autorizate în zona ta și obține indicații instant",
+      "searchPlaceholder": "Caută după nume, oraș sau adresă...",
+      "useMyLocation": "Folosește locația mea",
+      "locating": "Se obține locația...",
+      "locationError": "Nu s-a putut obține locația. Poți căuta manual.",
+      "locationActive": "Stații afișate în ordinea distanței",
+      "spotlightTitle": "Stații Recomandate",
+      "spotlight": "Recomandat",
+      "allStations": "Toate Stațiile",
+      "noResults": "Nu s-au găsit stații pentru căutarea ta",
+      "noStations": "Nu există stații ITP disponibile",
+      "loadError": "Eroare la încărcarea stațiilor. Te rugăm să încerci din nou.",
+      "resultsCount": "{{count}} stații găsite",
+      "call": "Sună",
+      "directions": "Indicații",
+      "viewAll": "Vezi Toate Stațiile",
+      "nearYou": "Stații Aproape de Tine"
+    }
   }
 }

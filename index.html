@@ -3,11 +3,11 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RoadReady - Platformă Inspecții Tehnice Auto | Managementul ITP</title>
+    <title>RoadReady - Stații ITP România | Găsește Inspecție Tehnică Periodică Lângă Tine</title>
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="RoadReady - Platforma completă pentru managementul inspecțiilor tehnice periodice (ITP) auto. Programări online, gestionare service auto, rapoarte detaliate și statistici pentru service-uri și clienți." />
-    <meta name="keywords" content="ITP, inspecție tehnică periodică, service auto, programare ITP, management service auto, inspecții auto, revizii tehnice, RoadReady, platformă ITP România" />
+    <meta name="description" content="Găsește stații ITP în apropierea ta. RoadReady - platforma completă pentru inspecții tehnice periodice auto. Caută stații ITP pe hartă, programări online, management service auto și rapoarte detaliate." />
+    <meta name="keywords" content="ITP, stații ITP, ITP lângă mine, inspecție tehnică periodică, inspectie tehnica auto, verificare ITP, ITP România, statie ITP aproape, caută ITP, găsește stație ITP, ITP auto, service ITP, programare ITP, revizie tehnică, RoadReady, control tehnic auto, verificare mașină" />
     <meta name="author" content="RoadReady" />
     <meta name="robots" content="index, follow" />
     <meta name="language" content="Romanian" />
@@ -17,8 +17,8 @@
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
     <meta property="og:url" content="https://roadready.ro/" />
-    <meta property="og:title" content="RoadReady - Platformă Inspecții Tehnice Auto | Managementul ITP" />
-    <meta property="og:description" content="Platforma completă pentru managementul inspecțiilor tehnice periodice (ITP) auto. Programări online, gestionare service auto și rapoarte detaliate." />
+    <meta property="og:title" content="RoadReady - Stații ITP România | Găsește Inspecție Tehnică Periodică" />
+    <meta property="og:description" content="Găsește stații ITP în apropierea ta. Caută stații ITP pe hartă, programări online, management service auto și verificări tehnice periodice." />
     <meta property="og:image" content="https://roadready.ro/og-image.png" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
@@ -28,8 +28,8 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://roadready.ro/" />
-    <meta name="twitter:title" content="RoadReady - Platformă Inspecții Tehnice Auto | Managementul ITP" />
-    <meta name="twitter:description" content="Platforma completă pentru managementul inspecțiilor tehnice periodice (ITP) auto. Programări online, gestionare service auto și rapoarte detaliate." />
+    <meta name="twitter:title" content="RoadReady - Stații ITP România | Găsește Inspecție Tehnică Periodică" />
+    <meta name="twitter:description" content="Găsește stații ITP în apropierea ta. Caută stații ITP pe hartă, programări online, management service auto și verificări tehnice periodice." />
     <meta name="twitter:image" content="https://roadready.ro/og-image.png" />
 
     <!-- Canonical URL -->
@@ -74,6 +74,27 @@
     <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
     
     <!-- Structured Data (JSON-LD) -->
+
+    <!-- WebSite Schema for Search Box -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "WebSite",
+      "name": "RoadReady",
+      "alternateName": ["Stații ITP România", "ITP Romania", "Inspecție Tehnică Periodică"],
+      "url": "https://roadready.ro",
+      "potentialAction": {
+        "@type": "SearchAction",
+        "target": {
+          "@type": "EntryPoint",
+          "urlTemplate": "https://roadready.ro/stations?q={search_term_string}"
+        },
+        "query-input": "required name=search_term_string"
+      }
+    }
+    </script>
+
+    <!-- Software Application Schema -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -81,7 +102,7 @@
       "name": "RoadReady",
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Web",
-      "description": "Platformă completă pentru managementul inspecțiilor tehnice periodice (ITP) auto. Programări online, gestionare service auto și rapoarte detaliate.",
+      "description": "Platformă completă pentru găsirea stațiilor ITP și managementul inspecțiilor tehnice periodice auto. Caută stații ITP în apropiere, programări online și verificări tehnice.",
       "offers": {
         "@type": "Offer",
         "price": "0",
@@ -98,7 +119,8 @@
       }
     }
     </script>
-    
+
+    <!-- Organization Schema -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
@@ -106,11 +128,38 @@
       "name": "RoadReady",
       "url": "https://roadready.ro",
       "logo": "https://roadready.ro/favicon.png",
-      "description": "Platformă pentru managementul inspecțiilor tehnice auto",
+      "description": "Platformă pentru găsirea stațiilor ITP și managementul inspecțiilor tehnice auto în România",
+      "sameAs": [],
       "contactPoint": {
         "@type": "ContactPoint",
         "contactType": "Customer Service",
         "availableLanguage": ["Romanian", "English"]
+      }
+    }
+    </script>
+
+    <!-- Service Schema for ITP Station Search -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "Service",
+      "name": "Căutare Stații ITP",
+      "alternateName": ["ITP Station Search", "Găsește ITP", "Stații ITP lângă mine"],
+      "description": "Serviciu gratuit de căutare a stațiilor ITP autorizate din România. Găsește stații ITP în apropierea ta, obține indicații și informații de contact.",
+      "provider": {
+        "@type": "Organization",
+        "name": "RoadReady"
+      },
+      "areaServed": {
+        "@type": "Country",
+        "name": "România"
+      },
+      "serviceType": "Inspecție Tehnică Periodică",
+      "offers": {
+        "@type": "Offer",
+        "price": "0",
+        "priceCurrency": "RON",
+        "description": "Căutare gratuită de stații ITP"
       }
     }
     </script>

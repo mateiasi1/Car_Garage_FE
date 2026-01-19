@@ -70,10 +70,31 @@ export interface Branch {
   latitude?: number;
   longitude?: number;
   companyId: string;
+  isSpotlight?: boolean;
   createdAt: string;
   updatedAt: string;
   deletedAt?: string;
   activePackage?: BranchPackage;
+}
+
+// Public station interface for ITP station search
+export interface PublicStation {
+  id: string;
+  name: string;
+  phoneNumber?: string;
+  latitude: number;
+  longitude: number;
+  isSpotlight: boolean;
+  address: {
+    street: string;
+    streetNumber?: string;
+    houseNumber?: string;
+    zipcode?: string;
+    city?: string;
+    county?: string;
+    country: string;
+  };
+  distance?: number; // Calculated client-side based on user location
 }
 
 export interface UpdatePackageRequest {
