@@ -11,7 +11,9 @@ import NotFoundPage from './pages/notfound/NotFoundPage';
 import { routes } from './constants/routes';
 import Unsubscribe from './components/unsubscribe/Unsubscribe';
 import HomePage from './pages/home/homePage';
+import InspectorModePage from './pages/home/InspectorModePage';
 import TermsPage from './pages/terms/TermsPage';
+import StationsPage from './pages/stations/StationsPage';
 
 const AppRouter = () => {
   const authenticatedRoles = [Role.admin, Role.owner, Role.inspector, Role.demo];
@@ -23,6 +25,8 @@ const AppRouter = () => {
       <Routes>
         {/* PUBLIC ROUTES */}
         <Route path={routes.HOME} element={<HomePage />} />
+        <Route path={routes.INSPECTOR_MODE} element={<InspectorModePage />} />
+        <Route path={routes.STATIONS} element={<StationsPage />} />
         <Route path={routes.TERMS} element={<TermsPage />} />
         <Route path={routes.UNSUBSCRIBE} element={<Unsubscribe />} />
         <Route path={routes.LOGIN} element={<LoginPage />} />

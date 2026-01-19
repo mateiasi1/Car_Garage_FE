@@ -14,6 +14,7 @@ Disallow: /add-inspection
 Allow: /login
 Allow: /terms
 Allow: /unsubscribe
+Allow: /stations
 
 # Sitemap location
 Sitemap: https://roadready.ro/sitemap.xml

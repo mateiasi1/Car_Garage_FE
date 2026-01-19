@@ -1,27 +1,27 @@
-import About from '../../components/home/about';
+import ClientHomePage from '../../components/home/ClientHomePage';
 import SEO from '../../components/shared/SEO';
 
 const HomePage = () => {
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    name: 'RoadReady - Platformă Inspecții Tehnice Auto',
+    name: 'RoadReady - Găsește Stații ITP în România',
     description:
-      'Platformă completă pentru managementul inspecțiilor tehnice periodice (ITP) auto. Programări online, gestionare service auto, rapoarte detaliate.',
+      'Găsește stații ITP autorizate în România. Caută stații ITP lângă tine, obține indicații și programează inspecția tehnică periodică.',
     url: 'https://roadready.ro/',
   };
 
   return (
     <>
       <SEO
-        title="RoadReady - Platformă Inspecții Tehnice Auto | Managementul ITP"
-        description="Platformă completă pentru managementul inspecțiilor tehnice periodice (ITP) auto. Programări online, gestionare service auto, rapoarte detaliate și statistici pentru service-uri și clienți."
-        keywords="ITP, inspecție tehnică periodică, service auto, programare ITP, management service auto, inspecții auto, revizii tehnice, RoadReady, platformă ITP România"
+        title="RoadReady - Stații ITP România | Găsește Inspecție Tehnică Periodică Lângă Tine"
+        description="Găsește stații ITP autorizate în România. Caută stații ITP lângă tine, obține indicații și informații de contact. Verificare ITP rapidă și sigură."
+        keywords="stații ITP, ITP lângă mine, inspecție tehnică periodică, ITP România, găsește ITP, verificare ITP, statie ITP aproape, ITP auto, service ITP, control tehnic auto"
         ogUrl="https://roadready.ro/"
         canonical="https://roadready.ro/"
         structuredData={structuredData}
       />
-      <About />
+      <ClientHomePage />
     </>
   );
 };

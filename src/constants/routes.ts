@@ -1,6 +1,8 @@
 export const routes = {
   HOME: '/',
+  INSPECTOR_MODE: '/inspector',
   LOGIN: '/login',
+  STATIONS: '/stations',
   DASHBOARD: '/dashboard',
   INSPECTIONS: '/inspections',
   ADMINISTRATION: '/administration/:tab?',

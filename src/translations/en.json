@@ -264,11 +264,29 @@
     "home": {
       "loginButton": "Login",
       "adminButton": "Administration",
+      "inspectorMode": "For ITP Stations",
+      "inspectorModeShort": "Stations",
+      "client": {
+        "badge": "Find ITP near you",
+        "title1": "Find",
+        "title2": "The Perfect ITP Station",
+        "subtitle": "Search for authorized ITP stations in Romania. Get directions, contact information, and schedule your periodic technical inspection.",
+        "benefit1": "Authorized stations",
+        "benefit2": "Precise location",
+        "benefit3": "Direct contact",
+        "benefit4": "Verified info",
+        "ownerCta": {
+          "title": "Are you a Inspector or own an ITP Station?",
+          "description": "Join the RoadReady platform and efficiently manage inspections, clients, and automatic notifications.",
+          "button": "Discover Platform"
+        }
+      },
       "hero": {
         "badge": "✨ Modern ITP Management",
         "title": "Manage Your ITP Inspections Efficiently",
         "subtitle": "Complete management system for ITP stations. Track inspections, manage clients, and never miss an expiration date.",
-        "cta": "Get Started"
+        "cta": "Get Started",
+        "findStation": "Find ITP Station"
       },
       "features": {
         "title": "Everything You Need",
@@ -744,6 +762,28 @@
     "hours": "hours",
     "min":"min",
     "sec": "sec",
-    "getTheOffer": "Get the offer!"
+    "getTheOffer": "Get the offer!",
+    "stations": {
+      "pageTitle": "Find ITP Stations",
+      "pageDescription": "Search for ITP stations near you. Get directions and contact information.",
+      "title": "Find Your Nearest ITP Station",
+      "subtitle": "Search for authorized ITP stations in your area and get directions instantly",
+      "searchPlaceholder": "Search by name, city, or address...",
+      "useMyLocation": "Use my location",
+      "locating": "Getting your location...",
+      "locationError": "Could not get your location. You can still search manually.",
+      "locationActive": "Showing stations sorted by distance",
+      "spotlightTitle": "Featured Stations",
+      "spotlight": "Featured",
+      "allStations": "All Stations",
+      "noResults": "No stations found matching your search",
+      "noStations": "No ITP stations available",
+      "loadError": "Failed to load stations. Please try again.",
+      "resultsCount": "{{count}} stations found",
+      "call": "Call",
+      "directions": "Directions",
+      "viewAll": "View All Stations",
+      "nearYou": "Stations Near You"
+    }
   }
 }
