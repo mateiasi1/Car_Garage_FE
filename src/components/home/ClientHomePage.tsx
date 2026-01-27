@@ -23,6 +23,10 @@ import {
   Shield,
   Clock,
   CheckCircle,
+  Car,
+  Bell,
+  FileText,
+  Smartphone,
 } from 'lucide-react';
 import clsx from 'clsx';
 import { brandName, contactEmail } from '../../constants/constants';
@@ -96,7 +100,14 @@ const ClientHomePage = () => {
               <img src={logo} alt="RoadReady" className="h-9 w-9 rounded-lg" />
               <span className="text-xl font-bold font-heading text-primary hidden sm:block">RoadReady</span>
             </Link>
-            <div className="flex items-center gap-3">
+            <div className="flex items-center gap-2 sm:gap-3">
+              <Link to={routes.CUSTOMER_LOGIN}>
+                <Button variant="ghost" size="sm" className="text-text/70 hover:text-primary">
+                  <Car className="w-4 h-4 mr-1.5" />
+                  <span className="hidden sm:inline">{t('home.customerPortal')}</span>
+                  <span className="sm:hidden">{t('home.customerPortalShort')}</span>
+                </Button>
+              </Link>
               <Link to={routes.INSPECTOR_MODE}>
                 <Button variant="secondary" size="sm" className="text-text/70 hover:text-primary">
                   <Building2 className="w-4 h-4 mr-1.5" />
@@ -316,8 +327,68 @@ const ClientHomePage = () => {
         </div>
       </section>
 
+      {/* CUSTOMER PORTAL CTA */}
+      <section className="py-12 sm:py-16 bg-gradient-to-br from-primary/10 via-background to-primary/5 relative overflow-hidden">
+        <div className="absolute top-0 right-0 w-64 h-64 bg-primary/5 rounded-full blur-[80px]" />
+        <div className="absolute bottom-0 left-0 w-48 h-48 bg-primary/10 rounded-full blur-[60px]" />
+
+        <div className="max-w-5xl mx-auto px-4 sm:px-6 relative z-10">
+          <div className="grid md:grid-cols-2 gap-8 items-center">
+            <div>
+              <motion.div
+                initial={{ opacity: 0, x: -20 }}
+                whileInView={{ opacity: 1, x: 0 }}
+                viewport={{ once: true }}
+                transition={{ duration: 0.5 }}
+              >
+                <div className="inline-flex items-center gap-2 px-3 py-1 bg-primary/10 rounded-full text-primary text-sm font-medium mb-4">
+                  <Smartphone className="w-4 h-4" />
+                  {t('home.customerPortalBadge')}
+                </div>
+                <h2 className="text-2xl sm:text-3xl font-heading font-bold text-text mb-4">
+                  {t('home.customerCta.title')}
+                </h2>
+                <p className="text-muted mb-6">
+                  {t('home.customerCta.description')}
+                </p>
+                <Link to={routes.CUSTOMER_LOGIN}>
+                  <Button variant="primary" size="md" className="px-6">
+                    {t('home.customerCta.button')}
+                    <ArrowRight className="w-4 h-4 ml-2" />
+                  </Button>
+                </Link>
+              </motion.div>
+            </div>
+
+            <div className="grid grid-cols-2 gap-4">
+              {[
+                { icon: <Car className="w-6 h-6" />, title: t('home.customerCta.feature1.title'), desc: t('home.customerCta.feature1.desc') },
+                { icon: <FileText className="w-6 h-6" />, title: t('home.customerCta.feature2.title'), desc: t('home.customerCta.feature2.desc') },
+                { icon: <Bell className="w-6 h-6" />, title: t('home.customerCta.feature3.title'), desc: t('home.customerCta.feature3.desc') },
+                { icon: <Shield className="w-6 h-6" />, title: t('home.customerCta.feature4.title'), desc: t('home.customerCta.feature4.desc') },
+              ].map((feature, index) => (
+                <motion.div
+                  key={index}
+                  initial={{ opacity: 0, y: 20 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.4, delay: index * 0.1 }}
+                  className="bg-surface/80 backdrop-blur-sm rounded-xl p-4 border border-border/50"
+                >
+                  <div className="w-10 h-10 rounded-lg bg-primary/10 flex items-center justify-center text-primary mb-3">
+                    {feature.icon}
+                  </div>
+                  <h3 className="font-semibold text-text text-sm mb-1">{feature.title}</h3>
+                  <p className="text-xs text-muted">{feature.desc}</p>
+                </motion.div>
+              ))}
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* CTA FOR STATION OWNERS */}
-      <section className="py-12 sm:py-16 bg-gradient-to-b from-primary/5 to-transparent">
+      <section className="py-12 sm:py-16 bg-gradient-to-b from-transparent to-primary/5">
         <div className="max-w-3xl mx-auto px-4 sm:px-6 text-center">
           <Building2 className="w-12 h-12 text-primary mx-auto mb-4" />
           <h2 className="text-2xl sm:text-3xl font-heading font-bold text-text mb-3">
@@ -327,7 +398,7 @@ const ClientHomePage = () => {
             {t('home.client.ownerCta.description')}
           </p>
           <Link to={routes.INSPECTOR_MODE}>
-            <Button variant="primary" size="md" className="px-8">
+            <Button variant="secondary" size="md" className="px-8">
               {t('home.client.ownerCta.button')}
               <ArrowRight className="w-4 h-4 ml-2" />
             </Button>

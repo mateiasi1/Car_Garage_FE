@@ -1,6 +1,6 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
 import config from '../../config';
-import { baseQueryWithReAuth } from '../baseQuery';
+import { publicBaseQuery } from '../publicBaseQuery';
 
 export interface CarMakeModel {
   id: string;
@@ -19,7 +19,7 @@ export interface VotePayload {
 
 export const carMakesModelsApi = createApi({
   reducerPath: 'carMakesModelsApi',
-  baseQuery: baseQueryWithReAuth,
+  baseQuery: publicBaseQuery,
   tagTypes: ['CarMakesModels'],
   endpoints: (builder) => ({
     fetchMakes: builder.query<string[], void>({

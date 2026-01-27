@@ -266,6 +266,30 @@
       "adminButton": "Administrare Companie",
       "inspectorMode": "Pentru Stații ITP",
       "inspectorModeShort": "Stații",
+      "customerPortal": "Mașinile Mele",
+      "customerPortalShort": "Mașini",
+      "customerPortalBadge": "Portal Clienți",
+      "customerCta": {
+        "title": "Urmărește Documentele Mașinii",
+        "description": "Nu mai rata nicio expirare ITP, RCA sau rovinietă. Primești notificări automate prin SMS când documentele urmează să expire.",
+        "button": "Accesează Mașinile Mele",
+        "feature1": {
+          "title": "Adaugă Mașinile",
+          "desc": "Înregistrează vehiculele și urmărește documentele"
+        },
+        "feature2": {
+          "title": "Urmărește Termenele",
+          "desc": "ITP, RCA, rovinietă - toate într-un loc"
+        },
+        "feature3": {
+          "title": "Primești Notificări",
+          "desc": "SMS-uri înainte de expirare"
+        },
+        "feature4": {
+          "title": "Fii în Siguranță",
+          "desc": "Nu mai circula cu acte expirate"
+        }
+      },
       "client": {
         "badge": "Găsește ITP lângă tine",
         "title1": "Găsește",
@@ -784,6 +808,187 @@
       "directions": "Indicații",
       "viewAll": "Vezi Toate Stațiile",
       "nearYou": "Stații Aproape de Tine"
+    },
+    "customer": {
+      "nav": {
+        "dashboard": "Panou de Control",
+        "myCars": "Mașinile Mele",
+        "profile": "Profil"
+      },
+      "login": {
+        "title": "Portal Client",
+        "subtitle": "Autentifică-te cu numărul de telefon pentru a accesa mașinile și documentele tale",
+        "welcomeTitle": "Gestionează Documentele Mașinii",
+        "welcomeSubtitle": "Nu mai rata nicio expirare ITP, RCA sau rovinietă. Primești notificări automate prin SMS.",
+        "backToHome": "Înapoi la Pagina Principală",
+        "feature1": "Urmărește toate documentele mașinii",
+        "feature2": "Primești SMS-uri înainte de expirare",
+        "feature3": "Nu mai circula cu acte expirate",
+        "phoneLabel": "Număr de telefon",
+        "phoneHint": "Îți vom trimite un cod de verificare din 6 cifre",
+        "requestOtp": "Trimite cod SMS",
+        "verifyOtp": "Verifică și Autentifică-te",
+        "otpSent": "Codul a fost trimis",
+        "otpSentTo": "Am trimis un cod de verificare la {{phone}}",
+        "otpExpiresIn": "Codul expiră în {{time}}",
+        "otpExpired": "Codul a expirat. Te rugăm să soliciți unul nou.",
+        "otpRequestFailed": "Nu am putut trimite codul. Te rugăm să încerci din nou.",
+        "invalidOtp": "Cod incorect. Te rugăm să verifici și să încerci din nou.",
+        "invalidPhone": "Număr de telefon invalid",
+        "changePhone": "Schimbă numărul",
+        "resendOtp": "Retrimite codul",
+        "loginSuccess": "Bine ai revenit!",
+        "alreadyLoggedInTitle": "Ești Deja Autentificat",
+        "alreadyLoggedInMessage": "Bine ai revenit, {{name}}! Poți accesa panoul de control sau poți folosi un alt cont.",
+        "goToDashboard": "Mergi la Panou de Control",
+        "switchAccount": "Folosește Alt Cont",
+        "businessLogin": "Ai o stație ITP? Autentifică-te aici",
+        "termsInfo": {
+          "prefix": "Prin utilizarea acestei aplicații, ești de acord cu",
+          "link": "Termenii și Condițiile"
+        }
+      },
+      "register": {
+        "title": "Completează profilul",
+        "subtitle": "Mai avem nevoie de câteva informații pentru a finaliza înregistrarea",
+        "firstName": "Prenume",
+        "firstNamePlaceholder": "ex: Ion",
+        "lastName": "Nume",
+        "lastNamePlaceholder": "ex: Popescu",
+        "phoneLabel": "Număr de telefon",
+        "submit": "Finalizează înregistrarea",
+        "backToLogin": "Înapoi la autentificare",
+        "success": "Cont creat cu succes!",
+        "failed": "Nu am putut crea contul. Te rugăm să încerci din nou.",
+        "noPhone": "Lipsește numărul de telefon. Te rugăm să te autentifici din nou."
+      },
+      "dashboard": {
+        "title": "Panou de Control",
+        "user": "acolo",
+        "greetingMorning": "Bună dimineața",
+        "greetingAfternoon": "Bună ziua",
+        "greetingEvening": "Bună seara",
+        "welcomeMessage": "Iată o privire de ansamblu asupra mașinilor și documentelor tale",
+        "addCar": "Adaugă mașină",
+        "addFirstCar": "Adaugă prima mașină",
+        "myCars": "Mașinile mele",
+        "activeReminders": "Memento-uri Active",
+        "expiringSoon": "Expiră Curând",
+        "expiredDocs": "Expirate",
+        "upcomingDeadlines": "Termene Apropiate",
+        "viewAll": "Vezi Toate",
+        "noDeadlines": "Nu ai termene apropiate. Adaugă o mașină și documentele ei pentru a primi notificări.",
+        "noDeadlinesDesc": "Toate documentele tale sunt la zi. Bravo!",
+        "allGood": "Totul în Regulă!",
+        "getStarted": "Începe cu RoadReady",
+        "getStartedDesc": "Adaugă prima ta mașină pentru a începe să urmărești ITP-ul, RCA-ul, rovinieta și alte documente importante.",
+        "expired": "Expirat",
+        "expirestoday": "Expiră astăzi",
+        "expiresTomorrow": "Expiră mâine",
+        "expiresInDays": "Expiră în {{days}} zile"
+      },
+      "cars": {
+        "title": "Mașinile Mele",
+        "addCar": "Adaugă mașină",
+        "addFirstCar": "Adaugă prima mașină",
+        "editCar": "Editează mașina",
+        "noCars": "Nu ai nicio mașină adăugată",
+        "noCarsDesc": "Adaugă prima ta mașină pentru a urmări documentele și a primi memento-uri.",
+        "licensePlate": "Număr de înmatriculare",
+        "category": "Categorie",
+        "make": "Marcă",
+        "model": "Model",
+        "selectMake": "Selectează marca...",
+        "selectModel": "Selectează modelul...",
+        "noMakeModel": "Fără marcă/model",
+        "documents": "documente",
+        "reminders": "memento-uri",
+        "invalidPlate": "Număr de înmatriculare invalid",
+        "addSuccess": "Mașina a fost adăugată cu succes",
+        "addFailed": "Nu am putut adăuga mașina. Te rugăm să încerci din nou.",
+        "updateSuccess": "Mașina a fost actualizată cu succes",
+        "updateFailed": "Nu am putut actualiza mașina. Te rugăm să încerci din nou.",
+        "deleteSuccess": "Mașina a fost ștearsă cu succes",
+        "deleteFailed": "Nu am putut șterge mașina. Te rugăm să încerci din nou.",
+        "notFound": "Mașina nu a fost găsită",
+        "backToCars": "Înapoi la mașini",
+        "confirmDelete": "Ești sigur că vrei să ștergi mașina?",
+        "confirmDeleteDesc": "Această acțiune va șterge mașina {{plate}} și toate documentele și memento-urile asociate."
+      },
+      "documents": {
+        "title": "Documente",
+        "add": "Adaugă document",
+        "type": "Tip document",
+        "expiresAt": "Data expirării",
+        "customTitle": "Titlu",
+        "titlePlaceholder": "ex: Schimb ulei, Revizie frâne",
+        "itp": "ITP",
+        "rca": "RCA",
+        "vignette": "Rovinietă",
+        "mechanical": "Revizie Tehnică",
+        "custom": "Personalizat",
+        "noDocuments": "Nu ai documente adăugate pentru această mașină",
+        "addSuccess": "Documentul a fost adăugat cu succes",
+        "addFailed": "Nu am putut adăuga documentul. Te rugăm să încerci din nou.",
+        "deleteSuccess": "Documentul a fost șters cu succes",
+        "deleteFailed": "Nu am putut șterge documentul. Te rugăm să încerci din nou."
+      },
+      "reminders": {
+        "title": "Memento-uri",
+        "add": "Adaugă memento",
+        "selectCar": "Selectează mașina",
+        "reminderTitle": "Titlu",
+        "titlePlaceholder": "ex: Schimb anvelope, Control tehnic",
+        "description": "Descriere (opțional)",
+        "descriptionPlaceholder": "Adaugă detalii suplimentare...",
+        "expiresAt": "Data",
+        "remindBefore": "Reamintește înainte cu",
+        "daysBefore": "{{days}} zile înainte",
+        "notifyViaSms": "Trimite notificare SMS",
+        "noReminders": "Nu ai memento-uri pentru această mașină",
+        "addSuccess": "Memento-ul a fost adăugat cu succes",
+        "addFailed": "Nu am putut adăuga memento-ul. Te rugăm să încerci din nou.",
+        "deleteSuccess": "Memento-ul a fost șters cu succes",
+        "deleteFailed": "Nu am putut șterge memento-ul. Te rugăm să încerci din nou."
+      },
+      "profile": {
+        "title": "Profil",
+        "personalInfo": "Informații personale",
+        "firstName": "Prenume",
+        "lastName": "Nume",
+        "phone": "Telefon",
+        "memberSince": "Membru din",
+        "notifications": "Notificări",
+        "notificationPref": "Preferință notificări",
+        "notifySms": "Doar SMS",
+        "notifyApp": "Doar în aplicație",
+        "notifyBoth": "SMS și în aplicație",
+        "notificationDesc": "Alege cum vrei să fii notificat când documentele urmează să expire.",
+        "linkedBranches": "Stații ITP asociate",
+        "linkedBranchesDesc": "Aceste stații au creat inspecții pentru tine sau mașinile tale.",
+        "linkedSince": "Asociat din",
+        "account": "Cont",
+        "logout": "Deconectare",
+        "updateSuccess": "Profilul a fost actualizat cu succes",
+        "updateFailed": "Nu am putut actualiza profilul. Te rugăm să încerci din nou."
+      }
+    },
+    "inspection": {
+      "customerSuggestions": "Clienți existenți găsiți",
+      "existingCustomer": "Client existent",
+      "portalUser": "Client Portal"
+    },
+    "common": {
+      "loading": "Se încarcă...",
+      "searching": "Se caută...",
+      "error": "A apărut o eroare",
+      "save": "Salvează",
+      "cancel": "Anulează",
+      "delete": "Șterge",
+      "edit": "Editează"
+    },
+    "validation": {
+      "required": "Acest câmp este obligatoriu"
     }
   }
 }

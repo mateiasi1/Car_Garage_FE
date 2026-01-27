@@ -1,6 +1,5 @@
 import { createApi } from '@reduxjs/toolkit/query/react';
-import config from '../../config';
-import { createBaseQueryWithReAuth } from '../baseQuery';
+import { publicBaseQuery } from '../publicBaseQuery';
 
 export interface County {
   id: string;
@@ -16,7 +15,7 @@ export interface City {
 
 export const locationApi = createApi({
   reducerPath: 'locationApi',
-  baseQuery: createBaseQueryWithReAuth(config.baseUrl),
+  baseQuery: publicBaseQuery,
   tagTypes: ['Locations'],
   endpoints: (builder) => ({
     getCounties: builder.query<County[], void>({

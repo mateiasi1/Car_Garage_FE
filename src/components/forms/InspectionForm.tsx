@@ -1,8 +1,8 @@
-import { FC, useContext, useEffect } from 'react';
+import { FC, useContext, useEffect, useState, useCallback, useRef } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useNavigate } from 'react-router-dom';
 import { useDispatch } from 'react-redux';
-import { ArrowLeft } from 'lucide-react';
+import { ArrowLeft, UserCheck } from 'lucide-react';
 import { routes } from '../../constants/routes';
 import { AuthContext } from '../../contexts/authContext';
 import { useAppSelector } from '../../hooks/reduxHooks';
@@ -14,6 +14,7 @@ import {
   useFetchModelsForMakeQuery,
   useVoteCarMakeModelMutation,
 } from '../../rtk/services/car-makes-models-service';
+import { useLazySearchCustomersQuery, CustomerSearchResult } from '../../rtk/services/customer-search-service';
 import { userApi } from '../../rtk/services/user-service';
 import { CarCategories } from '../../utils/enums/CarCategories';
 import { InspectionType } from '../../utils/enums/InspectionTypes';
@@ -28,6 +29,7 @@ import { PhoneNumberRoInput } from '../PhoneNumberRoInput';
 import { ComboboxInput } from '../shared/ComboboxInput';
 import { CustomTextarea } from '../shared/CustomTextarea';
 import { CustomCheckbox } from '../shared/CustomCheckbox';
+import CustomerSuggestionDropdown from './CustomerSuggestionDropdown';
 
 type FormData = {
   licensePlate: string;
@@ -58,6 +60,61 @@ const InspectionForm: FC = () => {
 
   const isEdit = Boolean(selectedInspection?.id);
   const isDeleted = selectedInspection?.deletedAt !== null && selectedInspection?.deletedAt !== undefined;
+
+  // Customer search state
+  const [searchCustomers, { data: customerSuggestions = [], isFetching: isSearching }] = useLazySearchCustomersQuery();
+  const [showSuggestions, setShowSuggestions] = useState(false);
+  const [selectedCustomerId, setSelectedCustomerId] = useState<string | null>(null);
+  const [selectedCarId, setSelectedCarId] = useState<string | null>(null);
+  const searchTimeoutRef = useRef<NodeJS.Timeout | null>(null);
+  const suggestionContainerRef = useRef<HTMLDivElement>(null);
+
+  // Debounced customer search
+  const triggerCustomerSearch = useCallback((query: string) => {
+    if (searchTimeoutRef.current) {
+      clearTimeout(searchTimeoutRef.current);
+    }
+
+    if (query.length < 3) {
+      setShowSuggestions(false);
+      return;
+    }
+
+    searchTimeoutRef.current = setTimeout(() => {
+      searchCustomers(query);
+      setShowSuggestions(true);
+    }, 300);
+  }, [searchCustomers]);
+
+  // Handle customer selection from suggestions
+  const handleCustomerSelect = (customer: CustomerSearchResult, car?: CustomerSearchResult['cars'][0]) => {
+    setSelectedCustomerId(customer.id);
+    setFieldValue('firstName', customer.firstName);
+    setFieldValue('lastName', customer.lastName);
+    setFieldValue('phoneNumber', customer.phoneNumber);
+
+    if (car) {
+      setSelectedCarId(car.id);
+      setFieldValue('licensePlate', car.licensePlate);
+      setFieldValue('carCategory', car.category as CarCategories);
+      if (car.make) setFieldValue('carMake', car.make);
+      if (car.model) setFieldValue('carModel', car.model);
+    }
+
+    setShowSuggestions(false);
+  };
+
+  // Close suggestions when clicking outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (suggestionContainerRef.current && !suggestionContainerRef.current.contains(event.target as Node)) {
+        setShowSuggestions(false);
+      }
+    };
+
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => document.removeEventListener('mousedown', handleClickOutside);
+  }, []);
 
   // Form setup using useForm hook
   const { values, errors, register, handleSubmit, setFieldValue, setValues, isSubmitting } = useForm<FormData>({
@@ -125,8 +182,9 @@ const InspectionForm: FC = () => {
           branchId: formValues.branchId,
           notes: formValues.notes,
           preferAfternoon: formValues.preferAfternoon,
-          ...(selectedInspection?.car?.customer?.id && { customerId: selectedInspection.car.customer.id }),
-          ...(selectedInspection?.car?.id && { carId: selectedInspection.car.id }),
+          // Use selected customer/car from search, or from existing inspection
+          ...(selectedCustomerId ? { customerId: selectedCustomerId } : selectedInspection?.car?.customer?.id && { customerId: selectedInspection.car.customer.id }),
+          ...(selectedCarId ? { carId: selectedCarId } : selectedInspection?.car?.id && { carId: selectedInspection.car.id }),
         };
 
         let result;
@@ -223,14 +281,31 @@ const InspectionForm: FC = () => {
 
               <div className="space-y-4">
                 {/* License Plate - uses register() for standard input */}
-                <CustomInput
-                  label={`${t('licensePlate')} *`}
-                  {...register('licensePlate')}
-                  onChange={(e) => setFieldValue('licensePlate', e.target.value.toUpperCase())}
-                  placeholder="DJ-51-ABC"
-                  autoComplete="off"
-                  error={errors.licensePlate && t(errors.licensePlate)}
-                />
+                <div className="relative">
+                  <CustomInput
+                    label={`${t('licensePlate')} *`}
+                    {...register('licensePlate')}
+                    onChange={(e) => {
+                      const plate = e.target.value.toUpperCase();
+                      setFieldValue('licensePlate', plate);
+                      setSelectedCarId(null);
+                      // Search when plate has enough characters
+                      if (plate.length >= 4) {
+                        triggerCustomerSearch(plate);
+                      }
+                    }}
+                    placeholder="DJ-51-ABC"
+                    autoComplete="off"
+                    error={errors.licensePlate && t(errors.licensePlate)}
+                  />
+                  {showSuggestions && (
+                    <CustomerSuggestionDropdown
+                      suggestions={customerSuggestions}
+                      onSelect={handleCustomerSelect}
+                      isLoading={isSearching}
+                    />
+                  )}
+                </div>
 
                 {/* Car Category - uses setFieldValue for custom select */}
                 <CustomSelect
@@ -279,31 +354,76 @@ const InspectionForm: FC = () => {
 
             {/* Customer Info */}
             <div className="bg-background rounded-lg p-4 sm:p-5 border border-border">
-              <h3 className="text-lg font-heading font-semibold text-text mb-4">{t('customerInformation')}</h3>
+              <div className="flex items-center justify-between mb-4">
+                <h3 className="text-lg font-heading font-semibold text-text">{t('customerInformation')}</h3>
+                {selectedCustomerId && (
+                  <span className="inline-flex items-center gap-1 text-xs bg-success/10 text-success px-2 py-1 rounded-full">
+                    <UserCheck className="w-3 h-3" />
+                    {t('inspection.existingCustomer')}
+                  </span>
+                )}
+              </div>
 
-              <div className="space-y-4">
-                <CustomInput
-                  label={`${t('firstName')} *`}
-                  {...register('firstName')}
-                  placeholder={t('firstName')}
-                  error={errors.firstName && t(errors.firstName)}
-                />
+              <div className="space-y-4" ref={suggestionContainerRef}>
+                <div className="relative">
+                  <CustomInput
+                    label={`${t('firstName')} *`}
+                    {...register('firstName')}
+                    placeholder={t('firstName')}
+                    error={errors.firstName && t(errors.firstName)}
+                    onChange={(e) => {
+                      setFieldValue('firstName', e.target.value);
+                      setSelectedCustomerId(null);
+                      triggerCustomerSearch(e.target.value);
+                    }}
+                  />
+                  {showSuggestions && (
+                    <CustomerSuggestionDropdown
+                      suggestions={customerSuggestions}
+                      onSelect={handleCustomerSelect}
+                      isLoading={isSearching}
+                    />
+                  )}
+                </div>
 
-                <CustomInput
-                  label={`${t('lastName')} *`}
-                  {...register('lastName')}
-                  placeholder={t('lastName')}
-                  error={errors.lastName && t(errors.lastName)}
-                />
+                <div className="relative">
+                  <CustomInput
+                    label={`${t('lastName')} *`}
+                    {...register('lastName')}
+                    placeholder={t('lastName')}
+                    error={errors.lastName && t(errors.lastName)}
+                    onChange={(e) => {
+                      setFieldValue('lastName', e.target.value);
+                      setSelectedCustomerId(null);
+                      triggerCustomerSearch(e.target.value);
+                    }}
+                  />
+                  {showSuggestions && !customerSuggestions.length && (
+                    <CustomerSuggestionDropdown
+                      suggestions={customerSuggestions}
+                      onSelect={handleCustomerSelect}
+                      isLoading={isSearching}
+                    />
+                  )}
+                </div>
 
                 {/* Phone - uses setFieldValue for custom component */}
-                <PhoneNumberRoInput
-                  label={`${t('phoneNumber')} *`}
-                  value={values.phoneNumber}
-                  onChange={(val) => setFieldValue('phoneNumber', val)}
-                  placeholder="712345678"
-                  error={errors.phoneNumber ? t(errors.phoneNumber) : undefined}
-                />
+                <div className="relative">
+                  <PhoneNumberRoInput
+                    label={`${t('phoneNumber')} *`}
+                    value={values.phoneNumber}
+                    onChange={(val) => {
+                      setFieldValue('phoneNumber', val);
+                      setSelectedCustomerId(null);
+                      // Search when phone has enough digits
+                      if (val.length >= 6) {
+                        triggerCustomerSearch(val);
+                      }
+                    }}
+                    placeholder="712345678"
+                    error={errors.phoneNumber ? t(errors.phoneNumber) : undefined}
+                  />
+                </div>
               </div>
             </div>
 

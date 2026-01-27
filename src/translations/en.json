@@ -266,6 +266,30 @@
       "adminButton": "Administration",
       "inspectorMode": "For ITP Stations",
       "inspectorModeShort": "Stations",
+      "customerPortal": "My Cars",
+      "customerPortalShort": "My Cars",
+      "customerPortalBadge": "Customer Portal",
+      "customerCta": {
+        "title": "Track Your Car Documents",
+        "description": "Never miss an ITP, RCA, or vignette expiration again. Get automatic reminders via SMS when your documents are about to expire.",
+        "button": "Access My Cars",
+        "feature1": {
+          "title": "Add Your Cars",
+          "desc": "Register your vehicles and track documents"
+        },
+        "feature2": {
+          "title": "Track Deadlines",
+          "desc": "ITP, RCA, vignette - all in one place"
+        },
+        "feature3": {
+          "title": "Get Reminders",
+          "desc": "SMS notifications before expiration"
+        },
+        "feature4": {
+          "title": "Stay Safe",
+          "desc": "Never drive with expired documents"
+        }
+      },
       "client": {
         "badge": "Find ITP near you",
         "title1": "Find",
@@ -784,6 +808,187 @@
       "directions": "Directions",
       "viewAll": "View All Stations",
       "nearYou": "Stations Near You"
+    },
+    "customer": {
+      "nav": {
+        "dashboard": "Dashboard",
+        "myCars": "My Cars",
+        "profile": "Profile"
+      },
+      "login": {
+        "title": "Customer Portal",
+        "subtitle": "Login with your phone number to access your cars and documents",
+        "welcomeTitle": "Manage Your Car Documents",
+        "welcomeSubtitle": "Never miss an ITP, RCA, or vignette expiration again. Get automatic reminders via SMS.",
+        "backToHome": "Back to Home",
+        "feature1": "Track all your car documents",
+        "feature2": "Get SMS reminders before expiry",
+        "feature3": "Never drive with expired documents",
+        "phoneLabel": "Phone Number",
+        "phoneHint": "We'll send you a 6-digit verification code",
+        "requestOtp": "Send SMS Code",
+        "verifyOtp": "Verify & Login",
+        "otpSent": "Code Sent",
+        "otpSentTo": "We sent a verification code to {{phone}}",
+        "otpExpiresIn": "Code expires in {{time}}",
+        "otpExpired": "Code has expired. Please request a new one.",
+        "otpRequestFailed": "Could not send the code. Please try again.",
+        "invalidOtp": "Incorrect code. Please check and try again.",
+        "invalidPhone": "Invalid phone number",
+        "changePhone": "Change number",
+        "resendOtp": "Resend code",
+        "loginSuccess": "Welcome back!",
+        "alreadyLoggedInTitle": "You're Already Logged In",
+        "alreadyLoggedInMessage": "Welcome back, {{name}}! You can access your dashboard or switch to a different account.",
+        "goToDashboard": "Go to Dashboard",
+        "switchAccount": "Use Different Account",
+        "businessLogin": "Own an ITP station? Login here",
+        "termsInfo": {
+          "prefix": "By using this app, you agree to our",
+          "link": "Terms and Conditions"
+        }
+      },
+      "register": {
+        "title": "Complete Your Profile",
+        "subtitle": "We need a few more details to finish setting up your account",
+        "firstName": "First Name",
+        "firstNamePlaceholder": "e.g., John",
+        "lastName": "Last Name",
+        "lastNamePlaceholder": "e.g., Smith",
+        "phoneLabel": "Phone Number",
+        "submit": "Complete Registration",
+        "backToLogin": "Back to login",
+        "success": "Account created successfully!",
+        "failed": "Could not create account. Please try again.",
+        "noPhone": "Phone number is missing. Please log in again."
+      },
+      "dashboard": {
+        "title": "Dashboard",
+        "user": "there",
+        "greetingMorning": "Good morning",
+        "greetingAfternoon": "Good afternoon",
+        "greetingEvening": "Good evening",
+        "welcomeMessage": "Here's an overview of your cars and documents",
+        "addCar": "Add Car",
+        "addFirstCar": "Add Your First Car",
+        "myCars": "My Cars",
+        "activeReminders": "Active Reminders",
+        "expiringSoon": "Expiring Soon",
+        "expiredDocs": "Expired",
+        "upcomingDeadlines": "Upcoming Deadlines",
+        "viewAll": "View All",
+        "noDeadlines": "No upcoming deadlines. Add a car and its documents to get notifications.",
+        "noDeadlinesDesc": "All your documents are up to date. Great job!",
+        "allGood": "All Good!",
+        "getStarted": "Get Started with RoadReady",
+        "getStartedDesc": "Add your first car to start tracking ITP, RCA, vignette, and other important documents.",
+        "expired": "Expired",
+        "expirestoday": "Expires today",
+        "expiresTomorrow": "Expires tomorrow",
+        "expiresInDays": "Expires in {{days}} days"
+      },
+      "cars": {
+        "title": "My Cars",
+        "addCar": "Add Car",
+        "addFirstCar": "Add Your First Car",
+        "editCar": "Edit Car",
+        "noCars": "No cars added yet",
+        "noCarsDesc": "Add your first car to track documents and receive reminders.",
+        "licensePlate": "License Plate",
+        "category": "Category",
+        "make": "Make",
+        "model": "Model",
+        "selectMake": "Select make...",
+        "selectModel": "Select model...",
+        "noMakeModel": "No make/model",
+        "documents": "documents",
+        "reminders": "reminders",
+        "invalidPlate": "Invalid license plate",
+        "addSuccess": "Car added successfully",
+        "addFailed": "Could not add car. Please try again.",
+        "updateSuccess": "Car updated successfully",
+        "updateFailed": "Could not update car. Please try again.",
+        "deleteSuccess": "Car deleted successfully",
+        "deleteFailed": "Could not delete car. Please try again.",
+        "notFound": "Car not found",
+        "backToCars": "Back to cars",
+        "confirmDelete": "Are you sure you want to delete this car?",
+        "confirmDeleteDesc": "This will delete {{plate}} and all associated documents and reminders."
+      },
+      "documents": {
+        "title": "Documents",
+        "add": "Add Document",
+        "type": "Document Type",
+        "expiresAt": "Expiry Date",
+        "customTitle": "Title",
+        "titlePlaceholder": "e.g., Oil change, Brake service",
+        "itp": "ITP",
+        "rca": "RCA",
+        "vignette": "Vignette",
+        "mechanical": "Technical Service",
+        "custom": "Custom",
+        "noDocuments": "No documents added for this car",
+        "addSuccess": "Document added successfully",
+        "addFailed": "Could not add document. Please try again.",
+        "deleteSuccess": "Document deleted successfully",
+        "deleteFailed": "Could not delete document. Please try again."
+      },
+      "reminders": {
+        "title": "Reminders",
+        "add": "Add Reminder",
+        "selectCar": "Select Car",
+        "reminderTitle": "Title",
+        "titlePlaceholder": "e.g., Tire change, Technical check",
+        "description": "Description (optional)",
+        "descriptionPlaceholder": "Add additional details...",
+        "expiresAt": "Date",
+        "remindBefore": "Remind me before",
+        "daysBefore": "{{days}} days before",
+        "notifyViaSms": "Send SMS notification",
+        "noReminders": "No reminders for this car",
+        "addSuccess": "Reminder added successfully",
+        "addFailed": "Could not add reminder. Please try again.",
+        "deleteSuccess": "Reminder deleted successfully",
+        "deleteFailed": "Could not delete reminder. Please try again."
+      },
+      "profile": {
+        "title": "Profile",
+        "personalInfo": "Personal Information",
+        "firstName": "First Name",
+        "lastName": "Last Name",
+        "phone": "Phone",
+        "memberSince": "Member Since",
+        "notifications": "Notifications",
+        "notificationPref": "Notification Preference",
+        "notifySms": "SMS only",
+        "notifyApp": "App only",
+        "notifyBoth": "SMS and App",
+        "notificationDesc": "Choose how you want to be notified when documents are about to expire.",
+        "linkedBranches": "Linked ITP Stations",
+        "linkedBranchesDesc": "These stations have created inspections for you or your vehicles.",
+        "linkedSince": "Linked since",
+        "account": "Account",
+        "logout": "Logout",
+        "updateSuccess": "Profile updated successfully",
+        "updateFailed": "Could not update profile. Please try again."
+      }
+    },
+    "inspection": {
+      "customerSuggestions": "Existing customers found",
+      "existingCustomer": "Existing Customer",
+      "portalUser": "Portal User"
+    },
+    "common": {
+      "loading": "Loading...",
+      "searching": "Searching...",
+      "error": "An error occurred",
+      "save": "Save",
+      "cancel": "Cancel",
+      "delete": "Delete",
+      "edit": "Edit"
+    },
+    "validation": {
+      "required": "This field is required"
     }
   }
 }
