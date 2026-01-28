@@ -18,7 +18,7 @@ const CustomerSuggestionDropdown: FC<CustomerSuggestionDropdownProps> = ({
 
   if (isLoading) {
     return (
-      <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-surface border border-border rounded-lg shadow-lg p-3">
+      <div data-suggestion-dropdown className="absolute z-50 top-full left-0 right-0 mt-1 bg-surface border border-border rounded-lg shadow-lg p-3">
         <div className="flex items-center justify-center gap-2 text-muted">
           <div className="w-4 h-4 border-2 border-primary border-t-transparent rounded-full animate-spin" />
           <span className="text-sm font-body">{t('common.searching')}</span>
@@ -32,7 +32,7 @@ const CustomerSuggestionDropdown: FC<CustomerSuggestionDropdownProps> = ({
   }
 
   return (
-    <div className="absolute z-50 top-full left-0 right-0 mt-1 bg-surface border border-border rounded-lg shadow-lg max-h-64 overflow-y-auto">
+    <div data-suggestion-dropdown className="absolute z-50 top-full left-0 right-0 mt-1 bg-surface border border-border rounded-lg shadow-lg max-h-64 overflow-y-auto">
       <div className="p-2 border-b border-border">
         <p className="text-xs text-muted font-body">{t('inspection.customerSuggestions')}</p>
       </div>

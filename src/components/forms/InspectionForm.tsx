@@ -107,9 +107,11 @@ const InspectionForm: FC = () => {
   // Close suggestions when clicking outside
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
-      if (suggestionContainerRef.current && !suggestionContainerRef.current.contains(event.target as Node)) {
-        setShowSuggestions(false);
-      }
+      const target = event.target as HTMLElement;
+      // Don't close if clicking inside a suggestion dropdown
+      if (target.closest('[data-suggestion-dropdown]')) return;
+      if (suggestionContainerRef.current && suggestionContainerRef.current.contains(target)) return;
+      setShowSuggestions(false);
     };
 
     document.addEventListener('mousedown', handleClickOutside);

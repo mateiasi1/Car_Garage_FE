@@ -904,6 +904,8 @@
         "documents": "documents",
         "reminders": "reminders",
         "invalidPlate": "Invalid license plate",
+        "dataAutoFilled": "Data was auto-filled",
+        "clickToFill": "Click to fill in the data",
         "addSuccess": "Car added successfully",
         "addFailed": "Could not add car. Please try again.",
         "updateSuccess": "Car updated successfully",
@@ -931,7 +933,13 @@
         "addSuccess": "Document added successfully",
         "addFailed": "Could not add document. Please try again.",
         "deleteSuccess": "Document deleted successfully",
-        "deleteFailed": "Could not delete document. Please try again."
+        "deleteFailed": "Could not delete document. Please try again.",
+        "conflictTitle": "Existing document",
+        "conflictDesc": "There is already an active document of this type for this car. Do you want to replace it with the new one?",
+        "replaceExisting": "Replace",
+        "inspectionExistsTitle": "Existing inspection",
+        "inspectionExistsDesc": "There is an ITP inspection for this car from {{date}}. The document will expire on {{expiry}}. Do you want to add the document based on this inspection?",
+        "useInspection": "Use inspection"
       },
       "reminders": {
         "title": "Reminders",

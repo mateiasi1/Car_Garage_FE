@@ -98,6 +98,13 @@ export const customerProfileApi = createApi({
       transformResponse: (response: { car: CustomerCar }) => response.car,
     }),
 
+    lookupCarByPlate: builder.query<
+      { found: boolean; car?: { licensePlate: string; category: string; make?: string; model?: string; countyId?: string }; customer?: { firstName: string; lastName: string; phoneNumber: string } },
+      string
+    >({
+      query: (licensePlate) => `/customer-portal/cars/lookup?licensePlate=${encodeURIComponent(licensePlate)}`,
+    }),
+
     addCustomerCar: builder.mutation<CustomerCar, AddCustomerCarDTO>({
       query: (data) => ({
         url: '/customer-portal/cars',
@@ -193,6 +200,7 @@ export const {
   useFetchCustomerDashboardQuery,
   useFetchCustomerCarsQuery,
   useFetchCustomerCarByIdQuery,
+  useLazyLookupCarByPlateQuery,
   useAddCustomerCarMutation,
   useUpdateCustomerCarMutation,
   useDeleteCustomerCarMutation,

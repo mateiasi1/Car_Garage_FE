@@ -1,5 +1,17 @@
-import { createApi } from '@reduxjs/toolkit/query/react';
-import { baseQueryWithReAuth } from '../baseQuery';
+import { createApi, fetchBaseQuery } from '@reduxjs/toolkit/query/react';
+import config from '../../config';
+
+// Auth endpoints use a plain base query without auto-injected tokens.
+// OTP endpoints need no auth, and register uses a custom tempToken header.
+const customerAuthBaseQuery = fetchBaseQuery({
+  baseUrl: config.baseUrl,
+  credentials: 'include',
+  prepareHeaders: (headers) => {
+    headers.set('Accept', 'application/json');
+    headers.set('Accept-Language', 'ro');
+    return headers;
+  },
+});
 
 export interface RequestOtpPayload {
   phoneNumber: string;
@@ -45,7 +57,7 @@ export interface CustomerRegisterResponse {
 
 export const customerAuthApi = createApi({
   reducerPath: 'customerAuthApi',
-  baseQuery: baseQueryWithReAuth,
+  baseQuery: customerAuthBaseQuery,
   endpoints: (builder) => ({
     requestOtp: builder.mutation<RequestOtpResponse, RequestOtpPayload>({
       query: (payload) => ({

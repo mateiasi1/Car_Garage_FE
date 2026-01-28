@@ -904,6 +904,8 @@
         "documents": "documente",
         "reminders": "memento-uri",
         "invalidPlate": "Număr de înmatriculare invalid",
+        "dataAutoFilled": "Datele au fost completate automat",
+        "clickToFill": "Apasă pentru a completa datele",
         "addSuccess": "Mașina a fost adăugată cu succes",
         "addFailed": "Nu am putut adăuga mașina. Te rugăm să încerci din nou.",
         "updateSuccess": "Mașina a fost actualizată cu succes",
@@ -931,7 +933,13 @@
         "addSuccess": "Documentul a fost adăugat cu succes",
         "addFailed": "Nu am putut adăuga documentul. Te rugăm să încerci din nou.",
         "deleteSuccess": "Documentul a fost șters cu succes",
-        "deleteFailed": "Nu am putut șterge documentul. Te rugăm să încerci din nou."
+        "deleteFailed": "Nu am putut șterge documentul. Te rugăm să încerci din nou.",
+        "conflictTitle": "Document existent",
+        "conflictDesc": "Există deja un document activ de acest tip pentru această mașină. Dorești să îl înlocuiești cu cel nou?",
+        "replaceExisting": "Înlocuiește",
+        "inspectionExistsTitle": "Inspecție existentă",
+        "inspectionExistsDesc": "Există o inspecție ITP pentru această mașină din {{date}}. Documentul va expira la {{expiry}}. Dorești să adaugi documentul bazat pe această inspecție?",
+        "useInspection": "Folosește inspecția"
       },
       "reminders": {
         "title": "Memento-uri",

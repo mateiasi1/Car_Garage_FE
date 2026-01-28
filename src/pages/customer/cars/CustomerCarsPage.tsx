@@ -21,6 +21,7 @@ const CustomerCarsPage: FC = () => {
   const location = useLocation();
 
   const [isAddDrawerOpen, setIsAddDrawerOpen] = useState(false);
+  const [formKey, setFormKey] = useState(0);
 
   const { data: cars, isLoading, error } = useFetchCustomerCarsQuery();
   const [addCar, { isLoading: isAdding }] = useAddCustomerCarMutation();
@@ -40,6 +41,7 @@ const CustomerCarsPage: FC = () => {
       await addCar(data).unwrap();
       showToast(t('customer.cars.addSuccess'), 'success');
       setIsAddDrawerOpen(false);
+      setFormKey((k) => k + 1);
     } catch {
       showToast(t('customer.cars.addFailed'), 'error');
     }
@@ -150,6 +152,7 @@ const CustomerCarsPage: FC = () => {
         {/* Add Car Drawer */}
         <Drawer isOpen={isAddDrawerOpen} onClose={() => setIsAddDrawerOpen(false)} title={t('customer.cars.addCar')}>
           <CarForm
+            key={formKey}
             onSubmit={handleAddCar as any}
             onCancel={() => setIsAddDrawerOpen(false)}
             isLoading={isAdding}

@@ -23,8 +23,9 @@ export const customerSearchApi = createApi({
     searchCustomers: builder.query<CustomerSearchResult[], string>({
       query: (searchQuery) => ({
         url: '/customers/search',
-        params: { query: searchQuery },
+        params: { q: searchQuery },
       }),
+      transformResponse: (response: { results: CustomerSearchResult[] }) => response.results,
     }),
   }),
 });
