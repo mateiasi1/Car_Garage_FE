@@ -22,6 +22,7 @@ export interface AddCarDocumentDTO {
   type: DocumentType;
   title?: string;
   expiresAt: string;
+  replaceExisting?: boolean;
 }
 
 export interface UpdateCarDocumentDTO {

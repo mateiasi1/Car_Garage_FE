@@ -32,6 +32,8 @@ const CustomerCarDetailPage: FC = () => {
   const [isDocumentDrawerOpen, setIsDocumentDrawerOpen] = useState(false);
   const [isReminderDrawerOpen, setIsReminderDrawerOpen] = useState(false);
   const [showDeleteConfirm, setShowDeleteConfirm] = useState(false);
+  const [showDocumentConflict, setShowDocumentConflict] = useState(false);
+  const [pendingDocumentData, setPendingDocumentData] = useState<AddCarDocumentDTO | null>(null);
   const [documentFormKey, setDocumentFormKey] = useState(0);
   const [reminderFormKey, setReminderFormKey] = useState(0);
 
@@ -70,8 +72,28 @@ const CustomerCarDetailPage: FC = () => {
       await addDocument(data).unwrap();
       showToast(t('customer.documents.addSuccess'), 'success');
       setIsDocumentDrawerOpen(false);
+    } catch (err: any) {
+      const status = err?.status || err?.data?.statusCode;
+      if (status === 409) {
+        setPendingDocumentData(data);
+        setShowDocumentConflict(true);
+      } else {
+        showToast(t('customer.documents.addFailed'), 'error');
+      }
+    }
+  };
+
+  const handleReplaceDocument = async () => {
+    if (!pendingDocumentData) return;
+    try {
+      await addDocument({ ...pendingDocumentData, replaceExisting: true }).unwrap();
+      showToast(t('customer.documents.addSuccess'), 'success');
+      setIsDocumentDrawerOpen(false);
     } catch {
       showToast(t('customer.documents.addFailed'), 'error');
+    } finally {
+      setShowDocumentConflict(false);
+      setPendingDocumentData(null);
     }
   };
 
@@ -129,7 +151,7 @@ const CustomerCarDetailPage: FC = () => {
         <div className="flex flex-col items-center justify-center py-20">
           <AlertCircle className="w-12 h-12 text-error mb-4" />
           <p className="text-error font-body">{t('customer.cars.notFound')}</p>
-          <Button variant="outline" className="mt-4" onClick={() => navigate(routes.CUSTOMER_CARS)}>
+          <Button variant="secondary" className="mt-4" onClick={() => navigate(routes.CUSTOMER_CARS)}>
             <ArrowLeft className="w-4 h-4 mr-2" />
             {t('customer.cars.backToCars')}
           </Button>
@@ -182,7 +204,7 @@ const CustomerCarDetailPage: FC = () => {
               <FileCheck className="w-5 h-5 text-primary" />
               {t('customer.documents.title')}
             </h2>
-            <Button variant="outline" size="sm" onClick={() => { setDocumentFormKey((k) => k + 1); setIsDocumentDrawerOpen(true); }}>
+            <Button variant="secondary" size="sm" onClick={() => { setDocumentFormKey((k) => k + 1); setIsDocumentDrawerOpen(true); }}>
               <Plus className="w-4 h-4 mr-2" />
               {t('customer.documents.add')}
             </Button>
@@ -230,7 +252,7 @@ const CustomerCarDetailPage: FC = () => {
               <Bell className="w-5 h-5 text-primary" />
               {t('customer.reminders.title')}
             </h2>
-            <Button variant="outline" size="sm" onClick={() => { setReminderFormKey((k) => k + 1); setIsReminderDrawerOpen(true); }}>
+            <Button variant="secondary" size="sm" onClick={() => { setReminderFormKey((k) => k + 1); setIsReminderDrawerOpen(true); }}>
               <Plus className="w-4 h-4 mr-2" />
               {t('customer.reminders.add')}
             </Button>
@@ -281,11 +303,40 @@ const CustomerCarDetailPage: FC = () => {
                 {t('customer.cars.confirmDeleteDesc', { plate: car.licensePlate })}
               </p>
               <div className="flex gap-3">
-                <Button variant="outline" onClick={() => setShowDeleteConfirm(false)} fullWidth>
+                <Button variant="secondary" onClick={() => setShowDeleteConfirm(false)} fullWidth>
                   {t('common.cancel')}
                 </Button>
                 <Button variant="danger" onClick={handleDeleteCar} loading={isDeleting} fullWidth>
                   {t('common.delete')}
+                </Button>
+              </div>
+            </div>
+          </div>
+        )}
+
+        {/* Document Conflict Confirmation */}
+        {showDocumentConflict && (
+          <div className="fixed inset-0 z-50 flex items-center justify-center bg-text/30 backdrop-blur-sm">
+            <div className="bg-surface rounded-xl border border-border p-6 max-w-sm mx-4">
+              <h3 className="text-lg font-semibold text-text mb-2 font-heading">
+                {t('customer.documents.conflictTitle')}
+              </h3>
+              <p className="text-muted font-body mb-4">
+                {t('customer.documents.conflictDesc')}
+              </p>
+              <div className="flex gap-3">
+                <Button
+                  variant="secondary"
+                  onClick={() => {
+                    setShowDocumentConflict(false);
+                    setPendingDocumentData(null);
+                  }}
+                  fullWidth
+                >
+                  {t('common.cancel')}
+                </Button>
+                <Button variant="primary" onClick={handleReplaceDocument} loading={isAddingDocument} fullWidth>
+                  {t('customer.documents.replaceExisting')}
                 </Button>
               </div>
             </div>
