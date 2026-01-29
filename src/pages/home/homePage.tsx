@@ -5,19 +5,43 @@ const HomePage = () => {
   const structuredData = {
     '@context': 'https://schema.org',
     '@type': 'WebPage',
-    name: 'RoadReady - Găsește Stații ITP în România',
+    name: 'RoadReady - Inspecție ITP | Stații ITP România | Inspecție Tehnică Periodică',
     description:
-      'Găsește stații ITP autorizate în România. Caută stații ITP lângă tine, obține indicații și programează inspecția tehnică periodică.',
+      'Inspecție ITP - Găsește stații ITP autorizate în România. Caută stații ITP lângă tine, obține indicații, programează inspecția tehnică periodică și urmărește documentele vehiculului.',
     url: 'https://roadready.ro/',
+    inLanguage: 'ro',
+    isPartOf: {
+      '@type': 'WebSite',
+      name: 'RoadReady',
+      url: 'https://roadready.ro',
+    },
+    about: {
+      '@type': 'Thing',
+      name: 'Inspecție Tehnică Periodică (ITP)',
+      description: 'Control tehnic obligatoriu pentru vehiculele înmatriculate în România',
+    },
+    breadcrumb: {
+      '@type': 'BreadcrumbList',
+      itemListElement: [
+        {
+          '@type': 'ListItem',
+          position: 1,
+          name: 'Acasă',
+          item: 'https://roadready.ro/',
+        },
+      ],
+    },
   };
 
   return (
     <>
       <SEO
-        title="RoadReady - Stații ITP România | Găsește Inspecție Tehnică Periodică Lângă Tine"
-        description="Găsește stații ITP autorizate în România. Caută stații ITP lângă tine, obține indicații și informații de contact. Verificare ITP rapidă și sigură."
-        keywords="stații ITP, ITP lângă mine, inspecție tehnică periodică, ITP România, găsește ITP, verificare ITP, statie ITP aproape, ITP auto, service ITP, control tehnic auto"
+        title="Inspecție ITP - Stații ITP România | Inspecție Tehnică Periodică | RoadReady"
+        description="Inspecție ITP - Găsește stații ITP autorizate lângă tine. Inspecție tehnică periodică auto, programări online, verificare ITP, urmărire documente RCA și rovinietă. Platforma #1 pentru ITP în România."
+        keywords="inspectie ITP, inspectie tehnica periodica, ITP, stații ITP, ITP lângă mine, inspectie periodica, inspectie tehnica auto, verificare ITP, ITP România, statie ITP aproape, caută ITP, găsește stație ITP, ITP auto, programare ITP, RoadReady, control tehnic auto, verificare vehicul, ITP expirat, valabilitate ITP, ITP moto, RCA, rovinietă"
         ogUrl="https://roadready.ro/"
+        ogTitle="RoadReady - Inspecție ITP | Stații ITP România"
+        ogDescription="Găsește stații ITP autorizate lângă tine. Inspecție tehnică periodică, programări online, urmărire documente auto."
         canonical="https://roadready.ro/"
         structuredData={structuredData}
       />
