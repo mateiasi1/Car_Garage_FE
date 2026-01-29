@@ -11,4 +11,12 @@ export const routes = {
   UNSUBSCRIBE: '/unsubscribe',
   TERMS: '/terms',
   NOT_FOUND: '*',
+
+  // Customer Portal Routes
+  CUSTOMER_LOGIN: '/customer/login',
+  CUSTOMER_REGISTER: '/customer/register',
+  CUSTOMER_DASHBOARD: '/customer/dashboard',
+  CUSTOMER_CARS: '/customer/cars',
+  CUSTOMER_CAR_DETAIL: '/customer/cars/:carId',
+  CUSTOMER_PROFILE: '/customer/profile',
 };

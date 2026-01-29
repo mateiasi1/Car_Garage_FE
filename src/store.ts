@@ -16,6 +16,10 @@ import { statisticsApi } from './rtk/services/statistics-service';
 import { smsApi } from './rtk/services/sms-service';
 import { carMakesModelsApi } from './rtk/services/car-makes-models-service';
 import { stationsApi } from './rtk/services/stations-service';
+// Customer Portal APIs
+import { customerAuthApi } from './rtk/services/customer-auth-service';
+import { customerProfileApi } from './rtk/services/customer-profile-service';
+import { customerSearchApi } from './rtk/services/customer-search-service';
 
 export const store = configureStore({
   reducer: {
@@ -35,6 +39,10 @@ export const store = configureStore({
     [smsApi.reducerPath]: smsApi.reducer,
     [carMakesModelsApi.reducerPath]: carMakesModelsApi.reducer,
     [stationsApi.reducerPath]: stationsApi.reducer,
+    // Customer Portal
+    [customerAuthApi.reducerPath]: customerAuthApi.reducer,
+    [customerProfileApi.reducerPath]: customerProfileApi.reducer,
+    [customerSearchApi.reducerPath]: customerSearchApi.reducer,
     inspection: inspectionReducer,
   },
   middleware: (getDefaultMiddleware) =>
@@ -54,7 +62,11 @@ export const store = configureStore({
       statisticsApi.middleware,
       smsApi.middleware,
       carMakesModelsApi.middleware,
-      stationsApi.middleware
+      stationsApi.middleware,
+      // Customer Portal
+      customerAuthApi.middleware,
+      customerProfileApi.middleware,
+      customerSearchApi.middleware
     ),
 });
 
