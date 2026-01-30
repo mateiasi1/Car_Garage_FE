@@ -113,13 +113,13 @@ const StationsPage: FC = () => {
   return (
     <>
       <SEO
-        title="Stații ITP România - Găsește Inspecție Tehnică Periodică Lângă Tine | RoadReady"
-        description="Caută stații ITP autorizate în România. Găsește inspecția tehnică periodică (ITP) cel mai aproape de tine, obține indicații și informații de contact. Verificare ITP rapidă și sigură."
-        keywords="stații ITP, ITP lângă mine, inspecție tehnică periodică, ITP România, găsește ITP, verificare ITP, statie ITP aproape, ITP auto, service ITP, control tehnic auto, inspectie tehnica"
+        title="Stații ITP România - Inspecție ITP Lângă Tine | Inspecție Tehnică Periodică | RoadReady"
+        description="Toate stațiile ITP autorizate din România. Găsește inspecția ITP cel mai aproape de tine, obține indicații și informații de contact. Inspecție tehnică periodică - programări online, verificare ITP rapidă."
+        keywords="stații ITP, ITP lângă mine, inspectie ITP, inspecție tehnică periodică, inspectie periodica, ITP România, găsește ITP, verificare ITP, statie ITP aproape, ITP auto, programare ITP, control tehnic auto, inspectie tehnica auto, statie ITP autorizata, RAR"
         canonical="https://roadready.ro/stations"
         ogUrl="https://roadready.ro/stations"
-        ogTitle="Stații ITP România - Găsește Inspecție Tehnică Periodică"
-        ogDescription="Caută stații ITP autorizate în România. Găsește ITP-ul cel mai aproape de tine."
+        ogTitle="Stații ITP România - Inspecție ITP Lângă Tine"
+        ogDescription="Toate stațiile ITP autorizate din România. Găsește inspecția ITP cel mai aproape de tine."
         structuredData={stationsStructuredData}
       />
 

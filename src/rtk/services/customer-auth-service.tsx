@@ -46,6 +46,7 @@ export interface CustomerRegisterPayload {
   phoneNumber: string;
   firstName: string;
   lastName: string;
+  gdprConsent: boolean;
   tempToken: string;
 }
 

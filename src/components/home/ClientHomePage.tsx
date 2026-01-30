@@ -419,12 +419,18 @@ const ClientHomePage = () => {
               © {new Date().getFullYear()} {brandName}. {t('home.footer.rights')}
             </div>
 
-            <div className="flex items-center gap-4 text-sm">
+            <div className="flex items-center gap-4 text-sm flex-wrap justify-center">
               <Link to={routes.TERMS} className="text-muted hover:text-primary transition-colors">
                 {t('home.footer.terms')}
               </Link>
               <a href={`mailto:${contactEmail}`} className="text-muted hover:text-primary transition-colors">
                 {t('home.footer.contact')}
+              </a>
+              <a href="https://anpc.ro/" target="_blank" rel="noopener noreferrer" className="text-muted hover:text-primary transition-colors">
+                {t('home.footer.anpc')}
+              </a>
+              <a href="https://consumer-redress.ec.europa.eu/index_en" target="_blank" rel="noopener noreferrer" className="text-muted hover:text-primary transition-colors">
+                {t('home.footer.odr')}
               </a>
             </div>
           </div>

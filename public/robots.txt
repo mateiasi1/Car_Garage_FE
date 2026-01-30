@@ -4,35 +4,53 @@
 User-agent: *
 Allow: /
 
+# Allow public pages explicitly
+Allow: /stations
+Allow: /inspector
+Allow: /customer/login
+Allow: /terms
+
 # Disallow private/authenticated pages
 Disallow: /dashboard
 Disallow: /inspections
 Disallow: /administration
 Disallow: /add-inspection
-
-# Allow public pages
-Allow: /login
-Allow: /terms
-Allow: /unsubscribe
-Allow: /stations
+Disallow: /login
+Disallow: /customer/dashboard
+Disallow: /customer/cars
+Disallow: /customer/profile
+Disallow: /customer/register
 
 # Sitemap location
 Sitemap: https://roadready.ro/sitemap.xml
 
-# Crawl-delay (optional, adjust as needed)
-Crawl-delay: 1
-
 # Specific rules for major search engines
 User-agent: Googlebot
 Allow: /
+Allow: /stations
+Allow: /inspector
+Allow: /customer/login
 Disallow: /dashboard
 Disallow: /inspections
 Disallow: /administration
 Disallow: /add-inspection
+Disallow: /login
+Disallow: /customer/dashboard
+Disallow: /customer/cars
+Disallow: /customer/profile
+Disallow: /customer/register
 
 User-agent: Bingbot
 Allow: /
+Allow: /stations
+Allow: /inspector
+Allow: /customer/login
 Disallow: /dashboard
 Disallow: /inspections
 Disallow: /administration
 Disallow: /add-inspection
+Disallow: /login
+Disallow: /customer/dashboard
+Disallow: /customer/cars
+Disallow: /customer/profile
+Disallow: /customer/register

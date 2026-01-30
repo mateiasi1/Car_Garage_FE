@@ -3,23 +3,33 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>RoadReady - Stații ITP România | Găsește Inspecție Tehnică Periodică Lângă Tine</title>
+    <title>RoadReady - Inspecție ITP | Stații ITP România | Inspecție Tehnică Periodică</title>
 
     <!-- SEO Meta Tags -->
-    <meta name="description" content="Găsește stații ITP în apropierea ta. RoadReady - platforma completă pentru inspecții tehnice periodice auto. Caută stații ITP pe hartă, programări online, management service auto și rapoarte detaliate." />
-    <meta name="keywords" content="ITP, stații ITP, ITP lângă mine, inspecție tehnică periodică, inspectie tehnica auto, verificare ITP, ITP România, statie ITP aproape, caută ITP, găsește stație ITP, ITP auto, service ITP, programare ITP, revizie tehnică, RoadReady, control tehnic auto, verificare mașină" />
+    <meta name="description" content="Inspecție ITP - Găsește stații ITP autorizate lângă tine. Inspecție tehnică periodică auto, programări online, verificare ITP, urmărire documente RCA și rovinietă. Platforma #1 pentru ITP în România." />
+    <meta name="keywords" content="inspectie ITP, inspectie tehnica periodica, ITP, stații ITP, ITP lângă mine, inspectie periodica, inspectie tehnica auto, verificare ITP, ITP România, statie ITP aproape, caută ITP, găsește stație ITP, ITP auto, programare ITP, revizie tehnică, RoadReady, control tehnic auto, verificare vehicul, ITP expirat, când expiră ITP, valabilitate ITP, ITP moto, ITP camion, RCA, rovinietă, documente auto" />
     <meta name="author" content="RoadReady" />
-    <meta name="robots" content="index, follow" />
+    <meta name="robots" content="index, follow, max-snippet:-1, max-image-preview:large, max-video-preview:-1" />
     <meta name="language" content="Romanian" />
-    <meta name="revisit-after" content="7 days" />
+    <meta name="revisit-after" content="3 days" />
     <meta name="referrer" content="strict-origin-when-cross-origin" />
+    <meta name="geo.region" content="RO" />
+    <meta name="geo.placename" content="România" />
+    <meta name="content-language" content="ro" />
+
+    <!-- Hreflang for language alternatives -->
+    <link rel="alternate" hreflang="ro" href="https://roadready.ro/" />
+    <link rel="alternate" hreflang="en" href="https://roadready.ro/?lang=en" />
+    <link rel="alternate" hreflang="x-default" href="https://roadready.ro/" />
 
     <!-- Open Graph / Facebook -->
     <meta property="og:type" content="website" />
+    <meta property="og:site_name" content="RoadReady" />
     <meta property="og:url" content="https://roadready.ro/" />
-    <meta property="og:title" content="RoadReady - Stații ITP România | Găsește Inspecție Tehnică Periodică" />
-    <meta property="og:description" content="Găsește stații ITP în apropierea ta. Caută stații ITP pe hartă, programări online, management service auto și verificări tehnice periodice." />
+    <meta property="og:title" content="RoadReady - Inspecție ITP | Stații ITP România | Inspecție Tehnică Periodică" />
+    <meta property="og:description" content="Găsește stații ITP autorizate lângă tine. Inspecție tehnică periodică, programări online, urmărire documente auto. Platforma #1 pentru ITP în România." />
     <meta property="og:image" content="https://roadready.ro/og-image.png" />
+    <meta property="og:image:alt" content="RoadReady - Platformă pentru Inspecții ITP în România" />
     <meta property="og:image:width" content="1200" />
     <meta property="og:image:height" content="630" />
     <meta property="og:locale" content="ro_RO" />
@@ -28,9 +38,10 @@
     <!-- Twitter Card -->
     <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:url" content="https://roadready.ro/" />
-    <meta name="twitter:title" content="RoadReady - Stații ITP România | Găsește Inspecție Tehnică Periodică" />
-    <meta name="twitter:description" content="Găsește stații ITP în apropierea ta. Caută stații ITP pe hartă, programări online, management service auto și verificări tehnice periodice." />
+    <meta name="twitter:title" content="RoadReady - Inspecție ITP | Stații ITP România" />
+    <meta name="twitter:description" content="Găsește stații ITP autorizate lângă tine. Inspecție tehnică periodică, programări online, urmărire documente auto." />
     <meta name="twitter:image" content="https://roadready.ro/og-image.png" />
+    <meta name="twitter:image:alt" content="RoadReady - Platformă pentru Inspecții ITP în România" />
 
     <!-- Canonical URL -->
     <link rel="canonical" href="https://roadready.ro/" />
@@ -39,8 +50,8 @@
     <meta name="theme-color" content="#1e3a8a" />
     <meta name="apple-mobile-web-app-capable" content="yes" />
     <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
-    <meta name="apple-mobile-web-app-title" content="RoadReady" />
-    
+    <meta name="apple-mobile-web-app-title" content="RoadReady ITP" />
+
     <!-- PWA Manifest -->
     <link rel="manifest" href="/manifest.json" />
 
@@ -51,7 +62,7 @@
             rel="stylesheet"
     />
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css" />
-    
+
     <!-- Favicons - Multiple sizes for different contexts -->
     <link rel="icon" type="image/x-icon" href="/favicon.ico" sizes="16x16 32x32 48x48" />
     <link rel="icon" type="image/png" sizes="16x16" href="/favicon-16x16.png" />
@@ -59,20 +70,20 @@
     <link rel="icon" type="image/png" sizes="48x48" href="/favicon-48x48.png" />
     <link rel="icon" type="image/png" sizes="192x192" href="/android-chrome-192x192.png" />
     <link rel="icon" type="image/png" sizes="512x512" href="/android-chrome-512x512.png" />
-    
+
     <!-- Apple Touch Icons -->
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
-    
+
     <!-- Safari Pinned Tab -->
     <link rel="mask-icon" href="/safari-pinned-tab.svg" color="#1e3a8a" />
-    
+
     <!-- HERE Maps JavaScript API -->
     <script src="https://js.api.here.com/v3/3.1/mapsjs-core.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://js.api.here.com/v3/3.1/mapsjs-service.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://js.api.here.com/v3/3.1/mapsjs-ui.js" type="text/javascript" charset="utf-8"></script>
     <script src="https://js.api.here.com/v3/3.1/mapsjs-mapevents.js" type="text/javascript" charset="utf-8"></script>
     <link rel="stylesheet" type="text/css" href="https://js.api.here.com/v3/3.1/mapsjs-ui.css" />
-    
+
     <!-- Structured Data (JSON-LD) -->
 
     <!-- WebSite Schema for Search Box -->
@@ -81,8 +92,9 @@
       "@context": "https://schema.org",
       "@type": "WebSite",
       "name": "RoadReady",
-      "alternateName": ["Stații ITP România", "ITP Romania", "Inspecție Tehnică Periodică"],
+      "alternateName": ["Stații ITP România", "ITP Romania", "Inspecție Tehnică Periodică", "Inspectie ITP", "Inspectie Periodica"],
       "url": "https://roadready.ro",
+      "inLanguage": "ro",
       "potentialAction": {
         "@type": "SearchAction",
         "target": {
@@ -102,7 +114,7 @@
       "name": "RoadReady",
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Web",
-      "description": "Platformă completă pentru găsirea stațiilor ITP și managementul inspecțiilor tehnice periodice auto. Caută stații ITP în apropiere, programări online și verificări tehnice.",
+      "description": "Platformă completă pentru inspecții ITP, găsirea stațiilor ITP autorizate și managementul inspecțiilor tehnice periodice auto. Caută stații ITP în apropiere, programări online, verificare ITP și urmărire documente.",
       "offers": {
         "@type": "Offer",
         "price": "0",
@@ -128,8 +140,12 @@
       "name": "RoadReady",
       "url": "https://roadready.ro",
       "logo": "https://roadready.ro/favicon.png",
-      "description": "Platformă pentru găsirea stațiilor ITP și managementul inspecțiilor tehnice auto în România",
+      "description": "Platformă pentru inspecții ITP, găsirea stațiilor ITP autorizate și managementul inspecțiilor tehnice auto în România",
       "sameAs": [],
+      "areaServed": {
+        "@type": "Country",
+        "name": "România"
+      },
       "contactPoint": {
         "@type": "ContactPoint",
         "contactType": "Customer Service",
@@ -138,34 +154,214 @@
     }
     </script>
 
-    <!-- Service Schema for ITP Station Search -->
+    <!-- Service Schema for ITP Inspection -->
     <script type="application/ld+json">
     {
       "@context": "https://schema.org",
       "@type": "Service",
-      "name": "Căutare Stații ITP",
-      "alternateName": ["ITP Station Search", "Găsește ITP", "Stații ITP lângă mine"],
-      "description": "Serviciu gratuit de căutare a stațiilor ITP autorizate din România. Găsește stații ITP în apropierea ta, obține indicații și informații de contact.",
+      "name": "Inspecție ITP - Căutare Stații ITP",
+      "alternateName": ["Inspectie ITP", "Inspectie Tehnica Periodica", "ITP Station Search", "Găsește ITP", "Stații ITP lângă mine", "Inspectie Periodica"],
+      "description": "Serviciu gratuit de căutare a stațiilor ITP autorizate din România. Găsește stații ITP pentru inspecția tehnică periodică în apropierea ta, obține indicații și informații de contact. Urmărire documente auto: ITP, RCA, rovinietă.",
       "provider": {
         "@type": "Organization",
-        "name": "RoadReady"
+        "name": "RoadReady",
+        "url": "https://roadready.ro"
       },
       "areaServed": {
         "@type": "Country",
         "name": "România"
       },
       "serviceType": "Inspecție Tehnică Periodică",
+      "category": "Automotive Services",
       "offers": {
         "@type": "Offer",
         "price": "0",
         "priceCurrency": "RON",
-        "description": "Căutare gratuită de stații ITP"
+        "description": "Căutare gratuită de stații ITP autorizate"
       }
+    }
+    </script>
+
+    <!-- FAQ Schema - Targets "inspectie ITP", "inspectie periodica" search queries -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Ce este inspecția ITP (Inspecția Tehnică Periodică)?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Inspecția ITP (Inspecția Tehnică Periodică) este un control tehnic obligatoriu pentru toate vehiculele înmatriculate în România. Verifică starea tehnică a vehiculului (frâne, direcție, lumini, emisii, caroserie) pentru a asigura siguranța în trafic. ITP-ul este reglementat de RAR (Registrul Auto Român) și trebuie efectuat la stații ITP autorizate."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Cât de des trebuie făcută inspecția tehnică periodică?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pentru autoturisme noi, prima inspecție ITP se face la 3 ani de la înmatriculare, apoi la fiecare 2 ani. Pentru vehiculele cu vechime mai mare de 12 ani, inspecția tehnică periodică este obligatorie anual. Vehiculele folosite pentru transport persoane sau marfă au termene diferite. Motocicletele urmează același regim ca autoturismele."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Cum găsesc o stație ITP lângă mine?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pe RoadReady.ro poți găsi stații ITP autorizate în apropierea ta. Platforma afișează toate stațiile ITP din România cu adrese, numere de telefon și localizare pe hartă. Poți activa localizarea GPS pentru a vedea stațiile ITP cele mai aproape de tine, ordonate după distanță."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Ce documente am nevoie pentru inspecția ITP?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Pentru inspecția tehnică periodică aveți nevoie de: cartea de identitate a vehiculului (CIV), certificatul de înmatriculare (talon), asigurarea RCA valabilă și, în unele cazuri, certificatul de autenticitate. Vehiculul trebuie să fie curat și în stare de funcționare pentru a putea fi inspectat."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Cât costă inspecția ITP în România?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Tarifele ITP sunt reglementate și variază în funcție de tipul vehiculului. Pentru autoturisme, prețul inspecției ITP este de aproximativ 100-150 RON. Pentru motociclete este mai mic, iar pentru autovehicule de mare tonaj (camioane, autobuze) poate fi mai mare. Tarifele exacte le puteți afla contactând stația ITP."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Ce se verifică la inspecția tehnică periodică?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "La inspecția ITP se verifică: sistemul de frânare, direcția, suspensiile, luminile și semnalizarea, emisiile de gaze, parbrizul și oglinzile, centura de siguranță, caroseria (rugină, lovituri), jante și anvelope, sistemul de evacuare, instalația electrică și alte elemente de siguranță ale vehiculului."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Ce se întâmplă dacă am ITP-ul expirat?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Circulația cu ITP-ul expirat este contravenție și se sancționează cu amendă între 725-1450 RON și reținerea certificatului de înmatriculare. Vehiculul nu mai poate circula legal pe drumurile publice fără inspecția tehnică periodică valabilă. RoadReady te ajută să nu uiți de expirare prin notificări automate prin SMS."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Pot urmări online când îmi expiră ITP-ul, RCA-ul sau rovinieta?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Da, pe RoadReady.ro ai acces la portalul pentru clienți unde poți adăuga vehiculele tale și urmări toate documentele importante: ITP, RCA, rovinietă și altele. Primești notificări automate prin SMS înainte de expirare, astfel încât să nu mai circuli niciodată cu documente expirate."
+          }
+        }
+      ]
+    }
+    </script>
+
+    <!-- BreadcrumbList Schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "BreadcrumbList",
+      "itemListElement": [
+        {
+          "@type": "ListItem",
+          "position": 1,
+          "name": "Acasă",
+          "item": "https://roadready.ro/"
+        },
+        {
+          "@type": "ListItem",
+          "position": 2,
+          "name": "Stații ITP",
+          "item": "https://roadready.ro/stations"
+        }
+      ]
     }
     </script>
 </head>
 <body>
 <div id="root"></div>
+
+<!-- SEO: Static content for crawlers that don't execute JavaScript -->
+<noscript>
+  <div style="max-width:1200px;margin:0 auto;padding:20px;font-family:sans-serif;">
+    <header>
+      <h1>RoadReady - Inspecție ITP | Stații ITP Autorizate România | Inspecție Tehnică Periodică</h1>
+      <p>Platforma completă pentru inspecții ITP în România. Găsește stații ITP autorizate lângă tine, urmărește documentele vehiculului și primește notificări automate.</p>
+    </header>
+
+    <main>
+      <section>
+        <h2>Găsește Stația ITP Perfectă</h2>
+        <p>Caută stații ITP autorizate din toată România. Obține indicații, informații de contact și programează-ți inspecția tehnică periodică. Activează localizarea pentru a vedea stațiile ITP cele mai aproape de tine.</p>
+        <ul>
+          <li>Stații ITP autorizate RAR</li>
+          <li>Localizare precisă pe hartă</li>
+          <li>Contact direct cu stațiile</li>
+          <li>Informații verificate și actualizate</li>
+        </ul>
+        <a href="/stations">Vezi Toate Stațiile ITP din România</a>
+      </section>
+
+      <section>
+        <h2>Portal Clienți - Urmărește Documentele Vehiculului</h2>
+        <p>Nu mai rata nicio expirare ITP, RCA sau rovinietă. Înregistrează-ți vehiculele și primești notificări automate prin SMS când documentele urmează să expire.</p>
+        <ul>
+          <li>Adaugă vehiculele tale (autoturisme, motociclete, camioane)</li>
+          <li>Urmărește ITP, RCA, rovinietă și alte documente</li>
+          <li>Primești notificări SMS înainte de expirare</li>
+          <li>Nu mai circula cu documente expirate</li>
+        </ul>
+        <a href="/customer/login">Accesează Portalul pentru Clienți</a>
+      </section>
+
+      <section>
+        <h2>Pentru Stații ITP și Inspectori</h2>
+        <p>Platformă completă pentru managementul stațiilor ITP. Gestionează inspecțiile tehnice periodice, clienții, rapoartele detaliate și notificările automate.</p>
+        <ul>
+          <li>Gestionare inspecții tehnice periodice</li>
+          <li>Notificări automate pentru clienți</li>
+          <li>Rapoarte detaliate și statistici</li>
+          <li>Management complet al stației ITP</li>
+        </ul>
+        <a href="/inspector">Descoperă Platforma pentru Stații ITP</a>
+      </section>
+
+      <section>
+        <h2>Întrebări Frecvente despre Inspecția ITP</h2>
+
+        <h3>Ce este inspecția ITP (Inspecția Tehnică Periodică)?</h3>
+        <p>Inspecția ITP (Inspecția Tehnică Periodică) este un control tehnic obligatoriu pentru toate vehiculele înmatriculate în România. Verifică starea tehnică a vehiculului (frâne, direcție, lumini, emisii, caroserie) pentru a asigura siguranța în trafic. ITP-ul este reglementat de RAR (Registrul Auto Român) și trebuie efectuat la stații ITP autorizate.</p>
+
+        <h3>Cât de des trebuie făcută inspecția tehnică periodică?</h3>
+        <p>Pentru autoturisme noi, prima inspecție ITP se face la 3 ani de la înmatriculare, apoi la fiecare 2 ani. Pentru vehiculele cu vechime mai mare de 12 ani, inspecția tehnică periodică este obligatorie anual. Vehiculele folosite pentru transport persoane sau marfă au termene diferite.</p>
+
+        <h3>Cum găsesc o stație ITP lângă mine?</h3>
+        <p>Pe RoadReady.ro poți găsi stații ITP autorizate în apropierea ta. Platforma afișează toate stațiile ITP din România cu adrese, numere de telefon și localizare pe hartă.</p>
+
+        <h3>Ce documente am nevoie pentru inspecția ITP?</h3>
+        <p>Pentru inspecția tehnică periodică aveți nevoie de: cartea de identitate a vehiculului (CIV), certificatul de înmatriculare (talon), asigurarea RCA valabilă și certificatul de autenticitate.</p>
+
+        <h3>Ce se întâmplă dacă am ITP-ul expirat?</h3>
+        <p>Circulația cu ITP-ul expirat este contravenție și se sancționează cu amendă între 725-1450 RON și reținerea certificatului de înmatriculare. RoadReady te ajută să nu uiți de expirare prin notificări automate prin SMS.</p>
+
+        <h3>Pot urmări online când îmi expiră ITP-ul, RCA-ul sau rovinieta?</h3>
+        <p>Da, pe RoadReady.ro ai acces la portalul pentru clienți unde poți adăuga vehiculele tale și urmări toate documentele importante: ITP, RCA, rovinietă. Primești notificări automate prin SMS înainte de expirare.</p>
+      </section>
+    </main>
+
+    <footer>
+      <nav>
+        <a href="/">Acasă</a> |
+        <a href="/stations">Stații ITP</a> |
+        <a href="/inspector">Pentru Stații ITP</a> |
+        <a href="/customer/login">Portal Clienți</a> |
+        <a href="/terms">Termeni și Condiții</a>
+      </nav>
+      <p>&copy; 2026 RoadReady. Toate drepturile rezervate.</p>
+    </footer>
+  </div>
+</noscript>
+
 <script type="module" src="/src/main.tsx"></script>
 </body>
 </html>

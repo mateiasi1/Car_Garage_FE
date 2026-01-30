@@ -6,6 +6,7 @@ import { routes } from '../../../constants/routes';
 import { useCustomerRegisterMutation } from '../../../rtk/services/customer-auth-service';
 import { showToast } from '../../../utils/showToast';
 import { Button } from '../../../components/shared/Button';
+import { CustomCheckbox } from '../../../components/shared/CustomCheckbox';
 import { CustomInput } from '../../../components/shared/CustomInput';
 import { FormContainer } from '../../../components/shared/FormContainer';
 import { useForm } from '../../../hooks/useForm';
@@ -14,6 +15,7 @@ import { customerSession } from '../../../utils/customerSession';
 interface RegisterFormValues {
   firstName: string;
   lastName: string;
+  gdprConsent: boolean;
 }
 
 const CustomerRegisterPage: FC = () => {
@@ -27,11 +29,12 @@ const CustomerRegisterPage: FC = () => {
 
   const [registerMutation, { isLoading }] = useCustomerRegisterMutation();
 
-  const { errors, canSubmit, handleSubmit, register } = useForm<RegisterFormValues>({
-    initialValues: { firstName: '', lastName: '' },
+  const { values, errors, canSubmit, handleSubmit, register, setFieldValue } = useForm<RegisterFormValues>({
+    initialValues: { firstName: '', lastName: '', gdprConsent: false },
     fields: {
       firstName: { required: true, validate: (v) => (String(v).length < 2 ? 'validation.minLength' : null) },
       lastName: { required: true, validate: (v) => (String(v).length < 2 ? 'validation.minLength' : null) },
+      gdprConsent: { validate: (v) => (v !== true ? 'customer.register.gdprRequired' : null) },
     },
     onSubmit: async (formValues) => {
       if (!phoneNumber || !tempToken) {
@@ -45,6 +48,7 @@ const CustomerRegisterPage: FC = () => {
           phoneNumber,
           firstName: formValues.firstName,
           lastName: formValues.lastName,
+          gdprConsent: true,
           tempToken,
         }).unwrap();
 
@@ -121,6 +125,14 @@ const CustomerRegisterPage: FC = () => {
             </p>
             <p className="text-sm text-text font-medium font-body">{phoneNumber}</p>
           </div>
+
+          <CustomCheckbox
+            id="gdprConsent"
+            checked={values.gdprConsent}
+            onChange={(e) => setFieldValue('gdprConsent', e.target.checked)}
+            label={t('customer.register.gdprConsent')}
+            error={errors.gdprConsent && t(errors.gdprConsent)}
+          />
         </div>
 
         <div className="mt-4 space-y-4">
