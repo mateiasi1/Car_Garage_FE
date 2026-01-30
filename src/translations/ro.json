@@ -358,7 +358,9 @@
       "footer": {
         "rights": "Toate drepturile rezervate.",
         "terms": "Termeni și Condiții",
-        "contact": "Contact"
+        "contact": "Contact",
+        "anpc": "ANPC",
+        "odr": "Soluționarea Online a Litigiilor"
       }
     },
     "terms": {
@@ -860,7 +862,9 @@
         "backToLogin": "Înapoi la autentificare",
         "success": "Cont creat cu succes!",
         "failed": "Nu am putut crea contul. Te rugăm să încerci din nou.",
-        "noPhone": "Lipsește numărul de telefon. Te rugăm să te autentifici din nou."
+        "noPhone": "Lipsește numărul de telefon. Te rugăm să te autentifici din nou.",
+        "gdprConsent": "Sunt de acord cu prelucrarea datelor mele personale în conformitate cu Politica de Confidențialitate",
+        "gdprRequired": "Trebuie să accepți pentru a continua"
       },
       "dashboard": {
         "title": "Panou de Control",

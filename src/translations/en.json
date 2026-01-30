@@ -358,7 +358,9 @@
       "footer": {
         "rights": "All rights reserved.",
         "terms": "Terms & Conditions",
-        "contact": "Contact"
+        "contact": "Contact",
+        "anpc": "NACP",
+        "odr": "Online Dispute Resolution"
       }
     },
     "terms": {
@@ -860,7 +862,9 @@
         "backToLogin": "Back to login",
         "success": "Account created successfully!",
         "failed": "Could not create account. Please try again.",
-        "noPhone": "Phone number is missing. Please log in again."
+        "noPhone": "Phone number is missing. Please log in again.",
+        "gdprConsent": "I agree to the processing of my personal data in accordance with the Privacy Policy",
+        "gdprRequired": "You must accept to continue"
       },
       "dashboard": {
         "title": "Dashboard",
